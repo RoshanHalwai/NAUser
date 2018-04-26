@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">NammaApartments</string>
+    <string name="app_name">Namma Apartments</string>
+
+    <!--Base Activity-->
+    <string name="back_button_description">Back button to navigate previous activity</string>
+
 </resources>

@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Namma Apartment Colors-->
+    <color name="nmBlack">@android:color/black</color>
+    <color name="nmDarkBlue">#005564</color>
+    <color name="nmLightBlack">#212121</color>
+    <color name="nmLightYellow">#f1c40f</color>
+
 </resources>
