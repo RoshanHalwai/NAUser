@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "703896080530",
+    "firebase_url": "https://nammaapartments-development.firebaseio.com",
+    "project_id": "nammaapartments-development",
+    "storage_bucket": "nammaapartments-development.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703896080530:android:67ab068074f57ad3",
+        "android_client_info": {
+          "package_name": "com.kirtanlabs.nammaapartments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703896080530-f9hi0d6lqcbm05cp9q869fva40mv8e7t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartments",
+            "certificate_hash": "98d08f4c15952f73ae8a367ecb75337c19c5f0b2"
+          }
+        },
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
