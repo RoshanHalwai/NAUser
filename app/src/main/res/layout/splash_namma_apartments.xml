@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".splashscreen.SplashNammaApartments">
+
+    <ImageView
+        android:id="@+id/imageSociety"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="0.5"
+        android:contentDescription="@string/namma_apartments_image_on_the_splash_screen"
+        android:padding="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/namma_apartment_splash" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5">
+
+        <TextView
+            android:id="@+id/textNammaApartments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:text="@string/namma_apartments"
+            android:textColor="@android:color/black"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/textNammaApartmentsDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textNammaApartments"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/namma_apartments_description"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

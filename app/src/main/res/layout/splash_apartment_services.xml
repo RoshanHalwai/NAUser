@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".splashscreen.SplashApartmentServices">
+
+    <ImageView
+        android:id="@+id/imageSociety"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="0.5"
+        android:contentDescription="@string/apartment_image_on_the_splash_screen"
+        android:padding="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/plumber" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5">
+
+        <TextView
+            android:id="@+id/textApartmentServices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/apartment_services"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/textApartmentServicesDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textApartmentServices"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/apartment_services_description"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/buttonGetStarted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textApartmentServicesDesc"
+            android:layout_marginEnd="@dimen/button_right_margin"
+            android:layout_marginLeft="@dimen/button_left_margin"
+            android:layout_marginRight="@dimen/button_right_margin"
+            android:layout_marginStart="@dimen/button_left_margin"
+            android:background="@color/nmBlack"
+            android:text="@string/lets_get_started"
+            android:textAllCaps="false"
+            android:textColor="@color/nmLightYellow"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
