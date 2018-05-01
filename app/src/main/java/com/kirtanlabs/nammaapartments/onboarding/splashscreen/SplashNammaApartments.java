@@ -29,8 +29,12 @@ public class SplashNammaApartments extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        /*Getting Id's for all the views*/
         TextView textNammaApartments = view.findViewById(R.id.textNammaApartments);
         TextView textNammaApartmentsDesc = view.findViewById(R.id.textNammaApartmentsDesc);
+
+        /*Setting font for all the views*/
         textNammaApartments.setTypeface(Constants.setLatoBoldFont(Objects.requireNonNull(this.getActivity())));
         textNammaApartmentsDesc.setTypeface(Constants.setLatoRegularFont(Objects.requireNonNull(this.getActivity())));
     }

@@ -10,6 +10,11 @@ import android.widget.TextView;
  * Created by Roshan Halwai on 5/1/2018
  */
 
+/**
+ * Root activity for most of the Activities of this project.
+ * Responsible for creating toolbar by getting title from the activity
+ * and implementing events on back button.
+ */
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract int getLayoutResourceId();
