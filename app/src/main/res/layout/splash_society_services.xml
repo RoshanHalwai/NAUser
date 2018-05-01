@@ -9,7 +9,7 @@
     tools:context=".splashscreen.SplashSocietyServices">
 
     <ImageView
-        android:id="@+id/imageSociety"
+        android:id="@+id/imageSocietyServices"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_weight="0.5"

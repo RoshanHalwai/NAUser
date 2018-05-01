@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
+ */
+
 public class MainActivity extends BaseActivity {
 
     @Override

@@ -19,4 +19,16 @@
     <string name="namma_apartments_image_on_the_splash_screen">Namma Apartments image on the splash screen</string>
     <string name="lets_get_started">Let\'s Get Started</string>
 
+    <!--Flat Details Screen-->
+    <string name="my_flat_details">My Flat Details</string>
+    <string name="city">CITY</string>
+    <string name="society">SOCIETY</string>
+    <string name="apartment">APARTMENT</string>
+    <string name="flat">FLAT</string>
+    <string name="resident_type">RESIDENT TYPE</string>
+    <string name="owner">Owner</string>
+    <string name="tenant">Tenant</string>
+    <string name="verification_message">Our team will verify the details provided by you. We will notify you once the verification is completed.</string>
+    <string name="next">Continue</string>
+
 </resources>

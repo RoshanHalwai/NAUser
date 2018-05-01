@@ -5,6 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
+ */
+
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract int getLayoutResourceId();

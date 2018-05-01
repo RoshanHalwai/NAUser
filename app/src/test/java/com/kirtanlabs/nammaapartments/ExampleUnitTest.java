@@ -5,9 +5,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
  */
 public class ExampleUnitTest {
     @Test

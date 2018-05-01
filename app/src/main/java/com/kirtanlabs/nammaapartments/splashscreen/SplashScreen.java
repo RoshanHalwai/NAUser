@@ -10,6 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.kirtanlabs.nammaapartments.R;
 
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
+ */
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
