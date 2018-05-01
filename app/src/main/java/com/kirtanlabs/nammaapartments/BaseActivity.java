@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-
     protected abstract int getLayoutResourceId();
 
     protected abstract int getActivityTitle();

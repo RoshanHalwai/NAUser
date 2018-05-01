@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NammaApartmentsTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".splashscreen.SplashScreen"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/NammaApartmentsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

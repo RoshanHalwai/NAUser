@@ -3,5 +3,20 @@
 
     <!--Base Activity-->
     <string name="back_button_description">Back button to navigate previous activity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!--Splash Screens-->
+    <string name="namma_apartments">Namma Apartments</string>
+    <string name="society_services">Society Services</string>
+    <string name="apartment_services">Apartment Services</string>
+    <string name="namma_apartments_description">One stop shop solution for all your Society needs.</string>
+    <string name="society_services_description">A smarter way to manage your daily needs from our dedicated service team.</string>
+    <string name="apartment_services_description">Enjoy benefits of all Digital Apartment Services under one umbrella with ease and control.</string>
+    <string name="society_image_on_the_splash_screen">Society image on the splash screen</string>
+    <string name="apartment_image_on_the_splash_screen">Society image on the splash screen</string>
+    <string name="namma_apartments_image_on_the_splash_screen">Namma Apartments image on the splash screen</string>
+    <string name="lets_get_started">Let\'s Get Started</string>
 
 </resources>
