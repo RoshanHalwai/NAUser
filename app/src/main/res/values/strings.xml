@@ -19,6 +19,13 @@
     <string name="namma_apartments_image_on_the_splash_screen">Namma Apartments image on the splash screen</string>
     <string name="lets_get_started">Let\'s Get Started</string>
 
+    <!--OTP Activity-->
+    <string name="phone_verification_activity_title">Phone Verification</string>
+    <string name="enter_verification_code">We need to verify your account. Please enter the 6 digit verification
+    code from the text message.</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="incorrect_otp">You have entered an incorrect OTP</string>
+
     <!--Flat Details Screen-->
     <string name="my_flat_details">My Flat Details</string>
     <string name="city">CITY</string>
