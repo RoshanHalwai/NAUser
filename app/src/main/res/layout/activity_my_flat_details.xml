@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".flatdetails.MyFlatDetails">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_base" />
+
+        <TextView
+            android:id="@+id/textCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/city"
+            android:textAllCaps="true"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/textSociety"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/society"
+            android:textAllCaps="true"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editSociety"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/textApartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/apartment"
+            android:textAllCaps="true"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editApartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/textFlat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/flat"
+            android:textAllCaps="true"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editFlat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/textResidentType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/resident_type"
+            android:textAllCaps="true"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/owner" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tenant" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textVerificationMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/verification_message"
+            android:textColor="@color/nmBlack"
+            android:textSize="12sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/buttonContinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="@dimen/button_right_margin"
+            android:layout_marginLeft="@dimen/button_left_margin"
+            android:layout_marginRight="@dimen/button_right_margin"
+            android:layout_marginStart="@dimen/button_left_margin"
+            android:layout_marginTop="10dp"
+            android:background="@color/nmBlack"
+            android:text="@string/next"
+            android:textColor="@color/nmLightYellow"
+            android:textSize="@dimen/button_default_size" />
+
+    </LinearLayout>
+
+</ScrollView>

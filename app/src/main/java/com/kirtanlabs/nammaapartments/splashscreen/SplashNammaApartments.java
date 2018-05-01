@@ -14,6 +14,11 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.Objects;
 
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
+ */
+
 public class SplashNammaApartments extends Fragment {
 
     @Override

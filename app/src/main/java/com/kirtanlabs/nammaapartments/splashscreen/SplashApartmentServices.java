@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.splashscreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,8 +13,14 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.flatdetails.MyFlatDetails;
 
 import java.util.Objects;
+
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
+ */
 
 public class SplashApartmentServices extends Fragment {
 
@@ -31,5 +38,6 @@ public class SplashApartmentServices extends Fragment {
         textApartmentServices.setTypeface(Constants.setLatoBoldFont(Objects.requireNonNull(this.getActivity())));
         textApartmentServicesDesc.setTypeface(Constants.setLatoRegularFont(Objects.requireNonNull(this.getActivity())));
         buttonGetStarted.setTypeface(Constants.setLatoLightFont(this.getActivity()));
+        buttonGetStarted.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyFlatDetails.class)));
     }
 }

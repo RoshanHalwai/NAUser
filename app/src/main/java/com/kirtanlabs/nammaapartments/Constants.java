@@ -3,6 +3,11 @@ package com.kirtanlabs.nammaapartments;
 import android.content.Context;
 import android.graphics.Typeface;
 
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/1/2018
+ */
+
 public class Constants {
 
     /* Font Types */

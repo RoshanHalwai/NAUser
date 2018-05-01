@@ -9,14 +9,14 @@
     tools:context=".splashscreen.SplashNammaApartments">
 
     <ImageView
-        android:id="@+id/imageSociety"
+        android:id="@+id/imageNammaApartments"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_weight="0.5"
         android:contentDescription="@string/namma_apartments_image_on_the_splash_screen"
         android:padding="10dp"
         android:scaleType="fitXY"
-        android:src="@drawable/namma_apartment_splash" />
+        android:src="@drawable/namma_apartments_splash_image" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAllCaps="true"
             android:text="@string/namma_apartments"
+            android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="26sp" />
 

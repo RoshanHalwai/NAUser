@@ -12,7 +12,7 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".splashscreen.SplashScreen"
-            android:label="@string/title_activity_splash_screen"
+            android:label="@string/app_name"
             android:theme="@style/NammaApartmentsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".flatdetails.MyFlatDetails"></activity>
     </application>
 
 </manifest>
