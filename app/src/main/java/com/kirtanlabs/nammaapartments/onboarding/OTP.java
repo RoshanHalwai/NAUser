@@ -61,6 +61,7 @@ public class OTP extends BaseActivity {
         /*Setting events for OTP edit text*/
         setEventsForEditText();
 
+        /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(view -> startActivity(new Intent(this, MyFlatDetails.class)));
     }
 

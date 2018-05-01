@@ -29,8 +29,12 @@ public class SplashSocietyServices extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        /*Getting Id's for all the views*/
         TextView textSocietyServices = view.findViewById(R.id.textSocietyServices);
         TextView textSocietyServicesDesc = view.findViewById(R.id.textSocietyServicesDesc);
+
+        /*Setting font for all the views*/
         textSocietyServices.setTypeface(Constants.setLatoBoldFont(Objects.requireNonNull(this.getActivity())));
         textSocietyServicesDesc.setTypeface(Constants.setLatoRegularFont(Objects.requireNonNull(this.getActivity())));
     }

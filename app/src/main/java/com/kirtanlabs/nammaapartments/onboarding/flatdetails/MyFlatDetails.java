@@ -29,6 +29,8 @@ public class MyFlatDetails extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*Getting Id's for all the views*/
         TextView textCity = findViewById(R.id.textCity);
         TextView textSociety = findViewById(R.id.textSociety);
         TextView textApartment = findViewById(R.id.textApartment);
@@ -41,6 +43,7 @@ public class MyFlatDetails extends BaseActivity {
         EditText editFlat = findViewById(R.id.editFlat);
         Button buttonContinue = findViewById(R.id.buttonContinue);
 
+        /*Setting font for all the views*/
         textCity.setTypeface(Constants.setLatoBoldFont(this));
         textSociety.setTypeface(Constants.setLatoBoldFont(this));
         textApartment.setTypeface(Constants.setLatoBoldFont(this));
