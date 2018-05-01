@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.flatdetails;
+package com.kirtanlabs.nammaapartments.onboarding.flatdetails;
 
 import android.os.Bundle;
 import android.widget.Button;

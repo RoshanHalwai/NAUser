@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.splashscreen;
+package com.kirtanlabs.nammaapartments.onboarding.splashscreen;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

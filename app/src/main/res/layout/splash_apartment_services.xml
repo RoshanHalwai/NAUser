@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context=".splashscreen.SplashApartmentServices">
+    tools:context=".onboarding.splashscreen.SplashApartmentServices">
 
     <ImageView
         android:id="@+id/imageApartmentServices"

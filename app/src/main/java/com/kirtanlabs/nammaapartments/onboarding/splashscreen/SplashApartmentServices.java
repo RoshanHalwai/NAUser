@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.splashscreen;
+package com.kirtanlabs.nammaapartments.onboarding.splashscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.flatdetails.MyFlatDetails;
+import com.kirtanlabs.nammaapartments.onboarding.OTP;
 
 import java.util.Objects;
 
@@ -38,6 +38,6 @@ public class SplashApartmentServices extends Fragment {
         textApartmentServices.setTypeface(Constants.setLatoBoldFont(Objects.requireNonNull(this.getActivity())));
         textApartmentServicesDesc.setTypeface(Constants.setLatoRegularFont(Objects.requireNonNull(this.getActivity())));
         buttonGetStarted.setTypeface(Constants.setLatoLightFont(this.getActivity()));
-        buttonGetStarted.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyFlatDetails.class)));
+        buttonGetStarted.setOnClickListener(v -> startActivity(new Intent(getActivity(), OTP.class)));
     }
 }
