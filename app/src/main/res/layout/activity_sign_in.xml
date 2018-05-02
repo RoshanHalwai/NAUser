@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".onboarding.login.SignIn">
+
+    <include layout="@layout/activity_base" />
+
+    <TextView
+        android:id="@+id/textSignInMobileNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/mobile_number_sign_in"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <LinearLayout
+        android:id="@+id/layoutMobileNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textSignInMobileNumber"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/textSignInCountryCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:text="@string/_91"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editSignInMobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:textColor="@color/nmBlack"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutMobileNumber"
+        android:layout_margin="20dp"
+        android:background="@color/nmBlack"
+        android:text="@string/signin"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size" />
+
+    <TextView
+        android:id="@+id/textCreateAnAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonSignIn"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/create_an_account"
+        android:textColor="@color/nmBlack"
+        android:textSize="22sp" />
+
+</RelativeLayout>
