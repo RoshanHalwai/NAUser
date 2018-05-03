@@ -24,6 +24,13 @@
         <activity
             android:name=".onboarding.OTP"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".onboarding.login.SignUp"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".onboarding.login.SignIn"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

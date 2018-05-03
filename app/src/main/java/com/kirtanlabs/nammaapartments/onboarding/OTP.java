@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -37,6 +38,8 @@ public class OTP extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setVisibility(View.INVISIBLE);
 
         /*Getting Id's for all the views*/
         TextView textPhoneVerification = findViewById(R.id.textPhoneVerification);
