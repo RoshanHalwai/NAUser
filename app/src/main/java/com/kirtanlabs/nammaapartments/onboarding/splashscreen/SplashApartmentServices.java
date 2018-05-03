@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.OTP;
+import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignUp;
 
 import java.util.Objects;
@@ -45,6 +46,6 @@ public class SplashApartmentServices extends Fragment {
         buttonGetStarted.setTypeface(Constants.setLatoLightFont(this.getActivity()));
 
         /*Setting event for Lets Get Started button*/
-        buttonGetStarted.setOnClickListener(v -> startActivity(new Intent(getActivity(), SignUp.class)));
+        buttonGetStarted.setOnClickListener(v -> startActivity(new Intent(getActivity(), SignIn.class)));
     }
 }
