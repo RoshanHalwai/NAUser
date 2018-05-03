@@ -55,6 +55,7 @@ public class SignUp extends BaseActivity {
         editEmailId.setTypeface(Constants.setLatoRegularFont(this));
         buttonSignUp.setTypeface(Constants.setLatoLightFont(this));
 
+        /*Setting event for  button*/
         buttonSignUp.setOnClickListener(view -> startActivity(new Intent(this, OTP.class)));
         textHaveAnAccount.setOnClickListener(view -> startActivity(new Intent(this, SignIn.class)));
     }

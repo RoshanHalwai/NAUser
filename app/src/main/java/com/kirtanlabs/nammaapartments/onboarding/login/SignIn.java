@@ -32,19 +32,20 @@ public class SignIn extends BaseActivity {
         backButton.setVisibility(View.INVISIBLE);
 
         /*Getting Id's for all the views*/
-        TextView textSignInMobileNumber = findViewById(R.id.textSignInMobileNumber);
+        TextView textMobileNumber = findViewById(R.id.textMobileNumber);
         TextView textCreateAnAccount = findViewById(R.id.textCreateAnAccount);
-        TextView textSignInCountryCode = findViewById(R.id.textSignInCountryCode);
-        EditText editSignInMobileNumber = findViewById(R.id.editSignInMobileNumber);
-        Button buttonSignIn = findViewById(R.id.buttonSignIn);
+        TextView textCountryCode = findViewById(R.id.textCountryCode);
+        EditText editMobileNumber = findViewById(R.id.editMobileNumber);
+        Button buttonSignIn = findViewById(R.id.buttonLogin);
 
         /*Setting font for all the views*/
-        textSignInMobileNumber.setTypeface(Constants.setLatoBoldFont(this));
+        textMobileNumber.setTypeface(Constants.setLatoBoldFont(this));
         textCreateAnAccount.setTypeface(Constants.setLatoRegularFont(this));
-        textSignInCountryCode.setTypeface(Constants.setLatoBoldFont(this));
-        editSignInMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
+        textCountryCode.setTypeface(Constants.setLatoBoldFont(this));
+        editMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
         buttonSignIn.setTypeface(Constants.setLatoLightFont(this));
 
+        /*Setting event for LOGIN button*/
         buttonSignIn.setOnClickListener(view -> startActivity(new Intent(this, OTP.class)));
         textCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(this, SignUp.class)));
     }
