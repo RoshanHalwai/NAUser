@@ -14,22 +14,22 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
 
-public class ServiceAdapter extends ArrayAdapter<Service> {
+class ServiceAdapter extends ArrayAdapter<Service> {
 
     //the list values in the List of type society
-    private List<Service> servicesList;
+    private final List<Service> servicesList;
 
     //activity context
-    private Context context;
+    private final Context context;
 
     //the layout resource file for the list items
-    private int resource;
+    private final int resource;
 
-    ServiceAdapter(@NonNull Context context, int resource, List<Service> servicesList) {
-        super(context, resource);
+    ServiceAdapter(@NonNull Context context, List<Service> servicesList) {
+        super(context, R.layout.list_services);
         this.servicesList = servicesList;
         this.context = context;
-        this.resource = resource;
+        this.resource = R.layout.list_services;
     }
 
     @NonNull

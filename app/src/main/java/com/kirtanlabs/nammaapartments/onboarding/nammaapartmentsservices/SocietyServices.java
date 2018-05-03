@@ -1,36 +1,35 @@
 package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class SocietyServices extends BaseActivity {
+public class SocietyServices extends Fragment {
 
-    List<Service> societyServicesList;
-    ListView listView;
-
+    @Nullable
     @Override
-    protected int getLayoutResourceId() {
-        return R.layout.activity_society_services;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_society_services, container, false);
     }
 
     @Override
-    protected int getActivityTitle() {
-        return R.string.society_services;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         /*Getting Id's for all the views*/
-        listView = findViewById(R.id.listviewSocietyServices);
-        societyServicesList = new ArrayList<>();
+        ListView listView = view.findViewById(R.id.listviewSocietyServices);
+        List<Service> societyServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
         societyServicesList.add(new Service(R.drawable.digital_gate, "Digital Gate Service"));
@@ -43,7 +42,7 @@ public class SocietyServices extends BaseActivity {
         societyServicesList.add(new Service(R.drawable.water_tanker, "Water Tanker"));
 
         //Creating the Adapter
-        ServiceAdapter serviceAdapter = new ServiceAdapter(this, R.layout.list_services, societyServicesList);
+        ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
 
         //attaching adapter to the listview
         listView.setAdapter(serviceAdapter);

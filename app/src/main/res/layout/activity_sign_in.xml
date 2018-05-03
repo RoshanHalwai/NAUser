@@ -16,6 +16,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="@string/phone_number"
+        android:textAllCaps="true"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size" />
 

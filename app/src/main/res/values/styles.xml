@@ -7,4 +7,6 @@
         <item name="colorAccent">@color/nmBlack</item>
     </style>
 
+    <style name="NammaApartmentsTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 </resources>

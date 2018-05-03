@@ -56,4 +56,6 @@
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
 
+    <string name="title_activity_home">Home</string>
+
 </resources>

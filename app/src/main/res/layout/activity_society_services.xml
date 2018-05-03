@@ -6,8 +6,6 @@
     android:orientation="vertical"
     tools:context=".onboarding.nammaapartmentsservices.SocietyServices">
 
-    <include layout="@layout/activity_base" />
-
     <ListView
         android:id="@+id/listviewSocietyServices"
         android:layout_width="match_parent"

@@ -26,14 +26,16 @@
             android:name=".onboarding.OTP"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".onboarding.nammaapartmentsservices.SocietyServices" />
-        <activity android:name=".onboarding.nammaapartmentsservices.ApartmentServices" />
 
-        <!--Ignore these activities for now-->
+        <!-- Ignore these activities for now -->
         <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
         <activity
             android:name=".onboarding.login.SignUp"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Home"
+            android:label="@string/title_activity_home"
+            android:theme="@style/NammaApartmentsTheme" />
     </application>
 
 </manifest>

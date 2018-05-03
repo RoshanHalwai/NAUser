@@ -1,11 +1,11 @@
 package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
 
-public class Service {
+class Service {
 
-    private int serviceImage;
-    private String serviceName;
+    private final int serviceImage;
+    private final String serviceName;
 
-    public Service(int serviceImage, String serviceName) {
+    Service(int serviceImage, String serviceName) {
         this.serviceImage = serviceImage;
         this.serviceName = serviceName;
     }

@@ -1,36 +1,35 @@
 package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class ApartmentServices extends BaseActivity {
+public class ApartmentServices extends Fragment {
 
-    List<Service> apartmentServicesList;
-    ListView listView;
-
+    @Nullable
     @Override
-    protected int getLayoutResourceId() {
-        return R.layout.activity_apartment_services;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_apartment_services, container, false);
     }
 
     @Override
-    protected int getActivityTitle() {
-        return R.string.apartment_services;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         /*Getting Id's for all the views*/
-        listView = findViewById(R.id.listviewApartmentServices);
-        apartmentServicesList = new ArrayList<>();
+        ListView listView = view.findViewById(R.id.listviewApartmentServices);
+        List<Service> apartmentServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
         apartmentServicesList.add(new Service(R.drawable.cook_service, "Cook Service"));
@@ -44,10 +43,10 @@ public class ApartmentServices extends BaseActivity {
         apartmentServicesList.add(new Service(R.drawable.grocery_service, "Grocery Service"));
 
         //Creating the Adapter
-        ServiceAdapter serviceAdapter = new ServiceAdapter(this, R.layout.list_services, apartmentServicesList);
+        ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);
 
         //Attaching adapter to the listview
         listView.setAdapter(serviceAdapter);
-
     }
+
 }
