@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.Home;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.onboarding.flatdetails.MyFlatDetails;
 
 public class OTP extends BaseActivity {
 
@@ -65,7 +65,7 @@ public class OTP extends BaseActivity {
         setEventsForEditText();
 
         /*Setting event for Verify OTP button*/
-        buttonVerifyOTP.setOnClickListener(view -> startActivity(new Intent(this, MyFlatDetails.class)));
+        buttonVerifyOTP.setOnClickListener(view -> startActivity(new Intent(this, Home.class)));
     }
 
     /**
