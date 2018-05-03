@@ -1,8 +1,13 @@
 package com.kirtanlabs.nammaapartments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices.ApartmentServices;
+import com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices.SocietyServices;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -16,6 +21,18 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.INVISIBLE);
+
+        /*Getting Id's for all the views*/
+        TextView textSocietyServices = findViewById(R.id.textSocietyServices);
+        TextView textApartmentServices = findViewById(R.id.textApartmentServices);
+
+        /*Setting font for all the views*/
+        textSocietyServices.setTypeface(Constants.setLatoBoldFont(this));
+        textApartmentServices.setTypeface(Constants.setLatoBoldFont(this));
+
+        /*Setting event for text views*/
+        textSocietyServices.setOnClickListener(v -> startActivity(new Intent(this, SocietyServices.class)));
+        textApartmentServices.setOnClickListener(v -> startActivity(new Intent(this, ApartmentServices.class)));
     }
 
     @Override

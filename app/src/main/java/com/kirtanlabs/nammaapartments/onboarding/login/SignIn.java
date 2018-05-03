@@ -22,7 +22,7 @@ public class SignIn extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.signin;
+        return R.string.login;
     }
 
     @Override

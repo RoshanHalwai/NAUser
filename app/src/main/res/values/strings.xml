@@ -39,16 +39,23 @@
     <string name="next">Continue</string>
 
     <!--SignUp Activity -->
-    <string name="full_name">FULL NAME</string>
+    <string name="full_name">Full Name</string>
     <string name="_91">+91</string>
-    <string name="phone_number">MOBILE NUMBER</string>
-    <string name="email_id">EMAIL-ID</string>
-    <string name="signup">SIGN UP</string>
+    <string name="phone_number">Mobile Number</string>
+    <string name="email_id">Email-Id</string>
+    <string name="signup">Sign Up</string>
     <string name="i_agree_to_terms_and_conditions">By clicking on SignUp I agree to Terms And Conditions</string>
     <string name="i_already_have_an_account">I already have an Account</string>
 
     <!--SignIn Activity-->
     <string name="create_an_account">Create an Account</string>
-    <string name="signin">Login</string>
+    <string name="login">Login</string>
+
+    <!--Home Activity-->
+    <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
+    <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
+    <string name="service_icon">Service Icon</string>
+
+    <string name="title_activity_home">Home</string>
 
 </resources>

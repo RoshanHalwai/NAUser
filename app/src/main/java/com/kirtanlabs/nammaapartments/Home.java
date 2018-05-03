@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding.splashscreen;
+package com.kirtanlabs.nammaapartments;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -6,35 +6,40 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
-import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices.ApartmentServices;
+import com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices.SocietyServices;
 
-/**
- * KirtanLabs Pvt. Ltd.
- * Created by Roshan Halwai on 5/1/2018
- */
+public class Home extends BaseActivity {
 
-public class SplashScreen extends AppCompatActivity {
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_home;
+    }
+
+    @Override
+    protected int getActivityTitle() {
+        return R.string.app_name;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
 
+        // Create the adapter that will return a fragment for each of the two
+        // primary sections of the activity.
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        // Set up the ViewPager with the sections adapter.
         ViewPager mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(mViewPager, true);
+        TabLayout tabLayout = findViewById(R.id.tabs);
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
@@ -45,11 +50,9 @@ public class SplashScreen extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new SplashNammaApartments();
+                    return new SocietyServices();
                 case 1:
-                    return new SplashSocietyServices();
-                case 2:
-                    return new SplashApartmentServices();
+                    return new ApartmentServices();
                 default:
                     return null;
             }
@@ -57,7 +60,8 @@ public class SplashScreen extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
+
 }
