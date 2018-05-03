@@ -43,12 +43,11 @@
     <string name="_91">+91</string>
     <string name="phone_number">MOBILE NUMBER</string>
     <string name="email_id">EMAIL-ID</string>
-    <string name="signup">SignUp</string>
+    <string name="signup">SIGN UP</string>
     <string name="i_agree_to_terms_and_conditions">By clicking on SignUp I agree to Terms And Conditions</string>
     <string name="i_already_have_an_account">I already have an Account</string>
 
     <!--SignIn Activity-->
-    <string name="mobile_number_sign_in">Mobile Number</string>
     <string name="create_an_account">Create an Account</string>
     <string name="signin">Login</string>
 
