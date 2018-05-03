@@ -33,14 +33,14 @@ public class ApartmentServices extends BaseActivity {
         apartmentServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        apartmentServicesList.add(new Service(R.drawable.cook_service, "Cook"));
-        apartmentServicesList.add(new Service(R.drawable.maid_service, "Maid "));
-        apartmentServicesList.add(new Service(R.drawable.car_cleaning_service, "Car/Bike Cleaning"));
-        apartmentServicesList.add(new Service(R.drawable.child_day_care, "Child Day Care"));
-        apartmentServicesList.add(new Service(R.drawable.newspaper_service, "Daily NewsPaper"));
-        apartmentServicesList.add(new Service(R.drawable.milk_man_service, "Milk Man "));
-        apartmentServicesList.add(new Service(R.drawable.laundry_service, "Laundry"));
-        apartmentServicesList.add(new Service(R.drawable.driver, "Driver"));
+        apartmentServicesList.add(new Service(R.drawable.cook_service, "Cook Service"));
+        apartmentServicesList.add(new Service(R.drawable.maid_service, "Maid Service"));
+        apartmentServicesList.add(new Service(R.drawable.car_cleaning_service, "Car/Bike Cleaning Service"));
+        apartmentServicesList.add(new Service(R.drawable.child_day_care, "Child Day Care Service"));
+        apartmentServicesList.add(new Service(R.drawable.newspaper_service, "Daily NewsPaper Service"));
+        apartmentServicesList.add(new Service(R.drawable.milk_man_service, "Milk Man Service"));
+        apartmentServicesList.add(new Service(R.drawable.laundry_service, "Laundry Service"));
+        apartmentServicesList.add(new Service(R.drawable.driver, "Driver Service"));
         apartmentServicesList.add(new Service(R.drawable.grocery_service, "Grocery Service"));
 
         //Creating the Adapter

@@ -33,7 +33,7 @@ public class SocietyServices extends BaseActivity {
         societyServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        societyServicesList.add(new Service(R.drawable.digital_gate, "Digital Gate Services"));
+        societyServicesList.add(new Service(R.drawable.digital_gate, "Digital Gate Service"));
         societyServicesList.add(new Service(R.drawable.plumber_service, "Plumber Service"));
         societyServicesList.add(new Service(R.drawable.carpenter, "Carpenter Service"));
         societyServicesList.add(new Service(R.drawable.electrician, "Electrician Service"));

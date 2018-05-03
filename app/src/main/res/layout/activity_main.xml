@@ -19,6 +19,7 @@
             android:id="@+id/imageSocietyServices"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:contentDescription="@string/namma_apartments_society_services_image"
             android:scaleType="fitXY"
             android:src="@drawable/namma_apartments" />
 
@@ -44,6 +45,7 @@
             android:id="@+id/imageApartmentServices"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:contentDescription="@string/namma_apartments_apartment_services_image"
             android:scaleType="fitXY"
             android:src="@drawable/namma_apartments" />
 

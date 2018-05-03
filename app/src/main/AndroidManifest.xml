@@ -28,12 +28,12 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".onboarding.nammaapartmentsservices.SocietyServices" />
         <activity android:name=".onboarding.nammaapartmentsservices.ApartmentServices" />
+
         <!--Ignore these activities for now-->
         <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
         <activity
             android:name=".onboarding.login.SignUp"
             android:windowSoftInputMode="adjustResize" />
-
     </application>
 
 </manifest>

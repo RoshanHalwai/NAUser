@@ -58,7 +58,7 @@
         android:layout_below="@+id/layoutMobileNumber"
         android:layout_margin="20dp"
         android:background="@color/nmBlack"
-        android:text="@string/signin"
+        android:text="@string/login"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size" />
 

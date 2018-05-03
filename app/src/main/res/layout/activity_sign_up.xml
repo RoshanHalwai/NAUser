@@ -21,6 +21,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:text="@string/full_name"
+            android:textAllCaps="true"
             android:textColor="@color/nmBlack"
             android:textSize="@dimen/text_view_default_size" />
 
@@ -50,6 +51,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:text="@string/phone_number"
+            android:textAllCaps="true"
             android:textColor="@color/nmBlack"
             android:textSize="@dimen/text_view_default_size" />
 
@@ -91,6 +93,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:text="@string/email_id"
+            android:textAllCaps="true"
             android:textColor="@color/nmBlack"
             android:textSize="14sp" />
 
@@ -113,7 +116,7 @@
             android:layout_margin="20dp"
             android:background="@color/nmBlack"
             android:text="@string/signup"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/nmLightYellow"
             android:textSize="@dimen/button_default_size" />
 

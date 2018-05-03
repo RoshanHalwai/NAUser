@@ -17,17 +17,17 @@ import java.util.List;
 public class ServiceAdapter extends ArrayAdapter<Service> {
 
     //the list values in the List of type society
-    List<Service> societyServicesList;
+    private List<Service> servicesList;
 
     //activity context
-    Context context;
+    private Context context;
 
     //the layout resource file for the list items
-    int resource;
+    private int resource;
 
-    public ServiceAdapter(@NonNull Context context, int resource, List<Service> societyServicesList) {
+    ServiceAdapter(@NonNull Context context, int resource, List<Service> servicesList) {
         super(context, resource);
-        this.societyServicesList = societyServicesList;
+        this.servicesList = servicesList;
         this.context = context;
         this.resource = resource;
     }
@@ -44,11 +44,11 @@ public class ServiceAdapter extends ArrayAdapter<Service> {
         View view = layoutInflater.inflate(resource, null, false);
 
         //getting the view elements of the list from the view
-        ImageView imageSocietyServices = view.findViewById(R.id.imageSocietyServices);
-        TextView textSocietyServices = view.findViewById(R.id.textSocietyServices);
+        ImageView imageSocietyServices = view.findViewById(R.id.imageServiceIcon);
+        TextView textSocietyServices = view.findViewById(R.id.textServiceName);
 
         //getting the society of the specified position
-        Service service = societyServicesList.get(position);
+        Service service = servicesList.get(position);
 
         //adding values to the list item
         imageSocietyServices.setImageDrawable(context.getResources().getDrawable(service.getServiceImage()));
@@ -58,7 +58,7 @@ public class ServiceAdapter extends ArrayAdapter<Service> {
 
     @Override
     public int getCount() {
-        return 8;
+        return servicesList.size();
     }
 
 }

@@ -6,17 +6,18 @@
 
 
     <ImageView
-        android:id="@+id/imageSocietyServices"
+        android:id="@+id/imageServiceIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
+        android:contentDescription="@string/service_icon"
         android:padding="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/digital_gate" />
 
     <TextView
-        android:id="@+id/textSocietyServices"
+        android:id="@+id/textServiceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -24,6 +25,6 @@
         android:layout_toRightOf="@id/imageSocietyServices"
         android:padding="10dp"
         android:textColor="@color/nmBlack"
-        android:textSize="@dimen/text_view_default_size" />
+        android:textSize="16sp" />
 
 </RelativeLayout>
