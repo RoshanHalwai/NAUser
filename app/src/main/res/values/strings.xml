@@ -57,5 +57,35 @@
     <string name="service_icon">Service Icon</string>
 
     <string name="title_activity_home">Home</string>
+    <string name="title_activity_digital_gate_services">DigitalGateServices</string>
 
+    <!--Society Services Activity-->
+    <string name="security_gate">Security Gate</string>
+    <string name="plumber">Plumber</string>
+    <string name="carpenter">Carpenter</string>
+    <string name="electrician">Electrician</string>
+    <string name="garbage_management">Garbage Management</string>
+    <string name="event_management">Event Management</string>
+    <string name="medical_emergency">Medical Emergency</string>
+    <string name="water_services">Water Services</string>
+
+    <!--Apartment Services Activity-->
+    <string name="cook">Cook</string>
+    <string name="maid">Maid</string>
+    <string name="car_bike_cleaning">Car/Bike Cleaning</string>
+    <string name="child_day_care">Child Day Care</string>
+    <string name="daily_newspaper">Daily NewsPaper</string>
+    <string name="milk_man">Milk Man</string>
+    <string name="laundry">Laundry</string>
+    <string name="driver">Driver</string>
+    <string name="groceries">Groceries</string>
+    <string name="images_of_digital_gate_services">Images of Digital Gate Services</string>
+
+    <!--DigitalGateService Activity-->
+    <string name="invite_visitors">Invite Visitors </string>
+    <string name="my_visitors_list">My Visitors List </string>
+    <string name="my_daily_services">My Daily Services </string>
+    <string name="notify_digital_gate">Notify Digital Gate </string>
+    <string name="my_sweet_home">My Sweet Home </string>
+    <string name="emergency">Emergency </string>
 </resources>

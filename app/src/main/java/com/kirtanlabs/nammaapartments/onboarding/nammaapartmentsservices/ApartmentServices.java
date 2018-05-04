@@ -32,15 +32,15 @@ public class ApartmentServices extends Fragment {
         List<Service> apartmentServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        apartmentServicesList.add(new Service(R.drawable.cook_service, "Cook Service"));
-        apartmentServicesList.add(new Service(R.drawable.maid_service, "Maid Service"));
-        apartmentServicesList.add(new Service(R.drawable.car_cleaning_service, "Car/Bike Cleaning Service"));
-        apartmentServicesList.add(new Service(R.drawable.child_day_care, "Child Day Care Service"));
-        apartmentServicesList.add(new Service(R.drawable.newspaper_service, "Daily NewsPaper Service"));
-        apartmentServicesList.add(new Service(R.drawable.milk_man_service, "Milk Man Service"));
-        apartmentServicesList.add(new Service(R.drawable.laundry_service, "Laundry Service"));
-        apartmentServicesList.add(new Service(R.drawable.driver, "Driver Service"));
-        apartmentServicesList.add(new Service(R.drawable.grocery_service, "Grocery Service"));
+        apartmentServicesList.add(new Service(R.drawable.cook_service, getString(R.string.cook)));
+        apartmentServicesList.add(new Service(R.drawable.maid, getString(R.string.maid)));
+        apartmentServicesList.add(new Service(R.drawable.car_cleaning, getString(R.string.car_bike_cleaning)));
+        apartmentServicesList.add(new Service(R.drawable.child_care ,getString(R.string.child_day_care)));
+        apartmentServicesList.add(new Service(R.drawable.newspaper, getString(R.string.daily_newspaper)));
+        apartmentServicesList.add(new Service(R.drawable.milk, getString(R.string.milk_man)));
+        apartmentServicesList.add(new Service(R.drawable.laundry_service, getString(R.string.laundry)));
+        apartmentServicesList.add(new Service(R.drawable.driving_, getString(R.string.driver)));
+        apartmentServicesList.add(new Service(R.drawable.groceries, getString(R.string.groceries)));
 
         //Creating the Adapter
         ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);

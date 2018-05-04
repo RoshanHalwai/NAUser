@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.R;
@@ -32,20 +34,32 @@ public class SocietyServices extends Fragment {
         List<Service> societyServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        societyServicesList.add(new Service(R.drawable.digital_gate, "Digital Gate Service"));
-        societyServicesList.add(new Service(R.drawable.plumber_service, "Plumber Service"));
-        societyServicesList.add(new Service(R.drawable.carpenter, "Carpenter Service"));
-        societyServicesList.add(new Service(R.drawable.electrician, "Electrician Service"));
-        societyServicesList.add(new Service(R.drawable.garbage_truck, "Garbage Management"));
-        societyServicesList.add(new Service(R.drawable.medical_services, "Medical Emergency"));
-        societyServicesList.add(new Service(R.drawable.event_management, "Event Management"));
-        societyServicesList.add(new Service(R.drawable.water_tanker, "Water Tanker"));
+        societyServicesList.add(new Service(R.drawable.digital_gate_services, getString(R.string.security_gate)));
+        societyServicesList.add(new Service(R.drawable.plumbing, getString(R.string.plumber)));
+        societyServicesList.add(new Service(R.drawable.carpenter_service, getString(R.string.carpenter)));
+        societyServicesList.add(new Service(R.drawable.electrician, getString(R.string.electrician)));
+        societyServicesList.add(new Service(R.drawable.garbage_bin, getString(R.string.garbage_management)));
+        societyServicesList.add(new Service(R.drawable.medical_emergency, getString(R.string.medical_emergency)));
+        societyServicesList.add(new Service(R.drawable.event, getString(R.string.event_management)));
+        societyServicesList.add(new Service(R.drawable.water_services, getString(R.string.water_services)));
 
-        //Creating the Adapter
-        ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
+        /*Creating the Adapter*/
+         ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
 
-        //attaching adapter to the listview
+        /*Attaching adapter to the listview*/
         listView.setAdapter(serviceAdapter);
+
+        /*Setting event for list view items*/
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            switch (position)
+            {
+                case 0:
+                {
+                    Intent intent=new Intent(getActivity(),DigitalGateServices.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 }
