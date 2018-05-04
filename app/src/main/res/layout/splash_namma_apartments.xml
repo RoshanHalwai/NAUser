@@ -8,20 +8,26 @@
     android:weightSum="1"
     tools:context=".onboarding.splashscreen.SplashNammaApartments">
 
-    <ImageView
-        android:id="@+id/imageNammaApartments"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_weight="0.5"
-        android:contentDescription="@string/namma_apartments_image_on_the_splash_screen"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/namma_apartments_splash_image" />
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
+
+        <ImageView
+            android:id="@+id/imageNammaApartments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/namma_apartments_image_on_the_splash_screen"
+            android:scaleType="fitXY"
+            android:src="@drawable/namma_apartments_splash_1" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5">
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.2">
 
         <TextView
             android:id="@+id/textNammaApartments"
