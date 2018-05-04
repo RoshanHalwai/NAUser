@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.digitalgate;
 
 import android.os.Bundle;
 import android.widget.GridView;
@@ -6,16 +6,16 @@ import android.widget.GridView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
-public class DigitalGateServices extends BaseActivity {
+public class DigitalGateHome extends BaseActivity {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_digital_gate_services;
+        return R.layout.activity_digital_gate_home;
     }
 
     @Override
     protected int getActivityTitle() {
-        return R.string.title_activity_digital_gate_services;
+        return R.string.digital_gate_title;
     }
 
     @Override
@@ -44,11 +44,10 @@ public class DigitalGateServices extends BaseActivity {
         GridView gridViewDigitalGateServices = findViewById(R.id.gridDigitalGate);
 
         // Instance of ImageAdapter Class
-        ImageAdapterDigitalGateServices imageAdapterDigitalGateServices = new ImageAdapterDigitalGateServices(this, imageDigitalServices, stringDigitalGateServices);
+        DigitalGateHomeAdapter digitalGateHomeAdapter = new DigitalGateHomeAdapter(this, imageDigitalServices, stringDigitalGateServices);
 
         // Setting the imageAdapter
-        gridViewDigitalGateServices.setAdapter(imageAdapterDigitalGateServices);
-        imageAdapterDigitalGateServices.notifyDataSetChanged();
-
+        gridViewDigitalGateServices.setAdapter(digitalGateHomeAdapter);
+        digitalGateHomeAdapter.notifyDataSetChanged();
     }
 }

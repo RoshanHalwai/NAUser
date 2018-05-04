@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,7 +35,7 @@ public class ApartmentServices extends Fragment {
         apartmentServicesList.add(new Service(R.drawable.cook_service, getString(R.string.cook)));
         apartmentServicesList.add(new Service(R.drawable.maid, getString(R.string.maid)));
         apartmentServicesList.add(new Service(R.drawable.car_cleaning, getString(R.string.car_bike_cleaning)));
-        apartmentServicesList.add(new Service(R.drawable.child_care ,getString(R.string.child_day_care)));
+        apartmentServicesList.add(new Service(R.drawable.child_care, getString(R.string.child_day_care)));
         apartmentServicesList.add(new Service(R.drawable.newspaper, getString(R.string.daily_newspaper)));
         apartmentServicesList.add(new Service(R.drawable.milk, getString(R.string.milk_man)));
         apartmentServicesList.add(new Service(R.drawable.laundry_service, getString(R.string.laundry)));

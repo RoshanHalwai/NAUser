@@ -13,28 +13,20 @@
             android:name=".onboarding.splashscreen.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/NammaApartmentsTheme">
-                 <intent-filter>
-                            <action android:name="android.intent.action.MAIN" />
-
-                            <category android:name="android.intent.category.LAUNCHER" />
-                        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".onboarding.login.SignIn"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".onboarding.OTP"
+            android:name=".onboarding.login.OTP"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity" />
-        <activity
-            android:name=".Home"
-            android:label="@string/title_activity_home"
-            android:theme="@style/NammaApartmentsTheme">
-
-        </activity>
-        <activity android:name=".onboarding.nammaapartmentsservices.DigitalGateServices">
-
-        </activity>
+        <activity android:name=".Home" />
+        <activity android:name=".digitalgate.DigitalGateHome" />
 
         <!-- Ignore these activities for now -->
         <activity android:name=".onboarding.flatdetails.MyFlatDetails" />

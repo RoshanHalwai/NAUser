@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.digitalgate;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
 
-public class ImageAdapterDigitalGateServices extends BaseAdapter {
+public class DigitalGateHomeAdapter extends BaseAdapter {
 
     private int[] icons;
     private String[] stringDigitalServices;
     private Context context;
 
-    public ImageAdapterDigitalGateServices(Context context, int[] icons, String[] stringDigitalServices) {
+    DigitalGateHomeAdapter(Context context, int[] icons, String[] stringDigitalServices) {
         this.context = context;
         this.icons = icons;
         this.stringDigitalServices = stringDigitalServices;
@@ -44,7 +44,9 @@ public class ImageAdapterDigitalGateServices extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            gridView = layoutInflater.inflate(R.layout.grid_layout_digital_gate, null);
+            if (layoutInflater != null) {
+                gridView = layoutInflater.inflate(R.layout.grid_layout_digital_gate, null);
+            }
         }
 
         /*Getting Id's for all the views*/
@@ -55,4 +57,5 @@ public class ImageAdapterDigitalGateServices extends BaseAdapter {
         textGridDigitalGateServices.setText(stringDigitalServices[position]);
         return gridView;
     }
+
 }

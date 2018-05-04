@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,10 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.digitalgate.DigitalGateHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SocietyServices extends Fragment {
         List<Service> societyServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        societyServicesList.add(new Service(R.drawable.digital_gate_services, getString(R.string.security_gate)));
+        societyServicesList.add(new Service(R.drawable.digital_gate_services, getString(R.string.digital_gate)));
         societyServicesList.add(new Service(R.drawable.plumbing, getString(R.string.plumber)));
         societyServicesList.add(new Service(R.drawable.carpenter_service, getString(R.string.carpenter)));
         societyServicesList.add(new Service(R.drawable.electrician, getString(R.string.electrician)));
@@ -44,18 +44,16 @@ public class SocietyServices extends Fragment {
         societyServicesList.add(new Service(R.drawable.water_services, getString(R.string.water_services)));
 
         /*Creating the Adapter*/
-         ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
+        ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
 
         /*Attaching adapter to the listview*/
         listView.setAdapter(serviceAdapter);
 
         /*Setting event for list view items*/
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            switch (position)
-            {
-                case 0:
-                {
-                    Intent intent=new Intent(getActivity(),DigitalGateServices.class);
+            switch (position) {
+                case 0: {
+                    Intent intent = new Intent(getActivity(), DigitalGateHome.class);
                     startActivity(intent);
                 }
             }
