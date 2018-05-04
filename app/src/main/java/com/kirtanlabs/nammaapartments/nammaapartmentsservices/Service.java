@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices;
 
 class Service {
 

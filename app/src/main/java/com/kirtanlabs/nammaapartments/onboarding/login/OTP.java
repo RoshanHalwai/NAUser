@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.onboarding;
+package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.content.Intent;
 import android.os.Bundle;
