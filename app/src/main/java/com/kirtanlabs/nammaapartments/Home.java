@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices.ApartmentServices;
-import com.kirtanlabs.nammaapartments.onboarding.nammaapartmentsservices.SocietyServices;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.ApartmentServices;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.SocietyServices;
 
 public class Home extends BaseActivity {
 
