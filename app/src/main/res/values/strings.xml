@@ -104,5 +104,15 @@
     <string name="pick_date_time"><![CDATA[Pick Date & Time]]></string>
     <string name="we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society">We will send an OTP to your visitor allowing them to enter into your society.</string>
 
+    <!--Visitors List Activity-->
+    <string name="visitor">Visitor:</string>
+    <string name="type">Type:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="invited_by">Invited By:</string>
+    <string name="call">Call</string>
+    <string name="message">Message</string>
+    <string name="reschedule">Reschedule</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
