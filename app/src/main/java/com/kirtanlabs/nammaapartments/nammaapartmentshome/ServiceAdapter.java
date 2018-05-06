@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -41,7 +41,7 @@ class ServiceAdapter extends ArrayAdapter<Service> {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         //getting the view
-        View view = layoutInflater.inflate(resource, null, false);
+        View view = layoutInflater.inflate(resource, parent, false);
 
         //getting the view elements of the list from the view
         ImageView imageSocietyServices = view.findViewById(R.id.imageServiceIcon);

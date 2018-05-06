@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.ApartmentServices;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.SocietyServices;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.ApartmentServices;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.SocietyServices;
 
 /**
  * KirtanLabs Pvt. Ltd.
