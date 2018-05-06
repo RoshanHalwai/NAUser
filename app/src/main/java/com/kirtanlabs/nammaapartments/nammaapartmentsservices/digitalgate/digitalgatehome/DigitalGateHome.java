@@ -1,12 +1,10 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 
 public class DigitalGateHome extends BaseActivity {
 
@@ -51,7 +49,5 @@ public class DigitalGateHome extends BaseActivity {
         // Setting the imageAdapter
         gridViewDigitalGateServices.setAdapter(digitalGateHomeAdapter);
         digitalGateHomeAdapter.notifyDataSetChanged();
-
-        gridViewDigitalGateServices.setOnItemClickListener((parent, view, position, id) -> startActivity(new Intent(this, VisitorsList.class)));
     }
 }

@@ -90,4 +90,15 @@
     <string name="my_sweet_home">My Sweet Home</string>
     <string name="emergency">Emergency</string>
 
+    <!--Visitors List Activity-->
+    <string name="visitor">Visitor:</string>
+    <string name="type">Type:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="invited_by">Invited By:</string>
+    <string name="call">Call</string>
+    <string name="message">Message</string>
+    <string name="reschedule">Reschedule</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
