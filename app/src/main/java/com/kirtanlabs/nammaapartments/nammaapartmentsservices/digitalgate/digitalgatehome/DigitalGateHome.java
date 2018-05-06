@@ -6,7 +6,7 @@ import android.widget.GridView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 
 public class DigitalGateHome extends BaseActivity {
 
@@ -52,6 +52,6 @@ public class DigitalGateHome extends BaseActivity {
         gridViewDigitalGateServices.setAdapter(digitalGateHomeAdapter);
         digitalGateHomeAdapter.notifyDataSetChanged();
 
-        gridViewDigitalGateServices.setOnItemClickListener((parent, view, position, id) -> startActivity(new Intent(this, VisitorsList.class)));
+        gridViewDigitalGateServices.setOnItemClickListener((parent, view, position, id) -> startActivity(new Intent(DigitalGateHome.this, InvitingVisitors.class)));
     }
 }
