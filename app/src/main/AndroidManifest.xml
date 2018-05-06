@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kirtanlabs.nammaapartments">
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,6 +17,7 @@
             android:theme="@style/NammaApartmentsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,10 +31,14 @@
         <activity android:name=".Home" />
         <activity android:name=".digitalgate.DigitalGateHome" />
 
+
         <!-- Ignore these activities for now -->
         <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
         <activity
             android:name=".onboarding.login.SignUp"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".digitalgate.invitingvisitors.InvitingVisitors"
             android:windowSoftInputMode="adjustResize" />
     </application>
 
