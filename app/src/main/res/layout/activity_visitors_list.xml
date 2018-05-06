@@ -5,19 +5,13 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome">
+    tools:context=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList">
 
     <include layout="@layout/activity_base" />
 
-    <GridView
-        android:id="@+id/gridDigitalGate"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="100dp"
-        android:gravity="center"
-        android:horizontalSpacing="50dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

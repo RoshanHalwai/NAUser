@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.digitalgate;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
 
-public class DigitalGateHomeAdapter extends BaseAdapter {
+class DigitalGateHomeAdapter extends BaseAdapter {
 
     private int[] icons;
     private String[] stringDigitalServices;
@@ -45,7 +45,7 @@ public class DigitalGateHomeAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (layoutInflater != null) {
-                gridView = layoutInflater.inflate(R.layout.grid_layout_digital_gate, null);
+                gridView = layoutInflater.inflate(R.layout.grid_layout_digital_gate, parent, false);
             }
         }
 

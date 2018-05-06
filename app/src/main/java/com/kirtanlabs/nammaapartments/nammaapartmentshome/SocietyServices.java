@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.digitalgate.DigitalGateHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
 
 import java.util.ArrayList;
 import java.util.List;

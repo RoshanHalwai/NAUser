@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

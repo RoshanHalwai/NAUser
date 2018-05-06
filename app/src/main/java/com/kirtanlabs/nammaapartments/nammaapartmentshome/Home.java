@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments;
+package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.ApartmentServices;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.SocietyServices;
+import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.R;
 
 public class Home extends BaseActivity {
 
