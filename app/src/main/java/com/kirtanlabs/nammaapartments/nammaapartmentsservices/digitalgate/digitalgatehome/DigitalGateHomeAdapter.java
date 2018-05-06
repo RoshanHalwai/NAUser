@@ -39,9 +39,7 @@ class DigitalGateHomeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View gridView = convertView;
-
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (layoutInflater != null) {
@@ -52,7 +50,6 @@ class DigitalGateHomeAdapter extends BaseAdapter {
         /*Getting Id's for all the views*/
         ImageView imageGridDigitalGateServices = gridView.findViewById(R.id.imageDigitalGateGridLayout);
         TextView textGridDigitalGateServices = gridView.findViewById(R.id.textDigitalGateGridLayout);
-
         imageGridDigitalGateServices.setImageResource(icons[position]);
         textGridDigitalGateServices.setText(stringDigitalServices[position]);
         return gridView;

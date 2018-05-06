@@ -3,10 +3,12 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digit
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 
 public class DigitalGateHome extends BaseActivity {
 
@@ -52,6 +54,18 @@ public class DigitalGateHome extends BaseActivity {
         gridViewDigitalGateServices.setAdapter(digitalGateHomeAdapter);
         digitalGateHomeAdapter.notifyDataSetChanged();
 
-        gridViewDigitalGateServices.setOnItemClickListener((parent, view, position, id) -> startActivity(new Intent(DigitalGateHome.this, InvitingVisitors.class)));
+        gridViewDigitalGateServices.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:
+                    startActivity(new Intent(DigitalGateHome.this, InvitingVisitors.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(DigitalGateHome.this, VisitorsList.class));
+                    break;
+                default:
+                    Toast.makeText(DigitalGateHome.this, "Yet to Implement", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

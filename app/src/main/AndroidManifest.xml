@@ -44,8 +44,8 @@
 
         <!--Digital Gate Screens-->
         <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
         <activity android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
 
     </application>
 
