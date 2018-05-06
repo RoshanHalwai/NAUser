@@ -138,7 +138,6 @@
             android:layerType="software" />
     </LinearLayout>
 
-
     <RelativeLayout
         android:id="@+id/relatiivelayoutdate"
         android:layout_width="match_parent"
@@ -153,19 +152,19 @@
             android:padding="10dp"
             android:text="@string/pick_date_time"
             android:textColor="@color/nmBlack"
-            android:textSize="@dimen/text_view_default_size" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textCalendar"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/textDateTime"
             android:layout_toRightOf="@id/textDateTime"
             android:drawableEnd="@drawable/calendar"
             android:drawableRight="@drawable/calendar"
-            android:padding="10dp"
             android:textColor="@color/nmBlack"
-            android:textSize="@dimen/text_view_default_size"
+            android:textSize="16sp"
             tools:ignore="LabelFor" />
 
     </RelativeLayout>

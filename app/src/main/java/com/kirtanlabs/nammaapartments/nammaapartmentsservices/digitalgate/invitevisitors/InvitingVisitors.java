@@ -1,5 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +15,8 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
+import java.util.Calendar;
+
 public class InvitingVisitors extends BaseActivity {
 
     final int RESULT_PICK_CONTACT = 1;
@@ -24,6 +28,14 @@ public class InvitingVisitors extends BaseActivity {
     TextView textDescription;
     EditText editVisitorName;
     EditText editVisitorMobile;
+    public int mYear, mMonth, mDay, mHour, mMinute;
+    String concatenatedString = "";
+
+    String selectedDate = "";
+    String selectedTime = "";
+
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
 
     @Override
     protected int getLayoutResourceId() {
@@ -70,13 +82,48 @@ public class InvitingVisitors extends BaseActivity {
             startActivityForResult(i, RESULT_PICK_CONTACT);
         });
         /*Setting event for  Displaying Date & Time*/
-        /*textCalendar.setOnClickListener(view ->
-                {
-                    DatePicker datePicker = new DatePicker();
-                    datePicker.show(getSupportFragmentManager(), null);
+        textCalendar.setOnClickListener(View ->
+        {
+            final Calendar mycalendar = Calendar.getInstance();
 
-                }
-        );*/
+            mYear = mycalendar.get(Calendar.YEAR);
+            mMonth = mycalendar.get(Calendar.MONTH);
+            mDay = mycalendar.get(Calendar.DAY_OF_MONTH);
+
+            mHour = mycalendar.get(Calendar.HOUR_OF_DAY);
+            mMinute = mycalendar.get(Calendar.MINUTE);
+
+            // date picker
+            datePickerDialog = new DatePickerDialog(this,
+                    (view, year, month, dayOfMonth) -> {
+                        String[] selectedMonth = {getString(R.string.Jan), getString(R.string.Feb), getString(R.string.Mar), getString(R.string.Apr), getString(R.string.May), getString(R.string.Jun), getString(R.string.Jul), getString(R.string.Aug), getString(R.string.Sep), getString(R.string.Oct), getString(R.string.Nov), getString(R.string.Dec)};
+                        int selectedYear = year % 100;
+                        selectedDate = "";
+                        selectedDate = selectedDate + selectedMonth[month] + " " + dayOfMonth + " " + selectedYear;
+                        datePickerDialog.cancel();
+                        timePickerDialog.show();
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+
+            // Launch Time Picker Dialog
+            timePickerDialog = new TimePickerDialog(this,
+                    (view, hourOfDay, minute) -> {
+                        selectedTime = "";
+                        if (minute < 10 && hourOfDay < 10) {
+                            selectedTime = "0" + hourOfDay + ":0" + minute;
+                        } else if (minute < 10 && hourOfDay > 10) {
+                            selectedTime = hourOfDay + ":0" + minute;
+                        } else if (minute > 10 && hourOfDay < 10) {
+                            selectedTime = "0" + hourOfDay + ":" + minute;
+                        } else {
+                            selectedTime = hourOfDay + ":" + minute;
+                        }
+                        timePickerDialog.cancel();
+                        concatenatedString = selectedDate + "," + " " + selectedTime;
+                        textCalendar.setText(concatenatedString);
+                    }, mHour, mMinute, true);
+        });
+
     }
 
     @Override
