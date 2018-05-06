@@ -27,11 +27,11 @@ import java.util.Arrays;
 
 public class MyFlatDetails extends BaseActivity {
 
-    ListView listView;
-    EditText inputSearch;
-    ArrayAdapter<String> adapter;
+    private ListView listView;
+    private EditText inputSearch;
+    private ArrayAdapter<String> adapter;
 
-    EditText editCity;
+    private EditText editCity;
 
     @Override
     protected int getLayoutResourceId() {
@@ -83,7 +83,7 @@ public class MyFlatDetails extends BaseActivity {
 
     }
 
-    public void searchCitiesList() {
+    private void searchCitiesList() {
         final Dialog dialog = new Dialog(MyFlatDetails.this);
         dialog.setContentView(R.layout.cities_listview);
         listView = dialog.findViewById(R.id.list);

@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.digitalgate.invitingvisitors;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors;
 
 import android.content.Intent;
 import android.database.Cursor;

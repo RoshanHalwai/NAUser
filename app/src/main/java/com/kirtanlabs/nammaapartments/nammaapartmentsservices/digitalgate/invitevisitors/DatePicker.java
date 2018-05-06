@@ -1,7 +1,6 @@
-package com.kirtanlabs.nammaapartments.digitalgate.invitingvisitors;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors;
 
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

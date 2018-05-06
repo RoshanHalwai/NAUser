@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.digitalgate;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.widget.GridView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.digitalgate.invitingvisitors.InvitingVisitors;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 
 public class DigitalGateHome extends BaseActivity {
 

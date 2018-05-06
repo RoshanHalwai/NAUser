@@ -20,7 +20,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/namma_apartments_image_on_the_splash_screen"
             android:scaleType="fitXY"
-            android:src="@drawable/namma_apartments_splash_1" />
+            android:src="@drawable/namma_apartments_splash" />
     </RelativeLayout>
 
     <RelativeLayout
