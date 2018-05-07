@@ -101,22 +101,8 @@
     <string name="contacts_information">Contacts Information</string>
     <string name="contact_images">Contact Images</string>
     <string name="contacts">Contacts</string>
-    <string name="pick_date_time"><![CDATA[Pick Date & Time]]></string>
+    <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society">We will send an OTP to your visitor allowing them to enter into your society.</string>
-
-    <!--List of Months-->
-    <string name="Jan">Jan</string>
-    <string name="Feb">Feb</string>
-    <string name="Mar">Mar</string>
-    <string name="Apr">Apr</string>
-    <string name="May">May</string>
-    <string name="Jun">Jun</string>
-    <string name="Jul">Jul</string>
-    <string name="Aug">Aug</string>
-    <string name="Sep">Sep</string>
-    <string name="Oct">Oct</string>
-    <string name="Nov">Nov</string>
-    <string name="Dec">Dec</string>
 
     <!--Visitors List Activity-->
     <string name="visitor">Visitor:</string>
