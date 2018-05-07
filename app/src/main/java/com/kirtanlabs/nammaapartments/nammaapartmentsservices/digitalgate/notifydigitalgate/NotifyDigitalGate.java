@@ -13,9 +13,6 @@ import java.util.List;
 
 public class NotifyDigitalGate extends BaseActivity {
 
-    //a list to store all the notification services
-    private List<Service> notificationServicesList;
-
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_notify_digital_gate;
@@ -36,7 +33,7 @@ public class NotifyDigitalGate extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initializing the notificationServicesList
-        notificationServicesList = new ArrayList<>();
+        List<Service> notificationServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
         notificationServicesList.add(new Service(R.drawable.cab_arrival, getString(R.string.expecting_cab_arrival)));
