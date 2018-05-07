@@ -53,40 +53,49 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textVisitorName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="@string/visitor"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textVisitorType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="@string/type"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textInvitationDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="@string/date"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textInvitationTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="@string/time"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textInvitedBy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="@string/invited_by"
                         android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -99,40 +108,49 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textVisitorNameValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="Roshan Halwai"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textVisitorTypeValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="Guest"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textInvitationDateValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="31st Jan 2017"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textInvitationTimeValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="14:30"
-                        android:textColor="@color/nmBlack" />
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/textInvitedByValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="Rohit Mishra"
                         android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -153,6 +171,7 @@
                 android:weightSum="4">
 
                 <TextView
+                    android:id="@+id/textCall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -162,6 +181,7 @@
                     android:textColor="@color/nmBlack" />
 
                 <TextView
+                    android:id="@+id/textMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -171,6 +191,7 @@
                     android:textColor="@color/nmBlack" />
 
                 <TextView
+                    android:id="@+id/textReschedule"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -180,6 +201,7 @@
                     android:textColor="@color/nmBlack" />
 
                 <TextView
+                    android:id="@+id/textCancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

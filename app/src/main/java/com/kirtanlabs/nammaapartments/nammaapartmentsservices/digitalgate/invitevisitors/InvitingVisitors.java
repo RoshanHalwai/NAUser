@@ -19,26 +19,19 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class InvitingVisitors extends BaseActivity {
 
-    final int RESULT_PICK_CONTACT = 1;
-    TextView textVisitorName;
-    TextView textVisitorMobile;
-    TextView textOr;
-    TextView textDateTime;
-    EditText editPickDateTime;
-    TextView textDescription;
-    EditText editVisitorName;
-    EditText editVisitorMobile;
-    public int mYear, mMonth, mDay, mHour, mMinute;
-    public String concatenatedString = "";
-
-    public String selectedDate = "";
-    public String selectedTime = "";
-
-    DatePickerDialog datePickerDialog;
-    TimePickerDialog timePickerDialog;
+    private final int RESULT_PICK_CONTACT = 1;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private EditText editPickDateTime;
+    private EditText editVisitorName;
+    private EditText editVisitorMobile;
+    private String concatenatedDateAndTime = "";
+    private String selectedDate = "";
+    private String selectedTime = "";
 
     @Override
     protected int getLayoutResourceId() {
@@ -55,18 +48,18 @@ public class InvitingVisitors extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         /*Getting Id's for all the views*/
-        textVisitorName = findViewById(R.id.textVisitorName);
-        textVisitorMobile = findViewById(R.id.textInvitorMobile);
-        textOr = findViewById(R.id.textOr);
-        textDateTime = findViewById(R.id.textDateTime);
+        TextView textVisitorName = findViewById(R.id.textVisitorName);
+        TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
+        TextView textOr = findViewById(R.id.textOr);
+        TextView textDateTime = findViewById(R.id.textDateTime);
         editPickDateTime = findViewById(R.id.editPickDateTime);
-        textDescription = findViewById(R.id.textDescription);
+        TextView textDescription = findViewById(R.id.textDescription);
         editVisitorName = findViewById(R.id.editVisitorName);
         editVisitorMobile = findViewById(R.id.editMobileNumber);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         Button buttonInvite = findViewById(R.id.buttonInvite);
 
-        /*We dont want the keyboard to be displayed when user clicks on the pick date and time edit field*/
+        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDateTime.setInputType(InputType.TYPE_NULL);
 
         /*Setting font for all the views*/
@@ -87,49 +80,14 @@ public class InvitingVisitors extends BaseActivity {
             i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
             startActivityForResult(i, RESULT_PICK_CONTACT);
         });
+
         /*Setting event for  Displaying Date & Time*/
-        editPickDateTime.setOnClickListener(View ->
-        {
-            Calendar mycalendar = Calendar.getInstance();
-
-            mYear = mycalendar.get(Calendar.YEAR);
-            mMonth = mycalendar.get(Calendar.MONTH);
-            mDay = mycalendar.get(Calendar.DAY_OF_MONTH);
-
-            mHour = mycalendar.get(Calendar.HOUR_OF_DAY);
-            mMinute = mycalendar.get(Calendar.MINUTE);
-
-            // date picker
-            datePickerDialog = new DatePickerDialog(this,
-                    (DatePicker view, int year, int month, int dayOfMonth) -> {
-                        mycalendar.set(Calendar.YEAR, year);
-                        mycalendar.set(Calendar.MONTH, month);
-                        mycalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        selectedDate = "";
-                        selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                        datePickerDialog.cancel();
-                        timePickerDialog.show();
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-
-            // Launch Time Picker Dialog
-            timePickerDialog = new TimePickerDialog(this,
-                    (view, hourOfDay, minute) -> {
-                        selectedTime = "";
-                        if (minute < 10 && hourOfDay < 10) {
-                            selectedTime = "0" + hourOfDay + ":0" + minute;
-                        } else if (minute < 10 && hourOfDay > 10) {
-                            selectedTime = hourOfDay + ":0" + minute;
-                        } else if (minute > 10 && hourOfDay < 10) {
-                            selectedTime = "0" + hourOfDay + ":" + minute;
-                        } else {
-                            selectedTime = hourOfDay + ":" + minute;
-                        }
-                        timePickerDialog.cancel();
-                        concatenatedString = selectedDate + "\t\t" + " " + selectedTime;
-                        editPickDateTime.setText(concatenatedString);
-                    }, mHour, mMinute, true);
+        editPickDateTime.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                displayDateAndTime();
+            }
         });
+        editPickDateTime.setOnClickListener(View -> displayDateAndTime());
 
     }
 
@@ -162,5 +120,42 @@ public class InvitingVisitors extends BaseActivity {
             }
         }
     }
+
+    /**
+     * This method is invoked when user clicks on pick date and time icon.
+     */
+    private void displayDateAndTime() {
+        Calendar calendar = Calendar.getInstance();
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calendar.get(Calendar.MINUTE);
+
+        // Date Picker Dialog
+        datePickerDialog = new DatePickerDialog(this,
+                (DatePicker view, int year, int month, int dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    selectedDate = "";
+                    selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+                    datePickerDialog.cancel();
+                    timePickerDialog.show();
+                }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+
+        // Time Picker Dialog
+        timePickerDialog = new TimePickerDialog(this,
+                (view, hourOfDay, minute) -> {
+                    selectedTime = "";
+                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                    timePickerDialog.cancel();
+                    concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
+                    editPickDateTime.setText(concatenatedDateAndTime);
+                }, mHour, mMinute, true);
+    }
+
 }
 

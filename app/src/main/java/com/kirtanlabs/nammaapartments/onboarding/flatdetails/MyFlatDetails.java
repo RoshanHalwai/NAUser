@@ -28,7 +28,6 @@ import java.util.Arrays;
 public class MyFlatDetails extends BaseActivity {
 
     private ListView listView;
-    private EditText inputSearch;
     private ArrayAdapter<String> adapter;
 
     private EditText editCity;
@@ -87,7 +86,7 @@ public class MyFlatDetails extends BaseActivity {
         final Dialog dialog = new Dialog(MyFlatDetails.this);
         dialog.setContentView(R.layout.cities_listview);
         listView = dialog.findViewById(R.id.list);
-        inputSearch = dialog.findViewById(R.id.inputSearch);
+        EditText inputSearch = dialog.findViewById(R.id.inputSearch);
         inputSearch.setTypeface(Constants.setLatoBoldFont(MyFlatDetails.this));
 
         String[] values = new String[]{"Delhi", "Bengaluru", "Chennai", "Lucknow", "Goa", "Pune",

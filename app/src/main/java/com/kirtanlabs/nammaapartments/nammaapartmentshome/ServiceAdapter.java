@@ -25,7 +25,7 @@ class ServiceAdapter extends ArrayAdapter<Service> {
     //the layout resource file for the list items
     private final int resource;
 
-    ServiceAdapter(@NonNull Context context, List<Service> servicesList) {
+    public ServiceAdapter(@NonNull Context context, List<Service> servicesList) {
         super(context, R.layout.list_services);
         this.servicesList = servicesList;
         this.context = context;
