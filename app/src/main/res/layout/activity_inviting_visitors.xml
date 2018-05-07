@@ -138,9 +138,8 @@
             android:layerType="software" />
     </LinearLayout>
 
-
     <RelativeLayout
-        android:id="@+id/relatiivelayoutdate"
+        android:id="@+id/relativeLayoutDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -149,23 +148,23 @@
             android:id="@+id/textDateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:padding="10dp"
+            android:layout_centerVertical="true"
             android:text="@string/pick_date_time"
             android:textColor="@color/nmBlack"
-            android:textSize="@dimen/text_view_default_size" />
+            android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/textCalendar"
-            android:layout_width="300dp"
+        <EditText
+            android:id="@+id/editPickDateTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/textDateTime"
             android:layout_toRightOf="@id/textDateTime"
+            android:cursorVisible="false"
             android:drawableEnd="@drawable/calendar"
             android:drawableRight="@drawable/calendar"
-            android:padding="10dp"
+            android:gravity="center"
             android:textColor="@color/nmBlack"
-            android:textSize="@dimen/text_view_default_size"
+            android:textSize="18sp"
             tools:ignore="LabelFor" />
 
     </RelativeLayout>

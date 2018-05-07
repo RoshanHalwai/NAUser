@@ -60,7 +60,7 @@
     <string name="title_activity_digital_gate_services">DigitalGateServices</string>
 
     <!--Society Services Activity-->
-    <string name="digital_gate">Digital Gate</string>
+    <string name="digital_gate">Digi Gate</string>
     <string name="plumber">Plumber</string>
     <string name="carpenter">Carpenter</string>
     <string name="electrician">Electrician</string>
@@ -101,7 +101,7 @@
     <string name="contacts_information">Contacts Information</string>
     <string name="contact_images">Contact Images</string>
     <string name="contacts">Contacts</string>
-    <string name="pick_date_time"><![CDATA[Pick Date & Time]]></string>
+    <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society">We will send an OTP to your visitor allowing them to enter into your society.</string>
 
     <!--Visitors List Activity-->
