@@ -115,4 +115,11 @@
     <string name="reschedule">Reschedule</string>
     <string name="cancel">Cancel</string>
 
+    <!--Notify Digital Gate Activity-->
+    <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
+    <string name="expecting_package_arrival">Expecting Package Arrival</string>
+    <string name="expecting_visitor">Expecting Visitor</string>
+    <string name="handed_things_to_my_guest">Handed things to my Guest</string>
+    <string name="handed_things_to_my_daily_services">Handed things to my Daily Services</string>
+
 </resources>

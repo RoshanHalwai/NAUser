@@ -15,15 +15,15 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class InvitingVisitors extends BaseActivity {
 
-    final int RESULT_PICK_CONTACT = 1;
-    TextView textVisitorName;
-    TextView textVisitorMobile;
-    TextView textOr;
-    TextView textDateTime;
-    TextView textCalendar;
-    TextView textDescription;
-    EditText editVisitorName;
-    EditText editVisitorMobile;
+    private final int RESULT_PICK_CONTACT = 1;
+    private TextView textVisitorName;
+    private TextView textVisitorMobile;
+    private TextView textOr;
+    private TextView textDateTime;
+    private TextView textCalendar;
+    private TextView textDescription;
+    private EditText editVisitorName;
+    private EditText editVisitorMobile;
 
     @Override
     protected int getLayoutResourceId() {

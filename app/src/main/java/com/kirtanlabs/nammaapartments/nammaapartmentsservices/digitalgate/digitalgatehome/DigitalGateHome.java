@@ -9,6 +9,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyDigitalGate;
 
 public class DigitalGateHome extends BaseActivity {
 
@@ -61,6 +62,9 @@ public class DigitalGateHome extends BaseActivity {
                     break;
                 case 1:
                     startActivity(new Intent(DigitalGateHome.this, VisitorsList.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(DigitalGateHome.this, NotifyDigitalGate.class));
                     break;
                 default:
                     Toast.makeText(DigitalGateHome.this, "Yet to Implement", Toast.LENGTH_SHORT).show();

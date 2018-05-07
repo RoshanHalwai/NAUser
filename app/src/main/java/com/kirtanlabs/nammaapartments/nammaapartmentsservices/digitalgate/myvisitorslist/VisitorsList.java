@@ -9,8 +9,6 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class VisitorsList extends BaseActivity {
 
-    private RecyclerView recyclerView;
-
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_visitors_list;
@@ -25,7 +23,7 @@ public class VisitorsList extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

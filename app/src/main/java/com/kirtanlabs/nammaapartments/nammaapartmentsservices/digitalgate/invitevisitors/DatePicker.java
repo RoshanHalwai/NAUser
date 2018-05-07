@@ -14,9 +14,9 @@ import java.util.Calendar;
  */
 public class DatePicker extends DialogFragment {
 
-    public int day;
-    public int month;
-    public int year;
+    private int day;
+    private int month;
+    private int year;
     public DatePicker datepickercallback;
 
     public DatePicker() {

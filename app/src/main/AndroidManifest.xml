@@ -19,7 +19,7 @@
             android:name=".onboarding.login.SignUp"
             android:windowSoftInputMode="adjustResize" />
 
-        <!--Splash Screens-->
+        <!-- Splash Screens -->
         <activity
             android:name=".onboarding.splashscreen.SplashScreen"
             android:label="@string/app_name"
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <!--Login Screens-->
+        <!-- Login Screens -->
         <activity
             android:name=".onboarding.login.SignIn"
             android:windowSoftInputMode="adjustResize" />
@@ -39,14 +39,14 @@
             android:name=".onboarding.login.OTP"
             android:windowSoftInputMode="adjustResize" />
 
-        <!--Namma Apartments Home Screen-->
+        <!-- Namma Apartments Home Screen -->
         <activity android:name=".nammaapartmentshome.Home" />
 
-        <!--Digital Gate Screens-->
+        <!-- Digital Gate Screens -->
         <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />
         <activity android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors" />
         <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
-
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyDigitalGate"/>
     </application>
 
 </manifest>

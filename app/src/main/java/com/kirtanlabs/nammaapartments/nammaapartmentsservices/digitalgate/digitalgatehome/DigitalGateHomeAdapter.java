@@ -12,9 +12,9 @@ import com.kirtanlabs.nammaapartments.R;
 
 class DigitalGateHomeAdapter extends BaseAdapter {
 
-    private int[] icons;
-    private String[] stringDigitalServices;
-    private Context context;
+    private final int[] icons;
+    private final String[] stringDigitalServices;
+    private final Context context;
 
     DigitalGateHomeAdapter(Context context, int[] icons, String[] stringDigitalServices) {
         this.context = context;

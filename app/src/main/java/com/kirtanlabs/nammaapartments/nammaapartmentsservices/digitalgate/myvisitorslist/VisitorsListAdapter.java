@@ -18,7 +18,7 @@ import com.kirtanlabs.nammaapartments.R;
 public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapter.VisitorViewHolder> {
 
     //this context we will use to inflate the layout
-    private Context mCtx;
+    private final Context mCtx;
 
     //getting the context and product list with constructor
     VisitorsListAdapter(Context mCtx) {
@@ -56,21 +56,27 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     @Override
     public int getItemCount() {
+        //TODO: To change the get item count here
         return 5;
     }
 
     class VisitorViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textVisitorName, textVisitorNameValue;
-        TextView textVisitorType, textVisitorTypeValue;
-        TextView textInvitationDate, textInvitationDateValue;
-        TextView textInvitationTime, textInvitationTimeValue;
-        TextView textInvitedBy, textInvitedByValue;
+        final TextView textVisitorName;
+        final TextView textVisitorNameValue;
+        final TextView textVisitorType;
+        final TextView textVisitorTypeValue;
+        final TextView textInvitationDate;
+        final TextView textInvitationDateValue;
+        final TextView textInvitationTime;
+        final TextView textInvitationTimeValue;
+        final TextView textInvitedBy;
+        final TextView textInvitedByValue;
 
-        TextView textCall;
-        TextView textMessage;
-        TextView textReschedule;
-        TextView textCancel;
+        final TextView textCall;
+        final TextView textMessage;
+        final TextView textReschedule;
+        final TextView textCancel;
 
         VisitorViewHolder(View itemView) {
             super(itemView);
