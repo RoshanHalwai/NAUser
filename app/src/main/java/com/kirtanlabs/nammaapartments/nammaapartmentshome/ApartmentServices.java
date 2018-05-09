@@ -33,12 +33,12 @@ public class ApartmentServices extends Fragment {
         /*Adding some values to our list*/
         apartmentServicesList.add(new Service(R.drawable.cook_service, getString(R.string.cook)));
         apartmentServicesList.add(new Service(R.drawable.maid, getString(R.string.maid)));
-        apartmentServicesList.add(new Service(R.drawable.car_cleaning1, getString(R.string.car_bike_cleaning)));
+        apartmentServicesList.add(new Service(R.drawable.car_cleaning, getString(R.string.car_bike_cleaning)));
         apartmentServicesList.add(new Service(R.drawable.child_care, getString(R.string.child_day_care)));
         apartmentServicesList.add(new Service(R.drawable.newspaper, getString(R.string.daily_newspaper)));
         apartmentServicesList.add(new Service(R.drawable.milk, getString(R.string.milk_man)));
         apartmentServicesList.add(new Service(R.drawable.laundry_service, getString(R.string.laundry)));
-        apartmentServicesList.add(new Service(R.drawable.driving_, getString(R.string.driver)));
+        apartmentServicesList.add(new Service(R.drawable.driving, getString(R.string.driver)));
         apartmentServicesList.add(new Service(R.drawable.groceries, getString(R.string.groceries)));
 
         //Creating the Adapter

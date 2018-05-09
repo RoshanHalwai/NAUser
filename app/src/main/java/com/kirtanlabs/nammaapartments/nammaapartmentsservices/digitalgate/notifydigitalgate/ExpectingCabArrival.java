@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -117,16 +116,12 @@ public class ExpectingCabArrival extends BaseActivity {
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    button.setBackground(getDrawable(R.drawable.selected_button_design));
-                }
+                button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    button.setBackground(getDrawable(R.drawable.valid_for_button_design));
+                button.setBackgroundResource(R.drawable.valid_for_button_design);
                 }
             }
         }
-    }
 
     /**
      * This method is invoked when user clicks on pick date and time icon.
