@@ -11,7 +11,7 @@
     <dimen name="button_margin">20dp</dimen>
 
     <!--Views-->
-    <dimen name="text_view_default_size">14sp</dimen>
+    <dimen name="text_view_default_size">16sp</dimen>
     <dimen name="text_view_numbers_size">24sp</dimen>
     <dimen name="edit_text_default_size">20sp</dimen>
     <dimen name="button_default_size">22sp</dimen>

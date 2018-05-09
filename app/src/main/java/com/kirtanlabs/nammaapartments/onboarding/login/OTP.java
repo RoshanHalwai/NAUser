@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -38,8 +37,11 @@ public class OTP extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImageView backButton = findViewById(R.id.backButton);
-        backButton.setVisibility(View.INVISIBLE);
+
+        /*Since this is OTP Screen we wouldn't
+         * want the users to go back to Phone Number screen, hence hiding
+         * the back button from the Title Bar*/
+        hideBackButton();
 
         /*Getting Id's for all the views*/
         TextView textPhoneVerification = findViewById(R.id.textPhoneVerification);
@@ -65,7 +67,10 @@ public class OTP extends BaseActivity {
         setEventsForEditText();
 
         /*Setting event for Verify OTP button*/
-        buttonVerifyOTP.setOnClickListener(view -> startActivity(new Intent(this, Home.class)));
+        buttonVerifyOTP.setOnClickListener(view -> {
+            startActivity(new Intent(this, Home.class));
+            finish();
+        });
     }
 
     /**

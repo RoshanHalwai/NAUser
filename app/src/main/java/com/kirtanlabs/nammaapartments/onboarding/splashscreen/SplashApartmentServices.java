@@ -44,6 +44,9 @@ public class SplashApartmentServices extends Fragment {
         buttonGetStarted.setTypeface(Constants.setLatoLightFont(this.getActivity()));
 
         /*Setting event for Lets Get Started button*/
-        buttonGetStarted.setOnClickListener(v -> startActivity(new Intent(getActivity(), SignIn.class)));
+        buttonGetStarted.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), SignIn.class));
+            getActivity().finish();
+        });
     }
 }

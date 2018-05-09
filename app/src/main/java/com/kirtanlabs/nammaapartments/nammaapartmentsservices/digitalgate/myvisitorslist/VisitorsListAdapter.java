@@ -61,7 +61,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     }
 
     class VisitorViewHolder extends RecyclerView.ViewHolder {
-
         final TextView textVisitorName;
         final TextView textVisitorNameValue;
         final TextView textVisitorType;

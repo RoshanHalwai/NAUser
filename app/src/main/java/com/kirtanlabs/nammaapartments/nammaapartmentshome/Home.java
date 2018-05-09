@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
@@ -25,6 +27,11 @@ public class Home extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*Since this is Namma Apartments Home Screen we wouldn't
+         * want the users to go back to OTP screen, hence hiding
+         * the back button from the Title Bar*/
+        hideBackButton();
 
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
