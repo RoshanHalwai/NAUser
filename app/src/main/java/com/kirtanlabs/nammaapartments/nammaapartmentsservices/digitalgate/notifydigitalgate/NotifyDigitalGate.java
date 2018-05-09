@@ -47,5 +47,6 @@ public class NotifyDigitalGate extends BaseActivity {
 
         /*Attaching adapter to the listview*/
         recyclerView.setAdapter(adapter);
+
     }
 }
