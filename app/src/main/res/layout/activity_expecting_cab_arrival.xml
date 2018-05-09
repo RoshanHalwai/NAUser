@@ -36,7 +36,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:textColor="@color/nmBlack"
-                android:textSize="@dimen/edit_text_default_size" />
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor,TextFields" />
 
             <TextView
                 android:id="@+id/textDateTime"
@@ -59,7 +60,8 @@
                 android:drawableEnd="@drawable/calendar_date"
                 android:drawableRight="@drawable/calendar_date"
                 android:focusableInTouchMode="false"
-                android:textSize="@dimen/edit_text_default_size" />
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor,TextFields" />
 
             <TextView
                 android:id="@+id/textValidFor"
@@ -78,11 +80,11 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="4">
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/button1Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -93,6 +95,7 @@
 
                 <Button
                     android:id="@+id/button2Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -103,6 +106,7 @@
 
                 <Button
                     android:id="@+id/button4Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
@@ -113,6 +117,7 @@
 
                 <Button
                     android:id="@+id/button6Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -128,11 +133,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:orientation="horizontal"
-                android:weightSum="4">
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/button8Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -143,6 +148,7 @@
 
                 <Button
                     android:id="@+id/button12Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -153,6 +159,7 @@
 
                 <Button
                     android:id="@+id/button16Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -163,6 +170,7 @@
 
                 <Button
                     android:id="@+id/button24Hr"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -181,8 +189,11 @@
                 android:layout_margin="@dimen/button_margin"
                 android:background="@color/nmBlack"
                 android:text="@string/notify_gate"
-                android:textColor="@color/nmLightYellow" />
+                android:textAllCaps="true"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size" />
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
