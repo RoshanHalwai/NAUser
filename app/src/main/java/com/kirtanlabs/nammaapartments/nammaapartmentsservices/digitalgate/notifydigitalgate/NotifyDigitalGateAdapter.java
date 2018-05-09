@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.Service;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class NotifyDigitalGateAdapter extends RecyclerView.Adapter<NotifyDigital
     public NotifyGateHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_notify_digital_gate, parent, false);
-        return new NotifyDigitalGateAdapter.NotifyGateHolder(view);
+        return new NotifyDigitalGateAdapter.NotifyGateHolder(view, mCtx);
     }
 
     @Override
@@ -52,15 +54,44 @@ public class NotifyDigitalGateAdapter extends RecyclerView.Adapter<NotifyDigital
         return notificationServicesList.size();
     }
 
-    class NotifyGateHolder extends RecyclerView.ViewHolder {
+    class NotifyGateHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView textNotification;
         final ImageView imageNotificationService;
 
-        NotifyGateHolder(View itemView) {
+        private final Context mCtx;
+
+
+        NotifyGateHolder(View itemView, Context mCtx) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            this.mCtx = mCtx;
+
+
             textNotification = itemView.findViewById(R.id.textNotification);
             imageNotificationService = itemView.findViewById(R.id.imageNotificationService);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            switch (position) {
+                case 0: {
+                    Intent intent = new Intent(mCtx, ExpectingCabArrival.class);
+                    mCtx.startActivity(intent);
+                    break;
+                }
+                case 1: {
+                    Intent intent = new Intent(mCtx, ExpectingPackageArrival.class);
+                    mCtx.startActivity(intent);
+                    break;
+                }
+                case 2: {
+                    Intent intent = new Intent(mCtx, InvitingVisitors.class);
+                    mCtx.startActivity(intent);
+                    break;
+                }
+            }
         }
     }
 

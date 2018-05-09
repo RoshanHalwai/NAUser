@@ -118,8 +118,7 @@ public class InvitingVisitors extends BaseActivity {
                     }
                     break;
             }
-        }
-    }
+        }    }
 
     /**
      * This method is invoked when user clicks on pick date and time icon.

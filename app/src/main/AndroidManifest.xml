@@ -44,9 +44,19 @@
 
         <!-- Digital Gate Screens -->
         <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors" />
+        <activity
+            android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyDigitalGate" />
+        <activity
+            android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingCabArrival"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingPackageArrival"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
     </application>
 
 </manifest>
