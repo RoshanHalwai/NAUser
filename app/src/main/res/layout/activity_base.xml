@@ -6,12 +6,16 @@
     android:background="@color/nmLightBlack"
     android:gravity="center"
     android:orientation="horizontal"
+    android:weightSum="1"
     tools:context=".BaseActivity">
 
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="0.05"
         android:contentDescription="@string/back_button_description"
         android:scaleType="fitXY"
         android:src="@drawable/arrow_left_white" />
@@ -21,7 +25,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_weight="0.9"
+        android:maxLines="1"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/infoButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.05"
+        android:contentDescription="@string/information_about_the_current_screen"
+        android:src="@drawable/information" />
 
 </LinearLayout>

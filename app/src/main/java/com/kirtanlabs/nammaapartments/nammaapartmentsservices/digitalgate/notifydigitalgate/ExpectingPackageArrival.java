@@ -17,17 +17,26 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ExpectingPackageArrival extends BaseActivity {
+
     //TODO:The code needs to be modified in future
-    /*Declaring all variables in this activity */
+    /* Declaring all variables in this activity */
     TextView textPackageVendor, textDateTime, textValidFor;
     EditText editPackageVendor, editDateTime;
     Button button1hr, button2hr, button4hr, button6hr, button8hr, button12hr, button16hr, button24hr, buttonNotifyGate;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
-    String concatenatedDateAndTime = "";
-    String selectedDate = "";
-    String selectedTime = "";
-    int[] buttonIds;
+    String concatenatedDateAndTime;
+    String selectedDate;
+    String selectedTime;
+
+    int[] buttonIds = new int[]{R.id.button1Hr,
+            R.id.button2Hr,
+            R.id.button4Hr,
+            R.id.button6Hr,
+            R.id.button8Hr,
+            R.id.button12Hr,
+            R.id.button16Hr,
+            R.id.button24Hr};
 
     @Override
     protected int getLayoutResourceId() {
@@ -42,6 +51,9 @@ public class ExpectingPackageArrival extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*We need Info Button in this screen*/
+        showInfoButton();
 
         /*Getting Id's for all the views*/
         textPackageVendor = findViewById(R.id.textPackageVendor);
@@ -59,16 +71,6 @@ public class ExpectingPackageArrival extends BaseActivity {
         button24hr = findViewById(R.id.button24Hr);
         buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
-        /*Created an integer array for storing button id's*/
-        buttonIds = new int[]{R.id.button1Hr,
-                R.id.button2Hr,
-                R.id.button4Hr,
-                R.id.button6Hr,
-                R.id.button8Hr,
-                R.id.button12Hr,
-                R.id.button16Hr,
-                R.id.button24Hr};
-
         /*Setting font for all the views*/
         textPackageVendor.setTypeface(Constants.setLatoBoldFont(this));
         textDateTime.setTypeface(Constants.setLatoBoldFont(this));
@@ -83,7 +85,7 @@ public class ExpectingPackageArrival extends BaseActivity {
         button12hr.setTypeface(Constants.setLatoRegularFont(this));
         button16hr.setTypeface(Constants.setLatoRegularFont(this));
         button24hr.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNotifyGate.setTypeface(Constants.setLatoRegularFont(this));
+        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
 
         /*Setting event for 8 buttons*/
         button1hr.setOnClickListener(v -> selectButton(R.id.button1Hr));
@@ -120,7 +122,6 @@ public class ExpectingPackageArrival extends BaseActivity {
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
-
         }
     }
 

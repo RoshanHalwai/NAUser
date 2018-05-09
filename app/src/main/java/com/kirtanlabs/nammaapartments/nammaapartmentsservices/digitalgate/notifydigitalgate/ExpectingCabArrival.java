@@ -17,16 +17,26 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ExpectingCabArrival extends BaseActivity {
+
     /*Declaring all variables in this activity*/
     TextView textCabNumber, textDateTime, textValidFor;
     EditText editCabNumber, editDateTime;
     Button button1hr, button2hr, button4hr, button6hr, button8hr, button12hr, button16hr, button24hr, buttonNotifyGate;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
-    String concatenatedDateAndTime = "";
-    String selectedDate = "";
-    String selectedTime = "";
-    int[] buttonIds;
+    String concatenatedDateAndTime;
+    String selectedDate;
+    String selectedTime;
+
+    /*An integer array for storing button id's*/
+    int[] buttonIds = new int[]{R.id.button1Hr,
+            R.id.button2Hr,
+            R.id.button4Hr,
+            R.id.button6Hr,
+            R.id.button8Hr,
+            R.id.button12Hr,
+            R.id.button16Hr,
+            R.id.button24Hr};
 
     @Override
     protected int getLayoutResourceId() {
@@ -41,6 +51,9 @@ public class ExpectingCabArrival extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*We need Info Button in this screen*/
+        showInfoButton();
 
         /*Getting Id's for all the views*/
         textCabNumber = findViewById(R.id.textCabNumber);
@@ -58,16 +71,6 @@ public class ExpectingCabArrival extends BaseActivity {
         button24hr = findViewById(R.id.button24Hr);
         buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
-        /*Created an integer array for storing button id's*/
-        buttonIds = new int[]{R.id.button1Hr,
-                R.id.button2Hr,
-                R.id.button4Hr,
-                R.id.button6Hr,
-                R.id.button8Hr,
-                R.id.button12Hr,
-                R.id.button16Hr,
-                R.id.button24Hr};
-
         /*Setting font for all the views*/
         textCabNumber.setTypeface(Constants.setLatoBoldFont(this));
         textDateTime.setTypeface(Constants.setLatoBoldFont(this));
@@ -84,7 +87,7 @@ public class ExpectingCabArrival extends BaseActivity {
         button16hr.setTypeface(Constants.setLatoRegularFont(this));
         button24hr.setTypeface(Constants.setLatoRegularFont(this));
 
-        /*Setting event for 8 buttons*/
+        /*Setting event for Valid period Buttons*/
         button1hr.setOnClickListener(v -> selectButton(R.id.button1Hr));
 
         button2hr.setOnClickListener(v -> selectButton(R.id.button2Hr));
@@ -100,7 +103,6 @@ public class ExpectingCabArrival extends BaseActivity {
         button16hr.setOnClickListener(v -> selectButton(R.id.button16Hr));
 
         button24hr.setOnClickListener(v -> selectButton(R.id.button24Hr));
-
 
         /*Setting event for  Displaying Date & Time*/
         editDateTime.setOnFocusChangeListener((v, hasFocus) -> {
@@ -119,9 +121,9 @@ public class ExpectingCabArrival extends BaseActivity {
                 button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
-                }
             }
         }
+    }
 
     /**
      * This method is invoked when user clicks on pick date and time icon.
@@ -152,11 +154,13 @@ public class ExpectingCabArrival extends BaseActivity {
         timePickerDialog = new TimePickerDialog(this,
                 (view, hourOfDay, minute) -> {
                     selectedTime = "";
+                    concatenatedDateAndTime = "";
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     timePickerDialog.cancel();
                     concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
                     editDateTime.setText(concatenatedDateAndTime);
                 }, mHour, mMinute, true);
     }
+
 }
 

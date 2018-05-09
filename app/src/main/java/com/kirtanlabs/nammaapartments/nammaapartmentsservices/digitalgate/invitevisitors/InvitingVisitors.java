@@ -47,6 +47,9 @@ public class InvitingVisitors extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Info Button in this screen*/
+        showInfoButton();
+
         /*Getting Id's for all the views*/
         TextView textVisitorName = findViewById(R.id.textVisitorName);
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
@@ -118,7 +121,8 @@ public class InvitingVisitors extends BaseActivity {
                     }
                     break;
             }
-        }    }
+        }
+    }
 
     /**
      * This method is invoked when user clicks on pick date and time icon.

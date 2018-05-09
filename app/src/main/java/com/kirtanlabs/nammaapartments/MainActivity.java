@@ -19,8 +19,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImageView backButton = findViewById(R.id.backButton);
-        backButton.setVisibility(View.INVISIBLE);
+        hideBackButton();
 
         /*Getting Id's for all the views*/
         TextView textSocietyServices = findViewById(R.id.textSocietyServices);
