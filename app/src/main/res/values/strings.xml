@@ -121,11 +121,10 @@
     <string name="expecting_visitor">Expecting Visitor</string>
     <string name="handed_things_to_my_guest">Handed things to my Guest</string>
     <string name="handed_things_to_my_daily_services">Handed things to my Daily Services</string>
-    <string name="package_vendor">Package Vendor</string>
-    <string name="notify_gate">Notify Gate</string>
-    <string name="cab_number">Cab Number</string>
 
-    <!--Expecting Cab Arrival & Expecting Cab Package Activities-->
+    <!--Expecting Cab Arrival & Expecting Package Arrival Activities-->
+    <string name="cab_number">Cab Number</string>
+    <string name="package_vendor">Package Vendor</string>
     <string name="valid_for">Valid For</string>
     <string name="_1_hr">1 hr</string>
     <string name="_2_hrs">2 hrs</string>
@@ -135,4 +134,5 @@
     <string name="_12_hrs">12 hrs</string>
     <string name="_16_hrs">16 hrs</string>
     <string name="_24_hrs">24 hrs</string>
+    <string name="notify_gate">Notify Gate</string>
 </resources>

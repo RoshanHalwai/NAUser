@@ -26,7 +26,6 @@ public class ApartmentServices extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         /*Getting Id's for all the views*/
         ListView listView = view.findViewById(R.id.listviewApartmentServices);
         List<Service> apartmentServicesList = new ArrayList<>();
@@ -34,7 +33,7 @@ public class ApartmentServices extends Fragment {
         /*Adding some values to our list*/
         apartmentServicesList.add(new Service(R.drawable.cook_service, getString(R.string.cook)));
         apartmentServicesList.add(new Service(R.drawable.maid, getString(R.string.maid)));
-        apartmentServicesList.add(new Service(R.drawable.car_cleaning, getString(R.string.car_bike_cleaning)));
+        apartmentServicesList.add(new Service(R.drawable.car_cleaning1, getString(R.string.car_bike_cleaning)));
         apartmentServicesList.add(new Service(R.drawable.child_care, getString(R.string.child_day_care)));
         apartmentServicesList.add(new Service(R.drawable.newspaper, getString(R.string.daily_newspaper)));
         apartmentServicesList.add(new Service(R.drawable.milk, getString(R.string.milk_man)));

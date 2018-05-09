@@ -18,24 +18,16 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ExpectingCabArrival extends BaseActivity {
-    Button button1hr;
-    Button button2hr;
-    Button button4hr;
-    Button button6hr;
-    Button button8hr;
-    Button button12hr;
-    Button button16hr;
-    Button button24hr;
+    /*Declaring all variables in this activity*/
     TextView textCabNumber, textDateTime, textValidFor;
-    private EditText editDateTime;
-    EditText editCabNumber;
-    Button buttonNotifyGate;
+    EditText editCabNumber, editDateTime;
+    Button button1hr, button2hr, button4hr, button6hr, button8hr, button12hr, button16hr, button24hr, buttonNotifyGate;
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
+    String concatenatedDateAndTime = "";
+    String selectedDate = "";
+    String selectedTime = "";
     int[] buttonIds;
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
-    private String concatenatedDateAndTime = "";
-    private String selectedDate = "";
-    private String selectedTime = "";
 
     @Override
     protected int getLayoutResourceId() {
@@ -52,6 +44,11 @@ public class ExpectingCabArrival extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         /*Getting Id's for all the views*/
+        textCabNumber = findViewById(R.id.textCabNumber);
+        textDateTime = findViewById(R.id.textDateTime);
+        textValidFor = findViewById(R.id.textValidFor);
+        editCabNumber = findViewById(R.id.editCabNumber);
+        editDateTime = findViewById(R.id.editDateTime);
         button1hr = findViewById(R.id.button1Hr);
         button2hr = findViewById(R.id.button2Hr);
         button4hr = findViewById(R.id.button4Hr);
@@ -60,11 +57,6 @@ public class ExpectingCabArrival extends BaseActivity {
         button12hr = findViewById(R.id.button12Hr);
         button16hr = findViewById(R.id.button16Hr);
         button24hr = findViewById(R.id.button24Hr);
-        textCabNumber = findViewById(R.id.textCabNumber);
-        textDateTime = findViewById(R.id.textDateTime);
-        textValidFor = findViewById(R.id.textValidFor);
-        editCabNumber = findViewById(R.id.editCabNumber);
-        editDateTime = findViewById(R.id.editDateTime);
         buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
         /*Created an integer array for storing button id's*/
@@ -84,14 +76,14 @@ public class ExpectingCabArrival extends BaseActivity {
         editCabNumber.setTypeface(Constants.setLatoRegularFont(this));
         editDateTime.setTypeface(Constants.setLatoRegularFont(this));
         buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
-        button1hr.setTypeface(Constants.setLatoLightFont(this));
-        button2hr.setTypeface(Constants.setLatoLightFont(this));
-        button4hr.setTypeface(Constants.setLatoLightFont(this));
-        button6hr.setTypeface(Constants.setLatoLightFont(this));
-        button8hr.setTypeface(Constants.setLatoLightFont(this));
-        button12hr.setTypeface(Constants.setLatoLightFont(this));
-        button16hr.setTypeface(Constants.setLatoLightFont(this));
-        button24hr.setTypeface(Constants.setLatoLightFont(this));
+        button1hr.setTypeface(Constants.setLatoRegularFont(this));
+        button2hr.setTypeface(Constants.setLatoRegularFont(this));
+        button4hr.setTypeface(Constants.setLatoRegularFont(this));
+        button6hr.setTypeface(Constants.setLatoRegularFont(this));
+        button8hr.setTypeface(Constants.setLatoRegularFont(this));
+        button12hr.setTypeface(Constants.setLatoRegularFont(this));
+        button16hr.setTypeface(Constants.setLatoRegularFont(this));
+        button24hr.setTypeface(Constants.setLatoRegularFont(this));
 
         /*Setting event for 8 buttons*/
         button1hr.setOnClickListener(v -> selectButton(R.id.button1Hr));
@@ -120,6 +112,7 @@ public class ExpectingCabArrival extends BaseActivity {
         editDateTime.setOnClickListener(v -> displayDateAndTime());
     }
 
+    /*Method for ValidFor 8 Button clicks*/
     private void selectButton(int id) {
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
@@ -129,7 +122,7 @@ public class ExpectingCabArrival extends BaseActivity {
                 }
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    button.setBackground(getDrawable(R.drawable.button_design));
+                    button.setBackground(getDrawable(R.drawable.valid_for_button_design));
                 }
             }
         }

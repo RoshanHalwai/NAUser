@@ -36,11 +36,11 @@ public class NotifyDigitalGate extends BaseActivity {
         List<Service> notificationServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        notificationServicesList.add(new Service(R.drawable.cab_arrival, getString(R.string.expecting_cab_arrival)));
+        notificationServicesList.add(new Service(R.drawable.taxi, getString(R.string.expecting_cab_arrival)));
         notificationServicesList.add(new Service(R.drawable.delivery_man, getString(R.string.expecting_package_arrival)));
         notificationServicesList.add(new Service(R.drawable.team, getString(R.string.expecting_visitor)));
         notificationServicesList.add(new Service(R.drawable.gift, getString(R.string.handed_things_to_my_guest)));
-        notificationServicesList.add(new Service(R.drawable.handed_things, getString(R.string.handed_things_to_my_daily_services)));
+        notificationServicesList.add(new Service(R.drawable.delivery, getString(R.string.handed_things_to_my_daily_services)));
 
         /*Creating the Adapter*/
         NotifyDigitalGateAdapter adapter = new NotifyDigitalGateAdapter(this, notificationServicesList);
