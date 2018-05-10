@@ -55,6 +55,7 @@
         <activity
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingPackageArrival"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestActivity" />
     </application>
 
 </manifest>

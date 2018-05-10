@@ -135,4 +135,9 @@
     <string name="_24_hrs">24 hrs</string>
     <string name="notify_gate">Notify Gate</string>
 
+    <string name="handing_things_to_guest">Handed Things To Guest</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="given_things">Given Things:</string>
+    <string name="description">Description:</string>
 </resources>

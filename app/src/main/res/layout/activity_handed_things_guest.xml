@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_base" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/row1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:weightSum="3">
+
+                <RelativeLayout
+                    android:id="@+id/layoutVisitorProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/namma_apartments"
+                        app:civ_border_color="@android:color/white"
+                        app:civ_border_width="1dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1.1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textVisitorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/visitor"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textVisitorType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/type"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textInvitationDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/date"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textInvitationTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/time"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textInvitedBy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/invited_by"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTitleValues"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.9"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textVisitorNameValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="Roshan Halwai"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textVisitorTypeValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="Guest"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textInvitationDateValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="31st Jan 2017"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textInvitationTimeValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="14:30"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textInvitedByValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="Rohit Mishra"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/row1"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:id="@+id/layoutThings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/row1"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textGivenThings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/given_things"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <Button
+                    android:id="@+id/buttonYes"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_guest_not_selected"
+                    android:text="@string/yes"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/buttonNo"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_guest_not_selected"
+                    android:text="@string/no"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutThings"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:text="@string/description"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/editDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="true"
+                    android:inputType="text"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/edit_text_default_size"
+                    android:visibility="gone"
+                    tools:ignore="LabelFor,UnusedAttribute" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
