@@ -91,6 +91,11 @@ public class NotifyDigitalGateAdapter extends RecyclerView.Adapter<NotifyDigital
                     mCtx.startActivity(intent);
                     break;
                 }
+                case 3: {
+                    Intent intent = new Intent(mCtx, HandedThingsGuestActivity.class);
+                    mCtx.startActivity(intent);
+                    break;
+                }
             }
         }
     }
