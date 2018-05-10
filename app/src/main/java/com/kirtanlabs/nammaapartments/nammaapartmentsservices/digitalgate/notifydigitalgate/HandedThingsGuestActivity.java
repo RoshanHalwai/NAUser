@@ -15,12 +15,11 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class HandedThingsGuestActivity extends BaseActivity {
 
-    /*Declaring all the views*/
-    TextView textVisitorName, textVisitorType, textInvitationDate, textInvitationTime, textInvitedBy, textVisitorNameValue, textVisitorTypeValue, textInvitationDateValue, textInvitationTimeValue, textInvitedByValue, textGivenThings, textDescription;
-    EditText editDescription;
-    Button buttonYes, buttonNo;
-    int[] buttonIds = new int[]{R.id.buttonYes,
-            R.id.buttonNo};
+    private TextView textDescription;
+    private EditText editDescription;
+    private Button buttonYes;
+    private Button buttonNo;
+    private Button buttonNotifyGate;
 
     @Override
     protected int getLayoutResourceId() {
@@ -29,7 +28,7 @@ public class HandedThingsGuestActivity extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.handing_things_to_guest;
+        return R.string.handed_things_to_my_guest;
     }
 
     @Override
@@ -40,23 +39,26 @@ public class HandedThingsGuestActivity extends BaseActivity {
         showInfoButton();
 
         /*Initialising all the views*/
-        textVisitorName = findViewById(R.id.textVisitorName);
-        textVisitorType = findViewById(R.id.textVisitorType);
-        textInvitationDate = findViewById(R.id.textInvitationDate);
-        textInvitationTime = findViewById(R.id.textInvitationTime);
-        textInvitedBy = findViewById(R.id.textInvitedBy);
-        textVisitorNameValue = findViewById(R.id.textVisitorNameValue);
-        textVisitorTypeValue = findViewById(R.id.textVisitorTypeValue);
-        textInvitationDateValue = findViewById(R.id.textInvitationDateValue);
-        textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
-        textInvitedByValue = findViewById(R.id.textInvitedByValue);
-        textGivenThings = findViewById(R.id.textGivenThings);
+        TextView textFeatureUnavailable = findViewById(R.id.textFeatureUnavailable);
+        TextView textVisitorName = findViewById(R.id.textVisitorName);
+        TextView textVisitorType = findViewById(R.id.textVisitorType);
+        TextView textInvitationDate = findViewById(R.id.textInvitationDate);
+        TextView textInvitationTime = findViewById(R.id.textInvitationTime);
+        TextView textInvitedBy = findViewById(R.id.textInvitedBy);
+        TextView textVisitorNameValue = findViewById(R.id.textVisitorNameValue);
+        TextView textVisitorTypeValue = findViewById(R.id.textVisitorTypeValue);
+        TextView textInvitationDateValue = findViewById(R.id.textInvitationDateValue);
+        TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
+        TextView textInvitedByValue = findViewById(R.id.textInvitedByValue);
+        TextView textGivenThings = findViewById(R.id.textGivenThings);
         textDescription = findViewById(R.id.textDescription);
         editDescription = findViewById(R.id.editDescription);
+        buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
         buttonYes = findViewById(R.id.buttonYes);
         buttonNo = findViewById(R.id.buttonNo);
 
         /*Setting fonts to the views*/
+        textFeatureUnavailable.setTypeface(Constants.setLatoRegularFont(this));
         textVisitorName.setTypeface(Constants.setLatoBoldFont(this));
         textVisitorType.setTypeface(Constants.setLatoBoldFont(this));
         textInvitationDate.setTypeface(Constants.setLatoBoldFont(this));
@@ -72,45 +74,37 @@ public class HandedThingsGuestActivity extends BaseActivity {
         editDescription.setTypeface(Constants.setLatoRegularFont(this));
         buttonYes.setTypeface(Constants.setLatoRegularFont(this));
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
-
-        /*By Default Button Selection*/
-        selectButton(R.id.buttonNo);
+        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
 
         /*Method for radio button Yes*/
         buttonYes.setOnClickListener(v -> {
             textDescription.setVisibility(View.VISIBLE);
             editDescription.setVisibility(View.VISIBLE);
+            buttonNotifyGate.setVisibility(View.VISIBLE);
             editDescription.requestFocus();
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputMethodManager != null) {
                 inputMethodManager.showSoftInput(editDescription, InputMethodManager.SHOW_IMPLICIT);
             }
-            selectButton(R.id.buttonYes);
+            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonYes.setTextColor(Color.WHITE);
+            buttonNo.setTextColor(Color.BLACK);
         });
 
         /*Method for radio button No*/
         buttonNo.setOnClickListener(v -> {
             textDescription.setVisibility(View.GONE);
             editDescription.setVisibility(View.GONE);
+            buttonNotifyGate.setVisibility(View.GONE);
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputMethodManager != null) {
                 inputMethodManager.hideSoftInputFromWindow(editDescription.getWindowToken(), 0);
             }
-            selectButton(R.id.buttonNo);
+            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonYes.setTextColor(Color.BLACK);
+            buttonNo.setTextColor(Color.WHITE);
         });
-    }
-
-    private void selectButton(int id) {
-        for (int buttonId : buttonIds) {
-            Button button = findViewById(buttonId);
-            if (buttonId == id) {
-                button.setBackgroundResource(R.drawable.button_guest_selected);
-                button.setTextColor(Color.WHITE);
-            } else {
-                button.setBackgroundResource(R.drawable.button_guest_not_selected);
-                button.setTextColor(Color.BLACK);
-
-            }
-        }
     }
 }

@@ -2,8 +2,6 @@ package com.kirtanlabs.nammaapartments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.ApartmentServices;

@@ -1,10 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Namma Apartments</string>
 
     <!--Base Activity-->
     <string name="back_button_description">Back button to navigate previous activity</string>
     <string name="namma_apartments">@string/app_name</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="information_about_the_current_screen">Information about the current screen</string>
 
     <!--Splash Screens-->
@@ -55,9 +54,6 @@
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
 
-    <string name="title_activity_home">Home</string>
-    <string name="title_activity_digital_gate_services">DigitalGateServices</string>
-
     <!--Society Services Activity-->
     <string name="digital_gate">Digi Gate</string>
     <string name="plumber">Plumber</string>
@@ -93,13 +89,11 @@
     <string name="visitor_name">Visitor Name</string>
     <string name="visitor_mobile">Visitor Mobile</string>
     <string name="select_from_contact">Select From Contact</string>
-    <string name="calendar_image">Calendar Image</string>
+    <string name="calendar_image" tools:keep="@string/calendar_image">Calendar Image</string>
     <string name="inviting_visitors">Inviting Visitors</string>
     <string name="invite">INVITE</string>
     <string name="or">OR</string>
-    <string name="contacts_information">Contacts Information</string>
-    <string name="contact_images">Contact Images</string>
-    <string name="contacts">Contacts</string>
+    <string name="contacts_information" tools:keep="@string/contacts_information">Contacts Information</string>
     <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society">We will send an OTP to your visitor allowing them to enter into your society.</string>
 
@@ -135,9 +129,10 @@
     <string name="_24_hrs">24 hrs</string>
     <string name="notify_gate">Notify Gate</string>
 
-    <string name="handing_things_to_guest">Handed Things To Guest</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
     <string name="description">Description:</string>
+    <string name="feature_unavailable_message">Sorry you cannot use this feature since currently you do not have any visitors at your resident.</string>
+    <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
 </resources>

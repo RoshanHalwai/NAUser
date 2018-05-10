@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         infoButton.setVisibility(View.VISIBLE);
     }
 
-    protected void showBackButton() {
+    private void showBackButton() {
         backButton.setVisibility(View.VISIBLE);
     }
 

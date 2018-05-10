@@ -18,18 +18,15 @@ import java.util.Locale;
 
 public class ExpectingCabArrival extends BaseActivity {
 
-    /*Declaring all variables in this activity*/
-    TextView textCabNumber, textDateTime, textValidFor;
-    EditText editCabNumber, editDateTime;
-    Button button1hr, button2hr, button4hr, button6hr, button8hr, button12hr, button16hr, button24hr, buttonNotifyGate;
-    DatePickerDialog datePickerDialog;
-    TimePickerDialog timePickerDialog;
-    String concatenatedDateAndTime;
-    String selectedDate;
-    String selectedTime;
+    private EditText editDateTime;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private String concatenatedDateAndTime;
+    private String selectedDate;
+    private String selectedTime;
 
     /*An integer array for storing button id's*/
-    int[] buttonIds = new int[]{R.id.button1Hr,
+    private final int[] buttonIds = new int[]{R.id.button1Hr,
             R.id.button2Hr,
             R.id.button4Hr,
             R.id.button6Hr,
@@ -56,20 +53,20 @@ public class ExpectingCabArrival extends BaseActivity {
         showInfoButton();
 
         /*Getting Id's for all the views*/
-        textCabNumber = findViewById(R.id.textCabNumber);
-        textDateTime = findViewById(R.id.textDateTime);
-        textValidFor = findViewById(R.id.textValidFor);
-        editCabNumber = findViewById(R.id.editCabNumber);
+        TextView textCabNumber = findViewById(R.id.textCabNumber);
+        TextView textDateTime = findViewById(R.id.textDateTime);
+        TextView textValidFor = findViewById(R.id.textValidFor);
+        EditText editCabNumber = findViewById(R.id.editCabNumber);
         editDateTime = findViewById(R.id.editDateTime);
-        button1hr = findViewById(R.id.button1Hr);
-        button2hr = findViewById(R.id.button2Hr);
-        button4hr = findViewById(R.id.button4Hr);
-        button6hr = findViewById(R.id.button6Hr);
-        button8hr = findViewById(R.id.button8Hr);
-        button12hr = findViewById(R.id.button12Hr);
-        button16hr = findViewById(R.id.button16Hr);
-        button24hr = findViewById(R.id.button24Hr);
-        buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
+        Button button1hr = findViewById(R.id.button1Hr);
+        Button button2hr = findViewById(R.id.button2Hr);
+        Button button4hr = findViewById(R.id.button4Hr);
+        Button button6hr = findViewById(R.id.button6Hr);
+        Button button8hr = findViewById(R.id.button8Hr);
+        Button button12hr = findViewById(R.id.button12Hr);
+        Button button16hr = findViewById(R.id.button16Hr);
+        Button button24hr = findViewById(R.id.button24Hr);
+        Button buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
         /*Setting font for all the views*/
         textCabNumber.setTypeface(Constants.setLatoBoldFont(this));
