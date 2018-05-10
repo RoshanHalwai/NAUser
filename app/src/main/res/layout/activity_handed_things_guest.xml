@@ -3,15 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <include layout="@layout/activity_base" />
 
+    <LinearLayout
+        android:id="@+id/layoutFeatureUnavailable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/feature_unavailable_image_desc"
+            android:src="@drawable/feature_unavailable" />
+
+        <TextView
+            android:id="@+id/textFeatureUnavailable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="@string/feature_unavailable_message"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -188,7 +218,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/button_guest_not_selected"
                     android:text="@string/yes"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/buttonNo"
@@ -196,9 +227,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_guest_not_selected"
+                    android:background="@drawable/button_guest_selected"
                     android:text="@string/no"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -235,6 +268,20 @@
                     android:textSize="@dimen/edit_text_default_size"
                     android:visibility="gone"
                     tools:ignore="LabelFor,UnusedAttribute" />
+
+                <Button
+                    android:id="@+id/buttonNotifyGate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/button_margin"
+                    android:background="@color/nmBlack"
+                    android:text="@string/notify_gate"
+                    android:textAllCaps="true"
+                    android:textColor="@color/nmLightYellow"
+                    android:textSize="@dimen/button_default_size"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
         </RelativeLayout>
