@@ -263,7 +263,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:focusedByDefault="true"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:textColor="@color/nmBlack"
                     android:textSize="@dimen/edit_text_default_size"
                     android:visibility="gone"

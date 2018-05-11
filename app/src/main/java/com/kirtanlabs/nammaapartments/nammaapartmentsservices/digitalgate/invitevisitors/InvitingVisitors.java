@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,6 +30,8 @@ public class InvitingVisitors extends BaseActivity {
     private EditText editPickDateTime;
     private EditText editVisitorName;
     private EditText editVisitorMobile;
+    private TextView textDescription;
+    private Button buttonInvite;
     private String concatenatedDateAndTime = "";
     private String selectedDate = "";
     private String selectedTime = "";
@@ -56,11 +59,11 @@ public class InvitingVisitors extends BaseActivity {
         TextView textOr = findViewById(R.id.textOr);
         TextView textDateTime = findViewById(R.id.textDateTime);
         editPickDateTime = findViewById(R.id.editPickDateTime);
-        TextView textDescription = findViewById(R.id.textDescription);
+        textDescription = findViewById(R.id.textDescription);
         editVisitorName = findViewById(R.id.editVisitorName);
         editVisitorMobile = findViewById(R.id.editMobileNumber);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
-        Button buttonInvite = findViewById(R.id.buttonInvite);
+        buttonInvite = findViewById(R.id.buttonInvite);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDateTime.setInputType(InputType.TYPE_NULL);
@@ -157,6 +160,8 @@ public class InvitingVisitors extends BaseActivity {
                     timePickerDialog.cancel();
                     concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
                     editPickDateTime.setText(concatenatedDateAndTime);
+                    textDescription.setVisibility(View.VISIBLE);
+                    buttonInvite.setVisibility(View.VISIBLE);
                 }, mHour, mMinute, true);
     }
 

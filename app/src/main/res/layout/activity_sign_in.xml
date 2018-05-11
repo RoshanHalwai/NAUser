@@ -60,6 +60,7 @@
         android:layout_margin="20dp"
         android:background="@color/nmBlack"
         android:text="@string/login"
+        android:textAllCaps="true"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size" />
 
