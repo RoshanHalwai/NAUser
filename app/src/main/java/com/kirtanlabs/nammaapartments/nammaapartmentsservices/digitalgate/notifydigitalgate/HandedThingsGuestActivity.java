@@ -100,6 +100,7 @@ public class HandedThingsGuestActivity extends BaseActivity {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputMethodManager != null) {
                 inputMethodManager.hideSoftInputFromWindow(editDescription.getWindowToken(), 0);
+
             }
             buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
             buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
