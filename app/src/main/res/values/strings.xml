@@ -136,6 +136,22 @@
     <string name="description">Description:</string>
     <string name="feature_unavailable_message">Sorry you cannot use this feature since currently you do not have any visitors at your resident.</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
+    <string name="title_activity_daily_services">DailyServices</string>
 
     <!--My Daily Services-->
+    <string name="car_bike_cleaner">Car/Bike cleaner</string>
+    <string name="child_care_taker">Child Caretaker</string>
+    <string name="newspaper_paper_man">NewsPaper man</string>
+    <string name="laundry_man">Laundry man</string>
+
+    <!--My Service-->
+    <string name="my_service">My Service</string>
+    <string name="name">Name</string>
+    <string name="mobile">Mobile</string>
+    <string name="pick_time">Time</string>
+    <string name="add">Add</string>
+    <string name="we_will_send_an_otp">We will send an OTP to your </string>
+    <string name="allowing_them_to_enter_into_your_society"> allowing them to enter into your society.</string>
+
+
 </resources>
