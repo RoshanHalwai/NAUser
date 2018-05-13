@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService">
+
+    <include layout="@layout/activity_base" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/namma_apartments" />
+
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/name"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <EditText
+                    android:id="@+id/editName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:inputType="textCapWords|textVisiblePassword"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/edit_text_default_size"
+                    tools:ignore="LabelFor" />
+
+                <TextView
+                    android:id="@+id/textMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/mobile"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <LinearLayout
+                    android:id="@+id/layoutMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/textCountryCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:text="@string/_91"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <EditText
+                        android:id="@+id/editMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="20sp"
+                        tools:ignore="LabelFor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:weightSum="1">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="0.3"
+                        android:background="@drawable/dash_line"
+                        android:layerType="software" />
+
+                    <TextView
+                        android:id="@+id/textOr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="0.4"
+                        android:background="@android:color/white"
+                        android:gravity="center"
+                        android:text="@string/or"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="0.3"
+                        android:background="@drawable/dash_line"
+                        android:layerType="software" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonSelectFromContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/nmBlack"
+                    android:text="@string/select_from_contact"
+                    android:textAllCaps="false"
+                    android:textColor="@color/nmLightYellow"
+                    android:textSize="@dimen/button_default_size" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_line"
+                        android:layerType="software" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="0.5">
+
+                    <TextView
+                        android:id="@+id/textTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/time"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/editPickTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/textTime"
+                        android:layout_toRightOf="@id/textTime"
+                        android:cursorVisible="false"
+                        android:drawableEnd="@drawable/calendar_date"
+                        android:drawableRight="@drawable/calendar_date"
+                        android:gravity="center"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="18sp"
+                        tools:ignore="LabelFor,TextFields" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/textDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="@string/we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/buttonAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@color/nmBlack"
+                    android:text="@string/add"
+                    android:textColor="@color/nmLightYellow"
+                    android:textSize="@dimen/button_default_size"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </ScrollView>
+
+</LinearLayout>

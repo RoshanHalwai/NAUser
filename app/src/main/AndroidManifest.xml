@@ -25,11 +25,13 @@
             android:name=".onboarding.splashscreen.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/NammaApartmentsTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <!-- Login Screens -->
@@ -57,6 +59,8 @@
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingPackageArrival"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestActivity" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
 
         <!-- Notification Services -->
 
