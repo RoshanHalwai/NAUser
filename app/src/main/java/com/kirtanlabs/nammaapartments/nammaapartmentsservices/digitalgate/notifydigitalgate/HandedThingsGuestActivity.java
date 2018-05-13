@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -38,8 +39,19 @@ public class HandedThingsGuestActivity extends BaseActivity {
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        //TODO: Write business logic to check if there are any visitors at resident house.
+        /* If there are no visitors at resident house then we show
+         * feature unavailable layout and pass some sensible message*/
+        /*if (visitorCount == 0) {
+            showFeatureUnavailableLayout(R.string.feature_unavailable_message);
+        }*/
+
+        /* We show current visitors list at resident house, so resident has
+         * the ability to give things to their visitors and notify gate about it*/
+        CardView cardViewVisitors = findViewById(R.id.cardViewVisitors);
+        cardViewVisitors.setVisibility(View.VISIBLE);
+
         /*Initialising all the views*/
-        TextView textFeatureUnavailable = findViewById(R.id.textFeatureUnavailable);
         TextView textVisitorName = findViewById(R.id.textVisitorName);
         TextView textVisitorType = findViewById(R.id.textVisitorType);
         TextView textInvitationDate = findViewById(R.id.textInvitationDate);
@@ -58,7 +70,6 @@ public class HandedThingsGuestActivity extends BaseActivity {
         buttonNo = findViewById(R.id.buttonNo);
 
         /*Setting fonts to the views*/
-        textFeatureUnavailable.setTypeface(Constants.setLatoRegularFont(this));
         textVisitorName.setTypeface(Constants.setLatoBoldFont(this));
         textVisitorType.setTypeface(Constants.setLatoBoldFont(this));
         textInvitationDate.setTypeface(Constants.setLatoBoldFont(this));
@@ -76,7 +87,7 @@ public class HandedThingsGuestActivity extends BaseActivity {
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Method for radio button Yes*/
+        /*Method for button Yes*/
         buttonYes.setOnClickListener(v -> {
             textDescription.setVisibility(View.VISIBLE);
             editDescription.setVisibility(View.VISIBLE);
@@ -92,7 +103,7 @@ public class HandedThingsGuestActivity extends BaseActivity {
             buttonNo.setTextColor(Color.BLACK);
         });
 
-        /*Method for radio button No*/
+        /*Method for button No*/
         buttonNo.setOnClickListener(v -> {
             textDescription.setVisibility(View.GONE);
             editDescription.setVisibility(View.GONE);
@@ -108,4 +119,5 @@ public class HandedThingsGuestActivity extends BaseActivity {
             buttonNo.setTextColor(Color.WHITE);
         });
     }
+
 }

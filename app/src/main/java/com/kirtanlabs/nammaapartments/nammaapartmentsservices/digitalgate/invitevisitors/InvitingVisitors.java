@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -155,13 +156,22 @@ public class InvitingVisitors extends BaseActivity {
         // Time Picker Dialog
         timePickerDialog = new TimePickerDialog(this,
                 (view, hourOfDay, minute) -> {
-                    selectedTime = "";
-                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    timePickerDialog.cancel();
-                    concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                    editPickDateTime.setText(concatenatedDateAndTime);
-                    textDescription.setVisibility(View.VISIBLE);
-                    buttonInvite.setVisibility(View.VISIBLE);
+                    Calendar datetime = Calendar.getInstance();
+                    datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    datetime.set(Calendar.MINUTE, minute);
+                    if (selectedDate.equals(new DateFormatSymbols().getMonths()[mMonth].substring(0, 3) + " " + mDay + ", " + mYear) &&
+                            datetime.getTimeInMillis() < calendar.getTimeInMillis()) {
+                        Toast.makeText(this, R.string.select_future_time, Toast.LENGTH_LONG).show();
+                        editPickDateTime.setText("");
+                    } else {
+                        selectedTime = "";
+                        selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                        timePickerDialog.cancel();
+                        concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
+                        editPickDateTime.setText(concatenatedDateAndTime);
+                        textDescription.setVisibility(View.VISIBLE);
+                        buttonInvite.setVisibility(View.VISIBLE);
+                    }
                 }, mHour, mMinute, true);
     }
 
