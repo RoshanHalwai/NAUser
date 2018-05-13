@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 
 public class Constants {
 
+    public static final String CHANNEL_ID = "my_channel_01";
+
     /* Font Types */
     public static Typeface setLatoBlackFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Black.ttf");
@@ -50,5 +52,4 @@ public class Constants {
     public static Typeface setLatoRegularFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Regular.ttf");
     }
-
 }

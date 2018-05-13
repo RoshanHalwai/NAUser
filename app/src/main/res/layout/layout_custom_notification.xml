@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/textNotificationFromGate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="Notification from DIGI GATE"
+        android:textColor="@color/nmBlack"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textGuardMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textNotificationFromGate"
+        android:gravity="center"
+        android:text="Roshan has arrived at Gate"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/button_default_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textGuardMessage"
+        android:layout_margin="10dp"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.5"
+            android:background="#1B5E20"
+            android:padding="5dp"
+            android:text="Accept"
+            android:textSize="@dimen/button_default_size" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="#b71c1c"
+            android:text="Reject"
+            android:textSize="@dimen/button_default_size" />
+
+    </LinearLayout>
+
+</RelativeLayout>
