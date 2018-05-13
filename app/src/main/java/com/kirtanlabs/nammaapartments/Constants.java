@@ -52,4 +52,6 @@ public class Constants {
     public static Typeface setLatoRegularFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Regular.ttf");
     }
+
+    public static final String SERVICE_TYPE = "service_type";
 }

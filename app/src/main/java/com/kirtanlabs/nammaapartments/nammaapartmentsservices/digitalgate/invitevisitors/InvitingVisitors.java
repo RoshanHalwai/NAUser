@@ -59,6 +59,7 @@ public class InvitingVisitors extends BaseActivity {
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
         TextView textOr = findViewById(R.id.textOr);
         TextView textDateTime = findViewById(R.id.textDateTime);
+        TextView textCountryCode = findViewById(R.id.textCountryCode);
         editPickDateTime = findViewById(R.id.editPickDateTime);
         textDescription = findViewById(R.id.textDescription);
         editVisitorName = findViewById(R.id.editVisitorName);
@@ -74,6 +75,7 @@ public class InvitingVisitors extends BaseActivity {
         textVisitorMobile.setTypeface(Constants.setLatoBoldFont(this));
         textOr.setTypeface(Constants.setLatoBoldFont(this));
         textDateTime.setTypeface(Constants.setLatoBoldFont(this));
+        textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
         editPickDateTime.setTypeface(Constants.setLatoRegularFont(this));
         textDescription.setTypeface(Constants.setLatoBoldFont(this));
         editVisitorName.setTypeface(Constants.setLatoRegularFont(this));
@@ -115,6 +117,9 @@ public class InvitingVisitors extends BaseActivity {
                                 String phoneNo = cursor.getString(phoneIndex);
                                 String name = cursor.getString(nameIndex);
                                 String formattedPhoneNumber = phoneNo.replaceAll("\\D+", "");
+                                if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
+                                    formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
+                                }
                                 editVisitorName.setText(name);
                                 editVisitorMobile.setText(formattedPhoneNumber);
                                 cursor.close();
