@@ -32,7 +32,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:cursorVisible="false"
-            android:inputType="textNoSuggestions|textVisiblePassword"
+            android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
 
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -63,6 +64,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void showBackButton() {
         backButton.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Displays Feature Unavailable layout along with a message passed by the activity
+     *
+     * @param text feature unavailable message
+     */
+    public void showFeatureUnavailableLayout(int text) {
+        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
+        featureUnavailableLayout.setVisibility(View.VISIBLE);
+        TextView textView = findViewById(R.id.textFeatureUnavailable);
+        textView.setText(text);
     }
 
 }
