@@ -1,6 +1,5 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -58,7 +57,7 @@ public class DailyServicesHome extends BaseActivity {
             AlertDialog.Builder dailyServicesDialog = new AlertDialog.Builder(DailyServicesHome.this);
             View listDailyServices = getLayoutInflater().inflate(R.layout.list_daily_services, null);
 
-            /*Getting Id's for all the views*/
+            /*Getting Id's for all the listviews*/
             listView = listDailyServices.findViewById(R.id.listViewDailyServices);
             ArrayList<String> servicesList = new ArrayList<>();
 

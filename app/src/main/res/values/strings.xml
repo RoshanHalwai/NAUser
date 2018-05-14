@@ -151,5 +151,6 @@
     <string name="mobile">Mobile</string>
     <string name="pick_time">Time</string>
     <string name="add">Add</string>
+    <string name="edit">Edit</string>
 
 </resources>

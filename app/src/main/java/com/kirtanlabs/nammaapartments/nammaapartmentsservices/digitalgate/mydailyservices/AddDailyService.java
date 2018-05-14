@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -30,6 +31,7 @@ public class AddDailyService extends BaseActivity {
 
     private Button buttonAdd;
     private String selectedTime;
+    private String service_type;
 
     @Override
     protected int getLayoutResourceId() {
@@ -95,7 +97,6 @@ public class AddDailyService extends BaseActivity {
         /*Getting type of service*/
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String service_type;
         if (bundle != null) {
             service_type = bundle.getString(Constants.SERVICE_TYPE);
             String description = getText(R.string.we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society).toString();
@@ -103,6 +104,12 @@ public class AddDailyService extends BaseActivity {
             description = description.replace("visitor", service_type);
             textDescription.setText(description);
         }
+        /*Setting event for buttonAdd listener*/
+        buttonAdd.setOnClickListener(v -> {
+            Intent intentOtp = new Intent(AddDailyService.this, OTP.class);
+            //intentOtp.putExtra(Constants.SERVICE_TYPE, service_type);
+            startActivity(intentOtp);
+        });
     }
 
     @Override
@@ -157,5 +164,4 @@ public class AddDailyService extends BaseActivity {
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
-
 }
