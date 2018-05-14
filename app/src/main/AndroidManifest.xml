@@ -51,7 +51,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
 
-        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyDigitalGate" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.DigiGateService" />
 
         <activity
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingArrival"
