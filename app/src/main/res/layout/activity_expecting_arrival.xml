@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingCabArrival">
+    android:orientation="vertical">
 
     <include layout="@layout/activity_base" />
 
@@ -19,7 +18,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textCabNumber"
+                android:id="@+id/textCabOrVendorTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -30,7 +29,7 @@
                 android:textSize="@dimen/text_view_default_size" />
 
             <EditText
-                android:id="@+id/editCabNumber"
+                android:id="@+id/editCabOrVendorValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
