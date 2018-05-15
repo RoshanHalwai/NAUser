@@ -46,7 +46,7 @@ public class ExpectingArrival extends BaseActivity {
     @Override
     protected int getActivityTitle() {
         /*We use a common class for Expecting Cab Arrival and Package Arrival, we set the title
-         * based on the user click on NotifyDigitalGate Home screen*/
+         * based on the user click on NotifyGate Home screen*/
         if (getIntent().getIntExtra(Constants.ARRIVAL_TYPE, 0) == R.string.expecting_cab_arrival) {
             arrivalType = R.string.expecting_cab_arrival;
         } else {

@@ -109,12 +109,14 @@
     <string name="reschedule">Reschedule</string>
     <string name="cancel">Cancel</string>
 
-    <!--Notify Digital Gate Activity-->
+    <!--Digi Gate Service Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
     <string name="expecting_package_arrival">Expecting Package Arrival</string>
     <string name="expecting_visitor">Expecting Visitor</string>
     <string name="handed_things_to_my_guest">Handed Things To My Guest</string>
     <string name="handed_things_to_my_daily_services">Handed Things To My Daily Services</string>
+    <string name="raise_fire_alarm">Raise Fire Alarm</string>
+    <string name="raise_theft_alarm">Raise Theft Alarm</string>
 
     <!--Expecting Cab Arrival & Expecting Package Arrival Activities-->
     <string name="cab_number">Cab Number</string>
@@ -152,5 +154,6 @@
     <string name="pick_time">Time</string>
     <string name="add">Add</string>
     <string name="edit">Edit</string>
+
 
 </resources>
