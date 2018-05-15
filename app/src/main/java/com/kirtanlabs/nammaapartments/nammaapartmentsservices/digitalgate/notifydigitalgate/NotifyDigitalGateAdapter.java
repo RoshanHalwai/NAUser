@@ -77,12 +77,14 @@ public class NotifyDigitalGateAdapter extends RecyclerView.Adapter<NotifyDigital
             int position = getAdapterPosition();
             switch (position) {
                 case 0: {
-                    Intent intent = new Intent(mCtx, ExpectingCabArrival.class);
+                    Intent intent = new Intent(mCtx, ExpectingArrival.class);
+                    intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_cab_arrival);
                     mCtx.startActivity(intent);
                     break;
                 }
                 case 1: {
-                    Intent intent = new Intent(mCtx, ExpectingPackageArrival.class);
+                    Intent intent = new Intent(mCtx, ExpectingArrival.class);
+                    intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_package_arrival);
                     mCtx.startActivity(intent);
                     break;
                 }

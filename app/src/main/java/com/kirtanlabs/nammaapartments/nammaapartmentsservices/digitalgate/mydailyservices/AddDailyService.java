@@ -94,6 +94,10 @@ public class AddDailyService extends BaseActivity {
         });
         editPickTime.setOnClickListener(View -> displayTime());
 
+        /*Setting events for add button click*/
+        //TODO: Change OTP class based on screen from where USER calls it. Pass Date to Intent
+        buttonAdd.setOnClickListener(v -> startActivity(new Intent(AddDailyService.this, OTP.class)));
+
         /*Getting type of service*/
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -129,8 +133,8 @@ public class AddDailyService extends BaseActivity {
                                 String phoneNo = cursor.getString(phoneIndex);
                                 String name = cursor.getString(nameIndex);
                                 String formattedPhoneNumber = phoneNo.replaceAll("\\D+", "");
-                                if(formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length()>10) {
-                                    formattedPhoneNumber = formattedPhoneNumber.substring(2,12);
+                                if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
+                                    formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
                                 }
                                 editName.setText(name);
                                 editMobile.setText(formattedPhoneNumber);

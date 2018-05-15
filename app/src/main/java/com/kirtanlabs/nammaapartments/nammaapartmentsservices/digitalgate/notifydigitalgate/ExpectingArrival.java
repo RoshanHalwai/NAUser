@@ -16,16 +16,12 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ExpectingCabArrival extends BaseActivity {
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Roshan Halwai on 5/14/2018
+ */
+public class ExpectingArrival extends BaseActivity {
 
-    private EditText editDateTime;
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
-    private String concatenatedDateAndTime;
-    private String selectedDate;
-    private String selectedTime;
-
-    /*An integer array for storing button id's*/
     private final int[] buttonIds = new int[]{R.id.button1Hr,
             R.id.button2Hr,
             R.id.button4Hr,
@@ -34,15 +30,29 @@ public class ExpectingCabArrival extends BaseActivity {
             R.id.button12Hr,
             R.id.button16Hr,
             R.id.button24Hr};
+    int arrivalType;
+    private EditText editDateTime;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private String concatenatedDateAndTime;
+    private String selectedDate;
+    private String selectedTime;
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_expecting_cab_arrival;
+        return R.layout.activity_expecting_arrival;
     }
 
     @Override
     protected int getActivityTitle() {
-        return R.string.expecting_cab_arrival;
+        /*We use a common class for Expecting Cab Arrival and Package Arrival, we set the title
+         * based on the user click on NotifyDigitalGate Home screen*/
+        if (getIntent().getIntExtra(Constants.ARRIVAL_TYPE, 0) == R.string.expecting_cab_arrival) {
+            arrivalType = R.string.expecting_cab_arrival;
+        } else {
+            arrivalType = R.string.expecting_package_arrival;
+        }
+        return arrivalType;
     }
 
     @Override
@@ -53,10 +63,10 @@ public class ExpectingCabArrival extends BaseActivity {
         showInfoButton();
 
         /*Getting Id's for all the views*/
-        TextView textCabNumber = findViewById(R.id.textCabNumber);
+        TextView textCabOrVendorTitle = findViewById(R.id.textCabOrVendorTitle);
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
-        EditText editCabNumber = findViewById(R.id.editCabNumber);
+        EditText editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
         editDateTime = findViewById(R.id.editDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
@@ -69,12 +79,11 @@ public class ExpectingCabArrival extends BaseActivity {
         Button buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
         /*Setting font for all the views*/
-        textCabNumber.setTypeface(Constants.setLatoBoldFont(this));
+        textCabOrVendorTitle.setTypeface(Constants.setLatoBoldFont(this));
         textDateTime.setTypeface(Constants.setLatoBoldFont(this));
         textValidFor.setTypeface(Constants.setLatoBoldFont(this));
-        editCabNumber.setTypeface(Constants.setLatoRegularFont(this));
         editDateTime.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
+        editCabOrVendorValue.setTypeface(Constants.setLatoRegularFont(this));
         button1hr.setTypeface(Constants.setLatoRegularFont(this));
         button2hr.setTypeface(Constants.setLatoRegularFont(this));
         button4hr.setTypeface(Constants.setLatoRegularFont(this));
@@ -83,8 +92,13 @@ public class ExpectingCabArrival extends BaseActivity {
         button12hr.setTypeface(Constants.setLatoRegularFont(this));
         button16hr.setTypeface(Constants.setLatoRegularFont(this));
         button24hr.setTypeface(Constants.setLatoRegularFont(this));
+        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Setting event for Valid period Buttons*/
+        /*Since we are using same layout for Expecting cab and package arrival we need to
+         * set text for textCabOrVendorTitle to either Package Vendor Name or Cab Number*/
+        textCabOrVendorTitle.setText(getCarOrPackageArrivalTitle());
+
+        /*Setting event for 8 buttons*/
         button1hr.setOnClickListener(v -> selectButton(R.id.button1Hr));
 
         button2hr.setOnClickListener(v -> selectButton(R.id.button2Hr));
@@ -151,7 +165,6 @@ public class ExpectingCabArrival extends BaseActivity {
         timePickerDialog = new TimePickerDialog(this,
                 (view, hourOfDay, minute) -> {
                     selectedTime = "";
-                    concatenatedDateAndTime = "";
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     timePickerDialog.cancel();
                     concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
@@ -159,5 +172,11 @@ public class ExpectingCabArrival extends BaseActivity {
                 }, mHour, mMinute, true);
     }
 
-}
+    private int getCarOrPackageArrivalTitle() {
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            return R.string.cab_number;
+        }
+        return R.string.package_vendor;
+    }
 
+}
