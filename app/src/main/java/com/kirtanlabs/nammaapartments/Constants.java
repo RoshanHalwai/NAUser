@@ -16,6 +16,7 @@ public class Constants {
     /* Intent Keys*/
     public static final String SERVICE_TYPE = "service_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
+    public static final String ALARM_TYPE = "alarm_type";
 
     /* Font Types */
     public static Typeface setLatoBlackFont(Context c) {

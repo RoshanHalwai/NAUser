@@ -45,18 +45,14 @@
 
         <!-- Digital Gate Screens Start -->
         <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />
-
         <activity
             android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
-
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome" />
-
         <activity
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingArrival"
             android:windowSoftInputMode="adjustResize" />
-
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestActivity" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
@@ -68,13 +64,13 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm"></activity>
     </application>
 
 </manifest>

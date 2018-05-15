@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm">
+
+    <include layout="@layout/activity_base" />
+
+    <TextView
+        android:id="@+id/textCreateAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonCreateAlert"
+        android:layout_margin="@dimen/text_view_default_size"
+        android:gravity="center"
+        android:text="@string/tap_on_bell_icon_to_create_alert"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size" />
+
+
+    <ImageButton
+        android:id="@+id/buttonCreateAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/raise_alarm"
+        android:contentDescription="@string/image_to_create_an_alarm" />
+
+    <TextView
+        android:id="@+id/textAlertRaised"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonCreateAlert"
+        android:layout_margin="@dimen/text_view_default_size"
+        android:gravity="center"
+        android:text="@string/emergency_alarm_raised"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

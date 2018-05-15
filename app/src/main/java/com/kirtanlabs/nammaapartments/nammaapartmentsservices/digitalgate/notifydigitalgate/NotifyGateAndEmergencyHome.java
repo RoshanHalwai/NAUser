@@ -54,16 +54,22 @@ public class NotifyGateAndEmergencyHome extends BaseActivity {
             notificationServicesList.add(new Service(R.drawable.team, getString(R.string.expecting_visitor)));
             notificationServicesList.add(new Service(R.drawable.gift, getString(R.string.handed_things_to_my_guest)));
             notificationServicesList.add(new Service(R.drawable.delivery, getString(R.string.handed_things_to_my_daily_services)));
+            /*Creating the Adapter*/
+            NotifyGateAndEmergencyAdapter adapter = new NotifyGateAndEmergencyAdapter(this, notificationServicesList, serviceType);
+
+            /*Attaching adapter to the listview */
+            recyclerView.setAdapter(adapter);
 
         } else {
             notificationServicesList.add(new Service(R.drawable.medical_emergency_heart, getString(R.string.medical_emergency)));
             notificationServicesList.add(new Service(R.drawable.fire_alarm, getString(R.string.raise_fire_alarm)));
             notificationServicesList.add(new Service(R.drawable.theft_alarm, getString(R.string.raise_theft_alarm)));
-        }
-        /*Creating the Adapter*/
-        NotifyGateAndEmergencyAdapter adapter = new NotifyGateAndEmergencyAdapter(this, notificationServicesList);
+            /*Creating the Adapter*/
+            NotifyGateAndEmergencyAdapter adapter = new NotifyGateAndEmergencyAdapter(this, notificationServicesList, serviceType);
 
-        /*Attaching adapter to the listview */
-        recyclerView.setAdapter(adapter);
+            /*Attaching adapter to the listview */
+            recyclerView.setAdapter(adapter);
+        }
+
     }
 }
