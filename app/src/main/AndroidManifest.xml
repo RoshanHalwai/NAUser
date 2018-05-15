@@ -47,7 +47,7 @@
         <!-- Namma Apartments Home Screen -->
         <activity android:name=".nammaapartmentshome.Home" />
 
-        <!-- Digital Gate Screens Start -->
+        <!-- Digital Gate Screens -->
         <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />
         <activity
             android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors"
@@ -60,8 +60,9 @@
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestActivity" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
-        <!-- Notification Services -->
+        <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm" />
 
+        <!-- Notification Services -->
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -73,7 +74,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm"></activity>
     </application>
 
 </manifest>

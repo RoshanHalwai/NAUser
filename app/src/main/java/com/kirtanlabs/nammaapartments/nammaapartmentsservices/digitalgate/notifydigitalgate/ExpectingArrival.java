@@ -30,7 +30,7 @@ public class ExpectingArrival extends BaseActivity {
             R.id.button12Hr,
             R.id.button16Hr,
             R.id.button24Hr};
-    int arrivalType;
+    private int arrivalType;
     private EditText editDateTime;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;

@@ -12,7 +12,6 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class RaiseAlarm extends BaseActivity {
 
-    int alarmType;
     private TextView textAlertRaised;
 
     @Override
@@ -22,16 +21,7 @@ public class RaiseAlarm extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        /*We use a common class for Raise Fire Alarm & Theft Alarm, we set the title
-         * based on the user click on Emergency Home screen*/
-        if (getIntent().getIntExtra(Constants.ALARM_TYPE, 0) == R.string.medical_emergency) {
-            alarmType = R.string.medical_emergency;
-        } else if (getIntent().getIntExtra(Constants.ALARM_TYPE, 0) == R.string.raise_fire_alarm) {
-            alarmType = R.string.raise_fire_alarm;
-        } else {
-            alarmType = R.string.raise_theft_alarm;
-        }
-        return alarmType;
+        return getIntent().getIntExtra(Constants.ALARM_TYPE, 0);
     }
 
     @Override
@@ -53,4 +43,5 @@ public class RaiseAlarm extends BaseActivity {
         /*Setting event for image button*/
         buttonCreateAlert.setOnClickListener(v -> textAlertRaised.setVisibility(View.VISIBLE));
     }
+
 }

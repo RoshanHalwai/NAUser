@@ -10,7 +10,7 @@ import android.graphics.Typeface;
 
 public class Constants {
 
-    /*Service Channels*/
+    /*NammaApartmentService Channels*/
     public static final String CHANNEL_ID = "my_channel_01";
 
     /* Intent Keys*/

@@ -42,7 +42,7 @@ public class DailyServicesHome extends BaseActivity {
 
         /*Custom DialogBox with list of all daily services*/
         AlertDialog.Builder dailyServicesDialog = new AlertDialog.Builder(DailyServicesHome.this);
-        View listDailyServices = getLayoutInflater().inflate(R.layout.list_daily_services, null);
+        View listDailyServices = View.inflate(this, R.layout.list_daily_services, null);
         dailyServicesDialog.setView(listDailyServices);
         dialog = dailyServicesDialog.create();
 

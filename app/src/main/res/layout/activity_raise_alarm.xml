@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white"
     tools:context=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm">
 
     <include layout="@layout/activity_base" />
@@ -40,6 +39,6 @@
         android:text="@string/emergency_alarm_raised"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>
