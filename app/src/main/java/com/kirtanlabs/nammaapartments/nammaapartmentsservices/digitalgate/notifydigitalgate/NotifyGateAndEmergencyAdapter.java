@@ -21,13 +21,13 @@ import java.util.List;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/7/2018
  */
-public class DigiGateServiceAdapter extends RecyclerView.Adapter<DigiGateServiceAdapter.NotifyGateHolder> {
+public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGateAndEmergencyAdapter.NotifyGateHolder> {
 
     private final Context mCtx;
 
     private final List<Service> notificationServicesList;
 
-    DigiGateServiceAdapter(Context mCtx, List<Service> notificationServicesList) {
+    NotifyGateAndEmergencyAdapter(Context mCtx, List<Service> notificationServicesList) {
         this.mCtx = mCtx;
         this.notificationServicesList = notificationServicesList;
     }
@@ -38,11 +38,11 @@ public class DigiGateServiceAdapter extends RecyclerView.Adapter<DigiGateService
     public NotifyGateHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_notify_digital_gate, parent, false);
-        return new DigiGateServiceAdapter.NotifyGateHolder(view, mCtx);
+        return new NotifyGateAndEmergencyAdapter.NotifyGateHolder(view, mCtx);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DigiGateServiceAdapter.NotifyGateHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotifyGateAndEmergencyAdapter.NotifyGateHolder holder, int position) {
         Service service = notificationServicesList.get(position);
         holder.textNotification.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textNotification.setText(service.getServiceName());

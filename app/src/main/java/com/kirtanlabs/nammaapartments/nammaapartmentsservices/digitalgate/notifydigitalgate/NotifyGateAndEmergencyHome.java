@@ -12,19 +12,19 @@ import com.kirtanlabs.nammaapartments.nammaapartmentshome.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DigiGateService extends BaseActivity {
+public class NotifyGateAndEmergencyHome extends BaseActivity {
 
     int serviceType;
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_notify_digital_gate;
+        return R.layout.layout_notify_gate_and_emergency;
     }
 
     @Override
     protected int getActivityTitle() {
         /*We use a common class for Notify Digital Gate and Emergency, we set the title
-         * based on the user click on DigiGateService Home screen*/
+         * based on the user click on NotifyGateAndEmergencyHome Home screen*/
         if (getIntent().getIntExtra(Constants.SERVICE_TYPE, 0) == R.string.notify_digital_gate) {
             serviceType = R.string.notify_digital_gate;
         } else {
@@ -61,7 +61,7 @@ public class DigiGateService extends BaseActivity {
             notificationServicesList.add(new Service(R.drawable.theft_alarm, getString(R.string.raise_theft_alarm)));
         }
         /*Creating the Adapter*/
-        DigiGateServiceAdapter adapter = new DigiGateServiceAdapter(this, notificationServicesList);
+        NotifyGateAndEmergencyAdapter adapter = new NotifyGateAndEmergencyAdapter(this, notificationServicesList);
 
         /*Attaching adapter to the listview */
         recyclerView.setAdapter(adapter);

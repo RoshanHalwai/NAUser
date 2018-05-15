@@ -11,7 +11,7 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.DigiGateService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome;
 
 public class DigitalGateHome extends BaseActivity {
 
@@ -69,12 +69,12 @@ public class DigitalGateHome extends BaseActivity {
                     startActivity(new Intent(DigitalGateHome.this, DailyServicesHome.class));
                     break;
                 case 3:
-                    Intent intent = new Intent(DigitalGateHome.this, DigiGateService.class);
+                    Intent intent = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
                     intent.putExtra(Constants.SERVICE_TYPE, R.string.notify_digital_gate);
                     startActivity(intent);
                     break;
                 case 5:
-                    Intent intentEmergency = new Intent(DigitalGateHome.this, DigiGateService.class);
+                    Intent intentEmergency = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
                     intentEmergency.putExtra(Constants.SERVICE_TYPE, R.string.emergency);
                     startActivity(intentEmergency);
                     break;
