@@ -10,7 +10,7 @@
     <string name="society_services">Society Services</string>
     <string name="apartment_services">Apartment Services</string>
     <string name="namma_apartments_description">One stop shop solution for all your Society needs.</string>
-    <string name="society_services_description">A smarter way to manage your daily needs from our dedicated service team.</string>
+    <string name="society_services_description">A smarter way to manage your daily needs from our dedicated nammaApartmentService team.</string>
     <string name="apartment_services_description">Enjoy benefits of all Digital Apartment Services under one umbrella with ease and control.</string>
     <string name="society_image_on_the_splash_screen">Society image on the splash screen</string>
     <string name="apartment_image_on_the_splash_screen">Society image on the splash screen</string>
@@ -76,7 +76,7 @@
     <string name="groceries">Groceries</string>
     <string name="images_of_digital_gate_services">Images of Digital Gate Services</string>
 
-    <!--Digital Gate Service Activity-->
+    <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
     <string name="invite_visitors">Invite Visitors</string>
     <string name="my_visitors_list">My Visitors List</string>
@@ -109,7 +109,7 @@
     <string name="reschedule">Reschedule</string>
     <string name="cancel">Cancel</string>
 
-    <!--Digi Gate Service Activity-->
+    <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
     <string name="expecting_package_arrival">Expecting Package Arrival</string>
     <string name="expecting_visitor">Expecting Visitor</string>
@@ -156,6 +156,11 @@
     <string name="edit">Edit</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+
+    <!--Raise Fire Alarm & Theft Alarm-->
+    <string name="tap_on_bell_icon_to_create_alert">Tap on bell icon to create alert</string>
+    <string name="image_to_create_an_alarm">Image to create an alarm</string>
+    <string name="emergency_alarm_raised">Emergency alarm raised</string>
 
 
 </resources>

@@ -42,6 +42,7 @@ public class AddDailyService extends BaseActivity {
     private CircleImageView circleImageView;
     private String selectedTime;
     private AlertDialog dialog;
+
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_add_daily_service;
@@ -61,7 +62,7 @@ public class AddDailyService extends BaseActivity {
 
         /*Custom DialogBox with list of all image services*/
         AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
-        View listAddImageServices = getLayoutInflater().inflate(R.layout.list_add_image_services, null);
+        View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
         addImageDialog.setView(listAddImageServices);
         dialog = addImageDialog.create();
 

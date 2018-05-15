@@ -10,12 +10,13 @@ import android.graphics.Typeface;
 
 public class Constants {
 
-    /*Service Channels*/
+    /*NammaApartmentService Channels*/
     public static final String CHANNEL_ID = "my_channel_01";
 
     /* Intent Keys*/
     public static final String SERVICE_TYPE = "service_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
+    public static final String ALARM_TYPE = "alarm_type";
 
     /* Font Types */
     public static Typeface setLatoBlackFont(Context c) {

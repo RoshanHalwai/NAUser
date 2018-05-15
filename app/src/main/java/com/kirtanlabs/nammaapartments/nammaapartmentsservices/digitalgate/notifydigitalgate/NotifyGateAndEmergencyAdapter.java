@@ -12,7 +12,8 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.Service;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.emergency.RaiseAlarm;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 
 import java.util.List;
@@ -24,14 +25,14 @@ import java.util.List;
 public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGateAndEmergencyAdapter.NotifyGateHolder> {
 
     private final Context mCtx;
+    private final List<NammaApartmentService> notificationServicesList;
+    private int serviceType;
 
-    private final List<Service> notificationServicesList;
-
-    NotifyGateAndEmergencyAdapter(Context mCtx, List<Service> notificationServicesList) {
+    NotifyGateAndEmergencyAdapter(Context mCtx, List<NammaApartmentService> notificationServicesList, int serviceType) {
         this.mCtx = mCtx;
         this.notificationServicesList = notificationServicesList;
+        this.serviceType = serviceType;
     }
-
 
     @NonNull
     @Override
@@ -43,10 +44,10 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
 
     @Override
     public void onBindViewHolder(@NonNull NotifyGateAndEmergencyAdapter.NotifyGateHolder holder, int position) {
-        Service service = notificationServicesList.get(position);
+        NammaApartmentService nammaApartmentService = notificationServicesList.get(position);
         holder.textNotification.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textNotification.setText(service.getServiceName());
-        holder.imageNotificationService.setImageResource(service.getServiceImage());
+        holder.textNotification.setText(nammaApartmentService.getServiceName());
+        holder.imageNotificationService.setImageResource(nammaApartmentService.getServiceImage());
     }
 
     @Override
@@ -55,19 +56,14 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
     }
 
     class NotifyGateHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         final TextView textNotification;
         final ImageView imageNotificationService;
-
         private final Context mCtx;
-
 
         NotifyGateHolder(View itemView, Context mCtx) {
             super(itemView);
             itemView.setOnClickListener(this);
             this.mCtx = mCtx;
-
-
             textNotification = itemView.findViewById(R.id.textNotification);
             imageNotificationService = itemView.findViewById(R.id.imageNotificationService);
         }
@@ -75,31 +71,52 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            switch (position) {
-                case 0: {
-                    Intent intent = new Intent(mCtx, ExpectingArrival.class);
-                    intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_cab_arrival);
-                    mCtx.startActivity(intent);
-                    break;
+
+            /*Since we are using same layout for Notify Digital Cab and Emergency we need to
+             * change click event for both layout*/
+            if (serviceType == R.string.notify_digital_gate) {
+                switch (position) {
+                    case 0: {
+                        Intent intent = new Intent(mCtx, ExpectingArrival.class);
+                        intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_cab_arrival);
+                        mCtx.startActivity(intent);
+                        break;
+                    }
+                    case 1: {
+                        Intent intent = new Intent(mCtx, ExpectingArrival.class);
+                        intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_package_arrival);
+                        mCtx.startActivity(intent);
+                        break;
+                    }
+                    case 2: {
+                        Intent intent = new Intent(mCtx, InvitingVisitors.class);
+                        mCtx.startActivity(intent);
+                        break;
+                    }
+                    case 3: {
+                        Intent intent = new Intent(mCtx, HandedThingsGuestActivity.class);
+                        mCtx.startActivity(intent);
+                        break;
+                    }
                 }
-                case 1: {
-                    Intent intent = new Intent(mCtx, ExpectingArrival.class);
-                    intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_package_arrival);
-                    mCtx.startActivity(intent);
-                    break;
+            } else {
+                Intent intent = new Intent(mCtx, RaiseAlarm.class);
+                switch (position) {
+                    case 0: {
+                        intent.putExtra(Constants.ALARM_TYPE, R.string.medical_emergency);
+                        break;
+                    }
+                    case 1: {
+                        intent.putExtra(Constants.ALARM_TYPE, R.string.raise_fire_alarm);
+                        break;
+                    }
+                    case 2: {
+                        intent.putExtra(Constants.ALARM_TYPE, R.string.raise_theft_alarm);
+                        break;
+                    }
                 }
-                case 2: {
-                    Intent intent = new Intent(mCtx, InvitingVisitors.class);
-                    mCtx.startActivity(intent);
-                    break;
-                }
-                case 3: {
-                    Intent intent = new Intent(mCtx, HandedThingsGuestActivity.class);
-                    mCtx.startActivity(intent);
-                    break;
-                }
+                mCtx.startActivity(intent);
             }
         }
     }
-
 }

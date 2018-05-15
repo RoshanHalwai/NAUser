@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors">
 
@@ -27,7 +26,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:inputType="textCapWords|textVisiblePassword"
+        android:inputType="textCapWords"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/edit_text_default_size"
         tools:ignore="LabelFor" />
@@ -179,7 +178,7 @@
         android:text="@string/we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/buttonInvite"
@@ -190,5 +189,5 @@
         android:text="@string/invite"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>

@@ -31,23 +31,23 @@ public class SocietyServices extends Fragment {
 
         /*Getting Id's for all the views*/
         ListView listView = view.findViewById(R.id.listviewSocietyServices);
-        List<Service> societyServicesList = new ArrayList<>();
+        List<NammaApartmentService> societyServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
-        societyServicesList.add(new Service(R.drawable.digital_gate_services, getString(R.string.digital_gate)));
-        societyServicesList.add(new Service(R.drawable.plumbing, getString(R.string.plumber)));
-        societyServicesList.add(new Service(R.drawable.carpenter_service, getString(R.string.carpenter)));
-        societyServicesList.add(new Service(R.drawable.electrician, getString(R.string.electrician)));
-        societyServicesList.add(new Service(R.drawable.garbage_bin, getString(R.string.garbage_management)));
-        societyServicesList.add(new Service(R.drawable.medical_emergency, getString(R.string.medical_emergency)));
-        societyServicesList.add(new Service(R.drawable.event, getString(R.string.event_management)));
-        societyServicesList.add(new Service(R.drawable.water_service, getString(R.string.water_services)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.digital_gate_services, getString(R.string.digital_gate)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.plumbing, getString(R.string.plumber)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_service, getString(R.string.carpenter)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.electrician, getString(R.string.electrician)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_bin, getString(R.string.garbage_management)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.medical_emergency, getString(R.string.medical_emergency)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.event, getString(R.string.event_management)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.water_service, getString(R.string.water_services)));
 
         /*Creating the Adapter*/
-        ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
+        NammaApartmentServiceAdapter nammaApartmentServiceAdapter = new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
 
         /*Attaching adapter to the listview*/
-        listView.setAdapter(serviceAdapter);
+        listView.setAdapter(nammaApartmentServiceAdapter);
 
         /*Setting event for list view items*/
         listView.setOnItemClickListener((parent, view1, position, id) -> {
