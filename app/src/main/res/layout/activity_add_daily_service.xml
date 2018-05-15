@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:inputType="textCapWords|textVisiblePassword"
+                    android:inputType="textCapWords"
                     android:textColor="@color/nmBlack"
                     android:textSize="@dimen/edit_text_default_size"
                     tools:ignore="LabelFor" />

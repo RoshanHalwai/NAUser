@@ -157,5 +157,10 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
 
+    <!--Raise Fire Alarm & Theft Alarm-->
+    <string name="tap_on_bell_icon_to_create_alert">Tap on bell icon to create alert</string>
+    <string name="image_to_create_an_alarm">Image to create an alarm</string>
+    <string name="emergency_alarm_raised">Emergency alarm raised</string>
+
 
 </resources>
