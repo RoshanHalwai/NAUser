@@ -44,7 +44,7 @@ public class AddDailyService extends BaseActivity {
     private AlertDialog dialog;
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_my_service;
+        return R.layout.activity_add_daily_service;
     }
 
     @Override
