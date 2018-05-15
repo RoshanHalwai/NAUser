@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome">
 
-    <include layout="@layout/activity_base" />
-
+    <include
+        android:id="@+id/layoutActivityBase"
+        layout="@layout/activity_base" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -15,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add" />

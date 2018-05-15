@@ -41,7 +41,7 @@ public class SocietyServices extends Fragment {
         societyServicesList.add(new Service(R.drawable.garbage_bin, getString(R.string.garbage_management)));
         societyServicesList.add(new Service(R.drawable.medical_emergency, getString(R.string.medical_emergency)));
         societyServicesList.add(new Service(R.drawable.event, getString(R.string.event_management)));
-        societyServicesList.add(new Service(R.drawable.water_services, getString(R.string.water_services)));
+        societyServicesList.add(new Service(R.drawable.water_service, getString(R.string.water_services)));
 
         /*Creating the Adapter*/
         ServiceAdapter serviceAdapter = new ServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
