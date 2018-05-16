@@ -41,6 +41,7 @@ public class AddDailyService extends BaseActivity {
     private Button buttonAdd;
     private CircleImageView circleImageView;
     private String selectedTime;
+    private String service_type;
     private AlertDialog dialog;
 
     @Override
@@ -148,26 +149,23 @@ public class AddDailyService extends BaseActivity {
         });
         editPickTime.setOnClickListener(View -> displayTime());
 
-        /*Setting events for add button click*/
-        //TODO: Change OTP class based on screen from where USER calls it. Pass Date to Intent
-        buttonAdd.setOnClickListener(v -> startActivity(new Intent(AddDailyService.this, OTP.class)));
-
         /*Getting type of service*/
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
-            String service_type = bundle.getString(Constants.SERVICE_TYPE);
+            service_type = bundle.getString(Constants.SERVICE_TYPE);
             String description = getText(R.string.we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society).toString();
             assert service_type != null;
             description = description.replace("visitor", service_type);
             textDescription.setText(description);
         }
 
-        /*Setting event for buttonAdd listener*/
+        /*Setting events for add button click*/
+        //TODO: Change OTP class based on screen from where USER calls it. Pass Date to Intent
         buttonAdd.setOnClickListener(v -> {
-            Intent intentOtp = new Intent(AddDailyService.this, OTP.class);
-            //intentOtp.putExtra(Constants.SERVICE_TYPE, service_type);
-            startActivity(intentOtp);
+            Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
+            intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
+            startActivity(intentButtonAdd);
         });
     }
 
