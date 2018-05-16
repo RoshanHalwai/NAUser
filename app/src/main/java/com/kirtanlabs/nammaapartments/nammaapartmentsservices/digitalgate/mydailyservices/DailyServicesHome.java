@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
 
 import java.util.ArrayList;
 
@@ -41,6 +43,11 @@ public class DailyServicesHome extends BaseActivity {
 
         /*We need Info Button in this screen*/
         showInfoButton();
+
+        /*Initialising back button*/
+        ImageView backButton = findViewById(R.id.backButton);
+        /*Handling back button click*/
+        backButton.setOnClickListener(v -> startActivity(new Intent(DailyServicesHome.this, DigitalGateHome.class)));
 
         /*Custom DialogBox with list of all daily services*/
         AlertDialog.Builder dailyServicesDialog = new AlertDialog.Builder(DailyServicesHome.this);
@@ -129,4 +136,8 @@ public class DailyServicesHome extends BaseActivity {
         dialog.setOnCancelListener(dialog1 -> fab.startAnimation(rotate_anticlockwise));
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(DailyServicesHome.this, DigitalGateHome.class));
+    }
 }

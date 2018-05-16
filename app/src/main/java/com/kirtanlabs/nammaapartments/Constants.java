@@ -17,6 +17,7 @@ public class Constants {
     public static final String SERVICE_TYPE = "service_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
     public static final String ALARM_TYPE = "alarm_type";
+    public static final String OTP_TYPE = "otp_type";
 
     /* Font Types */
     public static Typeface setLatoBlackFont(Context c) {

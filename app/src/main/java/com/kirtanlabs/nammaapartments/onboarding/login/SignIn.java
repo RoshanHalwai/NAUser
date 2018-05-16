@@ -47,7 +47,8 @@ public class SignIn extends BaseActivity {
 
         /*Setting event for LOGIN button*/
         buttonSignIn.setOnClickListener(view -> {
-            startActivity(new Intent(this, OTP.class));
+            Intent intent = new Intent(SignIn.this, OTP.class);
+            startActivity(intent);
             finish();
         });
         textCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(this, SignUp.class)));
