@@ -55,7 +55,7 @@ public class InvitingVisitors extends BaseActivity {
         showInfoButton();
 
         /*Getting Id's for all the views*/
-        TextView textVisitorName = findViewById(R.id.textVisitorName);
+        TextView textVisitorName = findViewById(R.id.textVisitorAndServiceName);
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
         TextView textOr = findViewById(R.id.textOr);
         TextView textDateTime = findViewById(R.id.textDateTime);

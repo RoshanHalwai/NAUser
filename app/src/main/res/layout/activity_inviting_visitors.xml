@@ -9,7 +9,7 @@
     <include layout="@layout/activity_base" />
 
     <TextView
-        android:id="@+id/textVisitorName"
+        android:id="@+id/textVisitorAndServiceName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

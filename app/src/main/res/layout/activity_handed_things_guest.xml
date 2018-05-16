@@ -62,7 +62,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textVisitorName"
+                        android:id="@+id/textVisitorAndServiceName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -71,7 +71,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textVisitorType"
+                        android:id="@+id/textVisitorAndServiceType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -98,7 +98,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitedBy"
+                        android:id="@+id/textInvitedByAndApartmentNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -116,7 +116,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textVisitorNameValue"
+                        android:id="@+id/textVisitorAndServiceNameValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -125,7 +125,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textVisitorTypeValue"
+                        android:id="@+id/textVisitorAndServiceTypeValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -152,7 +152,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitedByValue"
+                        android:id="@+id/textInvitedByAndApartmentNoValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"

@@ -30,7 +30,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     public VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_visitors_list, parent, false);
+        View view = inflater.inflate(R.layout.layout_visitors_and_my_daily_services_list, parent, false);
         return new VisitorViewHolder(view);
     }
 
@@ -79,21 +79,21 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
         VisitorViewHolder(View itemView) {
             super(itemView);
-            textVisitorName = itemView.findViewById(R.id.textVisitorName);
-            textVisitorType = itemView.findViewById(R.id.textVisitorType);
+            textVisitorName = itemView.findViewById(R.id.textVisitorAndServiceName);
+            textVisitorType = itemView.findViewById(R.id.textVisitorAndServiceType);
             textInvitationDate = itemView.findViewById(R.id.textInvitationDate);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
-            textInvitedBy = itemView.findViewById(R.id.textInvitedBy);
+            textInvitedBy = itemView.findViewById(R.id.textInvitedByAndApartmentNo);
 
-            textVisitorNameValue = itemView.findViewById(R.id.textVisitorNameValue);
-            textVisitorTypeValue = itemView.findViewById(R.id.textVisitorTypeValue);
+            textVisitorNameValue = itemView.findViewById(R.id.textVisitorAndServiceNameValue);
+            textVisitorTypeValue = itemView.findViewById(R.id.textVisitorAndServiceTypeValue);
             textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
-            textInvitedByValue = itemView.findViewById(R.id.textInvitedByValue);
+            textInvitedByValue = itemView.findViewById(R.id.textInvitedByAndApartmentNoValue);
 
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
-            textReschedule = itemView.findViewById(R.id.textReschedule);
+            textReschedule = itemView.findViewById(R.id.textRescheduleAndEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
         }
     }

@@ -52,16 +52,16 @@ public class HandedThingsGuestActivity extends BaseActivity {
         cardViewVisitors.setVisibility(View.VISIBLE);
 
         /*Initialising all the views*/
-        TextView textVisitorName = findViewById(R.id.textVisitorName);
-        TextView textVisitorType = findViewById(R.id.textVisitorType);
+        TextView textVisitorName = findViewById(R.id.textVisitorAndServiceName);
+        TextView textVisitorType = findViewById(R.id.textVisitorAndServiceType);
         TextView textInvitationDate = findViewById(R.id.textInvitationDate);
         TextView textInvitationTime = findViewById(R.id.textInvitationTime);
-        TextView textInvitedBy = findViewById(R.id.textInvitedBy);
-        TextView textVisitorNameValue = findViewById(R.id.textVisitorNameValue);
-        TextView textVisitorTypeValue = findViewById(R.id.textVisitorTypeValue);
+        TextView textInvitedBy = findViewById(R.id.textInvitedByAndApartmentNo);
+        TextView textVisitorNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
+        TextView textVisitorTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
         TextView textInvitationDateValue = findViewById(R.id.textInvitationDateValue);
         TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
-        TextView textInvitedByValue = findViewById(R.id.textInvitedByValue);
+        TextView textInvitedByValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
         textDescription = findViewById(R.id.textDescription);
         editDescription = findViewById(R.id.editDescription);
