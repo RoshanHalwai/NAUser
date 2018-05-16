@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -50,8 +52,19 @@ public class DailyServicesHome extends BaseActivity {
         fab = findViewById(R.id.fab);
         ListView listView = listDailyServices.findViewById(R.id.listViewDailyServices);
 
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         rotate_clockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         rotate_anticlockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
+
+        //Creating recycler view adapter
+        DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
+
+        //Setting adapter to recycler view
+        recyclerView.setAdapter(adapterDailyServices);
+
 
         ArrayList<String> servicesList = new ArrayList<>();
 

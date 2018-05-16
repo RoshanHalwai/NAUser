@@ -26,7 +26,7 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
 
     private final Context mCtx;
     private final List<NammaApartmentService> notificationServicesList;
-    private int serviceType;
+    private final int serviceType;
 
     NotifyGateAndEmergencyAdapter(Context mCtx, List<NammaApartmentService> notificationServicesList, int serviceType) {
         this.mCtx = mCtx;
