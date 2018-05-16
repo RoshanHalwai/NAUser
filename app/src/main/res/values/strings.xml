@@ -49,7 +49,7 @@
     <string name="create_an_account">Create an Account</string>
     <string name="login">LOGIN</string>
 
-    <!--Home Activity-->
+    <!--NammaApartmentsHome Activity-->
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>

@@ -44,8 +44,8 @@
             android:name=".onboarding.login.OTP"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Namma Apartments Home Screen -->
-        <activity android:name=".nammaapartmentshome.Home" />
+        <!-- Namma Apartments NammaApartmentsHome Screen -->
+        <activity android:name=".nammaapartmentshome.NammaApartmentsHome" />
 
         <!-- Digital Gate Screens -->
         <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />

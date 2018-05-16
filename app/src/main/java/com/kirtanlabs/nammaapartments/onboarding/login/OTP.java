@@ -12,7 +12,8 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.Home;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
 
 public class OTP extends BaseActivity {
 
@@ -22,6 +23,7 @@ public class OTP extends BaseActivity {
     private EditText editFourthOTPDigit;
     private EditText editFifthOTPDigit;
     private EditText editSixthOTPDigit;
+    private TextView textPhoneVerification;
     private Button buttonVerifyOTP;
 
     @Override
@@ -44,7 +46,7 @@ public class OTP extends BaseActivity {
         hideBackButton();
 
         /*Getting Id's for all the views*/
-        TextView textPhoneVerification = findViewById(R.id.textPhoneVerification);
+        textPhoneVerification = findViewById(R.id.textPhoneVerification);
         buttonVerifyOTP = findViewById(R.id.buttonVerifyOTP);
         editFirstOTPDigit = findViewById(R.id.editFirstOTPDigit);
         editSecondOTPDigit = findViewById(R.id.editSecondOTPDigit);
@@ -66,9 +68,19 @@ public class OTP extends BaseActivity {
         /*Setting events for OTP edit text*/
         setEventsForEditText();
 
+        /*Since we are using same layout after clicking login and also on add Daily Services we need to
+         * set text for textPhoneVerification */
+        getTextPhoneVerification();
+
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(view -> {
-            startActivity(new Intent(this, Home.class));
+            if ((textPhoneVerification.getText().toString()).equals((getString(R.string.enter_verification_code)))) {
+                Intent intent = new Intent(OTP.this, NammaApartmentsHome.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(OTP.this, DailyServicesHome.class);
+                startActivity(intent);
+            }
             finish();
         });
     }
@@ -159,7 +171,6 @@ public class OTP extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -181,4 +192,18 @@ public class OTP extends BaseActivity {
         });
     }
 
+    /*This method gets invoked when user comes to otp screen after clicking on add button in add my service activity */
+    private void getTextPhoneVerification() {
+        /*Getting type of service*/
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            String otp_Type = bundle.getString(Constants.OTP_TYPE);
+            String description = getText(R.string.enter_verification_code).toString();
+            assert otp_Type != null;
+            description = description.replace("account", otp_Type + " account");
+            textPhoneVerification.setText(description);
+        }
+    }
 }
+
