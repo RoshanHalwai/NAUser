@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.Home;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
 
 public class OTP extends BaseActivity {
@@ -75,7 +75,7 @@ public class OTP extends BaseActivity {
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(view -> {
             if ((textPhoneVerification.getText().toString()).equals((getString(R.string.enter_verification_code)))) {
-                Intent intent = new Intent(OTP.this, Home.class);
+                Intent intent = new Intent(OTP.this, NammaApartmentsHome.class);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(OTP.this, DailyServicesHome.class);

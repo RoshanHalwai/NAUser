@@ -10,11 +10,11 @@ import android.support.v4.view.ViewPager;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
-public class Home extends BaseActivity {
+public class NammaApartmentsHome extends BaseActivity {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_home;
+        return R.layout.activity_namma_apartments_home;
     }
 
     @Override
