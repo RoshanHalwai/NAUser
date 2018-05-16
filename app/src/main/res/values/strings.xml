@@ -102,7 +102,7 @@
     <string name="visitor">Visitor:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
-    <string name="time">Time:</string>
+    <string name="time">In Time:</string>
     <string name="invited_by">Invited By:</string>
     <string name="call">Call</string>
     <string name="message">Message</string>
@@ -142,6 +142,9 @@
     <string name="title_activity_daily_services">DailyServices</string>
 
     <!--My Daily Services-->
+    <string name="remove">Remove</string>
+    <string name="flats">Flats:</string>
+    <string name="rating">Rating:</string>
     <string name="car_bike_cleaner">Car/Bike cleaner</string>
     <string name="child_care_taker">Child Caretaker</string>
     <string name="newspaper_paper_man">NewsPaper man</string>

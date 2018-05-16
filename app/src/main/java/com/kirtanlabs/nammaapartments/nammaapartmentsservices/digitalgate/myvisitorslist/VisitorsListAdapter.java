@@ -38,15 +38,15 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
         holder.textVisitorName.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textVisitorType.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDate.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textInvitationTime.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedBy.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoBoldFont(mCtx));
 
         holder.textVisitorNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textVisitorTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
 
         holder.textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
@@ -65,12 +65,12 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         final TextView textVisitorNameValue;
         final TextView textVisitorType;
         final TextView textVisitorTypeValue;
-        final TextView textInvitationDate;
-        final TextView textInvitationDateValue;
+        final TextView textInvitationDateOrServiceRating;
+        final TextView textInvitationDateOrServiceRatingValue;
         final TextView textInvitationTime;
         final TextView textInvitationTimeValue;
-        final TextView textInvitedBy;
-        final TextView textInvitedByValue;
+        final TextView textInvitedByOrNumberOfFlats;
+        final TextView textInvitedByOrNumberOfFlatsValue;
 
         final TextView textCall;
         final TextView textMessage;
@@ -79,21 +79,21 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
         VisitorViewHolder(View itemView) {
             super(itemView);
-            textVisitorName = itemView.findViewById(R.id.textVisitorAndServiceName);
-            textVisitorType = itemView.findViewById(R.id.textVisitorAndServiceType);
-            textInvitationDate = itemView.findViewById(R.id.textInvitationDate);
+            textVisitorName = itemView.findViewById(R.id.textVisitorOrServiceName);
+            textVisitorType = itemView.findViewById(R.id.textVisitorOrServiceType);
+            textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
-            textInvitedBy = itemView.findViewById(R.id.textInvitedByAndApartmentNo);
+            textInvitedByOrNumberOfFlats = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
 
-            textVisitorNameValue = itemView.findViewById(R.id.textVisitorAndServiceNameValue);
-            textVisitorTypeValue = itemView.findViewById(R.id.textVisitorAndServiceTypeValue);
-            textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateValue);
+            textVisitorNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
+            textVisitorTypeValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
+            textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
-            textInvitedByValue = itemView.findViewById(R.id.textInvitedByAndApartmentNoValue);
+            textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
 
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
-            textReschedule = itemView.findViewById(R.id.textRescheduleAndEdit);
+            textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
         }
     }
