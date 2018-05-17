@@ -57,7 +57,7 @@
         <activity
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingArrival"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestActivity" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestAndServices" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
         <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm" />
@@ -74,6 +74,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThings"></activity>
     </application>
 
 </manifest>

@@ -94,7 +94,14 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
                         break;
                     }
                     case 3: {
-                        Intent intent = new Intent(mCtx, HandedThingsGuestActivity.class);
+                        Intent intent = new Intent(mCtx, HandedThings.class);
+                        intent.putExtra(Constants.HANDED_THINGS_TO, R.string.handed_things_to_my_guest);
+                        mCtx.startActivity(intent);
+                        break;
+                    }
+                    case 4: {
+                        Intent intent = new Intent(mCtx, HandedThings.class);
+                        intent.putExtra(Constants.HANDED_THINGS_TO, R.string.handed_things_to_my_daily_services);
                         mCtx.startActivity(intent);
                         break;
                     }
