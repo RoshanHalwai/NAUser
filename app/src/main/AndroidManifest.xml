@@ -24,6 +24,18 @@
             android:name=".onboarding.login.SignUp"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Notification Services -->
+        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <!-- Splash Screens -->
         <activity
             android:name=".onboarding.splashscreen.SplashScreen"
@@ -59,21 +71,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThingsGuestActivity" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers" />
         <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm" />
-
-        <!-- Notification Services -->
-        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
+        <activity android:name=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome" />
     </application>
 
 </manifest>

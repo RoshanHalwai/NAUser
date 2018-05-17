@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService">
+    tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers">
 
     <include layout="@layout/activity_base" />
 
@@ -158,7 +158,51 @@
                         android:layerType="software" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/layoutThings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/row1"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textGivenThings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Grant Access"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <Button
+                        android:id="@+id/buttonYes"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_guest_not_selected"
+                        android:text="@string/yes"
+                        android:textAllCaps="false"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/buttonNo"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_guest_selected"
+                        android:text="@string/no"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/relativeLayoutTime"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -181,15 +225,14 @@
                         android:layout_toEndOf="@id/textTime"
                         android:layout_toRightOf="@id/textTime"
                         android:cursorVisible="false"
-                        android:drawableEnd="@drawable/calendar_date"
-                        android:drawableRight="@drawable/calendar_date"
+                        android:drawableEnd="@drawable/clock"
+                        android:drawableRight="@drawable/clock"
                         android:gravity="center"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp"
                         tools:ignore="LabelFor,TextFields" />
 
                 </RelativeLayout>
-
 
                 <TextView
                     android:id="@+id/textDescription"
@@ -201,7 +244,7 @@
                     android:text="@string/we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society"
                     android:textColor="@color/nmBlack"
                     android:textSize="@dimen/text_view_default_size"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/buttonAdd"
@@ -212,7 +255,7 @@
                     android:text="@string/add"
                     android:textColor="@color/nmLightYellow"
                     android:textSize="@dimen/button_default_size"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 

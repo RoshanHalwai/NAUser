@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.R;
 
@@ -20,14 +21,14 @@ public class ApartmentServices extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_apartment_services, container, false);
+        return inflater.inflate(R.layout.activity_namma_apartments_services, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*Getting Id's for all the views*/
-        ListView listView = view.findViewById(R.id.listviewApartmentServices);
+        ListView listView = view.findViewById(R.id.listViewNammaApartmentServices);
         List<NammaApartmentService> apartmentServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
@@ -46,6 +47,14 @@ public class ApartmentServices extends Fragment {
 
         //Attaching adapter to the listview
         listView.setAdapter(nammaApartmentServiceAdapter);
-    }
 
+        /*Setting event for list view items*/
+        listView.setOnItemClickListener((parent, view1, position, id) ->
+        {
+            switch (position) {
+                default:
+                    Toast.makeText(getActivity(), "Yet To Implement", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

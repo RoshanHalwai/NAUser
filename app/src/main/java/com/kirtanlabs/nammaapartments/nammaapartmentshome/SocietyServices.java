@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
@@ -22,7 +23,7 @@ public class SocietyServices extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_society_services, container, false);
+        return inflater.inflate(R.layout.activity_namma_apartments_services, container, false);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class SocietyServices extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         /*Getting Id's for all the views*/
-        ListView listView = view.findViewById(R.id.listviewSocietyServices);
+        ListView listView = view.findViewById(R.id.listViewNammaApartmentServices);
         List<NammaApartmentService> societyServicesList = new ArrayList<>();
 
         /*Adding some values to our list*/
@@ -55,7 +56,10 @@ public class SocietyServices extends Fragment {
                 case 0: {
                     Intent intent = new Intent(getActivity(), DigitalGateHome.class);
                     startActivity(intent);
+                    break;
                 }
+                default:
+                    Toast.makeText(getActivity(), "Yet To Implement", Toast.LENGTH_SHORT).show();
             }
         });
     }

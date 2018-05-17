@@ -94,7 +94,7 @@ public class DailyServicesHome extends BaseActivity {
 
         /*Setting event for list view items*/
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            Intent intent = new Intent(DailyServicesHome.this, AddDailyService.class);
+            Intent intent = new Intent(DailyServicesHome.this, AddDailyServiceAndFamilyMembers.class);
             switch (position) {
                 case 0:
                     intent.putExtra(Constants.SERVICE_TYPE, (getString(R.string.cook)));

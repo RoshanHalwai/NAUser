@@ -165,5 +165,8 @@
     <string name="image_to_create_an_alarm">Image to create an alarm</string>
     <string name="emergency_alarm_raised">Emergency alarm raised</string>
 
+    <!--MySweetHome Activity-->
+    <string name="add_my_family_members">Add My Family Members</string>
+    <string name="add_family_members_details_screen">Add Family Members Details Screen</string>
 
 </resources>

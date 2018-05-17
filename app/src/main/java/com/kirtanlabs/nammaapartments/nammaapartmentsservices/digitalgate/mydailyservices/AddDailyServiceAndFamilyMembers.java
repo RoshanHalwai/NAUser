@@ -29,7 +29,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AddDailyService extends BaseActivity {
+public class AddDailyServiceAndFamilyMembers extends BaseActivity {
 
     private final int RESULT_PICK_CONTACT = 1;
     private final int CAMERA_REQUEST = 2;
@@ -46,12 +46,18 @@ public class AddDailyService extends BaseActivity {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_add_daily_service;
+        return R.layout.activity_add_daily_service_and_family_members;
     }
 
     @Override
     protected int getActivityTitle() {
-        return R.string.add_my_service;
+        /*We use a common class for Add Daily Service and Add Family Members, we set the title
+         * based on the user click on MySweetHome screen and on click of listview on MyDailyServices*/
+        if (getIntent().getIntExtra(Constants.SERVICE_TYPE, 0) == R.string.add_family_members_details_screen) {
+            return R.string.add_family_members_details_screen;
+        } else {
+            return R.string.add_my_service;
+        }
     }
 
     @Override
@@ -107,7 +113,7 @@ public class AddDailyService extends BaseActivity {
         pickImageList.add(getString(R.string.cancel));
 
         /*Creating the Adapter*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddDailyService.this, android.R.layout.simple_list_item_1, pickImageList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddDailyServiceAndFamilyMembers.this, android.R.layout.simple_list_item_1, pickImageList);
 
         /*Attaching adapter to the listView*/
         listView.setAdapter(adapter);
@@ -161,9 +167,8 @@ public class AddDailyService extends BaseActivity {
         }
 
         /*Setting events for add button click*/
-        //TODO: Change OTP class based on screen from where USER calls it. Pass Date to Intent
         buttonAdd.setOnClickListener(v -> {
-            Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
+            Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
             intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
             startActivity(intentButtonAdd);
         });
