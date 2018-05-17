@@ -26,9 +26,8 @@ public class SignIn extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*Since this is Login Screen we wouldn't
-         * want the users to go back to Splash screen, hence hiding
-         * the back button from the Title Bar*/
+        /*Since this is Login Screen we wouldn't want the users to go back to Splash screen,
+        hence hiding the back button from the Title Bar*/
         hideBackButton();
 
         /*Getting Id's for all the views*/
@@ -45,12 +44,13 @@ public class SignIn extends BaseActivity {
         editMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
         buttonSignIn.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Setting event for LOGIN button*/
+        /*Setting event for Login button*/
         buttonSignIn.setOnClickListener(view -> {
-            Intent intent = new Intent(SignIn.this, OTP.class);
-            startActivity(intent);
+            startActivity(new Intent(SignIn.this, OTP.class));
             finish();
         });
-        textCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(this, SignUp.class)));
+
+        /*Currently the App does not allow the user to Sign Up*/
+        //textCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(this, SignUp.class)));
     }
 }

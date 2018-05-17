@@ -40,9 +40,8 @@ public class OTP extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*Since this is OTP Screen we wouldn't
-         * want the users to go back to Phone Number screen, hence hiding
-         * the back button from the Title Bar*/
+        /* Since this is OTP Screen we wouldn't want the users to go back to Phone Number screen,
+         * hence hiding the back button from the Title Bar*/
         hideBackButton();
 
         /*Getting Id's for all the views*/
@@ -70,7 +69,9 @@ public class OTP extends BaseActivity {
 
         /*Since we are using same layout after clicking login and also on add Daily Services we need to
          * set text for textPhoneVerification */
-        getTextPhoneVerification();
+        if (getIntent().getExtras() != null) {
+            updatePhoneVerificationText();
+        }
 
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(view -> {
@@ -79,6 +80,8 @@ public class OTP extends BaseActivity {
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(OTP.this, DailyServicesHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
             finish();
@@ -89,7 +92,6 @@ public class OTP extends BaseActivity {
      * Once user enters a digit in one edit text we move the focus to next edit text
      */
     private void setEventsForEditText() {
-
         editFirstOTPDigit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -192,18 +194,15 @@ public class OTP extends BaseActivity {
         });
     }
 
-    /*This method gets invoked when user comes to otp screen after clicking on add button in add my service activity */
-    private void getTextPhoneVerification() {
-        /*Getting type of service*/
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            String otp_Type = bundle.getString(Constants.OTP_TYPE);
-            String description = getText(R.string.enter_verification_code).toString();
-            assert otp_Type != null;
-            description = description.replace("account", otp_Type + " account");
-            textPhoneVerification.setText(description);
-        }
+    /*This method gets invoked when user comes to otp screen after clicking on add button
+     *in add my service activity */
+    private void updatePhoneVerificationText() {
+        String service_type = getIntent().getStringExtra(Constants.OTP_TYPE);
+        String description = getResources().getString(R.string.enter_verification_code);
+        description = description.replace("account", service_type + " account");
+        description = description.replace("your", "their");
+        textPhoneVerification.setText(description);
     }
+
 }
 

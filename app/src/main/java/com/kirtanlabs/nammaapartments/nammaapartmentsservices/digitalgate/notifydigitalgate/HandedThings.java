@@ -24,7 +24,6 @@ public class HandedThings extends BaseActivity {
     private TextView textVisitorAndServiceTypeValue;
     private TextView textInvitationDateAndRatingValue;
     private TextView textInvitedByAndApartmentNoValue;
-
     private TextView textDescription;
     private EditText editDescription;
     private Button buttonYes;
@@ -152,4 +151,5 @@ public class HandedThings extends BaseActivity {
             textInvitedByAndApartmentNoValue.setText("3");
         }
     }
+
 }
