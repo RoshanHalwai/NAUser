@@ -175,7 +175,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
-        android:text="@string/we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society"
+        android:text="@string/send_otp_message"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size"
         android:visibility="gone" />

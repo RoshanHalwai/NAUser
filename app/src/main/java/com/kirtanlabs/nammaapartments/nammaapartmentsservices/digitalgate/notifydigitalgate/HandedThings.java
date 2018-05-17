@@ -14,8 +14,16 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
-public class HandedThingsGuestActivity extends BaseActivity {
+public class HandedThings extends BaseActivity {
 
+    private int handed_Things_To;
+    private TextView textVisitorAndServiceName;
+    private TextView textInvitationDateAndRating;
+    private TextView textInvitedByAndApartmentNo;
+    private TextView textVisitorNameAndServiceNameValue;
+    private TextView textVisitorAndServiceTypeValue;
+    private TextView textInvitationDateAndRatingValue;
+    private TextView textInvitedByAndApartmentNoValue;
     private TextView textDescription;
     private EditText editDescription;
     private Button buttonYes;
@@ -24,12 +32,19 @@ public class HandedThingsGuestActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_handed_things_guest;
+        return R.layout.activity_handed_things;
     }
 
     @Override
     protected int getActivityTitle() {
-        return R.string.handed_things_to_my_guest;
+        /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
+         * based on the user click on NotifyGate Home screen*/
+        if (getIntent().getIntExtra(Constants.HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
+            handed_Things_To = R.string.handed_things_to_my_guest;
+        } else {
+            handed_Things_To = R.string.handed_things_to_my_daily_services;
+        }
+        return handed_Things_To;
     }
 
     @Override
@@ -52,16 +67,16 @@ public class HandedThingsGuestActivity extends BaseActivity {
         cardViewVisitors.setVisibility(View.VISIBLE);
 
         /*Initialising all the views*/
-        TextView textVisitorName = findViewById(R.id.textVisitorAndServiceName);
-        TextView textVisitorType = findViewById(R.id.textVisitorAndServiceType);
-        TextView textInvitationDate = findViewById(R.id.textInvitationDate);
+        textVisitorAndServiceName = findViewById(R.id.textVisitorAndServiceName);
+        TextView textVisitorAndServiceType = findViewById(R.id.textVisitorAndServiceType);
+        textInvitationDateAndRating = findViewById(R.id.textInvitationDate);
         TextView textInvitationTime = findViewById(R.id.textInvitationTime);
-        TextView textInvitedBy = findViewById(R.id.textInvitedByAndApartmentNo);
-        TextView textVisitorNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
-        TextView textVisitorTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
-        TextView textInvitationDateValue = findViewById(R.id.textInvitationDateValue);
+        textInvitedByAndApartmentNo = findViewById(R.id.textInvitedByAndApartmentNo);
+        textVisitorNameAndServiceNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
+        textVisitorAndServiceTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
+        textInvitationDateAndRatingValue = findViewById(R.id.textInvitationDateValue);
         TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
-        TextView textInvitedByValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
+        textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
         textDescription = findViewById(R.id.textDescription);
         editDescription = findViewById(R.id.editDescription);
@@ -70,22 +85,26 @@ public class HandedThingsGuestActivity extends BaseActivity {
         buttonNo = findViewById(R.id.buttonNo);
 
         /*Setting fonts to the views*/
-        textVisitorName.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorType.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationDate.setTypeface(Constants.setLatoBoldFont(this));
+        textVisitorAndServiceName.setTypeface(Constants.setLatoBoldFont(this));
+        textVisitorAndServiceType.setTypeface(Constants.setLatoBoldFont(this));
+        textInvitationDateAndRating.setTypeface(Constants.setLatoBoldFont(this));
         textInvitationTime.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitedBy.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorNameValue.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorTypeValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationDateValue.setTypeface(Constants.setLatoBoldFont(this));
+        textInvitedByAndApartmentNo.setTypeface(Constants.setLatoBoldFont(this));
+        textVisitorNameAndServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
+        textVisitorAndServiceTypeValue.setTypeface(Constants.setLatoBoldFont(this));
+        textInvitationDateAndRatingValue.setTypeface(Constants.setLatoBoldFont(this));
         textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitedByValue.setTypeface(Constants.setLatoBoldFont(this));
+        textInvitedByAndApartmentNoValue.setTypeface(Constants.setLatoBoldFont(this));
         textGivenThings.setTypeface(Constants.setLatoBoldFont(this));
         textDescription.setTypeface(Constants.setLatoBoldFont(this));
         editDescription.setTypeface(Constants.setLatoRegularFont(this));
         buttonYes.setTypeface(Constants.setLatoRegularFont(this));
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
+
+        /*Since we are using same layout for handed things to my guest and handed things to my daily services we need to
+         * change some Titles in layout*/
+        changeTitles();
 
         /*Method for button Yes*/
         buttonYes.setOnClickListener(v -> {
@@ -118,6 +137,19 @@ public class HandedThingsGuestActivity extends BaseActivity {
             buttonYes.setTextColor(Color.BLACK);
             buttonNo.setTextColor(Color.WHITE);
         });
+    }
+
+    private void changeTitles() {
+        if (handed_Things_To == R.string.handed_things_to_my_daily_services) {
+            String stringServiceName = getResources().getString(R.string.name) + ":";
+            textVisitorAndServiceName.setText(stringServiceName);
+            textVisitorNameAndServiceNameValue.setText("Ramesh");
+            textVisitorAndServiceTypeValue.setText(R.string.cook);
+            textInvitationDateAndRating.setText(R.string.rating);
+            textInvitationDateAndRatingValue.setText("4.2");
+            textInvitedByAndApartmentNo.setText(R.string.flats);
+            textInvitedByAndApartmentNoValue.setText("3");
+        }
     }
 
 }
