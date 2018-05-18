@@ -43,6 +43,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
     private String selectedTime;
     private String service_type;
     private AlertDialog dialog;
+    private ListView listView;
 
     @Override
     protected int getLayoutResourceId() {
@@ -86,10 +87,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonAdd = findViewById(R.id.buttonAdd);
         circleImageView = findViewById(R.id.profileImage);
-        ListView listView = listAddImageServices.findViewById(R.id.listAddImageService);
-
-        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
-        editPickTime.setInputType(InputType.TYPE_NULL);
+        listView = listAddImageServices.findViewById(R.id.listAddImageService);
 
         /*Setting font for all the views*/
         textName.setTypeface(Constants.setLatoBoldFont(this));
@@ -104,6 +102,52 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         buttonSelectFromContact.setTypeface(Constants.setLatoLightFont(this));
         buttonAdd.setTypeface(Constants.setLatoLightFont(this));
 
+        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
+        editPickTime.setInputType(InputType.TYPE_NULL);
+
+        /*Setting event for circleImageView*/
+        circleImageView.setOnClickListener(v -> dialog.show());
+
+        /*Setting event for Select From Contacts button*/
+        buttonSelectFromContact.setOnClickListener(view -> {
+            Intent i = new Intent(Intent.ACTION_PICK);
+            i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+            startActivityForResult(i, RESULT_PICK_CONTACT);
+        });
+
+        /*Setting event for  Displaying Date & Time*/
+        editPickTime.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                displayTime();
+            }
+        });
+        editPickTime.setOnClickListener(View -> displayTime());
+
+        /*Setting events for add button click*/
+        buttonAdd.setOnClickListener(v -> {
+            Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+            intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
+            startActivity(intentButtonAdd);
+        });
+
+        updateOTPDescription();
+
+        setupViewsForProfilePhoto();
+    }
+
+    /**
+     * We need to update OTP Message description based on Service for which user is entering the
+     * details.
+     */
+    private void updateOTPDescription() {
+        if (getIntent().getExtras() != null) {
+            service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
+            textDescription.setText(description);
+        }
+    }
+
+    private void setupViewsForProfilePhoto() {
         /*Creating an array list of selecting images from camera and gallery*/
         ArrayList<String> pickImageList = new ArrayList<>();
 
@@ -118,9 +162,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         /*Attaching adapter to the listView*/
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        /*Setting event for circleImageView*/
-        circleImageView.setOnClickListener(v -> dialog.show());
 
         /*Setting event for listview items*/
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -140,38 +181,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
             }
         });
 
-        /*Setting event for Select From Contacts button*/
-        buttonSelectFromContact.setOnClickListener(view -> {
-            Intent i = new Intent(Intent.ACTION_PICK);
-            i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-            startActivityForResult(i, RESULT_PICK_CONTACT);
-        });
 
-        /*Setting event for  Displaying Date & Time*/
-        editPickTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                displayTime();
-            }
-        });
-        editPickTime.setOnClickListener(View -> displayTime());
-
-        /*Getting type of service*/
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            service_type = bundle.getString(Constants.SERVICE_TYPE);
-            String description = getText(R.string.we_will_send_an_otp_to_your_visitor_allowing_them_to_enter_into_your_society).toString();
-            assert service_type != null;
-            description = description.replace("visitor", service_type);
-            textDescription.setText(description);
-        }
-
-        /*Setting events for add button click*/
-        buttonAdd.setOnClickListener(v -> {
-            Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-            intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
-            startActivity(intentButtonAdd);
-        });
     }
 
     @Override

@@ -23,7 +23,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         this.mCtx = mCtx;
     }
 
-
     @NonNull
     @Override
     public DailyServicesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,7 +30,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_visitors_and_my_daily_services_list, parent, false);
         return new DailyServicesHolder(view);
-
     }
 
     @Override
