@@ -1,7 +1,12 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,11 +56,11 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.layoutTitle.setLayoutParams(layoutTitleParams);
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
 
-        holder.textServiceName.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textServiceType.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
         holder.textServiceNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textServiceTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
@@ -84,13 +89,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         /*Here we are changing edit icon*/
         holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit, 0, 0);
 
-        /*Yet to Implement*/
-        holder.textCall.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
-
-        holder.textMessage.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
-
+        /*Handling Click event of icons*/
+        holder.textCall.setOnClickListener(v -> makePhoneCall());
+        holder.textMessage.setOnClickListener(v -> sendTextMessage());
         holder.textEdit.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
-
         holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
@@ -142,5 +144,21 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textEdit = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
         }
+    }
+
+    private void makePhoneCall() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:9885665744"));
+        if (ActivityCompat.checkSelfPermission(mCtx, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mCtx.startActivity(callIntent);
+    }
+
+    private void sendTextMessage() {
+        Intent msgIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", "9885665744", null));
+        if (ActivityCompat.checkSelfPermission(mCtx, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mCtx.startActivity(msgIntent);
     }
 }
