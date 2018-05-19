@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesDetails">
+
+    <include layout="@layout/activity_base" />
+
+    <TextView
+        android:id="@+id/textMemberAndServiceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/name"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <EditText
+        android:id="@+id/editMemberAndServiceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textCapWords"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/edit_text_default_size"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/textMemberAndServiceMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/mobile"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <LinearLayout
+        android:id="@+id/layoutMobileNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/textCountryCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:text="@string/_91"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editMobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:textColor="@color/nmBlack"
+            android:textSize="20sp"
+            tools:ignore="LabelFor" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textInTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/time"
+        android:textColor="@color/nmBlack"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/editPickInTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:cursorVisible="false"
+        android:drawableEnd="@drawable/calendar_date"
+        android:drawableRight="@drawable/calendar_date"
+        android:gravity="center"
+        android:textColor="@color/nmBlack"
+        android:textSize="18sp"
+        tools:ignore="LabelFor,TextFields" />
+
+    <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="@string/send_otp_message"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/buttonUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/nmBlack"
+        android:text="@string/update"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size"
+        android:visibility="invisible"/>
+
+</LinearLayout>

@@ -92,8 +92,17 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         /*Handling Click event of icons*/
         holder.textCall.setOnClickListener(v -> makePhoneCall());
         holder.textMessage.setOnClickListener(v -> sendTextMessage());
-        holder.textEdit.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+        holder.textEdit.setOnClickListener(v -> EditMyServiceDetails(holder.textServiceNameValue.getText().toString(), holder.textInvitationTimeValue.getText().toString(), holder.textServiceTypeValue.getText().toString()));
         holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+    }
+
+    private void EditMyServiceDetails(String name, String inTime, String serviceType) {
+        Intent EditIntent = new Intent(mCtx, EditDailyServicesDetails.class);
+        EditIntent.putExtra(Constants.NAME, name);
+        EditIntent.putExtra(Constants.MOBILE_NUMBER, "7895185103");    //TODO :  To change the mobile number here
+        EditIntent.putExtra("inTime", inTime);
+        EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
+        mCtx.startActivity(EditIntent);
     }
 
     @Override

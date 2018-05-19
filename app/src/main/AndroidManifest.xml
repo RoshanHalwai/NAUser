@@ -76,7 +76,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThings"></activity>
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThings" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesDetails"></activity>
     </application>
 
 </manifest>
