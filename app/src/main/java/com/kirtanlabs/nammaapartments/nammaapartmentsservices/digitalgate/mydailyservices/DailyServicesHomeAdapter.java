@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
@@ -17,10 +18,12 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     //this context we will use to inflate the layout
     private final Context mCtx;
+    private final BaseActivity baseActivity;
 
     //getting the context and product list with constructor
     DailyServicesHomeAdapter(Context mCtx) {
         this.mCtx = mCtx;
+        baseActivity = (BaseActivity) mCtx;
     }
 
     @NonNull
@@ -51,11 +54,11 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.layoutTitle.setLayoutParams(layoutTitleParams);
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
 
-        holder.textServiceName.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textServiceType.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
         holder.textServiceNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textServiceTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
@@ -84,13 +87,12 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         /*Here we are changing edit icon*/
         holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit, 0, 0);
 
-        /*Yet to Implement*/
-        holder.textCall.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
-
-        holder.textMessage.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
-
+        /*Handling Click event of icons*/
+        //TODO: Change Mobile Number here
+        holder.textCall.setOnClickListener(v -> baseActivity.makePhoneCall("9885665744"));
+        //TODO: Change Mobile Number here
+        holder.textMessage.setOnClickListener(v -> baseActivity.sendTextMessage("9885665744"));
         holder.textEdit.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
-
         holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
@@ -143,4 +145,5 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textCancel = itemView.findViewById(R.id.textCancel);
         }
     }
+
 }

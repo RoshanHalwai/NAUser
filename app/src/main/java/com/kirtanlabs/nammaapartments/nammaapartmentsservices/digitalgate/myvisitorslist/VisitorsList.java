@@ -36,4 +36,5 @@ public class VisitorsList extends BaseActivity {
         //Setting adapter to recycler view
         recyclerView.setAdapter(adapter);
     }
+
 }

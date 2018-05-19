@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
@@ -19,10 +21,12 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     //this context we will use to inflate the layout
     private final Context mCtx;
+    private final BaseActivity baseActivity;
 
     //getting the context and product list with constructor
     VisitorsListAdapter(Context mCtx) {
         this.mCtx = mCtx;
+        baseActivity = (BaseActivity) mCtx;
     }
 
     @NonNull
@@ -36,11 +40,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
-        holder.textVisitorName.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textVisitorType.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textVisitorName.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textVisitorType.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
         holder.textVisitorNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textVisitorTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
@@ -52,6 +56,14 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         holder.textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+        /*Handling Click event of icons*/
+        //TODO: Change Mobile Number here
+        holder.textCall.setOnClickListener(v -> baseActivity.makePhoneCall("9885665744"));
+        //TODO: Change Mobile Number here
+        holder.textMessage.setOnClickListener(v -> baseActivity.sendTextMessage("9885665744"));
+        holder.textReschedule.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+        holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
     @Override
