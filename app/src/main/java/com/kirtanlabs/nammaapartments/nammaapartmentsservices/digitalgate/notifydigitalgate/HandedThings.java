@@ -85,16 +85,18 @@ public class HandedThings extends BaseActivity {
         buttonNo = findViewById(R.id.buttonNo);
 
         /*Setting fonts to the views*/
-        textVisitorAndServiceName.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorAndServiceType.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationDateAndRating.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationTime.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitedByAndApartmentNo.setTypeface(Constants.setLatoBoldFont(this));
+        textVisitorAndServiceName.setTypeface(Constants.setLatoRegularFont(this));
+        textVisitorAndServiceType.setTypeface(Constants.setLatoRegularFont(this));
+        textInvitationDateAndRating.setTypeface(Constants.setLatoRegularFont(this));
+        textInvitationTime.setTypeface(Constants.setLatoRegularFont(this));
+        textInvitedByAndApartmentNo.setTypeface(Constants.setLatoRegularFont(this));
+
         textVisitorNameAndServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
         textVisitorAndServiceTypeValue.setTypeface(Constants.setLatoBoldFont(this));
         textInvitationDateAndRatingValue.setTypeface(Constants.setLatoBoldFont(this));
         textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(this));
         textInvitedByAndApartmentNoValue.setTypeface(Constants.setLatoBoldFont(this));
+
         textGivenThings.setTypeface(Constants.setLatoBoldFont(this));
         textDescription.setTypeface(Constants.setLatoBoldFont(this));
         editDescription.setTypeface(Constants.setLatoRegularFont(this));

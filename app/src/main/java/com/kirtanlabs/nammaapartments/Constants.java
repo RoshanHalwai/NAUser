@@ -20,6 +20,10 @@ public class Constants {
     public static final String OTP_TYPE = "otp_type";
     public static final String HANDED_THINGS_TO = "handed_things_to";
 
+    /*Request Codes*/
+    public static final int MAKE_CALL_PERMISSION_REQUEST_CODE = 1;
+    public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
+
     /* Font Types */
     public static Typeface setLatoBlackFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Black.ttf");

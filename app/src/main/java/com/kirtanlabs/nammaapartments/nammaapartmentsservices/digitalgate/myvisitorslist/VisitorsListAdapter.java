@@ -1,12 +1,19 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
@@ -36,11 +43,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
-        holder.textVisitorName.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textVisitorType.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textVisitorName.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textVisitorType.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
         holder.textVisitorNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textVisitorTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
@@ -52,12 +59,46 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         holder.textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+        /*Handling Click event of icons*/
+        //TODO: Change Mobile Number here
+        holder.textCall.setOnClickListener(v -> makePhoneCall("9885665744"));
+        //TODO: Change Mobile Number here
+        holder.textMessage.setOnClickListener(v -> sendTextMessage("9885665744"));
+        holder.textReschedule.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+        holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public int getItemCount() {
         //TODO: To change the get item count here
         return 5;
+    }
+
+    /**
+     * We check if permissions are granted to make phone calls if granted then we directly start Dialer Activity
+     * else we show Request permission dialog to allow users to give access.
+     */
+    private void makePhoneCall(String MobileNumber) {
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + MobileNumber));
+        if (ActivityCompat.checkSelfPermission(mCtx, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) mCtx, new String[]{Manifest.permission.CALL_PHONE}, Constants.MAKE_CALL_PERMISSION_REQUEST_CODE);
+        } else {
+            mCtx.startActivity(callIntent);
+        }
+    }
+
+    /**
+     * We check if permissions are granted to send SMS if granted then we directly start SMS Activity
+     * else we show Request permission dialog to allow users to give access.
+     */
+    private void sendTextMessage(String MobileNumber) {
+        Intent msgIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", MobileNumber, null));
+        if (ActivityCompat.checkSelfPermission(mCtx, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) mCtx, new String[]{Manifest.permission.SEND_SMS}, Constants.SEND_SMS_PERMISSION_REQUEST_CODE);
+        } else {
+            mCtx.startActivity(msgIntent);
+        }
     }
 
     class VisitorViewHolder extends RecyclerView.ViewHolder {
