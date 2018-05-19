@@ -39,7 +39,7 @@
             android:textSize="@dimen/text_view_default_size" />
 
         <EditText
-            android:id="@+id/editMobileNumber"
+            android:id="@+id/editDailyServiceOrFamilyMemberMobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"

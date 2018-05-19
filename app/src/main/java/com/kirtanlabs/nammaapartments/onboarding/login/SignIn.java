@@ -34,7 +34,7 @@ public class SignIn extends BaseActivity {
         TextView textMobileNumber = findViewById(R.id.textMobileNumber);
         TextView textCreateAnAccount = findViewById(R.id.textCreateAnAccount);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
-        EditText editMobileNumber = findViewById(R.id.editMobileNumber);
+        EditText editMobileNumber = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         Button buttonSignIn = findViewById(R.id.buttonLogin);
 
         /*Setting font for all the views*/

@@ -14,6 +14,7 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 
 public class OTP extends BaseActivity {
 
@@ -75,11 +76,16 @@ public class OTP extends BaseActivity {
 
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(view -> {
-            if ((textPhoneVerification.getText().toString()).equals((getString(R.string.enter_verification_code)))) {
+            if (getIntent().getExtras() == null) {
                 Intent intent = new Intent(OTP.this, NammaApartmentsHome.class);
                 startActivity(intent);
-            } else {
+            } else if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.add_my_service) {
                 Intent intent = new Intent(OTP.this, DailyServicesHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(OTP.this, MySweetHome.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -195,14 +201,12 @@ public class OTP extends BaseActivity {
     }
 
     /*This method gets invoked when user comes to otp screen after clicking on add button
-     *in add my service activity */
+     *in add my service and add my family members activity */
     private void updatePhoneVerificationText() {
-        String service_type = getIntent().getStringExtra(Constants.OTP_TYPE);
+        String service_type = getIntent().getStringExtra(Constants.OTP_TYPE) + " ";
         String description = getResources().getString(R.string.enter_verification_code);
         description = description.replace("account", service_type + " account");
-        description = description.replace("your", "their");
-        textPhoneVerification.setText(description);
+        description = description.replace("your mobile", "their mobile");
+        textPhoneVerification.setText((description));
     }
-
 }
-

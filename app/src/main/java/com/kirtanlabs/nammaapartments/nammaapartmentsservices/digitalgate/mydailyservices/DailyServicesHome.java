@@ -81,6 +81,7 @@ public class DailyServicesHome extends BaseActivity {
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             String selectedFromList = (String) listView.getItemAtPosition(position);
             Intent intent = new Intent(DailyServicesHome.this, AddDailyServiceAndFamilyMembers.class);
+            intent.putExtra(Constants.SCREEN_TYPE, R.string.my_daily_services);
             intent.putExtra(Constants.SERVICE_TYPE, selectedFromList);
             startActivity(intent);
             dialog.cancel();

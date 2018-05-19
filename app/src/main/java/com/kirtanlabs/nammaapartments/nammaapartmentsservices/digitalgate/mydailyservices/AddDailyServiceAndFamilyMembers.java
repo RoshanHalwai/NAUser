@@ -1,20 +1,26 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -34,16 +40,19 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
     private final int RESULT_PICK_CONTACT = 1;
     private final int CAMERA_REQUEST = 2;
     private final int GALLERY_REQUEST = 3;
-    private TextView textDescription;
+    private TextView textDescriptionDailyService;
+    private TextView textDescriptionFamilyMember;
     private EditText editPickTime;
-    private EditText editName;
-    private EditText editMobile;
+    private EditText editDailyServiceOrFamilyMemberName;
+    private EditText editDailyServiceOrFamilyMemberMobile;
     private Button buttonAdd;
     private CircleImageView circleImageView;
     private String selectedTime;
     private String service_type;
     private AlertDialog dialog;
     private ListView listView;
+
+    private boolean grantedAccess = false;
 
     @Override
     protected int getLayoutResourceId() {
@@ -54,7 +63,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
     protected int getActivityTitle() {
         /*We use a common class for Add Daily Service and Add Family Members, we set the title
          * based on the user click on MySweetHome screen and on click of listview on MyDailyServices*/
-        if (getIntent().getIntExtra(Constants.SERVICE_TYPE, 0) == R.string.add_family_members_details_screen) {
+        if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_sweet_home) {
             return R.string.add_family_members_details_screen;
         } else {
             return R.string.add_my_service;
@@ -75,31 +84,43 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         dialog = addImageDialog.create();
 
         /*Getting Id's for all the views*/
-        TextView textName = findViewById(R.id.textName);
-        TextView textMobile = findViewById(R.id.textMobile);
+        TextView textDailyServiceOrFamilyMemberName = findViewById(R.id.textDailyServiceOrFamilyMemberName);
+        TextView textDailyServiceOrFamilyMemberMobile = findViewById(R.id.textDailyServiceOrFamilyMemberMobile);
+        TextView textCountryCode = findViewById(R.id.textCountryCode);
+        TextView textRelation = findViewById(R.id.textFamilyMemberRelation);
         TextView textOr = findViewById(R.id.textOr);
         TextView textTime = findViewById(R.id.textTime);
-        TextView textCountryCode = findViewById(R.id.textCountryCode);
-        textDescription = findViewById(R.id.textDescription);
-        editName = findViewById(R.id.editName);
-        editMobile = findViewById(R.id.editMobileNumber);
+        TextView textGrantAccess = findViewById(R.id.textGrantAccess);
+        textDescriptionDailyService = findViewById(R.id.textDescriptionDailyService);
+        textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
+        editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
+        editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
+        EditText editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
+        Button buttonYes = findViewById(R.id.buttonYes);
+        Button buttonNo = findViewById(R.id.buttonNo);
         buttonAdd = findViewById(R.id.buttonAdd);
-        circleImageView = findViewById(R.id.profileImage);
+        circleImageView = findViewById(R.id.dailyServiceOrFamilyMemberProfilePic);
         listView = listAddImageServices.findViewById(R.id.listAddImageService);
 
         /*Setting font for all the views*/
-        textName.setTypeface(Constants.setLatoBoldFont(this));
-        textMobile.setTypeface(Constants.setLatoBoldFont(this));
+        textDailyServiceOrFamilyMemberName.setTypeface(Constants.setLatoBoldFont(this));
+        textDailyServiceOrFamilyMemberMobile.setTypeface(Constants.setLatoBoldFont(this));
+        textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
+        textRelation.setTypeface(Constants.setLatoBoldFont(this));
         textOr.setTypeface(Constants.setLatoBoldFont(this));
         textTime.setTypeface(Constants.setLatoBoldFont(this));
-        textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
+        textGrantAccess.setTypeface(Constants.setLatoBoldFont(this));
+        textDescriptionDailyService.setTypeface(Constants.setLatoBoldFont(this));
+        textDescriptionFamilyMember.setTypeface(Constants.setLatoBoldFont(this));
+        editDailyServiceOrFamilyMemberName.setTypeface(Constants.setLatoRegularFont(this));
+        editDailyServiceOrFamilyMemberMobile.setTypeface(Constants.setLatoRegularFont(this));
+        editFamilyMemberRelation.setTypeface(Constants.setLatoRegularFont(this));
         editPickTime.setTypeface(Constants.setLatoRegularFont(this));
-        textDescription.setTypeface(Constants.setLatoBoldFont(this));
-        editName.setTypeface(Constants.setLatoRegularFont(this));
-        editMobile.setTypeface(Constants.setLatoRegularFont(this));
         buttonSelectFromContact.setTypeface(Constants.setLatoLightFont(this));
+        buttonYes.setTypeface(Constants.setLatoRegularFont(this));
+        buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonAdd.setTypeface(Constants.setLatoLightFont(this));
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
@@ -108,11 +129,49 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         /*Setting event for circleImageView*/
         circleImageView.setOnClickListener(v -> dialog.show());
 
+        /*Setting event for change in editDailyServicesOrFamilyMemberName*/
+        //setEditDailyServiceOrFamilyMemberName();
+
+        /*Since we are using same layout for add my daily services and and add my family members we need to show different layout
+          according to the user choice*/
+        if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
+            RelativeLayout relativeLayoutTime = findViewById(R.id.relativeLayoutTime);
+            relativeLayoutTime.setVisibility(View.VISIBLE);
+            textDescriptionFamilyMember.setVisibility(View.GONE);
+            updateOTPDescription();
+        } else {
+            LinearLayout layoutAccess = findViewById(R.id.layoutAccess);
+            textDescriptionFamilyMember.setVisibility(View.VISIBLE);
+            textRelation.setVisibility(View.VISIBLE);
+            editFamilyMemberRelation.setVisibility(View.VISIBLE);
+            layoutAccess.setVisibility(View.VISIBLE);
+            buttonAdd.setVisibility(View.VISIBLE);
+        }
+
         /*Setting event for Select From Contacts button*/
         buttonSelectFromContact.setOnClickListener(view -> {
             Intent i = new Intent(Intent.ACTION_PICK);
             i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
             startActivityForResult(i, RESULT_PICK_CONTACT);
+        });
+
+        /*Method for button Yes*/
+        buttonYes.setOnClickListener(v -> {
+            //setEditDailyServiceOrFamilyMemberName();
+            grantedAccess = true;
+            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonYes.setTextColor(Color.WHITE);
+            buttonNo.setTextColor(Color.BLACK);
+        });
+
+        /*Method for button No*/
+        buttonNo.setOnClickListener(v -> {
+            grantedAccess = false;
+            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonYes.setTextColor(Color.BLACK);
+            buttonNo.setTextColor(Color.WHITE);
         });
 
         /*Setting event for  Displaying Date & Time*/
@@ -125,15 +184,76 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
 
         /*Setting events for add button click*/
         buttonAdd.setOnClickListener(v -> {
-            Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-            intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
-            startActivity(intentButtonAdd);
+            if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
+                Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+                intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
+                intentButtonAdd.putExtra(Constants.SCREEN_TYPE, R.string.add_my_service);
+                startActivity(intentButtonAdd);
+            } else {
+                if (grantedAccess)
+                    openNotificationDialog();
+                else {
+                    Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+                    intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
+                    startActivity(intentNotification);
+                }
+            }
         });
-
-        updateOTPDescription();
-
         setupViewsForProfilePhoto();
     }
+
+    private void openNotificationDialog() {
+        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
+        TextView textNotificationTitle = new TextView(this);
+
+        //Setting Custom Dialog Title
+        textNotificationTitle.setText(R.string.notification_dialog_box);
+        //Title Properties
+        textNotificationTitle.setPadding(10, 10, 10, 10);
+        textNotificationTitle.setGravity(Gravity.CENTER);
+        textNotificationTitle.setTextColor(getResources().getColor(R.color.nmLightYellow));
+        textNotificationTitle.setTextSize(R.dimen.text_view_default_size);
+        textNotificationTitle.setBackgroundColor(getResources().getColor(R.color.nmBlack));
+        textNotificationTitle.setTypeface(Constants.setLatoBoldFont(this));
+        alertNotificationDialog.setTitle(R.string.notification_dialog_box);
+
+        //Setting ImageView
+        ImageView imageNotification = new ImageView(this);
+        imageNotification.setImageResource(R.drawable.feature_unavailable);
+        alertNotificationDialog.setIcon(R.drawable.feature_unavailable);
+
+        TextView textNotificationMessage = new TextView(this);
+        // Setting Custom Dialog Message
+        textNotificationMessage.setText(R.string.access_to_notifications);
+        // Message Properties
+        textNotificationMessage.setPadding(10, 10, 10, 10);
+        textNotificationMessage.setTextColor(Color.BLACK);
+        textNotificationMessage.setTypeface(Constants.setLatoBoldFont(this));
+        textNotificationMessage.setGravity(Gravity.CENTER);
+        //textNotificationMessage.setTextSize(R.dimen.text_view_default_size);
+        alertNotificationDialog.setView(textNotificationMessage);
+
+        // Setting Custom Dialog Buttons
+        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> {
+            Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+            intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
+            startActivity(intentNotification);
+        });
+        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
+
+        new Dialog(getApplicationContext());
+        alertNotificationDialog.show();
+    }
+
+
+    /*This method will get invoked when user tries to enter his name*/
+/*    private void setEditDailyServiceOrFamilyMemberName() {
+        dailyServiceOrFamilyMemberName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+        if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_sweet_home) {
+            String description = getResources().getString(R.string.otp_message_family_member).replace("name", dailyServiceOrFamilyMemberName);
+            textDescriptionFamilyMember.setText(description);
+        }
+    }*/
 
     /**
      * We need to update OTP Message description based on Service for which user is entering the
@@ -143,7 +263,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         if (getIntent().getExtras() != null) {
             service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
             String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
-            textDescription.setText(description);
+            textDescriptionDailyService.setText(description);
         }
     }
 
@@ -180,10 +300,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
                     dialog.cancel();
             }
         });
-
-
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -204,8 +321,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
                                 if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
                                     formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
                                 }
-                                editName.setText(name);
-                                editMobile.setText(formattedPhoneNumber);
+                                editDailyServiceOrFamilyMemberName.setText(name);
+                                editDailyServiceOrFamilyMemberMobile.setText(formattedPhoneNumber);
                                 cursor.close();
                             }
                         }
@@ -270,7 +387,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
                     selectedTime = "";
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     editPickTime.setText(selectedTime);
-                    textDescription.setVisibility(View.VISIBLE);
+                    textDescriptionDailyService.setVisibility(View.VISIBLE);
                     buttonAdd.setVisibility(View.VISIBLE);
                 }, mHour, mMinute, true);
         timePickerDialog.show();

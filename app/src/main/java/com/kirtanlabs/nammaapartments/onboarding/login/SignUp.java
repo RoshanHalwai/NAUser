@@ -35,7 +35,7 @@ public class SignUp extends BaseActivity {
         TextView textTermsAndConditions = findViewById(R.id.textTermsAndConditions);
         TextView textHaveAnAccount = findViewById(R.id.textHaveAnAccount);
         EditText editFullName = findViewById(R.id.editFullName);
-        EditText editMobileNumber = findViewById(R.id.editMobileNumber);
+        EditText editMobileNumber = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         EditText editEmailId = findViewById(R.id.editEmailId);
         Button buttonSignUp = findViewById(R.id.buttonSignUp);
 

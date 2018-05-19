@@ -78,7 +78,7 @@ public class HandedThings extends BaseActivity {
         TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
         textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
-        textDescription = findViewById(R.id.textDescription);
+        textDescription = findViewById(R.id.textDescriptionDailyService);
         editDescription = findViewById(R.id.editDescription);
         buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
         buttonYes = findViewById(R.id.buttonYes);

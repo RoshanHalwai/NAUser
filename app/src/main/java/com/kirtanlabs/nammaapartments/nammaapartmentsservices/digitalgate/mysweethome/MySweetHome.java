@@ -38,7 +38,7 @@ public class MySweetHome extends BaseActivity {
         /*Setting button click listener*/
         buttonAddFamilyMembers.setOnClickListener(v -> {
             Intent intent = new Intent(MySweetHome.this, AddDailyServiceAndFamilyMembers.class);
-            intent.putExtra(Constants.SERVICE_TYPE, (getString(R.string.add_family_members_details_screen)));
+            intent.putExtra(Constants.SCREEN_TYPE, R.string.my_sweet_home);
             startActivity(intent);
         });
     }

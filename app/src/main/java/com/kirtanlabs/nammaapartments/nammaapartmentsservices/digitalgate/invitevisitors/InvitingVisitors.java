@@ -61,9 +61,9 @@ public class InvitingVisitors extends BaseActivity {
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         editPickDateTime = findViewById(R.id.editPickDateTime);
-        textDescription = findViewById(R.id.textDescription);
+        textDescription = findViewById(R.id.textDescriptionDailyService);
         editVisitorName = findViewById(R.id.editVisitorName);
-        editVisitorMobile = findViewById(R.id.editMobileNumber);
+        editVisitorMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonInvite = findViewById(R.id.buttonInvite);
 
