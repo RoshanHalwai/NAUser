@@ -20,20 +20,27 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class EditDailyServicesDetails extends BaseActivity {
+public class EditDailyServicesDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
-    private EditText editMemberAndServiceName, editMobileNumber, editPickInTime;
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private TextView textDescription;
+    private EditText editMemberAndServiceName, editMobileNumber, editPickInTime;
     private Button buttonUpdate;
     private String selectedTime;
     private String name;
     private String mobile;
     private String inTime;
     private String service_type;
-
     private boolean nameTextChanged = false;
     private boolean mobileTextChanged = false;
     private boolean timeTextChanged = false;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -63,6 +70,9 @@ public class EditDailyServicesDetails extends BaseActivity {
         editPickInTime = findViewById(R.id.editPickInTime);
         buttonUpdate = findViewById(R.id.buttonUpdate);
 
+        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
+        editPickInTime.setInputType(InputType.TYPE_NULL);
+
         /*Setting font for all the views*/
         textMemberAndServiceName.setTypeface(Constants.setLatoBoldFont(this));
         textMemberAndServiceMobile.setTypeface(Constants.setLatoBoldFont(this));
@@ -80,32 +90,53 @@ public class EditDailyServicesDetails extends BaseActivity {
         /*Setting events for edit text*/
         setEventsForEditText();
 
-        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
-        editPickInTime.setInputType(InputType.TYPE_NULL);
-
-        /*Setting event for  Displaying Date & Time*/
-        editPickInTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                displayTime();
-            }
-        });
-        editPickInTime.setOnClickListener(View -> displayTime());
-
-        buttonUpdate.setOnClickListener(v -> {
-            if (mobileTextChanged) {
-                Intent otpIntent = new Intent(EditDailyServicesDetails.this, OTP.class);
-                otpIntent.putExtra(Constants.OTP_TYPE, service_type);
-                startActivity(otpIntent);
-            } else {
-                Intent mdsIntent = new Intent(EditDailyServicesDetails.this, DailyServicesHome.class);
-                mdsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mdsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mdsIntent);
-            }
-            finish();
-        });
+        /*Setting event for views */
+        editPickInTime.setOnFocusChangeListener(this);
+        buttonUpdate.setOnClickListener(this);
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick and OnFocusChange Listeners
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.editPickInTime:
+                displayTime();
+                break;
+
+            case R.id.buttonUpdate:
+                if (mobileTextChanged) {
+                    Intent otpIntent = new Intent(EditDailyServicesDetails.this, OTP.class);
+                    otpIntent.putExtra(Constants.OTP_TYPE, service_type);
+                    startActivity(otpIntent);
+                } else {
+                    Intent mdsIntent = new Intent(EditDailyServicesDetails.this, DailyServicesHome.class);
+                    mdsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mdsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mdsIntent);
+                }
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            displayTime();
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method is invoked when screen is loaded and it will fill all the details
+     * in editText accordingly
+     */
     private void fillDetails() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -122,6 +153,9 @@ public class EditDailyServicesDetails extends BaseActivity {
         textDescription.setText(description);
     }
 
+    /**
+     * Once user enters edits some text in editText
+     */
     private void setEventsForEditText() {
         editMemberAndServiceName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -136,7 +170,7 @@ public class EditDailyServicesDetails extends BaseActivity {
                 } else {
                     nameTextChanged = false;
                 }
-                makeButtonOrTextVisibleOrInvisible();
+                makeViewsVisibleOrInvisible();
             }
 
             @Override
@@ -144,7 +178,7 @@ public class EditDailyServicesDetails extends BaseActivity {
                 if (editMemberAndServiceName.getText().toString().equals(name)) {
                     nameTextChanged = false;
                 }
-                makeButtonOrTextVisibleOrInvisible();
+                makeViewsVisibleOrInvisible();
             }
         });
 
@@ -162,7 +196,7 @@ public class EditDailyServicesDetails extends BaseActivity {
                 } else {
                     mobileTextChanged = false;
                 }
-                makeButtonOrTextVisibleOrInvisible();
+                makeViewsVisibleOrInvisible();
             }
 
             @Override
@@ -170,7 +204,7 @@ public class EditDailyServicesDetails extends BaseActivity {
                 if (editMobileNumber.getText().toString().equals(mobile)) {
                     mobileTextChanged = false;
                 }
-                makeButtonOrTextVisibleOrInvisible();
+                makeViewsVisibleOrInvisible();
             }
         });
 
@@ -183,35 +217,18 @@ public class EditDailyServicesDetails extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 buttonUpdate.setVisibility(View.VISIBLE);
                 timeTextChanged = true;
-                makeButtonOrTextVisibleOrInvisible();
+                makeViewsVisibleOrInvisible();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (editPickInTime.getText().toString().equals(inTime)) {
                     timeTextChanged = false;
-                    makeButtonOrTextVisibleOrInvisible();
+                    makeViewsVisibleOrInvisible();
                 }
             }
         });
     }
-
-    private void makeButtonOrTextVisibleOrInvisible() {
-
-        if (nameTextChanged || mobileTextChanged || timeTextChanged) {
-            buttonUpdate.setVisibility(View.VISIBLE);
-            if (mobileTextChanged) {
-                textDescription.setVisibility(View.VISIBLE);
-            } else {
-                textDescription.setVisibility(View.INVISIBLE);
-            }
-        } else {
-            buttonUpdate.setVisibility(View.INVISIBLE);
-            textDescription.setVisibility(View.INVISIBLE);
-        }
-
-    }
-
 
     /**
      * This method is invoked when user clicks on pick time icon.
@@ -229,5 +246,22 @@ public class EditDailyServicesDetails extends BaseActivity {
                     editPickInTime.setText(selectedTime);
                 }, mHour, mMinute, true);
         timePickerDialog.show();
+    }
+
+    /**
+     * This method is used to make textDescription and buttonUpdate Visible or Invisible
+     */
+    private void makeViewsVisibleOrInvisible() {
+        if (nameTextChanged || mobileTextChanged || timeTextChanged) {
+            buttonUpdate.setVisibility(View.VISIBLE);
+            if (mobileTextChanged) {
+                textDescription.setVisibility(View.VISIBLE);
+            } else {
+                textDescription.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            buttonUpdate.setVisibility(View.INVISIBLE);
+            textDescription.setVisibility(View.INVISIBLE);
+        }
     }
 }
