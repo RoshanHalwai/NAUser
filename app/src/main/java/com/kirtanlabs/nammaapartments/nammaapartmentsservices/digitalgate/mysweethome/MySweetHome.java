@@ -12,6 +12,9 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydail
 public class MySweetHome extends BaseActivity {
     Button buttonAddFamilyMembers;
 
+    /*---------------------------------------------------------
+        Overriding Base Activity Objects
+     ----------------------------------------------------------*/
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_my_sweet_home;

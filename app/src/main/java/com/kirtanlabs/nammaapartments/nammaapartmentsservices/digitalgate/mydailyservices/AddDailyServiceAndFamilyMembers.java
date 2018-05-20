@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,24 +31,31 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AddDailyServiceAndFamilyMembers extends BaseActivity {
+public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
+    /*----------------------------------------------
+     *Private Members
+     *-----------------------------------------------*/
     private final int RESULT_PICK_CONTACT = 1;
     private final int CAMERA_REQUEST = 2;
     private final int GALLERY_REQUEST = 3;
+    private CircleImageView circleImageView;
     private TextView textDescriptionDailyService;
     private EditText editPickTime;
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
     private Button buttonAdd;
-    private CircleImageView circleImageView;
+    private Button buttonYes;
+    private Button buttonNo;
     private String selectedTime;
     private String service_type;
     private AlertDialog dialog;
     private ListView listView;
-
     private boolean grantedAccess = false;
 
+    /*----------------------------------------------------
+     *  Overriding BaseActivity Objects
+     *----------------------------------------------------*/
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_add_daily_service_and_family_members;
@@ -74,10 +80,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         showInfoButton();
 
         /*Custom DialogBox with list of all image services*/
-        AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
-        View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
-        addImageDialog.setView(listAddImageServices);
-        dialog = addImageDialog.create();
+        setupCustomDialog();
 
         /*Getting Id's for all the views*/
         TextView textDailyServiceOrFamilyMemberName = findViewById(R.id.textDailyServiceOrFamilyMemberName);
@@ -94,11 +97,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         EditText editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
-        Button buttonYes = findViewById(R.id.buttonYes);
-        Button buttonNo = findViewById(R.id.buttonNo);
+        buttonYes = findViewById(R.id.buttonYes);
+        buttonNo = findViewById(R.id.buttonNo);
         buttonAdd = findViewById(R.id.buttonAdd);
         circleImageView = findViewById(R.id.dailyServiceOrFamilyMemberProfilePic);
-        listView = listAddImageServices.findViewById(R.id.listAddImageService);
 
         /*Setting font for all the views*/
         textDailyServiceOrFamilyMemberName.setTypeface(Constants.setLatoBoldFont(this));
@@ -119,13 +121,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonAdd.setTypeface(Constants.setLatoLightFont(this));
 
-        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
-        editPickTime.setInputType(InputType.TYPE_NULL);
-
-        /*Setting event for circleImageView*/
-        circleImageView.setOnClickListener(v -> dialog.show());
-
-        /*Since we are using same layout for add my daily services and and add my family members we need to show different layout
+         /*Since we are using same layout for add my daily services and and add my family members we need to show different layout
           according to the user choice.*/
         if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
             RelativeLayout relativeLayoutTime = findViewById(R.id.relativeLayoutTime);
@@ -139,138 +135,22 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
             relativeLayoutAccess.setVisibility(View.VISIBLE);
             buttonAdd.setVisibility(View.VISIBLE);
         }
+        /*Setting event for all button clicks */
+        circleImageView.setOnClickListener(this);
+        buttonSelectFromContact.setOnClickListener(this);
+        editPickTime.setOnClickListener(this);
+        buttonYes.setOnClickListener(this);
+        buttonNo.setOnClickListener(this);
+        buttonAdd.setOnClickListener(this);
+        editPickTime.setOnFocusChangeListener(this);
 
-        /*Setting event for Select From Contacts button*/
-        buttonSelectFromContact.setOnClickListener(view -> {
-            Intent i = new Intent(Intent.ACTION_PICK);
-            i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-            startActivityForResult(i, RESULT_PICK_CONTACT);
-        });
-
-        /*Method for button Yes*/
-        buttonYes.setOnClickListener(v -> {
-            //setEditDailyServiceOrFamilyMemberName();
-            grantedAccess = true;
-            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
-            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
-            buttonYes.setTextColor(Color.WHITE);
-            buttonNo.setTextColor(Color.BLACK);
-        });
-
-        /*Method for button No*/
-        buttonNo.setOnClickListener(v -> {
-            grantedAccess = false;
-            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
-            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
-            buttonYes.setTextColor(Color.BLACK);
-            buttonNo.setTextColor(Color.WHITE);
-        });
-
-        /*Setting event for  Displaying Date & Time*/
-        editPickTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                displayTime();
-            }
-        });
-        editPickTime.setOnClickListener(View -> displayTime());
-
-        /*Setting events for add button click*/
-        buttonAdd.setOnClickListener(v -> {
-            if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
-                Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-                intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
-                intentButtonAdd.putExtra(Constants.SCREEN_TYPE, R.string.add_my_service);
-                startActivity(intentButtonAdd);
-            } else {
-                if (grantedAccess)
-                    openNotificationDialog();
-                else {
-                    navigatingToOTPScreen();
-                }
-            }
-        });
+        /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
         setupViewsForProfilePhoto();
     }
 
-    /**
-     * This method gets invoked when user tries to add family member and also giving access.
-     */
-    private void openNotificationDialog() {
-        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
-        View notificationDialog = View.inflate(this, R.layout.layout_dialog_notification, null);
-        alertNotificationDialog.setView(notificationDialog);
-        dialog = alertNotificationDialog.create();
-
-        // Setting Custom Dialog Buttons
-        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
-        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
-
-        new Dialog(getApplicationContext());
-        alertNotificationDialog.show();
-    }
-
-    /**
-     * We need to update OTP Message description based on Service for which user is entering the
-     * details.
-     */
-    private void updateOTPDescription() {
-        if (getIntent().getExtras() != null) {
-            service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
-            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
-            textDescriptionDailyService.setText(description);
-        }
-    }
-
-    /**
-     * We need to navigate to OTP Screen based on the user selection of giving access and also on not giving access.
-     */
-    private void navigatingToOTPScreen() {
-        Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-        intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
-        startActivity(intentNotification);
-    }
-
-    /**
-     * This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.
-     */
-    private void setupViewsForProfilePhoto() {
-        /*Creating an array list of selecting images from camera and gallery*/
-        ArrayList<String> pickImageList = new ArrayList<>();
-
-        /*Adding pick images services to the list*/
-        pickImageList.add(getString(R.string.camera));
-        pickImageList.add(getString(R.string.gallery));
-        pickImageList.add(getString(R.string.cancel));
-
-        /*Creating the Adapter*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddDailyServiceAndFamilyMembers.this, android.R.layout.simple_list_item_1, pickImageList);
-
-        /*Attaching adapter to the listView*/
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-        /*Setting event for listview items*/
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            switch (position) {
-                case 0:
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    break;
-                case 1:
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
-                    break;
-                case 2:
-                    dialog.cancel();
-            }
-        });
-    }
-
-    /**
-     * This method gets invoked based on the response of which user has clicked on contacts,camera and gallery.
-     */
+    /*-------------------------------------------------------------------------------
+     *Overriding onActivityResult
+     *-----------------------------------------------------------------------------*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -332,6 +212,144 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         }
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick and OnFocusChange Listeners
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.dailyServiceOrFamilyMemberProfilePic:
+                dialog.show();
+                break;
+            case R.id.buttonSelectFromContact:
+                Intent i = new Intent(Intent.ACTION_PICK);
+                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(i, RESULT_PICK_CONTACT);
+                break;
+            case R.id.buttonYes:
+                grantedAccess = true;
+                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonYes.setTextColor(Color.WHITE);
+                buttonNo.setTextColor(Color.BLACK);
+                break;
+            case R.id.buttonNo:
+                grantedAccess = false;
+                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonYes.setTextColor(Color.BLACK);
+                buttonNo.setTextColor(Color.WHITE);
+                break;
+            case R.id.editPickTime:
+                displayTime();
+                break;
+            case R.id.buttonAdd:
+                if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
+                    Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+                    intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
+                    intentButtonAdd.putExtra(Constants.SCREEN_TYPE, R.string.add_my_service);
+                    startActivity(intentButtonAdd);
+                } else {
+                    if (grantedAccess)
+                        openNotificationDialog();
+                    else {
+                        navigatingToOTPScreen();
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            displayTime();
+        }
+    }
+
+    /*-------------------------------------------------------------------------------
+     *Private Methods
+     *-----------------------------------------------------------------------------*/
+    /**
+     * This method gets invoked when user tries to add family member and also giving access.
+     */
+    private void openNotificationDialog() {
+        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
+        View notificationDialog = View.inflate(this, R.layout.layout_dialog_notification, null);
+        alertNotificationDialog.setView(notificationDialog);
+        dialog = alertNotificationDialog.create();
+
+        // Setting Custom Dialog Buttons
+        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
+        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
+
+        new Dialog(getApplicationContext());
+        alertNotificationDialog.show();
+    }
+    /**
+     * We need to update OTP Message description based on Service for which user is entering the
+     * details.
+     */
+    private void updateOTPDescription() {
+        if (getIntent().getExtras() != null) {
+            service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
+            textDescriptionDailyService.setText(description);
+        }
+    }
+    /**
+     * We need to navigate to OTP Screen based on the user selection of giving access and also on not giving access.
+     */
+    private void navigatingToOTPScreen() {
+        Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+        intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
+        startActivity(intentNotification);
+    }
+
+    private void setupCustomDialog() {
+        AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
+        View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
+        addImageDialog.setView(listAddImageServices);
+        dialog = addImageDialog.create();
+        listView = listAddImageServices.findViewById(R.id.listAddImageService);
+    }
+    /**
+     * This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.
+     */
+    private void setupViewsForProfilePhoto() {
+        /*Creating an array list of selecting images from camera and gallery*/
+        ArrayList<String> pickImageList = new ArrayList<>();
+
+        /*Adding pick images services to the list*/
+        pickImageList.add(getString(R.string.camera));
+        pickImageList.add(getString(R.string.gallery));
+        pickImageList.add(getString(R.string.cancel));
+
+        /*Creating the Adapter*/
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddDailyServiceAndFamilyMembers.this, android.R.layout.simple_list_item_1, pickImageList);
+
+        /*Attaching adapter to the listView*/
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        /*Setting event for listview items*/
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    break;
+                case 1:
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+                    break;
+                case 2:
+                    dialog.cancel();
+            }
+        });
+    }
     /**
      * This method will get invoked when user successfully uploaded image from gallery and camera.
      */
