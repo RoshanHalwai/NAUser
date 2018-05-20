@@ -2,6 +2,7 @@ package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,7 +11,11 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
-public class SignIn extends BaseActivity {
+public class SignIn extends BaseActivity implements View.OnClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Methods
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -35,22 +40,31 @@ public class SignIn extends BaseActivity {
         TextView textCreateAnAccount = findViewById(R.id.textCreateAnAccount);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         EditText editMobileNumber = findViewById(R.id.editMobileNumber);
-        Button buttonSignIn = findViewById(R.id.buttonLogin);
+        Button buttonLogin = findViewById(R.id.buttonLogin);
 
         /*Setting font for all the views*/
         textMobileNumber.setTypeface(Constants.setLatoBoldFont(this));
         textCreateAnAccount.setTypeface(Constants.setLatoRegularFont(this));
         textCountryCode.setTypeface(Constants.setLatoBoldFont(this));
         editMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
-        buttonSignIn.setTypeface(Constants.setLatoLightFont(this));
+        buttonLogin.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Setting event for Login button*/
-        buttonSignIn.setOnClickListener(view -> {
-            startActivity(new Intent(SignIn.this, OTP.class));
-            finish();
-        });
-
-        /*Currently the App does not allow the user to Sign Up*/
-        //textCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(this, SignUp.class)));
+        /*Setting onClickListener for view*/
+        buttonLogin.setOnClickListener(this);
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClickListener Methods
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.buttonLogin) {
+            Intent intentOTP = new Intent(SignIn.this, OTP.class);
+            intentOTP.putExtra(Constants.SCREEN_TITLE, R.string.login);
+            startActivity(intentOTP);
+            finish();
+        }
+    }
+
 }

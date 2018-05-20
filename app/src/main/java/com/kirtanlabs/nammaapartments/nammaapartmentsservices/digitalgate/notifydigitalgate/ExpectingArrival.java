@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,7 +21,11 @@ import java.util.Locale;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/14/2018
  */
-public class ExpectingArrival extends BaseActivity {
+public class ExpectingArrival extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
 
     private final int[] buttonIds = new int[]{R.id.button1Hr,
             R.id.button2Hr,
@@ -31,12 +36,16 @@ public class ExpectingArrival extends BaseActivity {
             R.id.button16Hr,
             R.id.button24Hr};
     private int arrivalType;
-    private EditText editDateTime;
+    private EditText editPickDateTime;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private String concatenatedDateAndTime;
     private String selectedDate;
     private String selectedTime;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -67,7 +76,7 @@ public class ExpectingArrival extends BaseActivity {
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
         EditText editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
-        editDateTime = findViewById(R.id.editDateTime);
+        editPickDateTime = findViewById(R.id.editPickDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
         Button button4hr = findViewById(R.id.button4Hr);
@@ -82,7 +91,7 @@ public class ExpectingArrival extends BaseActivity {
         textCabOrVendorTitle.setTypeface(Constants.setLatoBoldFont(this));
         textDateTime.setTypeface(Constants.setLatoBoldFont(this));
         textValidFor.setTypeface(Constants.setLatoBoldFont(this));
-        editDateTime.setTypeface(Constants.setLatoRegularFont(this));
+        editPickDateTime.setTypeface(Constants.setLatoRegularFont(this));
         editCabOrVendorValue.setTypeface(Constants.setLatoRegularFont(this));
         button1hr.setTypeface(Constants.setLatoRegularFont(this));
         button2hr.setTypeface(Constants.setLatoRegularFont(this));
@@ -98,31 +107,74 @@ public class ExpectingArrival extends BaseActivity {
          * set text for textCabOrVendorTitle to either Package Vendor Name or Cab Number*/
         textCabOrVendorTitle.setText(getCarOrPackageArrivalTitle());
 
-        /*Setting event for 8 buttons*/
-        button1hr.setOnClickListener(v -> selectButton(R.id.button1Hr));
-
-        button2hr.setOnClickListener(v -> selectButton(R.id.button2Hr));
-
-        button4hr.setOnClickListener(v -> selectButton(R.id.button4Hr));
-
-        button6hr.setOnClickListener(v -> selectButton(R.id.button6Hr));
-
-        button8hr.setOnClickListener(v -> selectButton(R.id.button8Hr));
-
-        button12hr.setOnClickListener(v -> selectButton(R.id.button12Hr));
-
-        button16hr.setOnClickListener(v -> selectButton(R.id.button16Hr));
-
-        button24hr.setOnClickListener(v -> selectButton(R.id.button24Hr));
-
-        /*Setting event for  Displaying Date & Time*/
-        editDateTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                displayDateAndTime();
-            }
-        });
-        editDateTime.setOnClickListener(v -> displayDateAndTime());
+        /*Setting event for views*/
+        button1hr.setOnClickListener(this);
+        button2hr.setOnClickListener(this);
+        button4hr.setOnClickListener(this);
+        button6hr.setOnClickListener(this);
+        button8hr.setOnClickListener(this);
+        button12hr.setOnClickListener(this);
+        button16hr.setOnClickListener(this);
+        button24hr.setOnClickListener(this);
+        editPickDateTime.setOnFocusChangeListener(this);
+        editPickDateTime.setOnClickListener(this);
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick and OnFocusChange Listeners
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button1Hr:
+                selectButton(R.id.button1Hr);
+                break;
+            case R.id.button2Hr:
+                selectButton(R.id.button2Hr);
+                break;
+            case R.id.button4Hr:
+                selectButton(R.id.button4Hr);
+                break;
+            case R.id.button6Hr:
+                selectButton(R.id.button6Hr);
+                break;
+            case R.id.button8Hr:
+                selectButton(R.id.button8Hr);
+                break;
+            case R.id.button12Hr:
+                selectButton(R.id.button12Hr);
+                break;
+            case R.id.button16Hr:
+                selectButton(R.id.button16Hr);
+                break;
+            case R.id.button24Hr:
+                selectButton(R.id.button24Hr);
+                break;
+            case R.id.editPickDateTime:
+                displayDateAndTime();
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            displayDateAndTime();
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private int getCarOrPackageArrivalTitle() {
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            return R.string.cab_number;
+        }
+        return R.string.package_vendor;
+    }
+
 
     /*Method for ValidFor 8 Button clicks*/
     private void selectButton(int id) {
@@ -168,15 +220,8 @@ public class ExpectingArrival extends BaseActivity {
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     timePickerDialog.cancel();
                     concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                    editDateTime.setText(concatenatedDateAndTime);
+                    editPickDateTime.setText(concatenatedDateAndTime);
                 }, mHour, mMinute, true);
-    }
-
-    private int getCarOrPackageArrivalTitle() {
-        if (arrivalType == R.string.expecting_cab_arrival) {
-            return R.string.cab_number;
-        }
-        return R.string.package_vendor;
     }
 
 }

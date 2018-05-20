@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -25,6 +26,18 @@
         <activity
             android:name=".onboarding.login.SignUp"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Notification Services -->
+        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <!-- Splash Screens -->
         <activity
@@ -64,19 +77,6 @@
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
         <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm" />
 
-        <!-- Notification Services -->
-        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThings"></activity>
     </application>
 
 </manifest>

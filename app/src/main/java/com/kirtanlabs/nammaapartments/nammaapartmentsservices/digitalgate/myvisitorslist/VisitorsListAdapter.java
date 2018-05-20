@@ -19,15 +19,25 @@ import com.kirtanlabs.nammaapartments.R;
  */
 public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapter.VisitorViewHolder> {
 
-    //this context we will use to inflate the layout
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private final Context mCtx;
     private final BaseActivity baseActivity;
 
-    //getting the context and product list with constructor
+    /* ------------------------------------------------------------- *
+     * Constructor
+     * ------------------------------------------------------------- */
+
     VisitorsListAdapter(Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding RecyclerView.Adapter Objects
+     * ------------------------------------------------------------- */
 
     @NonNull
     @Override
@@ -72,22 +82,35 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         return 5;
     }
 
-    class VisitorViewHolder extends RecyclerView.ViewHolder {
-        final TextView textVisitorName;
-        final TextView textVisitorNameValue;
-        final TextView textVisitorType;
-        final TextView textVisitorTypeValue;
-        final TextView textInvitationDateOrServiceRating;
-        final TextView textInvitationDateOrServiceRatingValue;
-        final TextView textInvitationTime;
-        final TextView textInvitationTimeValue;
-        final TextView textInvitedByOrNumberOfFlats;
-        final TextView textInvitedByOrNumberOfFlatsValue;
+    /* ------------------------------------------------------------- *
+     * Visitor View Holder class
+     * ------------------------------------------------------------- */
 
-        final TextView textCall;
-        final TextView textMessage;
-        final TextView textReschedule;
-        final TextView textCancel;
+    class VisitorViewHolder extends RecyclerView.ViewHolder {
+
+        /* ------------------------------------------------------------- *
+         * Private Members
+         * ------------------------------------------------------------- */
+
+        private final TextView textVisitorName;
+        private final TextView textVisitorNameValue;
+        private final TextView textVisitorType;
+        private final TextView textVisitorTypeValue;
+        private final TextView textInvitationDateOrServiceRating;
+        private final TextView textInvitationDateOrServiceRatingValue;
+        private final TextView textInvitationTime;
+        private final TextView textInvitationTimeValue;
+        private final TextView textInvitedByOrNumberOfFlats;
+        private final TextView textInvitedByOrNumberOfFlatsValue;
+
+        private final TextView textCall;
+        private final TextView textMessage;
+        private final TextView textReschedule;
+        private final TextView textCancel;
+
+        /* ------------------------------------------------------------- *
+         * Constructor
+         * ------------------------------------------------------------- */
 
         VisitorViewHolder(View itemView) {
             super(itemView);

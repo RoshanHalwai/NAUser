@@ -12,7 +12,15 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class RaiseAlarm extends BaseActivity {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private TextView textAlertRaised;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
