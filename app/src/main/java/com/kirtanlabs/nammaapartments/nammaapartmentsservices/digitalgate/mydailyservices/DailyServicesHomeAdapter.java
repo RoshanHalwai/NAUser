@@ -101,7 +101,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         Intent EditIntent = new Intent(mCtx, EditDailyServicesDetails.class);
         EditIntent.putExtra(Constants.NAME, name);
         EditIntent.putExtra(Constants.MOBILE_NUMBER, "7895185103");    //TODO :  To change the mobile number here
-        EditIntent.putExtra("inTime", inTime);
+        EditIntent.putExtra(Constants.IN_TIME, inTime);
         EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
         mCtx.startActivity(EditIntent);
     }

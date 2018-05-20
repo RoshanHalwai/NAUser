@@ -22,6 +22,7 @@ public class Constants {
     public static final String HANDED_THINGS_TO = "handed_things_to";
     public static final String NAME = "name";
     public static final String MOBILE_NUMBER = "mobile_number";
+    public static final String IN_TIME = "in_time";
 
     /*Request Codes*/
     public static final int MAKE_CALL_PERMISSION_REQUEST_CODE = 1;
