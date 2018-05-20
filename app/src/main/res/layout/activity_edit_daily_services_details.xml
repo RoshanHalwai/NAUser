@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
         android:inputType="textCapWords"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/edit_text_default_size"
@@ -90,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+
         android:cursorVisible="false"
         android:drawableEnd="@drawable/calendar_date"
         android:drawableRight="@drawable/calendar_date"
@@ -120,6 +119,6 @@
         android:text="@string/update"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </LinearLayout>

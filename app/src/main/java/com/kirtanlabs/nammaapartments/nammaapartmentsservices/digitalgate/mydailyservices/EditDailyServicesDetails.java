@@ -29,7 +29,11 @@ public class EditDailyServicesDetails extends BaseActivity {
     private String name;
     private String mobile;
     private String inTime;
-    private String navigateTo;
+    private String service_type;
+
+    private boolean nameTextChanged = false;
+    private boolean mobileTextChanged = false;
+    private boolean timeTextChanged = false;
 
     @Override
     protected int getLayoutResourceId() {
@@ -38,7 +42,7 @@ public class EditDailyServicesDetails extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.edit;
+        return R.string.edit_my_daily_service_details;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class EditDailyServicesDetails extends BaseActivity {
         editPickInTime.setTypeface(Constants.setLatoRegularFont(this));
         buttonUpdate.setTypeface(Constants.setLatoLightFont(this));
 
-        /*To fill Details Automatically in EditText when screen in loaded*/
+        /*To fill Details Automatically in all EditTexts when screen is loaded*/
         fillDetails();
 
         /*Setting events for edit text*/
@@ -88,12 +92,14 @@ public class EditDailyServicesDetails extends BaseActivity {
         editPickInTime.setOnClickListener(View -> displayTime());
 
         buttonUpdate.setOnClickListener(v -> {
-            if (navigateTo.equals(getResources().getString(R.string.verify_otp))) {
+            if (mobileTextChanged) {
                 Intent otpIntent = new Intent(EditDailyServicesDetails.this, OTP.class);
-                otpIntent.putExtra(Constants.SCREEN_TYPE, R.string.edit);
+                otpIntent.putExtra(Constants.OTP_TYPE, service_type);
                 startActivity(otpIntent);
             } else {
                 Intent mdsIntent = new Intent(EditDailyServicesDetails.this, DailyServicesHome.class);
+                mdsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mdsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mdsIntent);
             }
             finish();
@@ -106,8 +112,8 @@ public class EditDailyServicesDetails extends BaseActivity {
         assert bundle != null;
         name = bundle.getString(Constants.NAME);
         mobile = bundle.getString(Constants.MOBILE_NUMBER);
-        inTime = bundle.getString("inTime");
-        String service_type = bundle.getString(Constants.SERVICE_TYPE, null);
+        inTime = bundle.getString(Constants.IN_TIME);
+        service_type = bundle.getString(Constants.SERVICE_TYPE, null);
 
         editMemberAndServiceName.setText(name);
         editMobileNumber.setText(mobile);
@@ -126,17 +132,19 @@ public class EditDailyServicesDetails extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (editMemberAndServiceName.length() > 0) {
                     buttonUpdate.setVisibility(View.VISIBLE);
-                    navigateTo = getResources().getString(R.string.my_daily_services);
+                    nameTextChanged = true;
                 } else {
-                    makeInvisibleButtonAndText();
+                    nameTextChanged = false;
                 }
+                makeButtonOrTextVisibleOrInvisible();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (editMemberAndServiceName.getText().toString().equals(name)) {
-                    makeInvisibleButtonAndText();
+                    nameTextChanged = false;
                 }
+                makeButtonOrTextVisibleOrInvisible();
             }
         });
 
@@ -150,17 +158,19 @@ public class EditDailyServicesDetails extends BaseActivity {
                 if (editMobileNumber.length() > 0) {
                     textDescription.setVisibility(View.VISIBLE);
                     buttonUpdate.setVisibility(View.VISIBLE);
-                    navigateTo = getResources().getString(R.string.verify_otp);
+                    mobileTextChanged = true;
                 } else {
-                    makeInvisibleButtonAndText();
+                    mobileTextChanged = false;
                 }
+                makeButtonOrTextVisibleOrInvisible();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (editMobileNumber.getText().toString().equals(mobile)) {
-                    makeInvisibleButtonAndText();
+                    mobileTextChanged = false;
                 }
+                makeButtonOrTextVisibleOrInvisible();
             }
         });
 
@@ -172,21 +182,34 @@ public class EditDailyServicesDetails extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 buttonUpdate.setVisibility(View.VISIBLE);
-                navigateTo = getResources().getString(R.string.my_daily_services);
+                timeTextChanged = true;
+                makeButtonOrTextVisibleOrInvisible();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (editPickInTime.getText().toString().equals(inTime)) {
-                    makeInvisibleButtonAndText();
+                    timeTextChanged = false;
+                    makeButtonOrTextVisibleOrInvisible();
                 }
             }
         });
     }
 
-    private void makeInvisibleButtonAndText() {
-        textDescription.setVisibility(View.INVISIBLE);
-        buttonUpdate.setVisibility(View.INVISIBLE);
+    private void makeButtonOrTextVisibleOrInvisible() {
+
+        if (nameTextChanged || mobileTextChanged || timeTextChanged) {
+            buttonUpdate.setVisibility(View.VISIBLE);
+            if (mobileTextChanged) {
+                textDescription.setVisibility(View.VISIBLE);
+            } else {
+                textDescription.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            buttonUpdate.setVisibility(View.INVISIBLE);
+            textDescription.setVisibility(View.INVISIBLE);
+        }
+
     }
 
 
