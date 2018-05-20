@@ -10,25 +10,39 @@ import android.graphics.Typeface;
 
 public class Constants {
 
-    /*NammaApartmentService Channels*/
+    /* ------------------------------------------------------------- *
+     * Namma Apartment GCM Channels
+     * ------------------------------------------------------------- */
+
     public static final String CHANNEL_ID = "my_channel_01";
 
-    /* Intent Keys*/
-    public static final String SCREEN_TYPE = "screen_type";
-    public static final String SERVICE_TYPE = "service_type";
-    public static final String ARRIVAL_TYPE = "arrival_type";
+    /* ------------------------------------------------------------- *
+     * Intent Keys
+     * ------------------------------------------------------------- */
+
     public static final String ALARM_TYPE = "alarm_type";
-    public static final String OTP_TYPE = "otp_type";
+    public static final String ARRIVAL_TYPE = "arrival_type";
     public static final String HANDED_THINGS_TO = "handed_things_to";
+    public static final String IN_TIME = "in_time";
     public static final String NAME = "name";
     public static final String MOBILE_NUMBER = "mobile_number";
-    public static final String IN_TIME = "in_time";
+    public static final String OTP_TYPE = "otp_type";
+    public static final String SERVICE_TYPE = "service_type";
+    public static final String SCREEN_TITLE = "screen_title";
 
-    /*Request Codes*/
-    public static final int MAKE_CALL_PERMISSION_REQUEST_CODE = 1;
-    public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
+    /* ------------------------------------------------------------- *
+     * Request Code
+     * ------------------------------------------------------------- */
+    public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
+    public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
+    public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
+    static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
+    static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
-    /* Font Types */
+    /* ------------------------------------------------------------- *
+     * Font Types
+     * ------------------------------------------------------------- */
+
     public static Typeface setLatoBlackFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Black.ttf");
     }

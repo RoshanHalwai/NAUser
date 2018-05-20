@@ -29,11 +29,16 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AddDailyService extends BaseActivity {
+import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
-    private final int RESULT_PICK_CONTACT = 1;
-    private final int CAMERA_REQUEST = 2;
-    private final int GALLERY_REQUEST = 3;
+public class AddDailyService extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private TextView textDescription;
     private EditText editPickTime;
     private EditText editName;
@@ -44,6 +49,10 @@ public class AddDailyService extends BaseActivity {
     private String service_type;
     private AlertDialog dialog;
     private ListView listView;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -99,89 +108,59 @@ public class AddDailyService extends BaseActivity {
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickTime.setInputType(InputType.TYPE_NULL);
 
-        /*Setting event for circleImageView*/
-        circleImageView.setOnClickListener(v -> dialog.show());
-
-        /*Setting event for Select From Contacts button*/
-        buttonSelectFromContact.setOnClickListener(view -> {
-            Intent i = new Intent(Intent.ACTION_PICK);
-            i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-            startActivityForResult(i, RESULT_PICK_CONTACT);
-        });
-
-        /*Setting event for  Displaying Date & Time*/
-        editPickTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                displayTime();
-            }
-        });
-        editPickTime.setOnClickListener(View -> displayTime());
-
-        /*Setting events for add button click*/
-        buttonAdd.setOnClickListener(v -> {
-            Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
-            intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
-            startActivity(intentButtonAdd);
-        });
+        /*Setting events for views*/
+        circleImageView.setOnClickListener(this);
+        editPickTime.setOnFocusChangeListener(this);
+        editPickTime.setOnClickListener(this);
+        buttonAdd.setOnClickListener(this);
+        buttonSelectFromContact.setOnClickListener(this);
 
         updateOTPDescription();
-
-        setupViewsForProfilePhoto();
+        setupLayoutForProfilePhoto();
     }
 
-    /**
-     * We need to update OTP Message description based on Service for which user is entering the
-     * details.
-     */
-    private void updateOTPDescription() {
-        if (getIntent().getExtras() != null) {
-            service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
-            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
-            textDescription.setText(description);
+    /* ------------------------------------------------------------- *
+     * Overriding OnClickListener Objects
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.profileImage:
+                dialog.show();
+                break;
+            case R.id.editPickTime:
+                displayTime();
+                break;
+            case R.id.buttonAdd:
+                Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
+                intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
+                intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
+                startActivity(intentButtonAdd);
+                break;
+            case R.id.buttonSelectFromContact:
+                showUserContacts();
+                break;
         }
     }
 
-    private void setupViewsForProfilePhoto() {
-        /*Creating an array list of selecting images from camera and gallery*/
-        ArrayList<String> pickImageList = new ArrayList<>();
-
-        /*Adding pick images services to the list*/
-        pickImageList.add(getString(R.string.camera));
-        pickImageList.add(getString(R.string.gallery));
-        pickImageList.add(getString(R.string.cancel));
-
-        /*Creating the Adapter*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddDailyService.this, android.R.layout.simple_list_item_1, pickImageList);
-
-        /*Attaching adapter to the listView*/
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-        /*Setting event for listview items*/
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            switch (position) {
-                case 0:
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    break;
-                case 1:
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
-                    break;
-                case 2:
-                    dialog.cancel();
-            }
-        });
-
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            displayTime();
+        }
     }
+
+
+    /* ------------------------------------------------------------- *
+     * Overriding onActivityResult method
+     * ------------------------------------------------------------- */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case RESULT_PICK_CONTACT:
+                case READ_CONTACTS_PERMISSION_REQUEST_CODE:
                     Cursor cursor;
                     try {
                         Uri uri = data.getData();
@@ -206,7 +185,7 @@ public class AddDailyService extends BaseActivity {
                         e.printStackTrace();
                     }
                     break;
-                case CAMERA_REQUEST:
+                case CAMERA_PERMISSION_REQUEST_CODE:
                     if (data.getExtras() != null) {
                         Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
                         circleImageView.setImageBitmap(bitmapProfilePic);
@@ -218,7 +197,7 @@ public class AddDailyService extends BaseActivity {
                     }
                     break;
 
-                case GALLERY_REQUEST:
+                case GALLERY_PERMISSION_REQUEST_CODE:
                     if (data != null && data.getData() != null) {
                         Uri selectedImage = data.getData();
                         try {
@@ -237,6 +216,59 @@ public class AddDailyService extends BaseActivity {
             }
         }
     }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * We need to update OTP Message description based on Service for which user is entering the
+     * details.
+     */
+    private void updateOTPDescription() {
+        if (getIntent().getExtras() != null) {
+            service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
+            textDescription.setText(description);
+        }
+    }
+
+    /**
+     * Allows users to pick image from Gallery or use camera to create one
+     */
+    private void setupLayoutForProfilePhoto() {
+        /*Creating an array list of selecting images from camera and gallery*/
+        ArrayList<String> pickImageList = new ArrayList<>();
+
+        /*Adding pick images services to the list*/
+        pickImageList.add(getString(R.string.camera));
+        pickImageList.add(getString(R.string.gallery));
+        pickImageList.add(getString(R.string.cancel));
+
+        /*Creating the Adapter*/
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddDailyService.this, android.R.layout.simple_list_item_1, pickImageList);
+
+        /*Attaching adapter to the listView*/
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        /*Setting event for listview items*/
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:
+                    launchCamera();
+                    break;
+                case 1:
+                    pickImageFromGallery();
+                    break;
+                case 2:
+                    dialog.cancel();
+                    break;
+            }
+        });
+
+    }
+
 
     /*This method will get invoked when user successfully uploaded pic from gallery and camera*/
     private void onSuccessfulUpload() {
@@ -268,4 +300,5 @@ public class AddDailyService extends BaseActivity {
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
+
 }

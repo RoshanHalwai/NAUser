@@ -17,15 +17,25 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
 
-    //this context we will use to inflate the layout
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private final Context mCtx;
     private final BaseActivity baseActivity;
 
-    //getting the context and product list with constructor
+    /* ------------------------------------------------------------- *
+     * Constructor
+     * ------------------------------------------------------------- */
+
     DailyServicesHomeAdapter(Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding RecyclerView Adapter object
+     * ------------------------------------------------------------- */
 
     @NonNull
     @Override
@@ -112,10 +122,18 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         return 1;
     }
 
+    /* ------------------------------------------------------------- *
+     * Daily Service Holder class
+     * ------------------------------------------------------------- */
+
     class DailyServicesHolder extends RecyclerView.ViewHolder {
+
+        /* ------------------------------------------------------------- *
+         * Private Members
+         * ------------------------------------------------------------- */
+
         final LinearLayout layoutTitle;
         final LinearLayout layoutTitleValues;
-
         final TextView textServiceName;
         final TextView textServiceNameValue;
         final TextView textServiceType;
@@ -126,11 +144,14 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         final TextView textInvitationTimeValue;
         final TextView textInvitedByOrNumberOfFlats;
         final TextView textInvitedByOrNumberOfFlatsValue;
-
         final TextView textCall;
         final TextView textMessage;
         final TextView textEdit;
         final TextView textCancel;
+
+        /* ------------------------------------------------------------- *
+         * Constructor
+         * ------------------------------------------------------------- */
 
         DailyServicesHolder(View itemView) {
             super(itemView);
