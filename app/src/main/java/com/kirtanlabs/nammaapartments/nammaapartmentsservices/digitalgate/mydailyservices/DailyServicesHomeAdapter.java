@@ -103,7 +103,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textCall.setOnClickListener(v -> baseActivity.makePhoneCall("9885665744"));
         //TODO: Change Mobile Number here
         holder.textMessage.setOnClickListener(v -> baseActivity.sendTextMessage("9885665744"));
-        holder.textEdit.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+        holder.textEdit.setOnClickListener(v -> EditMyServiceDetails(holder.textServiceNameValue.getText().toString(), holder.textInvitationTimeValue.getText().toString(), holder.textServiceTypeValue.getText().toString()));
         holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
