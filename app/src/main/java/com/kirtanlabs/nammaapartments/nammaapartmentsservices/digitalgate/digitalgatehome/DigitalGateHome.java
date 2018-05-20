@@ -2,6 +2,8 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digit
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -13,7 +15,11 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydail
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome;
 
-public class DigitalGateHome extends BaseActivity {
+public class DigitalGateHome extends BaseActivity implements AdapterView.OnItemClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -29,6 +35,54 @@ public class DigitalGateHome extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*Getting for grid view*/
+        GridView gridViewDigitalGateServices = findViewById(R.id.gridDigitalGate);
+
+        // Setting the imageAdapter
+        gridViewDigitalGateServices.setAdapter(getAdapter());
+
+        //digitalGateHomeAdapter.notifyDataSetChanged();
+
+        /*Setting event for grid view items*/
+        gridViewDigitalGateServices.setOnItemClickListener(this);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnItemClickListener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0:
+                startActivity(new Intent(DigitalGateHome.this, InvitingVisitors.class));
+                break;
+            case 1:
+                startActivity(new Intent(DigitalGateHome.this, VisitorsList.class));
+                break;
+            case 2:
+                startActivity(new Intent(DigitalGateHome.this, DailyServicesHome.class));
+                break;
+            case 3:
+                Intent intent = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
+                intent.putExtra(Constants.SERVICE_TYPE, R.string.notify_digital_gate);
+                startActivity(intent);
+                break;
+            case 5:
+                Intent intentEmergency = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
+                intentEmergency.putExtra(Constants.SERVICE_TYPE, R.string.emergency);
+                startActivity(intentEmergency);
+                break;
+            default:
+                Toast.makeText(DigitalGateHome.this, "Yet to Implement", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private DigitalGateHomeAdapter getAdapter() {
         int[] imageDigitalServices = {
                 R.drawable.invite_visitors,
                 R.drawable.my_visitors_list,
@@ -37,7 +91,6 @@ public class DigitalGateHome extends BaseActivity {
                 R.drawable.my_sweet_home,
                 R.drawable.emergency
         };
-
         String[] stringDigitalGateServices = {
                 getString(R.string.invite_visitors),
                 getString(R.string.my_visitors_list),
@@ -46,42 +99,7 @@ public class DigitalGateHome extends BaseActivity {
                 getString(R.string.my_sweet_home),
                 getString(R.string.emergency)
         };
-
-        /*Getting Id's for all the views*/
-        GridView gridViewDigitalGateServices = findViewById(R.id.gridDigitalGate);
-
-        // Instance of ImageAdapter Class
-        DigitalGateHomeAdapter digitalGateHomeAdapter = new DigitalGateHomeAdapter(this, imageDigitalServices, stringDigitalGateServices);
-
-        // Setting the imageAdapter
-        gridViewDigitalGateServices.setAdapter(digitalGateHomeAdapter);
-        digitalGateHomeAdapter.notifyDataSetChanged();
-
-        gridViewDigitalGateServices.setOnItemClickListener((parent, view, position, id) -> {
-            switch (position) {
-                case 0:
-                    startActivity(new Intent(DigitalGateHome.this, InvitingVisitors.class));
-                    break;
-                case 1:
-                    startActivity(new Intent(DigitalGateHome.this, VisitorsList.class));
-                    break;
-                case 2:
-                    startActivity(new Intent(DigitalGateHome.this, DailyServicesHome.class));
-                    break;
-                case 3:
-                    Intent intent = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
-                    intent.putExtra(Constants.SERVICE_TYPE, R.string.notify_digital_gate);
-                    startActivity(intent);
-                    break;
-                case 5:
-                    Intent intentEmergency = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
-                    intentEmergency.putExtra(Constants.SERVICE_TYPE, R.string.emergency);
-                    startActivity(intentEmergency);
-                    break;
-                default:
-                    Toast.makeText(DigitalGateHome.this, "Yet to Implement", Toast.LENGTH_SHORT).show();
-            }
-        });
+        return new DigitalGateHomeAdapter(this, imageDigitalServices, stringDigitalGateServices);
     }
 
 }

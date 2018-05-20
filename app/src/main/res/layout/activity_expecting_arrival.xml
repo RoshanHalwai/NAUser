@@ -51,7 +51,7 @@
                 android:textSize="@dimen/text_view_default_size" />
 
             <EditText
-                android:id="@+id/editDateTime"
+                android:id="@+id/editPickDateTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
