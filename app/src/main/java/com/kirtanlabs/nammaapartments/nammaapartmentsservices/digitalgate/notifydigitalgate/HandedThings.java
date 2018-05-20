@@ -104,7 +104,7 @@ public class HandedThings extends BaseActivity {
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Since we are \using same layout for handed things to my guest and handed things to my daily services we need to
+        /*Since we are using same layout for handed things to my guest and handed things to my daily services we need to
          * change some Titles in layout*/
         changeTitles();
 

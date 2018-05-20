@@ -12,13 +12,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.InputType;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,7 +38,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
     private final int CAMERA_REQUEST = 2;
     private final int GALLERY_REQUEST = 3;
     private TextView textDescriptionDailyService;
-    private TextView textDescriptionFamilyMember;
     private EditText editPickTime;
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
@@ -92,7 +88,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         TextView textTime = findViewById(R.id.textTime);
         TextView textGrantAccess = findViewById(R.id.textGrantAccess);
         textDescriptionDailyService = findViewById(R.id.textDescriptionDailyService);
-        textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
+        TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
         editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         EditText editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
@@ -129,22 +125,18 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         /*Setting event for circleImageView*/
         circleImageView.setOnClickListener(v -> dialog.show());
 
-        /*Setting event for change in editDailyServicesOrFamilyMemberName*/
-        //setEditDailyServiceOrFamilyMemberName();
-
         /*Since we are using same layout for add my daily services and and add my family members we need to show different layout
-          according to the user choice*/
+          according to the user choice.*/
         if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
             RelativeLayout relativeLayoutTime = findViewById(R.id.relativeLayoutTime);
             relativeLayoutTime.setVisibility(View.VISIBLE);
             textDescriptionFamilyMember.setVisibility(View.GONE);
             updateOTPDescription();
         } else {
-            LinearLayout layoutAccess = findViewById(R.id.layoutAccess);
-            textDescriptionFamilyMember.setVisibility(View.VISIBLE);
+            RelativeLayout relativeLayoutAccess = findViewById(R.id.relativeLayoutAccess);
             textRelation.setVisibility(View.VISIBLE);
             editFamilyMemberRelation.setVisibility(View.VISIBLE);
-            layoutAccess.setVisibility(View.VISIBLE);
+            relativeLayoutAccess.setVisibility(View.VISIBLE);
             buttonAdd.setVisibility(View.VISIBLE);
         }
 
@@ -193,67 +185,29 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
                 if (grantedAccess)
                     openNotificationDialog();
                 else {
-                    Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-                    intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
-                    startActivity(intentNotification);
+                    navigatingToOTPScreen();
                 }
             }
         });
         setupViewsForProfilePhoto();
     }
 
+    /**
+     * This method gets invoked when user tries to add family member and also giving access.
+     */
     private void openNotificationDialog() {
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
-        TextView textNotificationTitle = new TextView(this);
-
-        //Setting Custom Dialog Title
-        textNotificationTitle.setText(R.string.notification_dialog_box);
-        //Title Properties
-        textNotificationTitle.setPadding(10, 10, 10, 10);
-        textNotificationTitle.setGravity(Gravity.CENTER);
-        textNotificationTitle.setTextColor(getResources().getColor(R.color.nmLightYellow));
-        textNotificationTitle.setTextSize(R.dimen.text_view_default_size);
-        textNotificationTitle.setBackgroundColor(getResources().getColor(R.color.nmBlack));
-        textNotificationTitle.setTypeface(Constants.setLatoBoldFont(this));
-        alertNotificationDialog.setTitle(R.string.notification_dialog_box);
-
-        //Setting ImageView
-        ImageView imageNotification = new ImageView(this);
-        imageNotification.setImageResource(R.drawable.feature_unavailable);
-        alertNotificationDialog.setIcon(R.drawable.feature_unavailable);
-
-        TextView textNotificationMessage = new TextView(this);
-        // Setting Custom Dialog Message
-        textNotificationMessage.setText(R.string.access_to_notifications);
-        // Message Properties
-        textNotificationMessage.setPadding(10, 10, 10, 10);
-        textNotificationMessage.setTextColor(Color.BLACK);
-        textNotificationMessage.setTypeface(Constants.setLatoBoldFont(this));
-        textNotificationMessage.setGravity(Gravity.CENTER);
-        //textNotificationMessage.setTextSize(R.dimen.text_view_default_size);
-        alertNotificationDialog.setView(textNotificationMessage);
+        View notificationDialog = View.inflate(this, R.layout.layout_dialog_notification, null);
+        alertNotificationDialog.setView(notificationDialog);
+        dialog = alertNotificationDialog.create();
 
         // Setting Custom Dialog Buttons
-        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> {
-            Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-            intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
-            startActivity(intentNotification);
-        });
+        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
         alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
 
         new Dialog(getApplicationContext());
         alertNotificationDialog.show();
     }
-
-
-    /*This method will get invoked when user tries to enter his name*/
-/*    private void setEditDailyServiceOrFamilyMemberName() {
-        dailyServiceOrFamilyMemberName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
-        if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_sweet_home) {
-            String description = getResources().getString(R.string.otp_message_family_member).replace("name", dailyServiceOrFamilyMemberName);
-            textDescriptionFamilyMember.setText(description);
-        }
-    }*/
 
     /**
      * We need to update OTP Message description based on Service for which user is entering the
@@ -267,6 +221,18 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         }
     }
 
+    /**
+     * We need to navigate to OTP Screen based on the user selection of giving access and also on not giving access.
+     */
+    private void navigatingToOTPScreen() {
+        Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+        intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
+        startActivity(intentNotification);
+    }
+
+    /**
+     * This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.
+     */
     private void setupViewsForProfilePhoto() {
         /*Creating an array list of selecting images from camera and gallery*/
         ArrayList<String> pickImageList = new ArrayList<>();
@@ -301,6 +267,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
             }
         });
     }
+
+    /**
+     * This method gets invoked based on the response of which user has clicked on contacts,camera and gallery.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -362,12 +332,16 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity {
         }
     }
 
-    /*This method will get invoked when user successfully uploaded pic from gallery and camera*/
+    /**
+     * This method will get invoked when user successfully uploaded image from gallery and camera.
+     */
     private void onSuccessfulUpload() {
         circleImageView.setVisibility(View.VISIBLE);
     }
 
-    /*This method will get invoked when user fails in uploading image from gallery and camera*/
+    /**
+     * This method will get invoked when user fails in uploading image from gallery and camera.
+     */
     private void onFailedUpload() {
         circleImageView.setVisibility(View.INVISIBLE);
         dialog.cancel();

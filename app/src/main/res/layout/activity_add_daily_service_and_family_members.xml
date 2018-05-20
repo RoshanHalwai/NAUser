@@ -23,7 +23,7 @@
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
-                android:src="@drawable/profile_image" />
+                android:src="@drawable/profile_pic" />
 
                 <TextView
                     android:id="@+id/textDailyServiceOrFamilyMemberName"
@@ -178,18 +178,26 @@
                         android:layerType="software" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layoutAccess"
+            <RelativeLayout
+                android:id="@+id/relativeLayoutAccess"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
+                <LinearLayout
+                    android:id="@+id/layoutYesNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
                     <TextView
                         android:id="@+id/textGrantAccess"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/grant_access"
@@ -221,7 +229,19 @@
 
                 </LinearLayout>
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/textDescriptionFamilyMember"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layoutYesNo"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text="@string/otp_message_family_member"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
                     android:id="@+id/relativeLayoutTime"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -267,28 +287,16 @@
                     android:textSize="@dimen/text_view_default_size"
                     android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/textDescriptionFamilyMember"
+            <Button
+                android:id="@+id/buttonAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/otp_message_family_member"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
-
-                <Button
-                    android:id="@+id/buttonAdd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:background="@color/nmBlack"
-                    android:text="@string/add"
-                    android:textColor="@color/nmLightYellow"
-                    android:textSize="@dimen/button_default_size"
-                    android:visibility="gone" />
+                android:layout_margin="20dp"
+                android:background="@color/nmBlack"
+                android:text="@string/add"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size"
+                android:visibility="gone" />
 
             </LinearLayout>
 
