@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -102,8 +103,24 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textCall.setOnClickListener(v -> baseActivity.makePhoneCall("9885665744"));
         //TODO: Change Mobile Number here
         holder.textMessage.setOnClickListener(v -> baseActivity.sendTextMessage("9885665744"));
-        holder.textEdit.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+        holder.textEdit.setOnClickListener(v -> editMyServiceDetails(holder.textServiceNameValue.getText().toString(), holder.textInvitationTimeValue.getText().toString(), holder.textServiceTypeValue.getText().toString()));
         holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method is invoked when user clicks on Edit icon in the list and passes all daily service details in EditMy daily Services Details
+     */
+    private void editMyServiceDetails(String name, String inTime, String serviceType) {
+        Intent EditIntent = new Intent(mCtx, EditDailyServicesDetails.class);
+        EditIntent.putExtra(Constants.NAME, name);
+        EditIntent.putExtra(Constants.MOBILE_NUMBER, "7895185103");    //TODO :  To change the mobile number here
+        EditIntent.putExtra(Constants.IN_TIME, inTime);
+        EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
+        mCtx.startActivity(EditIntent);
     }
 
     @Override
