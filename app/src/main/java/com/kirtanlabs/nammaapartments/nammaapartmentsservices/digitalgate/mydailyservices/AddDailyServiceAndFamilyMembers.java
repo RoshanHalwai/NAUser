@@ -31,14 +31,15 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
+
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     /*----------------------------------------------
      *Private Members
      *-----------------------------------------------*/
-    private final int RESULT_PICK_CONTACT = 1;
-    private final int CAMERA_REQUEST = 2;
-    private final int GALLERY_REQUEST = 3;
     private CircleImageView circleImageView;
     private TextView textDescriptionDailyService;
     private EditText editPickTime;
@@ -65,7 +66,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     protected int getActivityTitle() {
         /*We use a common class for Add Daily Service and Add Family Members, we set the title
          * based on the user click on MySweetHome screen and on click of listview on MyDailyServices*/
-        if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_sweet_home) {
+        if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_sweet_home) {
             return R.string.add_family_members_details_screen;
         } else {
             return R.string.add_my_service;
@@ -121,19 +122,19 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonAdd.setTypeface(Constants.setLatoLightFont(this));
 
-         /*Since we are using same layout for add my daily services and and add my family members we need to show different layout
+         /*Since we are using same layout for add my daily services and add my family members we need to show different layout
           according to the user choice.*/
-        if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
-            RelativeLayout relativeLayoutTime = findViewById(R.id.relativeLayoutTime);
-            relativeLayoutTime.setVisibility(View.VISIBLE);
-            textDescriptionFamilyMember.setVisibility(View.GONE);
-            updateOTPDescription();
-        } else {
+        if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_sweet_home) {
             RelativeLayout relativeLayoutAccess = findViewById(R.id.relativeLayoutAccess);
             textRelation.setVisibility(View.VISIBLE);
             editFamilyMemberRelation.setVisibility(View.VISIBLE);
             relativeLayoutAccess.setVisibility(View.VISIBLE);
             buttonAdd.setVisibility(View.VISIBLE);
+        } else {
+            RelativeLayout relativeLayoutTime = findViewById(R.id.relativeLayoutTime);
+            relativeLayoutTime.setVisibility(View.VISIBLE);
+            textDescriptionFamilyMember.setVisibility(View.GONE);
+            updateOTPDescription();
         }
         /*Setting event for all button clicks */
         circleImageView.setOnClickListener(this);
@@ -155,7 +156,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case RESULT_PICK_CONTACT:
+                case READ_CONTACTS_PERMISSION_REQUEST_CODE:
                     Cursor cursor;
                     try {
                         Uri uri = data.getData();
@@ -180,7 +181,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         e.printStackTrace();
                     }
                     break;
-                case CAMERA_REQUEST:
+                case CAMERA_PERMISSION_REQUEST_CODE:
                     if (data.getExtras() != null) {
                         Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
                         circleImageView.setImageBitmap(bitmapProfilePic);
@@ -192,7 +193,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     }
                     break;
 
-                case GALLERY_REQUEST:
+                case GALLERY_PERMISSION_REQUEST_CODE:
                     if (data != null && data.getData() != null) {
                         Uri selectedImage = data.getData();
                         try {
@@ -222,9 +223,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 dialog.show();
                 break;
             case R.id.buttonSelectFromContact:
-                Intent i = new Intent(Intent.ACTION_PICK);
-                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(i, RESULT_PICK_CONTACT);
+                showUserContacts();
                 break;
             case R.id.buttonYes:
                 grantedAccess = true;
@@ -244,10 +243,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 displayTime();
                 break;
             case R.id.buttonAdd:
-                if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.my_daily_services) {
+                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
                     Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+                    intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
                     intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
-                    intentButtonAdd.putExtra(Constants.SCREEN_TYPE, R.string.add_my_service);
                     startActivity(intentButtonAdd);
                 } else {
                     if (grantedAccess)
@@ -302,10 +301,15 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      */
     private void navigatingToOTPScreen() {
         Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+        intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
         intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
         startActivity(intentNotification);
     }
 
+    /**
+     * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
+     * dialog is displayed when user clicks on profile image which is on top of the screen.
+     */
     private void setupCustomDialog() {
         AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
         View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
@@ -336,14 +340,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         listView.setOnItemClickListener((parent, view, position, id) -> {
             switch (position) {
                 case 0:
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    launchCamera();
                     break;
                 case 1:
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+                    pickImageFromGallery();
                     break;
                 case 2:
                     dialog.cancel();

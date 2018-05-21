@@ -16,7 +16,11 @@ import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 
-public class OTP extends BaseActivity {
+public class OTP extends BaseActivity implements View.OnClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
 
     private EditText editFirstOTPDigit;
     private EditText editSecondOTPDigit;
@@ -26,6 +30,12 @@ public class OTP extends BaseActivity {
     private EditText editSixthOTPDigit;
     private TextView textPhoneVerification;
     private Button buttonVerifyOTP;
+
+    private int previousScreenTitle;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Methods
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -41,7 +51,7 @@ public class OTP extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /* Since this is OTP Screen we wouldn't want the users to go back to Phone Number screen,
+        /* Since we wouldn't want the users to go back to previous screen,
          * hence hiding the back button from the Title Bar*/
         hideBackButton();
 
@@ -68,34 +78,53 @@ public class OTP extends BaseActivity {
         /*Setting events for OTP edit text*/
         setEventsForEditText();
 
-        /*Since we are using same layout after clicking login and also on add Daily Services we need to
-         * set text for textPhoneVerification */
-        if (getIntent().getExtras() != null) {
-            updatePhoneVerificationText();
-        }
-
         /*Setting event for Verify OTP button*/
-        buttonVerifyOTP.setOnClickListener(view -> {
-            if (getIntent().getExtras() == null) {
-                Intent intent = new Intent(OTP.this, NammaApartmentsHome.class);
-                startActivity(intent);
-            } else if (getIntent().getIntExtra(Constants.SCREEN_TYPE, 0) == R.string.add_my_service) {
-                Intent intent = new Intent(OTP.this, DailyServicesHome.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(OTP.this, MySweetHome.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+        buttonVerifyOTP.setOnClickListener(this);
+
+        /* Since multiple activities make use of this class we get previous
+         * screen title and update the views accordingly*/
+        getPreviousScreenTitle();
+        updatePhoneVerificationText();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClickListener Methods
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.buttonVerifyOTP) {
+            switch (previousScreenTitle) {
+                case R.string.login:
+                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                    break;
+                case R.string.add_my_service:
+                    Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
+                    intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intentDailyServiceHome);
+                    break;
+                case R.string.add_family_members_details_screen:
+                    Intent intentMySweetHome = new Intent(OTP.this, MySweetHome.class);
+                    intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intentMySweetHome);
+                    break;
             }
             finish();
-        });
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private void getPreviousScreenTitle() {
+        previousScreenTitle = getIntent().getIntExtra(Constants.SCREEN_TITLE, 0);
     }
 
     /**
-     * Once user enters a digit in one edit text we move the focus to next edit text
+     * Once user enters a digit in one edit text we move the cursor to next edit text
      */
     private void setEventsForEditText() {
         editFirstOTPDigit.addTextChangedListener(new TextWatcher() {
@@ -200,13 +229,27 @@ public class OTP extends BaseActivity {
         });
     }
 
-    /*This method gets invoked when user comes to otp screen after clicking on add button
-     *in add my service and add my family members activity */
+    /**
+     * We update the Phone Verification text based on the activity calling this class.
+     */
     private void updatePhoneVerificationText() {
-        String service_type = getIntent().getStringExtra(Constants.OTP_TYPE) + " ";
-        String description = getResources().getString(R.string.enter_verification_code);
-        description = description.replace("account", service_type + " account");
-        description = description.replace("your mobile", "their mobile");
-        textPhoneVerification.setText((description));
+        switch (previousScreenTitle) {
+            case R.string.login:
+                textPhoneVerification.setText(R.string.enter_verification_code);
+                break;
+            case R.string.add_my_service:
+                String service_type = getIntent().getStringExtra(Constants.OTP_TYPE);
+                String description = getResources().getString(R.string.enter_verification_code);
+                description = description.replace("account", service_type + " account");
+                description = description.replace("your mobile", "their mobile");
+                textPhoneVerification.setText(description);
+                break;
+            case R.string.add_family_members_details_screen:
+                String screen_type = getIntent().getStringExtra(Constants.OTP_TYPE);
+                String otpDescription = getResources().getString(R.string.enter_verification_code).replace("account", screen_type + " account");
+                otpDescription = otpDescription.replace("your mobile", "their mobile");
+                textPhoneVerification.setText(otpDescription);
+        }
     }
+
 }

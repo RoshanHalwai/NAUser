@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
@@ -18,23 +18,54 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SocietyServices extends Fragment {
+public class SocietyServices extends Fragment implements AdapterView.OnItemClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Overriding Fragment Objects
+     * ------------------------------------------------------------- */
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_namma_apartments_services, container, false);
+        return inflater.inflate(R.layout.activity_society_services, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*Getting Id's for all the views*/
-        ListView listView = view.findViewById(R.id.listViewNammaApartmentServices);
+        /*Getting Id for List View*/
+        ListView listView = view.findViewById(R.id.listviewSocietyServices);
+
+        /*Attaching adapter to the listview*/
+        listView.setAdapter(getAdapter());
+
+        /*Setting event for list view items*/
+        listView.setOnItemClickListener(this);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnItemClickListener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0: {
+                Intent intent = new Intent(getActivity(), DigitalGateHome.class);
+                startActivity(intent);
+            }
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private NammaApartmentServiceAdapter getAdapter() {
         List<NammaApartmentService> societyServicesList = new ArrayList<>();
 
-        /*Adding some values to our list*/
+        /*Adding Society Services to the list*/
         societyServicesList.add(new NammaApartmentService(R.drawable.digital_gate_services, getString(R.string.digital_gate)));
         societyServicesList.add(new NammaApartmentService(R.drawable.plumbing, getString(R.string.plumber)));
         societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_service, getString(R.string.carpenter)));
@@ -44,24 +75,7 @@ public class SocietyServices extends Fragment {
         societyServicesList.add(new NammaApartmentService(R.drawable.event, getString(R.string.event_management)));
         societyServicesList.add(new NammaApartmentService(R.drawable.water_service, getString(R.string.water_services)));
 
-        /*Creating the Adapter*/
-        NammaApartmentServiceAdapter nammaApartmentServiceAdapter = new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
-
-        /*Attaching adapter to the listview*/
-        listView.setAdapter(nammaApartmentServiceAdapter);
-
-        /*Setting event for list view items*/
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
-            switch (position) {
-                case 0: {
-                    Intent intent = new Intent(getActivity(), DigitalGateHome.class);
-                    startActivity(intent);
-                    break;
-                }
-                default:
-                    Toast.makeText(getActivity(), "Yet To Implement", Toast.LENGTH_SHORT).show();
-            }
-        });
+        return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
     }
 
 }

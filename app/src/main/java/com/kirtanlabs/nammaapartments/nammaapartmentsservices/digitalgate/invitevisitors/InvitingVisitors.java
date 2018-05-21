@@ -23,9 +23,14 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class InvitingVisitors extends BaseActivity {
+import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
-    private final int RESULT_PICK_CONTACT = 1;
+public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private EditText editPickDateTime;
@@ -36,6 +41,10 @@ public class InvitingVisitors extends BaseActivity {
     private String concatenatedDateAndTime = "";
     private String selectedDate = "";
     private String selectedTime = "";
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -83,28 +92,21 @@ public class InvitingVisitors extends BaseActivity {
         buttonSelectFromContact.setTypeface(Constants.setLatoLightFont(this));
         buttonInvite.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Setting event for Select From Contacts button*/
-        buttonSelectFromContact.setOnClickListener(view -> {
-            Intent i = new Intent(Intent.ACTION_PICK);
-            i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-            startActivityForResult(i, RESULT_PICK_CONTACT);
-        });
-
-        /*Setting event for  Displaying Date & Time*/
-        editPickDateTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                displayDateAndTime();
-            }
-        });
-        editPickDateTime.setOnClickListener(View -> displayDateAndTime());
-
+        /*Setting event for views */
+        buttonSelectFromContact.setOnClickListener(this);
+        editPickDateTime.setOnClickListener(this);
+        editPickDateTime.setOnFocusChangeListener(this);
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding onActivityResult
+     * ------------------------------------------------------------- */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case RESULT_PICK_CONTACT:
+                case READ_CONTACTS_PERMISSION_REQUEST_CODE:
                     Cursor cursor;
                     try {
                         Uri uri = data.getData();
@@ -132,6 +134,34 @@ public class InvitingVisitors extends BaseActivity {
             }
         }
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick and OnFocusChange Listeners
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonSelectFromContact:
+                showUserContacts();
+                break;
+            case R.id.editPickDateTime:
+                displayDateAndTime();
+                break;
+        }
+
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            displayDateAndTime();
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
 
     /**
      * This method is invoked when user clicks on pick date and time icon.

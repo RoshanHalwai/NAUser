@@ -16,14 +16,17 @@ import java.util.List;
 
 class NammaApartmentServiceAdapter extends ArrayAdapter<NammaApartmentService> {
 
-    //the list values in the List of type society
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private final List<NammaApartmentService> servicesList;
-
-    //activity context
     private final Context context;
-
-    //the layout resource file for the list items
     private final int resource;
+
+    /* ------------------------------------------------------------- *
+     * Constructors
+     * ------------------------------------------------------------- */
 
     NammaApartmentServiceAdapter(@NonNull Context context, List<NammaApartmentService> servicesList) {
         super(context, R.layout.list_services);
@@ -32,27 +35,23 @@ class NammaApartmentServiceAdapter extends ArrayAdapter<NammaApartmentService> {
         this.resource = R.layout.list_services;
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding ArrayAdapter Objects
+     * ------------------------------------------------------------- */
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         if (convertView == null) {
-            //we need to get the view of the xml for our list item
-            //And for this we need a layout inflater
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-
-            //getting the view
             convertView = layoutInflater.inflate(resource, parent, false);
-            //getting the view elements of the list from the view
-            ImageView imageSocietyServices = convertView.findViewById(R.id.imageServiceIcon);
-            TextView textSocietyServices = convertView.findViewById(R.id.textServiceName);
 
-            //getting the society of the specified position
+            ImageView imageServiceIcon = convertView.findViewById(R.id.imageServiceIcon);
+            TextView textServiceName = convertView.findViewById(R.id.textServiceName);
             NammaApartmentService nammaApartmentService = servicesList.get(position);
-
-            //adding values to the list item
-            imageSocietyServices.setImageDrawable(context.getResources().getDrawable(nammaApartmentService.getServiceImage()));
-            textSocietyServices.setText(nammaApartmentService.getServiceName());
+            imageServiceIcon.setImageDrawable(context.getResources().getDrawable(nammaApartmentService.getServiceImage()));
+            textServiceName.setText(nammaApartmentService.getServiceName());
         }
         return convertView;
     }

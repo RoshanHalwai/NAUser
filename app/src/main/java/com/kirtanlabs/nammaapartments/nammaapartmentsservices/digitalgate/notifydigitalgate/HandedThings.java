@@ -14,7 +14,11 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
-public class HandedThings extends BaseActivity {
+public class HandedThings extends BaseActivity implements View.OnClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
 
     private int handed_Things_To;
     private TextView textVisitorAndServiceName;
@@ -29,6 +33,10 @@ public class HandedThings extends BaseActivity {
     private Button buttonYes;
     private Button buttonNo;
     private Button buttonNotifyGate;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Methods
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -78,7 +86,7 @@ public class HandedThings extends BaseActivity {
         TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
         textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
-        textDescription = findViewById(R.id.textDescriptionDailyService);
+        textDescription = findViewById(R.id.textDescription);
         editDescription = findViewById(R.id.editDescription);
         buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
         buttonYes = findViewById(R.id.buttonYes);
@@ -104,42 +112,57 @@ public class HandedThings extends BaseActivity {
         buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
 
+        /*Setting events for views*/
+        buttonYes.setOnClickListener(this);
+        buttonNo.setOnClickListener(this);
+
         /*Since we are using same layout for handed things to my guest and handed things to my daily services we need to
          * change some Titles in layout*/
         changeTitles();
-
-        /*Method for button Yes*/
-        buttonYes.setOnClickListener(v -> {
-            textDescription.setVisibility(View.VISIBLE);
-            editDescription.setVisibility(View.VISIBLE);
-            buttonNotifyGate.setVisibility(View.VISIBLE);
-            editDescription.requestFocus();
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null) {
-                inputMethodManager.showSoftInput(editDescription, InputMethodManager.SHOW_IMPLICIT);
-            }
-            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
-            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
-            buttonYes.setTextColor(Color.WHITE);
-            buttonNo.setTextColor(Color.BLACK);
-        });
-
-        /*Method for button No*/
-        buttonNo.setOnClickListener(v -> {
-            textDescription.setVisibility(View.GONE);
-            editDescription.setVisibility(View.GONE);
-            buttonNotifyGate.setVisibility(View.GONE);
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null) {
-                inputMethodManager.hideSoftInputFromWindow(editDescription.getWindowToken(), 0);
-
-            }
-            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
-            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
-            buttonYes.setTextColor(Color.BLACK);
-            buttonNo.setTextColor(Color.WHITE);
-        });
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listeners
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        InputMethodManager inputMethodManager;
+        switch (v.getId()) {
+            case R.id.buttonYes:
+                textDescription.setVisibility(View.VISIBLE);
+                editDescription.setVisibility(View.VISIBLE);
+                buttonNotifyGate.setVisibility(View.VISIBLE);
+                editDescription.requestFocus();
+                inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null) {
+                    inputMethodManager.showSoftInput(editDescription, InputMethodManager.SHOW_IMPLICIT);
+                }
+                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonYes.setTextColor(Color.WHITE);
+                buttonNo.setTextColor(Color.BLACK);
+                break;
+            case R.id.buttonNo:
+                textDescription.setVisibility(View.GONE);
+                editDescription.setVisibility(View.GONE);
+                buttonNotifyGate.setVisibility(View.GONE);
+                inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(editDescription.getWindowToken(), 0);
+
+                }
+                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonYes.setTextColor(Color.BLACK);
+                buttonNo.setTextColor(Color.WHITE);
+                break;
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
 
     private void changeTitles() {
         if (handed_Things_To == R.string.handed_things_to_my_daily_services) {

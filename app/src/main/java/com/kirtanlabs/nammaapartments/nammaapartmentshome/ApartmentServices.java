@@ -18,6 +18,10 @@ import java.util.Objects;
 
 public class ApartmentServices extends Fragment {
 
+    /* ------------------------------------------------------------- *
+     * Overriding Fragment Objects
+     * ------------------------------------------------------------- */
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,11 +31,22 @@ public class ApartmentServices extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*Getting Id's for all the views*/
-        ListView listView = view.findViewById(R.id.listViewNammaApartmentServices);
+
+        /*Getting Id for listView*/
+        ListView listView = view.findViewById(R.id.listviewApartmentServices);
+
+        /*Attaching adapter to the listview*/
+        listView.setAdapter(getAdapter());
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private NammaApartmentServiceAdapter getAdapter() {
         List<NammaApartmentService> apartmentServicesList = new ArrayList<>();
 
-        /*Adding some values to our list*/
+        /*Adding apartment services to the list*/
         apartmentServicesList.add(new NammaApartmentService(R.drawable.cook_service, getString(R.string.cook)));
         apartmentServicesList.add(new NammaApartmentService(R.drawable.maid, getString(R.string.maid)));
         apartmentServicesList.add(new NammaApartmentService(R.drawable.car_cleaning, getString(R.string.car_bike_cleaning)));
@@ -42,19 +57,7 @@ public class ApartmentServices extends Fragment {
         apartmentServicesList.add(new NammaApartmentService(R.drawable.driving, getString(R.string.driver)));
         apartmentServicesList.add(new NammaApartmentService(R.drawable.groceries, getString(R.string.groceries)));
 
-        //Creating the Adapter
-        NammaApartmentServiceAdapter nammaApartmentServiceAdapter = new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);
-
-        //Attaching adapter to the listview
-        listView.setAdapter(nammaApartmentServiceAdapter);
-
-        /*Setting event for list view items*/
-        listView.setOnItemClickListener((parent, view1, position, id) ->
-        {
-            switch (position) {
-                default:
-                    Toast.makeText(getActivity(), "Yet To Implement", Toast.LENGTH_SHORT).show();
-            }
-        });
+        return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);
     }
 }
+

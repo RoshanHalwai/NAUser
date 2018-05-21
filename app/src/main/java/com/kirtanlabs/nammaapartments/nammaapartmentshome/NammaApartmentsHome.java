@@ -12,6 +12,10 @@ import com.kirtanlabs.nammaapartments.R;
 
 public class NammaApartmentsHome extends BaseActivity {
 
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
+
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_namma_apartments_home;
@@ -26,30 +30,35 @@ public class NammaApartmentsHome extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*Since this is Namma Apartments Home Screen we wouldn't
-         * want the users to go back to OTP screen, hence hiding
-         * the back button from the Title Bar*/
+        /*Since this is Namma Apartments Home Screen we wouldn't want the users to go back to OTP screen,
+          hence hiding the back button from the Title Bar*/
         hideBackButton();
 
-        // Create the adapter that will return a fragment for each of the two
-        // primary sections of the activity.
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         ViewPager mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
         TabLayout tabLayout = findViewById(R.id.tabs);
-
+        mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
+    /* ------------------------------------------------------------- *
+     * SectionPagerAdapter Class
+     * ------------------------------------------------------------- */
+
     class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        /* ------------------------------------------------------------- *
+         * Constructor
+         * ------------------------------------------------------------- */
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
+        /* ------------------------------------------------------------- *
+         * Overriding FragmentPagerAdapter Objects
+         * ------------------------------------------------------------- */
 
         @Override
         public Fragment getItem(int position) {
