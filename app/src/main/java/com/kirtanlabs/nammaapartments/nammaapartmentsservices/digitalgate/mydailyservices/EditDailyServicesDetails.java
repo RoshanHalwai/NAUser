@@ -85,7 +85,7 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
         buttonUpdate.setTypeface(Constants.setLatoLightFont(this));
 
         /*To fill Details Automatically in all EditTexts when screen is loaded*/
-        fillDetails();
+        getMyDailyServiceAndFamilyMemberDetails();
 
         /*Setting events for edit text*/
         setEventsForEditText();
@@ -137,14 +137,14 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
      * This method is invoked when screen is loaded and it will fill all the details
      * in editText accordingly
      */
-    private void fillDetails() {
+    private void getMyDailyServiceAndFamilyMemberDetails() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         assert bundle != null;
         name = bundle.getString(Constants.NAME);
         mobile = bundle.getString(Constants.MOBILE_NUMBER);
         inTime = bundle.getString(Constants.IN_TIME);
-        service_type = bundle.getString(Constants.SERVICE_TYPE, null);
+        service_type = bundle.getString(Constants.SERVICE_TYPE);
 
         editMemberAndServiceName.setText(name);
         editMobileNumber.setText(mobile);

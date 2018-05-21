@@ -107,6 +107,13 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method is invoked when user clicks on Edit icon in the list and passes all daily service details in EditMy daily Services Details
+     */
     private void editMyServiceDetails(String name, String inTime, String serviceType) {
         Intent EditIntent = new Intent(mCtx, EditDailyServicesDetails.class);
         EditIntent.putExtra(Constants.NAME, name);
