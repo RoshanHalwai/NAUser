@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nmBlack"
+        android:gravity="center"
+        android:text="@string/reschedule_dialog"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/textDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/pick_date_time"
+            android:textColor="@color/nmBlack"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editPickDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/textDateTime"
+            android:layout_toRightOf="@id/textDateTime"
+            android:cursorVisible="false"
+            android:drawableEnd="@drawable/calendar_date"
+            android:drawableRight="@drawable/calendar_date"
+            android:gravity="center"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp"
+            tools:ignore="LabelFor,TextFields" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonReschedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nmBlack"
+        android:text="@string/reschedule"
+        android:textColor="@color/nmLightYellow" />
+</LinearLayout>
