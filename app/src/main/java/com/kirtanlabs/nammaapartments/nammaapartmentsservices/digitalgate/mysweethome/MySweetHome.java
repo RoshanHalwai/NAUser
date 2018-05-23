@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -37,6 +39,12 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
 
         /*Setting Fonts for Add My Family Members Button*/
         buttonAddFamilyMembers.setTypeface(Constants.setLatoLightFont(this));
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        MySweetHomeAdapter adapterMySweetHome = new MySweetHomeAdapter(this);
+        recyclerView.setAdapter(adapterMySweetHome);
 
         /*Setting button click listener*/
         buttonAddFamilyMembers.setOnClickListener(this);
