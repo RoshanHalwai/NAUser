@@ -36,7 +36,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button16Hr,
             R.id.button24Hr};
     private int arrivalType;
-    private EditText editDateTime;
+    private EditText editPickDateTime;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private String concatenatedDateAndTime;
@@ -76,7 +76,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
         EditText editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
-        editDateTime = findViewById(R.id.editDateTime);
+        editPickDateTime = findViewById(R.id.editPickDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
         Button button4hr = findViewById(R.id.button4Hr);
@@ -91,7 +91,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         textCabOrVendorTitle.setTypeface(Constants.setLatoBoldFont(this));
         textDateTime.setTypeface(Constants.setLatoBoldFont(this));
         textValidFor.setTypeface(Constants.setLatoBoldFont(this));
-        editDateTime.setTypeface(Constants.setLatoRegularFont(this));
+        editPickDateTime.setTypeface(Constants.setLatoRegularFont(this));
         editCabOrVendorValue.setTypeface(Constants.setLatoRegularFont(this));
         button1hr.setTypeface(Constants.setLatoRegularFont(this));
         button2hr.setTypeface(Constants.setLatoRegularFont(this));
@@ -116,8 +116,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         button12hr.setOnClickListener(this);
         button16hr.setOnClickListener(this);
         button24hr.setOnClickListener(this);
-        editDateTime.setOnFocusChangeListener(this);
-        editDateTime.setOnClickListener(this);
+        editPickDateTime.setOnFocusChangeListener(this);
+        editPickDateTime.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -151,7 +151,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             case R.id.button24Hr:
                 selectButton(R.id.button24Hr);
                 break;
-            case R.id.editDateTime:
+            case R.id.editPickDateTime:
                 displayDateAndTime();
                 break;
         }
@@ -220,7 +220,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     timePickerDialog.cancel();
                     concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                    editDateTime.setText(concatenatedDateAndTime);
+                    editPickDateTime.setText(concatenatedDateAndTime);
                 }, mHour, mMinute, true);
     }
 

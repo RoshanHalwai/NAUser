@@ -246,7 +246,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
                     Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
                     intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
-                    intentButtonAdd.putExtra(Constants.OTP_TYPE, service_type);
+                    intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
                     startActivity(intentButtonAdd);
                 } else {
                     if (grantedAccess)
@@ -274,7 +274,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      */
     private void openNotificationDialog() {
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
-        View notificationDialog = View.inflate(this, R.layout.layout_dialog_notification, null);
+        View notificationDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
         alertNotificationDialog.setView(notificationDialog);
         dialog = alertNotificationDialog.create();
 
@@ -302,7 +302,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private void navigatingToOTPScreen() {
         Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
         intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
-        intentNotification.putExtra(Constants.OTP_TYPE, "Family Member");
+        intentNotification.putExtra(Constants.SERVICE_TYPE, "Family Member");
         startActivity(intentNotification);
     }
 

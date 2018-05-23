@@ -70,9 +70,9 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         editPickDateTime = findViewById(R.id.editPickDateTime);
-        textDescription = findViewById(R.id.textDescriptionDailyService);
+        textDescription = findViewById(R.id.textDescription);
         editVisitorName = findViewById(R.id.editVisitorName);
-        editVisitorMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
+        editVisitorMobile = findViewById(R.id.editMobileNumber);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonInvite = findViewById(R.id.buttonInvite);
 

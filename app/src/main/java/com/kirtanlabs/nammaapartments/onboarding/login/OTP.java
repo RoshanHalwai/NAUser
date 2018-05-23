@@ -238,14 +238,14 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 textPhoneVerification.setText(R.string.enter_verification_code);
                 break;
             case R.string.add_my_service:
-                String service_type = getIntent().getStringExtra(Constants.OTP_TYPE);
+                String service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
                 String description = getResources().getString(R.string.enter_verification_code);
                 description = description.replace("account", service_type + " account");
                 description = description.replace("your mobile", "their mobile");
                 textPhoneVerification.setText(description);
                 break;
             case R.string.add_family_members_details_screen:
-                String screen_type = getIntent().getStringExtra(Constants.OTP_TYPE);
+                String screen_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
                 String otpDescription = getResources().getString(R.string.enter_verification_code).replace("account", screen_type + " account");
                 otpDescription = otpDescription.replace("your mobile", "their mobile");
                 textPhoneVerification.setText(otpDescription);

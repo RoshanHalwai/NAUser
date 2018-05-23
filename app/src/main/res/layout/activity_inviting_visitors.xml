@@ -61,7 +61,7 @@
             android:textSize="@dimen/text_view_default_size" />
 
         <EditText
-            android:id="@+id/editDailyServiceOrFamilyMemberMobile"
+            android:id="@+id/editMobileNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
@@ -169,7 +169,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textDescriptionDailyService"
+        android:id="@+id/textDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
