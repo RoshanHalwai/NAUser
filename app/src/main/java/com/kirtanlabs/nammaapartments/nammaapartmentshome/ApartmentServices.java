@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.R;
 
@@ -24,7 +25,7 @@ public class ApartmentServices extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_apartment_services, container, false);
+        return inflater.inflate(R.layout.activity_namma_apartments_services, container, false);
     }
 
     @Override
@@ -58,5 +59,5 @@ public class ApartmentServices extends Fragment {
 
         return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);
     }
-
 }
+

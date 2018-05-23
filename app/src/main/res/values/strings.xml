@@ -176,7 +176,18 @@
     <string name="image_to_create_an_alarm">Image to create an alarm</string>
     <string name="emergency_alarm_raised">Emergency alarm raised</string>
 
+    <!--MySweetHome Activity-->
+    <string name="add_my_family_members">Add My Family Members</string>
+    <string name="add_family_members_details_screen">Add Family Members Details Screen</string>
+    <string name="grant_access">Grant Access</string>
+    <string name="relation">Relation</string>
+    <string name="otp_message_family_member">We will send an OTP to your family member for Authentication.</string>
+    <string name="access_to_notifications">Please note that the following member will now have access to all notifications.</string>
+    <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
+    <string name="notification_alert">Notification Alert</string>
+
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
     <string name="update">Update</string>
+
 </resources>

@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome;
 
@@ -68,13 +68,14 @@ public class DigitalGateHome extends BaseActivity implements AdapterView.OnItemC
                 intent.putExtra(Constants.SERVICE_TYPE, R.string.notify_digital_gate);
                 startActivity(intent);
                 break;
+            case 4:
+                startActivity(new Intent(DigitalGateHome.this, MySweetHome.class));
+                break;
             case 5:
                 Intent intentEmergency = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
                 intentEmergency.putExtra(Constants.SERVICE_TYPE, R.string.emergency);
                 startActivity(intentEmergency);
                 break;
-            default:
-                Toast.makeText(DigitalGateHome.this, "Yet to Implement", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -93,7 +93,8 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String selectedFromList = (String) listView.getItemAtPosition(position);
-        Intent intent = new Intent(DailyServicesHome.this, AddDailyService.class);
+        Intent intent = new Intent(DailyServicesHome.this, AddDailyServiceAndFamilyMembers.class);
+        intent.putExtra(Constants.SCREEN_TITLE, R.string.my_daily_services);
         intent.putExtra(Constants.SERVICE_TYPE, selectedFromList);
         startActivity(intent);
         dialog.cancel();

@@ -14,6 +14,7 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 
 public class OTP extends BaseActivity implements View.OnClickListener {
 
@@ -102,6 +103,12 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intentDailyServiceHome);
+                    break;
+                case R.string.add_family_members_details_screen:
+                    Intent intentMySweetHome = new Intent(OTP.this, MySweetHome.class);
+                    intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intentMySweetHome);
                     break;
             }
             finish();
@@ -237,8 +244,12 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 description = description.replace("your mobile", "their mobile");
                 textPhoneVerification.setText(description);
                 break;
+            case R.string.add_family_members_details_screen:
+                String screen_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+                String otpDescription = getResources().getString(R.string.enter_verification_code).replace("account", screen_type + " account");
+                otpDescription = otpDescription.replace("your mobile", "their mobile");
+                textPhoneVerification.setText(otpDescription);
         }
     }
 
 }
-

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nmBlack"
+        android:gravity="center"
+        android:text="@string/notification_alert"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <ImageView
+        android:id="@+id/imageNotificationService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image_notification"
+        android:src="@drawable/danger" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/access_to_notifications"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size" />
+
+</LinearLayout>
