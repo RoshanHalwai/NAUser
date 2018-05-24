@@ -14,4 +14,14 @@
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size" />
 
+    <TextView
+        android:id="@+id/textCancelDailyServicesDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/daily_service_cancel"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size"
+        android:visibility="gone" />
 </LinearLayout>
