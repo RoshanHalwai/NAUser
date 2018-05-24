@@ -1,6 +1,8 @@
 package com.kirtanlabs.nammaapartments;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,9 +13,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -36,10 +45,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-
+    private DatePickerDialog datePickerDialog;
+    private Calendar calendarTime;
+    private Calendar calendarDate;
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
+    private String selectedDate = "";
+    private String selectedTime = "";
+    private int mYear;
+    private int mMonth;
+    private int mDay;
 
     /* ------------------------------------------------------------- *
      * Abstract Methods
@@ -219,4 +235,55 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is invoked when user clicks on pick date icon.
+     */
+    public void pickDate(int editTextID, boolean pickDateAndTime) {
+        calendarDate = Calendar.getInstance();
+        mYear = calendarDate.get(Calendar.YEAR);
+        mMonth = calendarDate.get(Calendar.MONTH);
+        mDay = calendarDate.get(Calendar.DAY_OF_MONTH);
+
+        // Date Picker Dialog
+        datePickerDialog = new DatePickerDialog(this,
+                (DatePicker view, int year, int month, int dayOfMonth) -> {
+                    calendarDate.set(Calendar.YEAR, year);
+                    calendarDate.set(Calendar.MONTH, month);
+                    calendarDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    selectedDate = "";
+                    selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+                    datePickerDialog.cancel();
+                    if (pickDateAndTime) {
+                        pickTime(editTextID, true);
+                    } else {
+                        EditText editText = findViewById(editTextID);
+                        editText.setText(selectedDate);
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
+
+    /**
+     * This method is invoked when user clicks on pick time icon.
+     */
+    public void pickTime(int editTextId, boolean pickDateAndTime) {
+        calendarTime = Calendar.getInstance();
+        int mHour = calendarTime.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calendarTime.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                (view, hourOfDay, minute) -> {
+                    selectedTime = "";
+                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                    EditText editText = findViewById(editTextId);
+                    if (pickDateAndTime) {
+                        String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
+                        editText.setText(concatenatedDateAndTime);
+                    } else {
+                        editText.setText(selectedTime);
+                    }
+                }, mHour, mMinute, true);
+        timePickerDialog.show();
+    }
 }

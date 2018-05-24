@@ -55,18 +55,24 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         LinearLayout.LayoutParams layoutTitleParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.2f
+                1.1f
         );
-        layoutTitleParams.setMargins(0, 60, 0, 0);
+        layoutTitleParams.setMargins(0, 40, 0, 0);
         LinearLayout.LayoutParams layoutTitleValuesParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.8f
         );
-        layoutTitleValuesParams.setMargins(0, 60, 0, 0);
+        layoutTitleValuesParams.setMargins(0, 40, 0, 0);
+        LinearLayout.LayoutParams textGrantedAccessValueParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        textGrantedAccessValueParams.setMargins(0, 20, 0, 0);
 
         holder.layoutTitle.setLayoutParams(layoutTitleParams);
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
+        holder.textGrantedAccessValue.setLayoutParams(textGrantedAccessValueParams);
 
         holder.textMemberName.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textMemberRelation.setTypeface(Constants.setLatoRegularFont(mCtx));
