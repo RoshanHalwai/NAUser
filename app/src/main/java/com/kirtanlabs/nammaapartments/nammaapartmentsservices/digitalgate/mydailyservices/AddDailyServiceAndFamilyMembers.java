@@ -2,7 +2,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,8 +26,7 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,7 +47,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private Button buttonAdd;
     private Button buttonYes;
     private Button buttonNo;
-    private String selectedTime;
     private String service_type;
     private AlertDialog dialog;
     private ListView listView;
@@ -269,6 +267,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     /*-------------------------------------------------------------------------------
      *Private Methods
      *-----------------------------------------------------------------------------*/
+
     /**
      * This method gets invoked when user tries to add family member and also giving access.
      */
@@ -285,6 +284,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         new Dialog(getApplicationContext());
         alertNotificationDialog.show();
     }
+
     /**
      * We need to update OTP Message description based on Service for which user is entering the
      * details.
@@ -296,6 +296,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             textDescriptionDailyService.setText(description);
         }
     }
+
     /**
      * We need to navigate to OTP Screen based on the user selection of giving access and also on not giving access.
      */
@@ -317,6 +318,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         dialog = addImageDialog.create();
         listView = listAddImageServices.findViewById(R.id.listAddImageService);
     }
+
     /**
      * This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.
      */
@@ -350,6 +352,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             }
         });
     }
+
     /**
      * This method will get invoked when user successfully uploaded image from gallery and camera.
      */
@@ -369,19 +372,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * This method is invoked when user clicks on pick time icon.
      */
     private void displayTime() {
-        Calendar calendar = Calendar.getInstance();
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        // Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
-                    selectedTime = "";
-                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    editPickTime.setText(selectedTime);
-                    textDescriptionDailyService.setVisibility(View.VISIBLE);
-                    buttonAdd.setVisibility(View.VISIBLE);
-                }, mHour, mMinute, true);
-        timePickerDialog.show();
+        pickTime(R.id.editPickTime, false);
+        if (editPickTime.length() > 0) {
+            textDescriptionDailyService.setVisibility(View.VISIBLE);
+            buttonAdd.setVisibility(View.VISIBLE);
+        }
     }
 }

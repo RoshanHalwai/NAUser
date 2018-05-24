@@ -22,6 +22,7 @@ public class Constants {
 
     public static final String ALARM_TYPE = "alarm_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
+    public static final String GRANTED_ACCESS_TYPE = "granted_access_type";
     public static final String HANDED_THINGS_TO = "handed_things_to";
     public static final String IN_TIME = "in_time";
     public static final String NAME = "name";

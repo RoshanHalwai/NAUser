@@ -1,7 +1,11 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
-import android.app.TimePickerDialog;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -10,17 +14,17 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
-import java.util.Calendar;
-import java.util.Locale;
 
-public class EditDailyServicesDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -29,14 +33,19 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
     private TextView textDescription;
     private EditText editMemberAndServiceName, editMobileNumber, editPickInTime;
     private Button buttonUpdate;
-    private String selectedTime;
+    private Button buttonYes;
+    private Button buttonNo;
+    private AlertDialog dialog;
+    private int screenTitle;
     private String name;
     private String mobile;
     private String inTime;
     private String service_type;
+    private String granted_access_type;
     private boolean nameTextChanged = false;
     private boolean mobileTextChanged = false;
     private boolean timeTextChanged = false;
+    private boolean grantedAccess = false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -44,12 +53,19 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_edit_daily_services_details;
+        return R.layout.activity_edit_daily_services_and_family_member_details;
     }
 
     @Override
     protected int getActivityTitle() {
-        return R.string.edit_my_daily_service_details;
+        /*We use a common class for Edit Daily Service Details and Edit Family Members details, we set the title
+         * based on the user click on listview of MySweetHome and MyDailyServices*/
+        if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_sweet_home) {
+            screenTitle = R.string.edit_my_family_member_details;
+        } else {
+            screenTitle = R.string.edit_my_daily_service_details;
+        }
+        return screenTitle;
     }
 
     @Override
@@ -64,10 +80,13 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
         TextView textMemberAndServiceMobile = findViewById(R.id.textMemberAndServiceMobile);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         TextView textInTime = findViewById(R.id.textInTime);
+        TextView textGrantAccess = findViewById(R.id.textGrantAccess);
         textDescription = findViewById(R.id.textDescription);
         editMemberAndServiceName = findViewById(R.id.editMemberAndServiceName);
         editMobileNumber = findViewById(R.id.editMobileNumber);
         editPickInTime = findViewById(R.id.editPickInTime);
+        buttonYes = findViewById(R.id.buttonYes);
+        buttonNo = findViewById(R.id.buttonNo);
         buttonUpdate = findViewById(R.id.buttonUpdate);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
@@ -78,20 +97,35 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
         textMemberAndServiceMobile.setTypeface(Constants.setLatoBoldFont(this));
         textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
         textInTime.setTypeface(Constants.setLatoBoldFont(this));
+        textGrantAccess.setTypeface(Constants.setLatoBoldFont(this));
         textDescription.setTypeface(Constants.setLatoBoldFont(this));
         editMemberAndServiceName.setTypeface(Constants.setLatoRegularFont(this));
         editMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
         editPickInTime.setTypeface(Constants.setLatoRegularFont(this));
+        buttonYes.setTypeface(Constants.setLatoRegularFont(this));
+        buttonNo.setTypeface(Constants.setLatoRegularFont(this));
         buttonUpdate.setTypeface(Constants.setLatoLightFont(this));
 
         /*To fill Details Automatically in all EditTexts when screen is loaded*/
         getMyDailyServiceAndFamilyMemberDetails();
+
+        /*Since we are using same layout for edit my daily service and add my family member details we need to show different layout
+          according to the user choice.*/
+        if (screenTitle == R.string.edit_my_daily_service_details) {
+            LinearLayout linearLayoutTime = findViewById(R.id.layoutTime);
+            linearLayoutTime.setVisibility(View.VISIBLE);
+        } else {
+            LinearLayout linearLayoutYesNo = findViewById(R.id.layoutYesNo);
+            linearLayoutYesNo.setVisibility(View.VISIBLE);
+        }
 
         /*Setting events for edit text*/
         setEventsForEditText();
 
         /*Setting event for views */
         editPickInTime.setOnFocusChangeListener(this);
+        buttonYes.setOnClickListener(this);
+        buttonNo.setOnClickListener(this);
         buttonUpdate.setOnClickListener(this);
     }
 
@@ -103,21 +137,56 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.editPickInTime:
-                displayTime();
+                pickTime(R.id.editPickInTime, false);
+                break;
+
+            case R.id.buttonYes:
+                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonYes.setTextColor(Color.WHITE);
+                buttonNo.setTextColor(Color.BLACK);
+                if (getResources().getString(R.string.yes).equals(granted_access_type)) {
+                    grantedAccess = false;
+                    makeViewsVisibleOrInvisible();
+                } else {
+                    grantedAccess = true;
+                    makeViewsVisibleOrInvisible();
+                }
+                break;
+
+            case R.id.buttonNo:
+                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonYes.setTextColor(Color.BLACK);
+                buttonNo.setTextColor(Color.WHITE);
+                if (getResources().getString(R.string.no).equals(granted_access_type)) {
+                    grantedAccess = false;
+                    makeViewsVisibleOrInvisible();
+                } else {
+                    grantedAccess = true;
+                    makeViewsVisibleOrInvisible();
+                }
                 break;
 
             case R.id.buttonUpdate:
-                if (mobileTextChanged) {
-                    Intent otpIntent = new Intent(EditDailyServicesDetails.this, OTP.class);
-                    otpIntent.putExtra(Constants.OTP_TYPE, service_type);
-                    startActivity(otpIntent);
+                if (screenTitle == R.string.edit_my_daily_service_details) {
+                    if (mobileTextChanged) {
+                        navigatingToOTPScreen();
+                    } else {
+                        Intent myDailyServiceIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, DailyServicesHome.class);
+                        myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(myDailyServiceIntent);
+                    }
                 } else {
-                    Intent mdsIntent = new Intent(EditDailyServicesDetails.this, DailyServicesHome.class);
-                    mdsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mdsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(mdsIntent);
+                    if (grantedAccess) {
+                        openNotificationDialog();
+                    } else if (mobileTextChanged) {
+                        navigatingToOTPScreen();
+                    } else {
+                        navigatingToMySweetHomeScreen();
+                    }
                 }
-                finish();
                 break;
         }
     }
@@ -125,7 +194,7 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            displayTime();
+            pickTime(R.id.editPickInTime, false);
         }
     }
 
@@ -143,14 +212,18 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
         assert bundle != null;
         name = bundle.getString(Constants.NAME);
         mobile = bundle.getString(Constants.MOBILE_NUMBER);
-        inTime = bundle.getString(Constants.IN_TIME);
-        service_type = bundle.getString(Constants.SERVICE_TYPE);
-
         editMemberAndServiceName.setText(name);
         editMobileNumber.setText(mobile);
-        editPickInTime.setText(inTime);
-        String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
-        textDescription.setText(description);
+        if (screenTitle == R.string.edit_my_daily_service_details) {
+            inTime = bundle.getString(Constants.IN_TIME);
+            service_type = bundle.getString(Constants.SERVICE_TYPE);
+            editPickInTime.setText(inTime);
+            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
+            textDescription.setText(description);
+        } else {
+            granted_access_type = bundle.getString(Constants.GRANTED_ACCESS_TYPE);
+            textDescription.setText(getResources().getString(R.string.otp_message_family_member));
+        }
     }
 
     /**
@@ -231,28 +304,10 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
     }
 
     /**
-     * This method is invoked when user clicks on pick time icon.
-     */
-    private void displayTime() {
-        Calendar calendar = Calendar.getInstance();
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        // Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
-                    selectedTime = "";
-                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    editPickInTime.setText(selectedTime);
-                }, mHour, mMinute, true);
-        timePickerDialog.show();
-    }
-
-    /**
      * This method is used to make textDescription and buttonUpdate Visible or Invisible
      */
     private void makeViewsVisibleOrInvisible() {
-        if (nameTextChanged || mobileTextChanged || timeTextChanged) {
+        if (nameTextChanged || mobileTextChanged || timeTextChanged || grantedAccess) {
             buttonUpdate.setVisibility(View.VISIBLE);
             if (mobileTextChanged) {
                 textDescription.setVisibility(View.VISIBLE);
@@ -263,5 +318,47 @@ public class EditDailyServicesDetails extends BaseActivity implements View.OnCli
             buttonUpdate.setVisibility(View.INVISIBLE);
             textDescription.setVisibility(View.INVISIBLE);
         }
+    }
+
+    /**
+     * This method gets invoked when user tries to add family member and also giving access.
+     */
+    private void openNotificationDialog() {
+        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
+        View notificationDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
+        alertNotificationDialog.setView(notificationDialog);
+        dialog = alertNotificationDialog.create();
+
+        // Setting Custom Dialog Buttons
+        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToMySweetHomeScreen());
+        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
+
+        new Dialog(getApplicationContext());
+        alertNotificationDialog.show();
+    }
+
+    /**
+     * We need to navigate to OTP Screen based on the user selection of giving access and also on mobile number change.
+     */
+    private void navigatingToOTPScreen() {
+        Intent intentNotification = new Intent(EditDailyServicesAndFamilyMemberDetails.this, OTP.class);
+        if (screenTitle == R.string.edit_my_daily_service_details) {
+            intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
+            intentNotification.putExtra(Constants.SERVICE_TYPE, service_type);
+        } else {
+            intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
+            intentNotification.putExtra(Constants.SERVICE_TYPE, "Family Member");
+        }
+        startActivity(intentNotification);
+    }
+
+    /**
+     * We need to navigate to My Sweet Home Screen Screen based on the user selection of giving access and also on Name change.
+     */
+    private void navigatingToMySweetHomeScreen() {
+        Intent mySweetHomeIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, MySweetHome.class);
+        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mySweetHomeIntent);
     }
 }
