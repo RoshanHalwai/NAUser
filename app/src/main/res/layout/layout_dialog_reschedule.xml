@@ -5,37 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textDialogTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/nmBlack"
-        android:gravity="center"
-        android:text="@string/reschedule_dialog"
-        android:textColor="@color/nmLightYellow"
-        android:textSize="@dimen/text_view_default_size" />
-
     <RelativeLayout
         android:id="@+id/relativeLayoutDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/textDateTime"
+            android:id="@+id/textPickDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/pick_date_time"
+            android:text="@string/pick_date"
             android:textColor="@color/nmBlack"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_view_default_size" />
 
         <EditText
-            android:id="@+id/editPickDateTime"
+            android:id="@+id/editPickDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/textDateTime"
-            android:layout_toRightOf="@id/textDateTime"
+            android:layout_toEndOf="@id/textPickDate"
+            android:layout_toRightOf="@id/textPickDate"
             android:cursorVisible="false"
             android:drawableEnd="@drawable/calendar_date"
             android:drawableRight="@drawable/calendar_date"
@@ -46,11 +38,69 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/buttonReschedule"
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/nmBlack"
-        android:text="@string/reschedule"
-        android:textColor="@color/nmLightYellow" />
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/textPickTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/time_pick"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size" />
+
+        <EditText
+            android:id="@+id/editPickTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/textPickTime"
+            android:layout_toRightOf="@id/textPickTime"
+            android:cursorVisible="false"
+            android:drawableEnd="@drawable/clock"
+            android:drawableRight="@drawable/clock"
+            android:gravity="center"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp"
+            tools:ignore="LabelFor,TextFields" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/buttonCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:gravity="end"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/button_default_size" />
+
+        <TextView
+            android:id="@+id/buttonReschedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:text="@string/reschedule"
+            android:textAllCaps="false"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/button_default_size" />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -5,18 +5,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -38,12 +35,14 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
-    private EditText editPickDateTime;
-    private String concatenatedDateAndTime = "";
+    private View rescheduleDialog;
+    private View cancelDialog;
+    private EditText editPickDate;
+    private EditText editPickTime;
     private String selectedDate = "";
     private String selectedTime = "";
+    private AlertDialog dialog;
+    private int count = 5;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -95,7 +94,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     @Override
     public int getItemCount() {
         //TODO: To change the get item count here
-        return 5;
+        return count;
     }
 
     /* ------------------------------------------------------------- *
@@ -148,13 +147,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         }
 
     }
-
     /* ------------------------------------------------------------- *
-     * Overriding OnClick and OnFocusChange Listeners
+     * Overriding OnClick Listeners
      * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.textCall:
                 //TODO: Change Mobile Number here
@@ -170,102 +167,153 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             case R.id.textCancel:
                 openCancelDialog();
                 break;
-            case R.id.editPickDateTime:
-                displayDateAndTime();
+            case R.id.editPickDate:
+                displayDate();
+                break;
+            case R.id.editPickTime:
+                displayTime();
                 break;
             case R.id.buttonReschedule:
-                Intent intent = new Intent(mCtx, VisitorsList.class);
-                mCtx.startActivity(intent);
+                dialog.cancel();
+                break;
+            case R.id.buttonCancel:
+                dialog.cancel();
                 break;
         }
     }
+
     /*-------------------------------------------------------------------------------
      *Private Methods
      *-----------------------------------------------------------------------------*/
-
     /**
      * This method is invoked when user clicks on reschedule icon.
      */
     private void openRescheduleDialog() {
-        AlertDialog.Builder alertRescheduleDialog = new AlertDialog.Builder(mCtx);
-        View rescheduleDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
-        editPickDateTime = rescheduleDialog.findViewById(R.id.editPickDateTime);
-        Button buttonReschedule = rescheduleDialog.findViewById(R.id.buttonReschedule);
-        //String scheduledDateTime = Date + "\t\t" + Time;
-        editPickDateTime.setText(" ");
+        rescheduleDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
 
-        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
-        editPickDateTime.setInputType(InputType.TYPE_NULL);
+        /*Getting Id's for all the views*/
+        editPickDate = rescheduleDialog.findViewById(R.id.editPickDate);
+        editPickTime = rescheduleDialog.findViewById(R.id.editPickTime);
+        TextView textPickDate = rescheduleDialog.findViewById(R.id.textPickDate);
+        TextView textPickTime = rescheduleDialog.findViewById(R.id.textPickTime);
+        TextView buttonReschedule = rescheduleDialog.findViewById(R.id.buttonReschedule);
+        TextView buttonCancel = rescheduleDialog.findViewById(R.id.buttonCancel);
+
+        /*Setting Fonts for all the views*/
+        textPickDate.setTypeface(Constants.setLatoRegularFont(mCtx));
+        textPickTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+        buttonReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
+        buttonCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit fields*/
+        editPickDate.setInputType(InputType.TYPE_NULL);
+        editPickTime.setInputType(InputType.TYPE_NULL);
+
+        /*This method is used to create reschedule dialog */
+        createRescheduleDialog();
+
+        /*Setting OnClick Listeners to the views*/
+        editPickDate.setOnClickListener(this);
+        editPickTime.setOnClickListener(this);
+        buttonCancel.setOnClickListener(this);
+        buttonReschedule.setOnClickListener(this);
+    }
+
+    /**
+     * This method is invoked to create a reschedule dialog.
+     */
+    private void createRescheduleDialog() {
+        AlertDialog.Builder alertRescheduleDialog = new AlertDialog.Builder(mCtx);
         alertRescheduleDialog.setView(rescheduleDialog);
-        AlertDialog dialog = alertRescheduleDialog.create();
+        dialog = alertRescheduleDialog.create();
 
         new Dialog(mCtx);
         dialog.show();
-
-        editPickDateTime.setOnClickListener(this);
-        buttonReschedule.setOnClickListener(this);
-        //editPickDateTime.setOnFocusChangeListener(this);
     }
 
     /**
      * This method is invoked when user clicks on cancel icon.
      */
     private void openCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
-        View cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
-        // Setting Custom Dialog Buttons
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> notifyItemRemoved(getItemViewType(1)));
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
+        cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
 
-        alertCancelDialog.setView(cancelDialog);
-        Dialog dialog1 = alertCancelDialog.create();
-        new Dialog(mCtx);
-        dialog1.show();
+        /*Getting Id's for all the views*/
+        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
+
+        /*Setting Fonts for all the views*/
+        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+        /*This method is used to create cancel dialog */
+        createCancelDialog();
     }
 
     /**
-     * This method is invoked when user clicks on pick date and time icon.
+     * This method is invoked to create a cancel dialog.
      */
-    private void displayDateAndTime() {
+    private void createCancelDialog() {
+        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
+        alertCancelDialog.setTitle("Delete");
+        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteVisitorData());
+        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
+        alertCancelDialog.setView(cancelDialog);
+        dialog = alertCancelDialog.create();
+
+        new Dialog(mCtx);
+        dialog.show();
+    }
+
+    /**
+     * This method is invoked to delete visitor data.
+     */
+    private void deleteVisitorData() {
+        notifyItemRemoved(0);
+        /*Decrementing the count variable on deletion of one visitor data.*/
+        --count;
+        /*After deletion of one row we are notifying the adapter*/
+        notifyDataSetChanged();
+        dialog.cancel();
+    }
+
+    /**
+     * This method is invoked when user clicks on pick date icon.
+     */
+    private void displayDate() {
         Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
 
         // Date Picker Dialog
-        datePickerDialog = new DatePickerDialog(mCtx,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(mCtx,
                 (DatePicker view, int year, int month, int dayOfMonth) -> {
                     calendar.set(Calendar.YEAR, year);
                     calendar.set(Calendar.MONTH, month);
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     selectedDate = "";
                     selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                    datePickerDialog.cancel();
-                    timePickerDialog.show();
+                    editPickDate.setText(selectedDate);
+                    editPickTime.requestFocus();
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+    }
+
+    /**
+     * This method is invoked when user clicks on pick time icon.
+     */
+    private void displayTime() {
+        Calendar calendar = Calendar.getInstance();
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calendar.get(Calendar.MINUTE);
 
         // Time Picker Dialog
-        timePickerDialog = new TimePickerDialog(mCtx,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(mCtx,
                 (view, hourOfDay, minute) -> {
-                    Calendar datetime = Calendar.getInstance();
-                    datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    datetime.set(Calendar.MINUTE, minute);
-                    if (selectedDate.equals(new DateFormatSymbols().getMonths()[mMonth].substring(0, 3) + " " + mDay + ", " + mYear) &&
-                            datetime.getTimeInMillis() < calendar.getTimeInMillis()) {
-                        Toast.makeText(mCtx, R.string.select_future_time, Toast.LENGTH_LONG).show();
-                        editPickDateTime.setText("");
-                    } else {
-                        selectedTime = "";
-                        selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                        timePickerDialog.cancel();
-                        concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                        editPickDateTime.setText(concatenatedDateAndTime);
-                    }
+                    selectedTime = "";
+                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                    editPickTime.setText(selectedTime);
                 }, mHour, mMinute, true);
+        timePickerDialog.show();
     }
+
 }
