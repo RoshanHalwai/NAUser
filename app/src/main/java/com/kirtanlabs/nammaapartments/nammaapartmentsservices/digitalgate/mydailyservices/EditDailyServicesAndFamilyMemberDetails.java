@@ -3,7 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,8 +23,6 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
-import java.util.Calendar;
-import java.util.Locale;
 
 public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
@@ -35,7 +33,6 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private TextView textDescription;
     private EditText editMemberAndServiceName, editMobileNumber, editPickInTime;
     private Button buttonUpdate;
-    private String selectedTime;
     private Button buttonYes;
     private Button buttonNo;
     private AlertDialog dialog;
@@ -140,11 +137,10 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.editPickInTime:
-                displayTime();
+                pickTime(R.id.editPickInTime, false);
                 break;
 
             case R.id.buttonYes:
-
                 buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
                 buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
                 buttonYes.setTextColor(Color.WHITE);
@@ -181,25 +177,16 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                         myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(myDailyServiceIntent);
-
                     }
                 } else {
-                    if (grantedAccess || mobileTextChanged) {
-                        if (grantedAccess) {
-                            openNotificationDialog();
-                        } else {
-                            navigatingToOTPScreen();
-                        }
-
+                    if (grantedAccess) {
+                        openNotificationDialog();
+                    } else if (mobileTextChanged) {
+                        navigatingToOTPScreen();
                     } else {
-                        Intent mySweetHomeIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, MySweetHome.class);
-                        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(mySweetHomeIntent);
+                        navigatingToMySweetHomeScreen();
                     }
                 }
-
-
                 break;
         }
     }
@@ -207,7 +194,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            displayTime();
+            pickTime(R.id.editPickInTime, false);
         }
     }
 
@@ -317,30 +304,12 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     }
 
     /**
-     * This method is invoked when user clicks on pick time icon.
-     */
-    private void displayTime() {
-        Calendar calendar = Calendar.getInstance();
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        // Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
-                    selectedTime = "";
-                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    editPickInTime.setText(selectedTime);
-                }, mHour, mMinute, true);
-        timePickerDialog.show();
-    }
-
-    /**
      * This method is used to make textDescription and buttonUpdate Visible or Invisible
      */
     private void makeViewsVisibleOrInvisible() {
         if (nameTextChanged || mobileTextChanged || timeTextChanged || grantedAccess) {
             buttonUpdate.setVisibility(View.VISIBLE);
-            if (mobileTextChanged || grantedAccess) {
+            if (mobileTextChanged) {
                 textDescription.setVisibility(View.VISIBLE);
             } else {
                 textDescription.setVisibility(View.INVISIBLE);
@@ -361,7 +330,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         dialog = alertNotificationDialog.create();
 
         // Setting Custom Dialog Buttons
-        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
+        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToMySweetHomeScreen());
         alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
 
         new Dialog(getApplicationContext());
@@ -381,5 +350,15 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             intentNotification.putExtra(Constants.SERVICE_TYPE, "Family Member");
         }
         startActivity(intentNotification);
+    }
+
+    /**
+     * We need to navigate to My Sweet Home Screen Screen based on the user selection of giving access and also on Name change.
+     */
+    private void navigatingToMySweetHomeScreen() {
+        Intent mySweetHomeIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, MySweetHome.class);
+        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mySweetHomeIntent);
     }
 }

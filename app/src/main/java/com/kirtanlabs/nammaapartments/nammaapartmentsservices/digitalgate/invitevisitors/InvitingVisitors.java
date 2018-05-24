@@ -1,7 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,18 +10,14 @@ import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
+
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
@@ -31,16 +27,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * Private Members
      * ------------------------------------------------------------- */
 
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
     private EditText editPickDateTime;
     private EditText editVisitorName;
     private EditText editVisitorMobile;
     private TextView textDescription;
     private Button buttonInvite;
-    private String concatenatedDateAndTime = "";
-    private String selectedDate = "";
-    private String selectedTime = "";
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -163,52 +154,17 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * Private Methods
      * ------------------------------------------------------------- */
 
-    /**
-     * This method is invoked when user clicks on pick date and time icon.
-     */
     private void displayDateAndTime() {
-        Calendar calendar = Calendar.getInstance();
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        // Date Picker Dialog
-        datePickerDialog = new DatePickerDialog(this,
-                (DatePicker view, int year, int month, int dayOfMonth) -> {
-                    calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, month);
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    selectedDate = "";
-                    selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                    datePickerDialog.cancel();
-                    timePickerDialog.show();
-                }, mYear, mMonth, mDay);
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        datePickerDialog.show();
-
-        // Time Picker Dialog
-        timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
-                    Calendar datetime = Calendar.getInstance();
-                    datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    datetime.set(Calendar.MINUTE, minute);
-                    if (selectedDate.equals(new DateFormatSymbols().getMonths()[mMonth].substring(0, 3) + " " + mDay + ", " + mYear) &&
-                            datetime.getTimeInMillis() < calendar.getTimeInMillis()) {
-                        Toast.makeText(this, R.string.select_future_time, Toast.LENGTH_LONG).show();
-                        editPickDateTime.setText("");
-                    } else {
-                        selectedTime = "";
-                        selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                        timePickerDialog.cancel();
-                        concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                        editPickDateTime.setText(concatenatedDateAndTime);
-                        textDescription.setVisibility(View.VISIBLE);
-                        buttonInvite.setVisibility(View.VISIBLE);
-                    }
-                }, mHour, mMinute, true);
+        pickDate(R.id.editPickDateTime, true);
+        if (editPickDateTime.length() > 0) {
+            textDescription.setVisibility(View.VISIBLE);
+            buttonInvite.setVisibility(View.VISIBLE);
+        }
     }
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        return super.onCreateDialog(id);
+    }
 }
 
