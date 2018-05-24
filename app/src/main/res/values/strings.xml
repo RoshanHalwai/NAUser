@@ -119,6 +119,10 @@
     <string name="message">Message</string>
     <string name="reschedule">Reschedule</string>
     <string name="cancel">Cancel</string>
+    <string name="visitor_cancel">Are you sure you want to remove this Visitor\'s data?</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="time_pick">Pick Time</string>
+
 
     <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
@@ -191,5 +195,6 @@
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
     <string name="edit_my_family_member_details">Edit My Family Member Details</string>
     <string name="update">Update</string>
+
 
 </resources>
