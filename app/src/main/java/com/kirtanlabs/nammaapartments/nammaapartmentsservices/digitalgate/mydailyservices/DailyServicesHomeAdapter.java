@@ -1,7 +1,5 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -24,9 +23,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private View cancelDialog;
-    private AlertDialog dialog;
-    private int count = 3;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -108,7 +104,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         //TODO: Change Mobile Number here
         holder.textMessage.setOnClickListener(v -> baseActivity.sendTextMessage("9885665744"));
         holder.textEdit.setOnClickListener(v -> editMyServiceDetails(holder.textServiceNameValue.getText().toString(), holder.textInvitationTimeValue.getText().toString(), holder.textServiceTypeValue.getText().toString()));
-        holder.textCancel.setOnClickListener(v -> openCancelDialog());
+        holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet To Implement", Toast.LENGTH_SHORT).show());
     }
 
     /* ------------------------------------------------------------- *
@@ -128,58 +124,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         mCtx.startActivity(EditIntent);
     }
 
-    /**
-     * This method is invoked when user clicks on cancel icon.
-     */
-    private void openCancelDialog() {
-        cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-        TextView textCancelDailyServicesDescription = cancelDialog.findViewById(R.id.textCancelDailyServicesDescription);
-
-        textCancelDescription.setVisibility(View.GONE);
-        textCancelDailyServicesDescription.setVisibility(View.VISIBLE);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-        textCancelDailyServicesDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteDailyServicesData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor data.
-     */
-    private void deleteDailyServicesData() {
-        notifyItemRemoved((0));
-        /*Decrementing the count variable on deletion of one visitor data.*/
-        count--;
-        /*After deletion of one row we are notifying the adapter*/
-        notifyDataSetChanged();
-        dialog.cancel();
-    }
-
     @Override
     public int getItemCount() {
         //TODO: To change the get item count here
-        return count;
+        return 1;
     }
 
 

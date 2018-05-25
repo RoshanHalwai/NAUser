@@ -44,11 +44,11 @@
             android:name=".onboarding.splashscreen.SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/NammaApartmentsTheme">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <!-- Login Screens -->
@@ -67,7 +67,13 @@
         <activity
             android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome" />
         <activity
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingArrival"

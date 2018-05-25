@@ -11,7 +11,14 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
+import java.util.regex.Pattern;
+
 public class SignIn extends BaseActivity implements View.OnClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+    private EditText editMobileNumber;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -39,7 +46,7 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
         TextView textMobileNumber = findViewById(R.id.textMobileNumber);
         TextView textCreateAnAccount = findViewById(R.id.textCreateAnAccount);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
-        EditText editMobileNumber = findViewById(R.id.editMobileNumber);
+        editMobileNumber = findViewById(R.id.editMobileNumber);
         Button buttonLogin = findViewById(R.id.buttonLogin);
 
         /*Setting font for all the views*/
@@ -60,11 +67,29 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonLogin) {
-            Intent intentOTP = new Intent(SignIn.this, OTP.class);
-            intentOTP.putExtra(Constants.SCREEN_TITLE, R.string.login);
-            startActivity(intentOTP);
-            finish();
+            String mobileNumber = editMobileNumber.getText().toString().trim();
+            if (isValidPhone(mobileNumber)) {
+                Intent intentOTP = new Intent(SignIn.this, OTP.class);
+                intentOTP.putExtra(Constants.SCREEN_TITLE, R.string.login);
+                startActivity(intentOTP);
+                finish();
+            } else {
+                editMobileNumber.setError("Please Enter Mobile Number");
+            }
         }
     }
 
+
+    /*-------------------------------------------------------------------------------
+     *Private Methods
+     *-----------------------------------------------------------------------------*/
+
+    /**
+     * This method is to validate whether the user is entering a valid phone number or not.
+     */
+    private boolean isValidPhone(String phone) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
+        return check;
+    }
 }
