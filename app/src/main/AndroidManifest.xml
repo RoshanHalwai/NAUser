@@ -77,7 +77,7 @@
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers" />
         <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesDetails"/>
+        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails" />
 
     </application>
 

@@ -1,7 +1,5 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails;
 
-public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
+public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -24,15 +24,12 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private View cancelDialog;
-    private AlertDialog dialog;
-    private int count = 3;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    DailyServicesHomeAdapter(Context mCtx) {
+    MySweetHomeAdapter(Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
     }
@@ -43,42 +40,50 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     @NonNull
     @Override
-    public DailyServicesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MySweetHomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_visitors_and_my_daily_services_list, parent, false);
-        return new DailyServicesHolder(view);
+        return new MySweetHomeHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DailyServicesHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MySweetHomeHolder holder, int position) {
         /*Since we are reusing the layouts we need to modify the Layout weight for Title
-         * and values, since in Daily Services Home the title take less space than Visitors
+         * and values, since in My Sweet Home list title take less space than Visitors
          * list*/
         LinearLayout.LayoutParams layoutTitleParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.2f
+                1.1f
         );
+        layoutTitleParams.setMargins(0, 40, 0, 0);
         LinearLayout.LayoutParams layoutTitleValuesParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.8f
         );
+        layoutTitleValuesParams.setMargins(0, 40, 0, 0);
+        LinearLayout.LayoutParams textGrantedAccessValueParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        textGrantedAccessValueParams.setMargins(0, 20, 0, 0);
 
         holder.layoutTitle.setLayoutParams(layoutTitleParams);
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
+        holder.textGrantedAccessValue.setLayoutParams(textGrantedAccessValueParams);
 
-        holder.textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textMemberName.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textMemberRelation.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textGrantedAccess.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
-        holder.textServiceNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textServiceTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textMemberNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textMemberRelationValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+        holder.textGrantedAccessValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         holder.textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
 
         holder.textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
@@ -86,18 +91,25 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textEdit.setTypeface(Constants.setLatoRegularFont(mCtx));
         holder.textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
 
-        String stringServiceName = mCtx.getResources().getString(R.string.name) + ":";
-        holder.textServiceName.setText(stringServiceName);
-        holder.textInvitationDateOrServiceRating.setText(R.string.rating);
-        holder.textInvitedByOrNumberOfFlats.setText(R.string.flats);
+        String stringMemberName = mCtx.getResources().getString(R.string.name) + ":";
+        String stringMemberRelation = mCtx.getResources().getString(R.string.relation) + ":";
 
-        holder.textServiceNameValue.setText("Ramesh Singh");
-        holder.textServiceTypeValue.setText(R.string.cook);
-        holder.textInvitationDateOrServiceRatingValue.setText("4.2");
-        holder.textInvitedByOrNumberOfFlatsValue.setText("3");
+        holder.textMemberName.setText(stringMemberName);
+        holder.textMemberRelation.setText(stringMemberRelation);
+        holder.textGrantedAccess.setText(R.string.granted_access);
+
+        holder.textMemberNameValue.setText("Ramesh Singh");
+        holder.textMemberRelationValue.setText("Son");
+        holder.textGrantedAccessValue.setText(R.string.no);
 
         holder.textEdit.setText(R.string.edit);
         holder.textCancel.setText(R.string.remove);
+
+        // Making these views Visibility GONE , as they are not required here
+        holder.textInvitationDateOrServiceRating.setVisibility(View.GONE);
+        holder.textInvitedByOrNumberOfFlats.setVisibility(View.GONE);
+        holder.textInvitationDateOrServiceRatingValue.setVisibility(View.GONE);
+        holder.textInvitedByOrNumberOfFlatsValue.setVisibility(View.GONE);
 
         /*Here we are changing edit icon*/
         holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit, 0, 0);
@@ -107,8 +119,8 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textCall.setOnClickListener(v -> baseActivity.makePhoneCall("9885665744"));
         //TODO: Change Mobile Number here
         holder.textMessage.setOnClickListener(v -> baseActivity.sendTextMessage("9885665744"));
-        holder.textEdit.setOnClickListener(v -> editMyServiceDetails(holder.textServiceNameValue.getText().toString(), holder.textInvitationTimeValue.getText().toString(), holder.textServiceTypeValue.getText().toString()));
-        holder.textCancel.setOnClickListener(v -> openCancelDialog());
+        holder.textEdit.setOnClickListener(v -> editMyFamilyMemberDetails(holder.textMemberNameValue.getText().toString(), holder.textGrantedAccessValue.getText().toString()));
+        holder.textCancel.setOnClickListener(v -> Toast.makeText(mCtx, "Yet to Implement", Toast.LENGTH_SHORT).show());
     }
 
     /* ------------------------------------------------------------- *
@@ -118,76 +130,26 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     /**
      * This method is invoked when user clicks on Edit icon in the list and passes all daily service details in EditMy daily Services Details
      */
-    private void editMyServiceDetails(String name, String inTime, String serviceType) {
+    private void editMyFamilyMemberDetails(String name, String grated_access_type) {
         Intent EditIntent = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
-        EditIntent.putExtra(Constants.SCREEN_TITLE, R.string.my_daily_services);
+        EditIntent.putExtra(Constants.SCREEN_TITLE, R.string.my_sweet_home);
         EditIntent.putExtra(Constants.NAME, name);
         EditIntent.putExtra(Constants.MOBILE_NUMBER, "7895185103");    //TODO :  To change the mobile number here
-        EditIntent.putExtra(Constants.IN_TIME, inTime);
-        EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
+        EditIntent.putExtra(Constants.GRANTED_ACCESS_TYPE, grated_access_type);
         mCtx.startActivity(EditIntent);
-    }
-
-    /**
-     * This method is invoked when user clicks on cancel icon.
-     */
-    private void openCancelDialog() {
-        cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-        TextView textCancelDailyServicesDescription = cancelDialog.findViewById(R.id.textCancelDailyServicesDescription);
-
-        textCancelDescription.setVisibility(View.GONE);
-        textCancelDailyServicesDescription.setVisibility(View.VISIBLE);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-        textCancelDailyServicesDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteDailyServicesData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor data.
-     */
-    private void deleteDailyServicesData() {
-        notifyItemRemoved((0));
-        /*Decrementing the count variable on deletion of one visitor data.*/
-        count--;
-        /*After deletion of one row we are notifying the adapter*/
-        notifyDataSetChanged();
-        dialog.cancel();
     }
 
     @Override
     public int getItemCount() {
         //TODO: To change the get item count here
-        return count;
+        return 1;
     }
-
 
     /* ------------------------------------------------------------- *
      * Daily Service Holder class
      * ------------------------------------------------------------- */
 
-    class DailyServicesHolder extends RecyclerView.ViewHolder {
+    class MySweetHomeHolder extends RecyclerView.ViewHolder {
 
         /* ------------------------------------------------------------- *
          * Private Members
@@ -195,14 +157,14 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
         final LinearLayout layoutTitle;
         final LinearLayout layoutTitleValues;
-        final TextView textServiceName;
-        final TextView textServiceNameValue;
-        final TextView textServiceType;
-        final TextView textServiceTypeValue;
+        final TextView textMemberName;
+        final TextView textMemberNameValue;
+        final TextView textMemberRelation;
+        final TextView textMemberRelationValue;
         final TextView textInvitationDateOrServiceRating;
         final TextView textInvitationDateOrServiceRatingValue;
-        final TextView textInvitationTime;
-        final TextView textInvitationTimeValue;
+        final TextView textGrantedAccess;
+        final TextView textGrantedAccessValue;
         final TextView textInvitedByOrNumberOfFlats;
         final TextView textInvitedByOrNumberOfFlatsValue;
         final TextView textCall;
@@ -214,21 +176,22 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
          * Constructor
          * ------------------------------------------------------------- */
 
-        DailyServicesHolder(View itemView) {
+        MySweetHomeHolder(View itemView) {
             super(itemView);
+
             layoutTitle = itemView.findViewById(R.id.layoutTitle);
             layoutTitleValues = itemView.findViewById(R.id.layoutTitleValues);
 
-            textServiceName = itemView.findViewById(R.id.textVisitorOrServiceName);
-            textServiceType = itemView.findViewById(R.id.textVisitorOrServiceType);
+            textMemberName = itemView.findViewById(R.id.textVisitorOrServiceName);
+            textMemberRelation = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
-            textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
+            textGrantedAccess = itemView.findViewById(R.id.textInvitationTime);
             textInvitedByOrNumberOfFlats = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
 
-            textServiceNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
-            textServiceTypeValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
+            textMemberNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
+            textMemberRelationValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
             textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
-            textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
+            textGrantedAccessValue = itemView.findViewById(R.id.textInvitationTimeValue);
             textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
 
             textCall = itemView.findViewById(R.id.textCall);
@@ -237,5 +200,4 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textCancel = itemView.findViewById(R.id.textCancel);
         }
     }
-
 }

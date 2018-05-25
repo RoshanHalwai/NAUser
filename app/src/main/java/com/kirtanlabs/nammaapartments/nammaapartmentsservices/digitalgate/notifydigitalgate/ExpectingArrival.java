@@ -1,11 +1,9 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -13,9 +11,6 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -36,12 +31,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button16Hr,
             R.id.button24Hr};
     private int arrivalType;
-    private EditText editPickDateTime;
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
-    private String concatenatedDateAndTime;
-    private String selectedDate;
-    private String selectedTime;
+
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -76,7 +66,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
         EditText editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
-        editPickDateTime = findViewById(R.id.editPickDateTime);
+        EditText editPickDateTime = findViewById(R.id.editPickDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
         Button button4hr = findViewById(R.id.button4Hr);
@@ -152,7 +142,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 selectButton(R.id.button24Hr);
                 break;
             case R.id.editPickDateTime:
-                displayDateAndTime();
+                pickDate(R.id.editPickDateTime, true);
                 break;
         }
     }
@@ -160,7 +150,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            displayDateAndTime();
+            pickDate(R.id.editPickDateTime, true);
         }
     }
 
@@ -187,41 +177,4 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             }
         }
     }
-
-    /**
-     * This method is invoked when user clicks on pick date and time icon.
-     */
-    private void displayDateAndTime() {
-        Calendar calendar = Calendar.getInstance();
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        // Date Picker Dialog
-        datePickerDialog = new DatePickerDialog(this,
-                (DatePicker view, int year, int month, int dayOfMonth) -> {
-                    calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, month);
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    selectedDate = "";
-                    selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                    datePickerDialog.cancel();
-                    timePickerDialog.show();
-                }, mYear, mMonth, mDay);
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        datePickerDialog.show();
-
-        // Time Picker Dialog
-        timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
-                    selectedTime = "";
-                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    timePickerDialog.cancel();
-                    concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                    editPickDateTime.setText(concatenatedDateAndTime);
-                }, mHour, mMinute, true);
-    }
-
 }

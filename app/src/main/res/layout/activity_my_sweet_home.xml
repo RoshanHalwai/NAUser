@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome">
 
-    <include layout="@layout/activity_base" />
+    <include android:id="@+id/layoutActivityBase"
+        layout="@layout/activity_base" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonAddFamilyMembers"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layoutActivityBase" />
 
     <Button
         android:id="@+id/buttonAddFamilyMembers"
