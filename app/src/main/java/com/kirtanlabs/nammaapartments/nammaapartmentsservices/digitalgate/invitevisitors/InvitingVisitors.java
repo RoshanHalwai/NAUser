@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 
@@ -156,10 +158,23 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
     private void displayDateAndTime() {
         pickDate(R.id.editPickDateTime, true);
-        if (editPickDateTime.length() > 0) {
-            textDescription.setVisibility(View.VISIBLE);
-            buttonInvite.setVisibility(View.VISIBLE);
-        }
+        editPickDateTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                textDescription.setVisibility(View.VISIBLE);
+                buttonInvite.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

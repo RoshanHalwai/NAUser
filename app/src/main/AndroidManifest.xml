@@ -63,7 +63,9 @@
         <activity android:name=".nammaapartmentshome.NammaApartmentsHome" />
 
         <!-- Digital Gate Screens -->
-        <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome" >
+
+        </activity>
         <activity
             android:name=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors"
             android:windowSoftInputMode="adjustResize" />
