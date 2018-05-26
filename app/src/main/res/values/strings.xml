@@ -164,6 +164,7 @@
     <string name="child_care_taker">Child Caretaker</string>
     <string name="newspaper_paper_man">NewsPaper man</string>
     <string name="laundry_man">Laundry man</string>
+    <string name="daily_service_cancel">Are you sure you want to remove this DailyService data?</string>
 
     <!--Adding My Daily Services-->
     <string name="add_my_service">Add My Service</string>
@@ -195,6 +196,5 @@
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
     <string name="edit_my_family_member_details">Edit My Family Member Details</string>
     <string name="update">Update</string>
-
 
 </resources>

@@ -159,7 +159,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
         mCtx.startActivity(EditIntent);
     }
-
     /* ------------------------------------------------------------- *
      * Daily Service Holder class
      * ------------------------------------------------------------- */

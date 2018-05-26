@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHomeAdapter;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHomeAdapter;
-
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsListAdapter;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -287,12 +287,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                     selectedTime = "";
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     EditText editText = findViewById(editTextId);
-                    if (pickDateAndTime) {
-                        String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                        editText.setText(concatenatedDateAndTime);
-                    } else {
-                        editText.setText(selectedTime);
-                    }
+                        if (pickDateAndTime) {
+                            String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
+                            editText.setText(concatenatedDateAndTime);
+                        } else {
+                            editText.setText(selectedTime);
+                        }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
@@ -336,6 +336,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         switch (className) {
+            case R.string.my_visitors_list:
+                VisitorsListAdapter adapterVisitorsList = new VisitorsListAdapter(this);
+                recyclerView.setAdapter(adapterVisitorsList);
+                --VisitorsListAdapter.count;
+                adapterVisitorsList.notifyDataSetChanged();
+                break;
             case R.string.my_daily_services:
                 DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
                 recyclerView.setAdapter(adapterDailyServices);
