@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -373,9 +375,22 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      */
     private void displayTime() {
         pickTime(R.id.editPickTime, false);
-        if (editPickTime.length() > 0) {
-            textDescriptionDailyService.setVisibility(View.VISIBLE);
-            buttonAdd.setVisibility(View.VISIBLE);
-        }
+        editPickTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                textDescriptionDailyService.setVisibility(View.VISIBLE);
+                buttonAdd.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
