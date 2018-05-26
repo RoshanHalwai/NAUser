@@ -119,7 +119,7 @@
     <string name="message">Message</string>
     <string name="reschedule">Reschedule</string>
     <string name="cancel">Cancel</string>
-    <string name="visitor_cancel">Are you sure you want to remove this Visitor\'s data?</string>
+    <string name="visitor_cancel">Are you sure you want to remove this data?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
 

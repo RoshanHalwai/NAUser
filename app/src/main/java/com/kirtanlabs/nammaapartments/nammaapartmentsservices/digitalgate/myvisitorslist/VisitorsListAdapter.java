@@ -29,15 +29,18 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private View rescheduleDialog;
-    private View cancelDialog;
     private AlertDialog dialog;
-    private int count = 5;
+
+    /* ------------------------------------------------------------- *
+     * Public Members
+     * ------------------------------------------------------------- */
+    public static int count = 5;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    VisitorsListAdapter(Context mCtx) {
+    public VisitorsListAdapter(Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
     }
@@ -155,7 +158,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                 openRescheduleDialog();
                 break;
             case R.id.textCancel:
-                openCancelDialog();
+                baseActivity.openCancelDialog(R.string.my_visitors_list);
                 break;
             case R.id.editPickDate:
                 baseActivity.pickDate(R.id.editPickDate, false);
@@ -221,49 +224,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
         new Dialog(mCtx);
         dialog.show();
-    }
-
-    /**
-     * This method is invoked when user clicks on cancel icon.
-     */
-    private void openCancelDialog() {
-        cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteVisitorData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor data.
-     */
-    private void deleteVisitorData() {
-        notifyItemRemoved(0);
-        /*Decrementing the count variable on deletion of one visitor data.*/
-        --count;
-        /*After deletion of one row we are notifying the adapter*/
-        notifyDataSetChanged();
-        dialog.cancel();
     }
 
 }
