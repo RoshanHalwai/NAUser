@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome">
 
-    <include android:id="@+id/layoutActivityBase"
+    <include
+        android:id="@+id/layoutActivityBase"
         layout="@layout/activity_base" />
 
     <android.support.v7.widget.RecyclerView

@@ -2,7 +2,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -28,7 +27,7 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,7 +35,7 @@ import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
-public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
     /*----------------------------------------------
      *Private Members
@@ -50,7 +49,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private Button buttonYes;
     private Button buttonNo;
     private String service_type;
-    private AlertDialog dialog;
+    private AlertDialog imageSelectingOptions;
     private ListView listView;
     private boolean grantedAccess = false;
 
@@ -186,10 +185,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
                         circleImageView.setImageBitmap(bitmapProfilePic);
                         onSuccessfulUpload();
-                        dialog.cancel();
+                        imageSelectingOptions.cancel();
                     } else {
                         onFailedUpload();
-                        dialog.cancel();
+                        imageSelectingOptions.cancel();
                     }
                     break;
 
@@ -200,13 +199,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                             Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                             circleImageView.setImageBitmap(bitmapProfilePic);
                             onSuccessfulUpload();
-                            dialog.cancel();
+                            imageSelectingOptions.cancel();
                         } catch (IOException exception) {
                             exception.getStackTrace();
                         }
                     } else {
                         onFailedUpload();
-                        dialog.cancel();
+                        imageSelectingOptions.cancel();
                     }
                     break;
             }
@@ -220,7 +219,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dailyServiceOrFamilyMemberProfilePic:
-                dialog.show();
+                imageSelectingOptions.show();
                 break;
             case R.id.buttonSelectFromContact:
                 showUserContacts();
@@ -240,7 +239,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 buttonNo.setTextColor(Color.WHITE);
                 break;
             case R.id.editPickTime:
-                displayTime();
+                pickTime(this, this);
                 break;
             case R.id.buttonAdd:
                 if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
@@ -262,7 +261,21 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            displayTime();
+            pickTime(this, this);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * OnTimeSet Listener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (view.isShown()) {
+            String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+            editPickTime.setText(selectedTime);
+            textDescriptionDailyService.setVisibility(View.VISIBLE);
+            buttonAdd.setVisibility(View.VISIBLE);
         }
     }
 
@@ -277,7 +290,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
         View notificationDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
         alertNotificationDialog.setView(notificationDialog);
-        dialog = alertNotificationDialog.create();
+        imageSelectingOptions = alertNotificationDialog.create();
 
         // Setting Custom Dialog Buttons
         alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
@@ -311,13 +324,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
     /**
      * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
-     * dialog is displayed when user clicks on profile image which is on top of the screen.
+     * imageSelectingOptions is displayed when user clicks on profile image which is on top of the screen.
      */
     private void setupCustomDialog() {
         AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
         View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
         addImageDialog.setView(listAddImageServices);
-        dialog = addImageDialog.create();
+        imageSelectingOptions = addImageDialog.create();
         listView = listAddImageServices.findViewById(R.id.listAddImageService);
     }
 
@@ -350,7 +363,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     pickImageFromGallery();
                     break;
                 case 2:
-                    dialog.cancel();
+                    imageSelectingOptions.cancel();
             }
         });
     }
@@ -367,30 +380,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      */
     private void onFailedUpload() {
         circleImageView.setVisibility(View.INVISIBLE);
-        dialog.cancel();
+        imageSelectingOptions.cancel();
     }
 
-    /**
-     * This method is invoked when user clicks on pick time icon.
-     */
-    private void displayTime() {
-        pickTime(R.id.editPickTime, false);
-        editPickTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                textDescriptionDailyService.setVisibility(View.VISIBLE);
-                buttonAdd.setVisibility(View.VISIBLE);
-            }
-        });
-    }
 }

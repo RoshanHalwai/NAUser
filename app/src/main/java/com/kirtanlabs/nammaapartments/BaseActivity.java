@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -16,8 +18,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,9 +26,7 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydail
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHomeAdapter;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsListAdapter;
 
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
-import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -53,19 +51,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * ------------------------------------------------------------- */
     private View cancelDialog;
     private AlertDialog dialog;
-    private DatePickerDialog datePickerDialog;
-    private Calendar calendarTime;
-    private Calendar calendarDate;
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
-    private String selectedDate = "";
-    private String selectedTime = "";
 
-    private int className;
-    private int mYear;
-    private int mMonth;
-    private int mDay;
+    private int screenTitle;
 
     /* ------------------------------------------------------------- *
      * Abstract Methods
@@ -186,16 +176,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * We check if permissions are granted to Pick Image from Gallery if already granted then we directly start Gallery Activity with Result
-     * else we show Request permission dialog to allow users to give access.
+     * We check if permissions are granted to Pick Image from Gallery if already granted then or if API Level is lower than 15 we directly
+     * start Gallery Activity with Result, else we show Request permission dialog to allow users to give access.
      */
     protected void pickImageFromGallery() {
         galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_PERMISSION_REQUEST_CODE);
-        else {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), GALLERY_PERMISSION_REQUEST_CODE);
+        else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -246,62 +237,42 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is invoked when user clicks on pick date icon.
+     * Shows Date picker dialog allowing users to select date. The selected date is
+     * displayed in the view which calls this activity
+     *
+     * @param context           of the calling activity
+     * @param onDateSetListener callback for the event
      */
-    public void pickDate(int editTextID, boolean pickDateAndTime) {
-        calendarDate = Calendar.getInstance();
-        mYear = calendarDate.get(Calendar.YEAR);
-        mMonth = calendarDate.get(Calendar.MONTH);
-        mDay = calendarDate.get(Calendar.DAY_OF_MONTH);
-
-        // Date Picker Dialog
-        datePickerDialog = new DatePickerDialog(this,
-                (DatePicker view, int year, int month, int dayOfMonth) -> {
-                    calendarDate.set(Calendar.YEAR, year);
-                    calendarDate.set(Calendar.MONTH, month);
-                    calendarDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    selectedDate = "";
-                    selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                    datePickerDialog.cancel();
-                    if (pickDateAndTime) {
-                        pickTime(editTextID, true);
-                    } else {
-                        EditText editText = findViewById(editTextID);
-                        editText.setText(selectedDate);
-                    }
-                }, mYear, mMonth, mDay);
+    public final void pickDate(Context context, DatePickerDialog.OnDateSetListener onDateSetListener) {
+        final Calendar c = Calendar.getInstance();
+        int myYear = c.get(Calendar.YEAR);
+        int myMonth = (c.get(Calendar.MONTH));
+        int myDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener, myYear, myMonth, myDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
     /**
-     * This method is invoked when user clicks on pick time icon.
+     * Shows Time picker dialog allowing users to select time. The selected time is then
+     * displayed in the view which calls this activity
+     *
+     * @param context           of the calling activity
+     * @param onTimeSetListener callback for the event
      */
-    public void pickTime(int editTextId, boolean pickDateAndTime) {
-        calendarTime = Calendar.getInstance();
+    public final void pickTime(Context context, TimePickerDialog.OnTimeSetListener onTimeSetListener) {
+        final Calendar calendarTime = Calendar.getInstance();
         int mHour = calendarTime.get(Calendar.HOUR_OF_DAY);
         int mMinute = calendarTime.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> {
-                    selectedTime = "";
-                    selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    EditText editText = findViewById(editTextId);
-                        if (pickDateAndTime) {
-                            String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
-                            editText.setText(concatenatedDateAndTime);
-                        } else {
-                            editText.setText(selectedTime);
-                        }
-                }, mHour, mMinute, true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, onTimeSetListener, mHour, mMinute, true);
         timePickerDialog.show();
     }
 
     /**
      * This method is invoked when user clicks on cancel or remove icon.
      */
-    public void openCancelDialog(int classCalled) {
-        className = classCalled;
+    public void openCancelDialog(int screenTitle) {
+        this.screenTitle = screenTitle;
         cancelDialog = View.inflate(this, R.layout.layout_dialog_cancel, null);
 
         /*Getting Id's for all the views*/
@@ -335,7 +306,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void deleteListData() {
         /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        switch (className) {
+        switch (screenTitle) {
             case R.string.my_visitors_list:
                 VisitorsListAdapter adapterVisitorsList = new VisitorsListAdapter(this);
                 recyclerView.setAdapter(adapterVisitorsList);
