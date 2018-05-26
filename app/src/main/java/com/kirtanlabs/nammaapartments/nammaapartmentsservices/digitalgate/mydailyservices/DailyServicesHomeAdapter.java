@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -24,18 +23,20 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private View cancelDialog;
-    private AlertDialog dialog;
-    private int count = 1;
     private String service_name_value;
     private String service_inTime_value;
     private String service_type_value;
 
     /* ------------------------------------------------------------- *
+     * Public Members
+     * ------------------------------------------------------------- */
+    public static int count = 1;
+
+    /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    DailyServicesHomeAdapter(Context mCtx) {
+    public DailyServicesHomeAdapter(Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
     }
@@ -110,9 +111,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         service_type_value = holder.textServiceTypeValue.getText().toString();
 
         /*Handling Click event of icons*/
-        //TODO: Change Mobile Number here
         holder.textCall.setOnClickListener(this);
-        //TODO: Change Mobile Number here
         holder.textMessage.setOnClickListener(this);
         holder.textEdit.setOnClickListener(this);
         holder.textCancel.setOnClickListener(this);
@@ -128,16 +127,18 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textCall:
+                //TODO: Change Mobile Number here
                 baseActivity.makePhoneCall("9885665744");
                 break;
             case R.id.textMessage:
+                //TODO: Change Mobile Number here
                 baseActivity.sendTextMessage("9885665744");
                 break;
             case R.id.textRescheduleOrEdit:
                 editMyServiceDetails(service_name_value, service_inTime_value, service_type_value);
                 break;
             case R.id.textCancel:
-                openCancelDialog();
+                baseActivity.openCancelDialog(R.string.my_daily_services);
                 break;
         }
     }
@@ -157,49 +158,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         EditIntent.putExtra(Constants.IN_TIME, inTime);
         EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
         mCtx.startActivity(EditIntent);
-    }
-
-    /**
-     * This method is invoked when user clicks on cancel icon.
-     */
-    private void openCancelDialog() {
-        cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteVisitorData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor data.
-     */
-    private void deleteVisitorData() {
-        notifyItemRemoved(0);
-        /*Decrementing the count variable on deletion of one visitor data.*/
-        --count;
-        /*After deletion of one row we are notifying the adapter*/
-        notifyDataSetChanged();
-        dialog.cancel();
     }
 
     /* ------------------------------------------------------------- *

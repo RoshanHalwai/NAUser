@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -26,17 +24,19 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private View cancelDialog;
-    private AlertDialog dialog;
-    private int count = 1;
     private String memberNameValue;
     private String grantedAccessValue;
+
+    /* ------------------------------------------------------------- *
+     * Public Members
+     * ------------------------------------------------------------- */
+    public static int count = 1;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    MySweetHomeAdapter(Context mCtx) {
+    public MySweetHomeAdapter(Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
     }
@@ -125,9 +125,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         grantedAccessValue = holder.textGrantedAccessValue.getText().toString();
 
         /*Handling Click event of icons*/
-        //TODO: Change Mobile Number here
         holder.textCall.setOnClickListener(this);
-        //TODO: Change Mobile Number here
         holder.textMessage.setOnClickListener(this);
         holder.textEdit.setOnClickListener(this);
         holder.textCancel.setOnClickListener(this);
@@ -143,16 +141,18 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textCall:
+                //TODO: Change Mobile Number here
                 baseActivity.makePhoneCall("9885665744");
                 break;
             case R.id.textMessage:
+                //TODO: Change Mobile Number here
                 baseActivity.sendTextMessage("9885665744");
                 break;
             case R.id.textRescheduleOrEdit:
                 editMyFamilyMemberDetails(memberNameValue, grantedAccessValue);
                 break;
             case R.id.textCancel:
-                openCancelDialog();
+                baseActivity.openCancelDialog(R.string.my_sweet_home);
                 break;
         }
     }
@@ -171,49 +171,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         EditIntent.putExtra(Constants.MOBILE_NUMBER, "7895185103");    //TODO :  To change the mobile number here
         EditIntent.putExtra(Constants.GRANTED_ACCESS_TYPE, granted_access_type);
         mCtx.startActivity(EditIntent);
-    }
-
-    /**
-     * This method is invoked when user clicks on cancel icon.
-     */
-    private void openCancelDialog() {
-        cancelDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(mCtx);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteVisitorData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor data.
-     */
-    private void deleteVisitorData() {
-        notifyItemRemoved(0);
-        /*Decrementing the count variable on deletion of one visitor data.*/
-        --count;
-        /*After deletion of one row we are notifying the adapter*/
-        notifyDataSetChanged();
-        dialog.cancel();
     }
 
     /* ------------------------------------------------------------- *
