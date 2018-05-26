@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -46,7 +45,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Private Members
      * ------------------------------------------------------------- */
     private DatePickerDialog datePickerDialog;
-    private View rescheduleDialog;
     private Calendar calendarTime;
     private Calendar calendarDate;
     private ImageView infoButton;
@@ -257,10 +255,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                     if (pickDateAndTime) {
                         pickTime(editTextID, true);
                     } else {
-                        rescheduleDialog = View.inflate(this, R.layout.layout_dialog_reschedule, null);
-                        EditText editPickDate = rescheduleDialog.findViewById(editTextID);
-                        editPickDate.setText(selectedDate);
-                        Toast.makeText(this, "Rescheduled Date=" + selectedDate, Toast.LENGTH_SHORT).show();
+                        EditText editText = findViewById(editTextID);
+                        editText.setText(selectedDate);
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -280,21 +276,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                     selectedTime = "";
                     selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
                     EditText editText = findViewById(editTextId);
-                    if (editText != null) {
                         if (pickDateAndTime) {
                             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
                             editText.setText(concatenatedDateAndTime);
                         } else {
                             editText.setText(selectedTime);
                         }
-                    } else {
-                        if (!pickDateAndTime) {
-                            rescheduleDialog = (LinearLayout) View.inflate(getApplicationContext(), R.layout.layout_dialog_reschedule, null);
-                            EditText editPickTime = rescheduleDialog.findViewById(R.id.editPickTime);
-                            editPickTime.setText(selectedTime);
-                            Toast.makeText(this, "Rescheduled Time=" + selectedTime, Toast.LENGTH_SHORT).show();
-                        }
-                    }
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
