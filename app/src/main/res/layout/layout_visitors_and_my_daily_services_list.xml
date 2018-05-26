@@ -184,7 +184,8 @@
                     android:drawableTop="@drawable/call_visitors_list"
                     android:gravity="center"
                     android:text="@string/call"
-                    android:textColor="@color/nmBlack" />
+                    android:textColor="@color/nmBlack"
+                    android:layout_marginStart="10dp" />
 
                 <TextView
                     android:id="@+id/textMessage"

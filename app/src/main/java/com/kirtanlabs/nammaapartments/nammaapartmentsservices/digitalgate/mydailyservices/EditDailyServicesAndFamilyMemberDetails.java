@@ -3,19 +3,19 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
-
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -23,8 +23,10 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
+import java.util.Locale;
 
-public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+
+public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -35,7 +37,6 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private Button buttonUpdate;
     private Button buttonYes;
     private Button buttonNo;
-    private AlertDialog dialog;
     private int screenTitle;
     private String name;
     private String mobile;
@@ -137,7 +138,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.editPickInTime:
-                pickTime(R.id.editPickInTime, false);
+                pickTime(this, this);
                 break;
 
             case R.id.buttonYes:
@@ -194,7 +195,19 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            pickTime(R.id.editPickInTime, false);
+            pickTime(this, this);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * OnTimeSet Listener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (view.isShown()) {
+            String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+            editPickInTime.setText(selectedTime);
         }
     }
 
@@ -327,7 +340,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
         View notificationDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
         alertNotificationDialog.setView(notificationDialog);
-        dialog = alertNotificationDialog.create();
+        AlertDialog dialog1 = alertNotificationDialog.create();
 
         // Setting Custom Dialog Buttons
         alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToMySweetHomeScreen());

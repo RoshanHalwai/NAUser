@@ -21,16 +21,15 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      * Private Members
      * ------------------------------------------------------------- */
 
+    /* ------------------------------------------------------------- *
+     * Public Members
+     * ------------------------------------------------------------- */
+    public static int count = 1;
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private String service_name_value;
     private String service_inTime_value;
     private String service_type_value;
-
-    /* ------------------------------------------------------------- *
-     * Public Members
-     * ------------------------------------------------------------- */
-    public static int count = 1;
 
     /* ------------------------------------------------------------- *
      * Constructor

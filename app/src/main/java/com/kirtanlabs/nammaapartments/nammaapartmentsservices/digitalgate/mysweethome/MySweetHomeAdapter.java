@@ -22,15 +22,14 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
      * Private Members
      * ------------------------------------------------------------- */
 
-    private final Context mCtx;
-    private final BaseActivity baseActivity;
-    private String memberNameValue;
-    private String grantedAccessValue;
-
     /* ------------------------------------------------------------- *
      * Public Members
      * ------------------------------------------------------------- */
     public static int count = 1;
+    private final Context mCtx;
+    private final BaseActivity baseActivity;
+    private String memberNameValue;
+    private String grantedAccessValue;
 
     /* ------------------------------------------------------------- *
      * Constructor

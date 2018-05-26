@@ -1,22 +1,29 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+
+import java.text.DateFormatSymbols;
+import java.util.Locale;
 
 
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/14/2018
  */
-public class ExpectingArrival extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class ExpectingArrival extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -30,8 +37,9 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button12Hr,
             R.id.button16Hr,
             R.id.button24Hr};
+    private EditText editPickDateTime;
     private int arrivalType;
-
+    private String selectedDate;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -66,7 +74,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
         EditText editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
-        EditText editPickDateTime = findViewById(R.id.editPickDateTime);
+        editPickDateTime = findViewById(R.id.editPickDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
         Button button4hr = findViewById(R.id.button4Hr);
@@ -142,7 +150,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 selectButton(R.id.button24Hr);
                 break;
             case R.id.editPickDateTime:
-                pickDate(R.id.editPickDateTime, true);
+                pickDate(this, this);
                 break;
         }
     }
@@ -150,7 +158,28 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            pickDate(R.id.editPickDateTime, true);
+            pickDate(this, this);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnDateSet & OnTimeSet Listener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        if (view.isShown()) {
+            selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+            pickTime(this, this);
+        }
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (view.isShown()) {
+            String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+            String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
+            editPickDateTime.setText(concatenatedDateAndTime);
         }
     }
 

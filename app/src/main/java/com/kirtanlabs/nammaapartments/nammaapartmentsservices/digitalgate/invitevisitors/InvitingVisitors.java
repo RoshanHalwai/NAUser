@@ -1,29 +1,31 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors;
 
 
-import android.app.Dialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
+import java.text.DateFormatSymbols;
+import java.util.Locale;
+
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
-public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -34,6 +36,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private EditText editVisitorMobile;
     private TextView textDescription;
     private Button buttonInvite;
+
+    private String selectedDate;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -139,7 +143,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 showUserContacts();
                 break;
             case R.id.editPickDateTime:
-                displayDateAndTime();
+                pickDate(this, this);
                 break;
         }
 
@@ -148,38 +152,36 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            displayDateAndTime();
+            pickDate(this, this);
         }
     }
 
     /* ------------------------------------------------------------- *
-     * Private Methods
+     * Overriding OnDateSet & OnTimeSet Listener
      * ------------------------------------------------------------- */
 
-    private void displayDateAndTime() {
-        pickDate(R.id.editPickDateTime, true);
-        editPickDateTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                textDescription.setVisibility(View.VISIBLE);
-                buttonInvite.setVisibility(View.VISIBLE);
-            }
-        });
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        if (view.isShown()) {
+            selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+            pickTime(this, this);
+        }
     }
 
     @Override
-    protected Dialog onCreateDialog(int id) {
-        return super.onCreateDialog(id);
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (view.isShown()) {
+            String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+            String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
+            editPickDateTime.setText(concatenatedDateAndTime);
+            textDescription.setVisibility(View.VISIBLE);
+            buttonInvite.setVisibility(View.VISIBLE);
+        }
     }
+
+    /* ------------------------------------------------------------- *
+     * Protected Methods
+     * ------------------------------------------------------------- */
+
 }
 
