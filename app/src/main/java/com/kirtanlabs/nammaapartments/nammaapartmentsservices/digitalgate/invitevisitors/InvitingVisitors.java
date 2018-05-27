@@ -1,18 +1,23 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -20,9 +25,15 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
+import java.io.IOException;
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
 public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -31,12 +42,14 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * Private Members
      * ------------------------------------------------------------- */
 
+    private CircleImageView circleImageInvitingVisitors;
     private EditText editPickDateTime;
     private EditText editVisitorName;
     private EditText editVisitorMobile;
     private TextView textDescription;
     private Button buttonInvite;
-
+    private AlertDialog imageSelectingOptions;
+    private ListView listView;
     private String selectedDate;
 
     /* ------------------------------------------------------------- *
@@ -60,7 +73,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        /*Custom DialogBox with list of all image services*/
+        setupCustomDialog();
+
         /*Getting Id's for all the views*/
+        circleImageInvitingVisitors = findViewById(R.id.invitingVisitorsProfilePic);
         TextView textVisitorName = findViewById(R.id.textVisitorAndServiceName);
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
         TextView textOr = findViewById(R.id.textOr);
@@ -90,9 +107,14 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         buttonInvite.setTypeface(Constants.setLatoLightFont(this));
 
         /*Setting event for views */
+        circleImageInvitingVisitors.setOnClickListener(this);
         buttonSelectFromContact.setOnClickListener(this);
         editPickDateTime.setOnClickListener(this);
         editPickDateTime.setOnFocusChangeListener(this);
+
+        /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
+        setupViewsForProfilePhoto();
+        
     }
 
     /* ------------------------------------------------------------- *
@@ -128,6 +150,34 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                         e.printStackTrace();
                     }
                     break;
+                case CAMERA_PERMISSION_REQUEST_CODE:
+                    if (data.getExtras() != null) {
+                        Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
+                        circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
+                        onSuccessfulUpload();
+                        imageSelectingOptions.cancel();
+                    } else {
+                        onFailedUpload();
+                        imageSelectingOptions.cancel();
+                    }
+                    break;
+
+                case GALLERY_PERMISSION_REQUEST_CODE:
+                    if (data != null && data.getData() != null) {
+                        Uri selectedImage = data.getData();
+                        try {
+                            Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                            circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
+                            onSuccessfulUpload();
+                            imageSelectingOptions.cancel();
+                        } catch (IOException exception) {
+                            exception.getStackTrace();
+                        }
+                    } else {
+                        onFailedUpload();
+                        imageSelectingOptions.cancel();
+                    }
+                    break;
             }
         }
     }
@@ -139,6 +189,9 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.invitingVisitorsProfilePic:
+                imageSelectingOptions.show();
+                break;
             case R.id.buttonSelectFromContact:
                 showUserContacts();
                 break;
@@ -180,8 +233,68 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     }
 
     /* ------------------------------------------------------------- *
-     * Protected Methods
+     * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
+     * imageSelectingOptions is displayed when user clicks on profile image which is on top of the screen.
+     */
+    private void setupCustomDialog() {
+        AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
+        View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
+        addImageDialog.setView(listAddImageServices);
+        imageSelectingOptions = addImageDialog.create();
+        listView = listAddImageServices.findViewById(R.id.listAddImageService);
+    }
+
+    /**
+     * This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.
+     */
+    private void setupViewsForProfilePhoto() {
+        /*Creating an array list of selecting images from camera and gallery*/
+        ArrayList<String> pickImageList = new ArrayList<>();
+
+        /*Adding pick images services to the list*/
+        pickImageList.add(getString(R.string.camera));
+        pickImageList.add(getString(R.string.gallery));
+        pickImageList.add(getString(R.string.cancel));
+
+        /*Creating the Adapter*/
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(InvitingVisitors.this, android.R.layout.simple_list_item_1, pickImageList);
+
+        /*Attaching adapter to the listView*/
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        /*Setting event for listview items*/
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:
+                    launchCamera();
+                    break;
+                case 1:
+                    pickImageFromGallery();
+                    break;
+                case 2:
+                    imageSelectingOptions.cancel();
+            }
+        });
+    }
+
+    /**
+     * This method will get invoked when user successfully uploaded image from gallery and camera.
+     */
+    private void onSuccessfulUpload() {
+        circleImageInvitingVisitors.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method will get invoked when user fails in uploading image from gallery and camera.
+     */
+    private void onFailedUpload() {
+        circleImageInvitingVisitors.setVisibility(View.INVISIBLE);
+        imageSelectingOptions.cancel();
+    }
 }
 
