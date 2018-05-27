@@ -79,7 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
     }
-
     private void hideInfoButton() {
         infoButton.setVisibility(View.GONE);
     }
