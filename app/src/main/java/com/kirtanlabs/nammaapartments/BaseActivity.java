@@ -18,6 +18,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -79,6 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
     }
+
     private void hideInfoButton() {
         infoButton.setVisibility(View.GONE);
     }
@@ -305,12 +308,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void deleteListData() {
         /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        LinearLayout itemList = findViewById(R.id.itemList);
         switch (screenTitle) {
             case R.string.my_visitors_list:
                 VisitorsListAdapter adapterVisitorsList = new VisitorsListAdapter(this);
                 recyclerView.setAdapter(adapterVisitorsList);
+                Animation animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
+                itemList.startAnimation(animation);
                 --VisitorsListAdapter.count;
-                adapterVisitorsList.notifyDataSetChanged();
+                adapterVisitorsList.notifyItemRemoved(0);
                 break;
             case R.string.my_daily_services:
                 DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);

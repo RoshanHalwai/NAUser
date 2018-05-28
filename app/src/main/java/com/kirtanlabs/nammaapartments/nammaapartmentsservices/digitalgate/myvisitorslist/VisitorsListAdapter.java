@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -229,6 +230,8 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         private final TextView textReschedule;
         private final TextView textCancel;
 
+        public final LinearLayout itemList;
+
         /* ------------------------------------------------------------- *
          * Constructor
          * ------------------------------------------------------------- */
@@ -252,6 +255,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
 
+            itemList = itemView.findViewById(R.id.itemList);
         }
     }
 
