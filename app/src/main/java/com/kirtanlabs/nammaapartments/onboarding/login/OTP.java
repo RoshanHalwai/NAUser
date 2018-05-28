@@ -30,8 +30,8 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private EditText editSixthOTPDigit;
     private TextView textPhoneVerification;
     private Button buttonVerifyOTP;
-
     private int previousScreenTitle;
+    private boolean allFieldsFilled;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -130,7 +130,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         editFirstOTPDigit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -140,7 +139,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -157,7 +155,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -171,10 +168,8 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editFourthOTPDigit.requestFocus();
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -191,7 +186,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -219,16 +213,32 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                buttonVerifyOTP.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                allFieldsFilled = isAllFieldsFilled(new EditText[]{editFirstOTPDigit, editSecondOTPDigit, editThirdOTPDigit, editFourthOTPDigit, editFifthOTPDigit, editSixthOTPDigit});
+                if (allFieldsFilled) {
+                    buttonVerifyOTP.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
 
+    /**
+     * This method is invoked to check if all the editTexts filled or not.
+     */
+    private boolean isAllFieldsFilled(EditText[] fields) {
+        for (EditText currentField : fields) {
+            if (currentField.getText().toString().length() <= 0) {
+                currentField.setError("Please Enter a Valid OTP code");
+                currentField.requestFocus();
+                buttonVerifyOTP.setVisibility(View.VISIBLE);
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * We update the Phone Verification text based on the activity calling this class.
      */
