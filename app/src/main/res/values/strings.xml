@@ -48,8 +48,6 @@
     <!--SignIn Activity-->
     <string name="create_an_account">Create an Account</string>
     <string name="login">LOGIN</string>
-    <string name="sign_in_10digit_validation">Please Enter a valid 10 digit mobile number</string>
-    <string name="sign_in_validation">Please Enter Mobile Number</string>
 
     <!--NammaApartmentsHome Activity-->
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
@@ -111,8 +109,6 @@
     <string name="select_future_time">Please select future time.</string>
     <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your society.</string>
     <string name="invitation_message">You have successfully invited your visitor.</string>
-    <string name="inviting_visitors_valid_name">Please Enter a Valid Name</string>
-    <string name="inviting_visitors_valid_mobile_number">Please Enter a Valid Mobile Number</string>
 
     <!--Visitors List Activity-->
     <string name="visitor">Visitor:</string>
@@ -201,4 +197,11 @@
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
     <string name="edit_my_family_member_details">Edit My Family Member Details</string>
     <string name="update">Update</string>
+
+    <!--Validations-->
+    <string name="number_10digit_validation">Please Enter a valid 10 digit mobile number</string>
+    <string name="mobile_number_validation">Please Enter Mobile Number</string>
+    <string name="name_validation">Please Enter Name</string>
+    <string name="accept_alphabets">Accept Alphabets Only.</string>
+
 </resources>

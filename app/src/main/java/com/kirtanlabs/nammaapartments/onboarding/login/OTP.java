@@ -224,23 +224,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             }
         });
     }
-
-    /**
-     * This method gets invoked to check if all the editTexts are filled or not.
-     * @param fields consists of array of editText fields.
-     * @return boolean variable which returns true or false based on the context.
-     */
-    private boolean isAllFieldsFilled(EditText[] fields) {
-        for (EditText currentField : fields) {
-            if (currentField.getText().toString().length() <= 0) {
-                currentField.setError("Please Enter a Valid OTP code");
-                currentField.requestFocus();
-                buttonVerifyOTP.setVisibility(View.VISIBLE);
-                return false;
-            }
-        }
-        return true;
-    }
     /**
      * We update the Phone Verification text based on the activity calling this class.
      */

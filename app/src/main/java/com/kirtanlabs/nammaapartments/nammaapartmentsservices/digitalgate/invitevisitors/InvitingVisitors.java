@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -321,7 +320,18 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             @Override
             public void afterTextChanged(Editable s) {
-                isValidPersonName(editVisitorName);
+                String visitorsName = editVisitorName.getText().toString().trim();
+                String phoneNumber = editVisitorMobile.getText().toString().trim();
+                String dateTime = editPickDateTime.getText().toString().trim();
+                if (visitorsName.length() <= Constants.EDITTEXT_MIN_LENGTH || isValidPersonName(visitorsName)) {
+                    editVisitorName.setError(getString(R.string.accept_alphabets));
+                }
+                if (visitorsName.length() > Constants.EDITTEXT_MIN_LENGTH) {
+                    if (dateTime.length() > Constants.EDITTEXT_MIN_LENGTH && phoneNumber.length() == Constants.NUMBER_MAX_LENGTH) {
+                        textDescription.setVisibility(View.VISIBLE);
+                        buttonInvite.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
         editVisitorMobile.addTextChangedListener(new TextWatcher() {
@@ -338,12 +348,12 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             @Override
             public void afterTextChanged(Editable s) {
                 mobileNumber = editVisitorMobile.getText().toString().trim();
-                if (mobileNumber.length() < 10) {
-                    editVisitorMobile.setError(getString(R.string.sign_in_10digit_validation));
+                if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                    editVisitorMobile.setError(getString(R.string.number_10digit_validation));
                 }
                 if (isValidPhone(mobileNumber) && mobileNumber.length() >= 10) {
                     String dateTime = editPickDateTime.getText().toString().trim();
-                    if (dateTime.length() > 0) {
+                    if (dateTime.length() > Constants.EDITTEXT_MIN_LENGTH) {
                         textDescription.setVisibility(View.VISIBLE);
                         buttonInvite.setVisibility(View.VISIBLE);
                     }
@@ -372,31 +382,15 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     String visitorName = editVisitorName.getText().toString().trim();
                     String phoneNumber = editVisitorMobile.getText().toString().trim();
                     if (visitorName.length() <= 0) {
-                        editVisitorName.setError(getString(R.string.inviting_visitors_valid_name));
+                        editVisitorName.setError(getString(R.string.name_validation));
                     }
                     if (phoneNumber.length() <= 0) {
-                        editVisitorMobile.setError(getString(R.string.inviting_visitors_valid_mobile_number));
+                        editVisitorMobile.setError(getString(R.string.mobile_number_validation));
                     }
                 }
             }
         });
     }
-
-    /**
-     * This method gets invoked to check if all the editTexts are filled or not.
-     * @param fields consists of array of editText fields.
-     * @return boolean variable which returns true or false based on the context.
-     */
-    private boolean isAllFieldsFilled(EditText[] fields) {
-        for (EditText currentField : fields) {
-            if (currentField.getText().toString().length() <= 0) {
-                currentField.requestFocus();
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * This method is invoked to create an Invitation dialog when user successfully fills all the details.
      */
@@ -408,26 +402,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
         new Dialog(this);
         alertInvitationDialog.show();
-    }
-
-    /**
-     * This method is used to check whether user is entering valid name or not.
-     */
-    private void isValidPersonName(EditText editText) throws NumberFormatException {
-        if (editText.getText().toString().length() <= 0) {
-            editText.setError("Accept Alphabets Only.");
-        } else if (!editText.getText().toString().matches("[a-zA-Z ]+")) {
-            editText.setError("Accept Alphabets Only.");
-        }
-    }
-
-    /**
-     * This method is to validate whether the user is entering a valid phone number or not.
-     */
-    private boolean isValidPhone(String phone) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
-        return check;
     }
 
 }
