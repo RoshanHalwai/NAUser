@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,9 +51,12 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private Button buttonYes;
     private Button buttonNo;
     private String service_type;
+    private String visitorName;
+    private String mobileNumber;
     private AlertDialog imageSelectingOptions;
     private ListView listView;
     private boolean grantedAccess = false;
+    private boolean fieldsFilled;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -146,6 +151,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
         /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
         setupViewsForProfilePhoto();
+        /*This method gets invoked when user is trying to modify the values on EditTexts.*/
+        setEventsForEditText();
     }
 
     /*-------------------------------------------------------------------------------
@@ -274,8 +281,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         if (view.isShown()) {
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             editPickTime.setText(selectedTime);
-            textDescriptionDailyService.setVisibility(View.VISIBLE);
-            buttonAdd.setVisibility(View.VISIBLE);
         }
     }
 
@@ -381,6 +386,96 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private void onFailedUpload() {
         circleImageView.setVisibility(View.INVISIBLE);
         imageSelectingOptions.cancel();
+    }
+
+    /**
+     * We are handling events for editTexts name,mobile number and date and time picker editText.
+     */
+    private void setEventsForEditText() {
+        editDailyServiceOrFamilyMemberName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+                String pickTime = editPickTime.getText().toString().trim();
+                String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                if (visitorName.length() <= Constants.EDITTEXT_MIN_LENGTH || isValidPersonName(visitorName)) {
+                    editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
+                }
+                if (visitorName.length() > Constants.EDITTEXT_MIN_LENGTH) {
+                    if (pickTime.length() > Constants.EDITTEXT_MIN_LENGTH && phoneNumber.length() == Constants.NUMBER_MAX_LENGTH) {
+                        textDescriptionDailyService.setVisibility(View.VISIBLE);
+                        buttonAdd.setVisibility(View.VISIBLE);
+                    }
+
+                }
+            }
+        });
+        editDailyServiceOrFamilyMemberMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                String pickTime = editPickTime.getText().toString().trim();
+                if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                    editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
+                }
+                if (isValidPhone(mobileNumber) && mobileNumber.length() == Constants.NUMBER_MAX_LENGTH) {
+                    if (pickTime.length() > Constants.EDITTEXT_MIN_LENGTH) {
+                        textDescriptionDailyService.setVisibility(View.VISIBLE);
+                        buttonAdd.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+        editPickTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editPickTime});
+                if (fieldsFilled) {
+                    textDescriptionDailyService.setVisibility(View.VISIBLE);
+                    buttonAdd.setVisibility(View.VISIBLE);
+                }
+                if (!fieldsFilled) {
+                    visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+                    mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                    if (visitorName.length() == Constants.EDITTEXT_MIN_LENGTH) {
+                        editDailyServiceOrFamilyMemberName.setError(getString(R.string.name_validation));
+                    }
+                    if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                        editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
+                    }
+                }
+            }
+        });
     }
 
 }
