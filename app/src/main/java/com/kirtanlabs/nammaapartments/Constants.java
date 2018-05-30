@@ -40,6 +40,12 @@ public class Constants {
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
     /* ------------------------------------------------------------- *
+     * Validation Keys
+     * ------------------------------------------------------------- */
+    public static final int NUMBER_MAX_LENGTH = 10;
+    public static final int NUMBER_MIN_LENGTH = 0;
+
+    /* ------------------------------------------------------------- *
      * Font Types
      * ------------------------------------------------------------- */
 

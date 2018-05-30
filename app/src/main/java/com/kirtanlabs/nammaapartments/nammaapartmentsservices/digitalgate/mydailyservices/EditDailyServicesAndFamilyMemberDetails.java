@@ -340,7 +340,6 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
         View notificationDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
         alertNotificationDialog.setView(notificationDialog);
-        AlertDialog dialog1 = alertNotificationDialog.create();
 
         // Setting Custom Dialog Buttons
         alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToMySweetHomeScreen());
