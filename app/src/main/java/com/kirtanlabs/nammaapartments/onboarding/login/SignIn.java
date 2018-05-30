@@ -68,11 +68,11 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonLogin) {
             String mobileNumber = editMobileNumber.getText().toString().trim();
-            if (mobileNumber.length() < 10) {
-                editMobileNumber.setError("Please Enter a valid 10 digit mobile number");
+            if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                editMobileNumber.setError(getString(R.string.sign_in_10digit_validation));
             }
-            if ((mobileNumber.length() <= 0)) {
-                editMobileNumber.setError("Please Enter Mobile Number");
+            if ((mobileNumber.length() <= Constants.NUMBER_MIN_LENGTH)) {
+                editMobileNumber.setError(getString(R.string.sign_in_validation));
             }
             if (isValidPhone(mobileNumber)) {
                 Intent intentOTP = new Intent(SignIn.this, OTP.class);

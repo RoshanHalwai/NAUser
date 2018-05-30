@@ -226,7 +226,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * This method is invoked to check if all the editTexts filled or not.
+     * This method gets invoked to check if all the editTexts are filled or not.
+     * @param fields consists of array of editText fields.
+     * @return boolean variable which returns true or false based on the context.
      */
     private boolean isAllFieldsFilled(EditText[] fields) {
         for (EditText currentField : fields) {

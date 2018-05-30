@@ -206,7 +206,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonInvite:
-
                 createInviteDialog();
                 break;
         }
@@ -340,7 +339,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             public void afterTextChanged(Editable s) {
                 mobileNumber = editVisitorMobile.getText().toString().trim();
                 if (mobileNumber.length() < 10) {
-                    editVisitorMobile.setError("Please Enter 10 digit mobile number");
+                    editVisitorMobile.setError(getString(R.string.sign_in_10digit_validation));
                 }
                 if (isValidPhone(mobileNumber) && mobileNumber.length() >= 10) {
                     String dateTime = editPickDateTime.getText().toString().trim();
@@ -373,10 +372,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     String visitorName = editVisitorName.getText().toString().trim();
                     String phoneNumber = editVisitorMobile.getText().toString().trim();
                     if (visitorName.length() <= 0) {
-                        editVisitorName.setError("Please Enter a Valid Name");
+                        editVisitorName.setError(getString(R.string.inviting_visitors_valid_name));
                     }
                     if (phoneNumber.length() <= 0) {
-                        editVisitorMobile.setError("Please Enter a Valid Mobile Number");
+                        editVisitorMobile.setError(getString(R.string.inviting_visitors_valid_mobile_number));
                     }
                 }
             }
@@ -384,7 +383,9 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * This method is invoked to check if all the editTexts filled or not.
+     * This method gets invoked to check if all the editTexts are filled or not.
+     * @param fields consists of array of editText fields.
+     * @return boolean variable which returns true or false based on the context.
      */
     private boolean isAllFieldsFilled(EditText[] fields) {
         for (EditText currentField : fields) {
@@ -428,5 +429,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
         return check;
     }
+
 }
 
