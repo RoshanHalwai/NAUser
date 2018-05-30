@@ -11,8 +11,11 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -89,7 +92,12 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         holder.textCall.setOnClickListener(this);
         holder.textMessage.setOnClickListener(this);
         holder.textReschedule.setOnClickListener(this);
-        holder.textCancel.setOnClickListener(this);
+        holder.textCancel.setOnClickListener(v -> {
+            Animation animation = AnimationUtils.loadAnimation(mCtx, android.R.anim.slide_out_right);
+            holder.itemList.startAnimation(animation);
+            --count;
+            notifyItemRemoved(0);
+        });
     }
 
     @Override
@@ -116,7 +124,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                 openRescheduleDialog();
                 break;
             case R.id.textCancel:
-                baseActivity.openCancelDialog(R.string.my_visitors_list);
+                //baseActivity.openCancelDialog(R.string.my_visitors_list);
                 break;
             case R.id.editPickDate:
                 baseActivity.pickDate(mCtx, this);
@@ -229,6 +237,8 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         private final TextView textReschedule;
         private final TextView textCancel;
 
+        public final LinearLayout itemList;
+
         /* ------------------------------------------------------------- *
          * Constructor
          * ------------------------------------------------------------- */
@@ -252,6 +262,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
 
+            itemList = itemView.findViewById(R.id.itemList);
         }
     }
 

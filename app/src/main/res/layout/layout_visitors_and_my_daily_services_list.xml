@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -180,12 +181,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:drawableTop="@drawable/call_visitors_list"
                     android:gravity="center"
                     android:text="@string/call"
-                    android:textColor="@color/nmBlack"
-                    android:layout_marginStart="10dp" />
+                    android:textColor="@color/nmBlack" />
 
                 <TextView
                     android:id="@+id/textMessage"
