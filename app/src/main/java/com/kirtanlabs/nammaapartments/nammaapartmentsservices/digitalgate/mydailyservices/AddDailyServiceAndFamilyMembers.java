@@ -409,10 +409,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             @Override
             public void afterTextChanged(Editable s) {
                 String visitorsName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
-                if (visitorsName.length() <= 0) {
-                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                if (visitorsName.length() <= Constants.NUMBER_MIN_LENGTH) {
+                    editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
                 } else if (isValidPersonName(visitorsName)) {
-                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                    editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
                 }
             }
         });
@@ -451,10 +451,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             @Override
             public void afterTextChanged(Editable s) {
                 String relation = editFamilyMemberRelation.getText().toString().trim();
-                if (relation.length() <= 0) {
-                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                if (relation.length() <= Constants.NUMBER_MIN_LENGTH) {
+                    editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
                 } else if (isValidPersonName(relation)) {
-                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                    editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
                 }
             }
         });

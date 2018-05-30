@@ -264,10 +264,10 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             @Override
             public void afterTextChanged(Editable s) {
                 String memberOrServiceName = editMemberAndServiceName.getText().toString().trim();
-                if (memberOrServiceName.length() <= 0) {
-                    editMemberAndServiceName.setError("Accept Alphabets Only.");
+                if (memberOrServiceName.length() <= Constants.NUMBER_MIN_LENGTH) {
+                    editMemberAndServiceName.setError(getString(R.string.accept_alphabets));
                 } else if (isValidPersonName(memberOrServiceName)) {
-                    editMemberAndServiceName.setError("Accept Alphabets Only.");
+                    editMemberAndServiceName.setError(getString(R.string.accept_alphabets));
                 }
                 if (editMemberAndServiceName.getText().toString().equals(name)) {
                     nameTextChanged = false;

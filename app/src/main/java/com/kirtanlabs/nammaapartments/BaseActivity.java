@@ -345,7 +345,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isValidPhone(String phone) {
         boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= Constants.NUMBER_MAX_LENGTH;
         return check;
     }
 
@@ -357,7 +357,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isAllFieldsFilled(EditText[] fields) {
         for (EditText currentField : fields) {
-            if (currentField.getText().toString().length() <= 0) {
+            if (currentField.getText().toString().length() <= Constants.NUMBER_MIN_LENGTH) {
                 currentField.requestFocus();
                 return false;
             }

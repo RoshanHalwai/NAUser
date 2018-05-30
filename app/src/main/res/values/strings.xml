@@ -196,6 +196,7 @@
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
     <string name="notification_alert">Notification Alert</string>
     <string name="granted_access">Granted Access:</string>
+    <string name="accept_alphabets">Accept Alphabets Only.</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>

@@ -322,10 +322,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             @Override
             public void afterTextChanged(Editable s) {
                 String visitorsName = editVisitorName.getText().toString().trim();
-                if (visitorsName.length() <= 0) {
-                    editVisitorName.setError("Accept Alphabets Only.");
+                if (visitorsName.length() <= Constants.NUMBER_MIN_LENGTH) {
+                    editVisitorName.setError(getString(R.string.accept_alphabets));
                 } else if (isValidPersonName(visitorsName)) {
-                    editVisitorName.setError("Accept Alphabets Only.");
+                    editVisitorName.setError(getString(R.string.accept_alphabets));
                 }
             }
         });
@@ -343,10 +343,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             @Override
             public void afterTextChanged(Editable s) {
                 mobileNumber = editVisitorMobile.getText().toString().trim();
-                if (mobileNumber.length() < 10) {
+                if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
                     editVisitorMobile.setError(getString(R.string.sign_in_10digit_validation));
                 }
-                if (isValidPhone(mobileNumber) && mobileNumber.length() >= 10) {
+                if (isValidPhone(mobileNumber) && mobileNumber.length() >= Constants.NUMBER_MAX_LENGTH) {
                     String dateTime = editPickDateTime.getText().toString().trim();
                     if (dateTime.length() > 0) {
                         textDescription.setVisibility(View.VISIBLE);
@@ -376,10 +376,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 if ((!fieldsFilled)) {
                     String visitorName = editVisitorName.getText().toString().trim();
                     String phoneNumber = editVisitorMobile.getText().toString().trim();
-                    if (visitorName.length() <= 0) {
+                    if (visitorName.length() <= Constants.NUMBER_MIN_LENGTH) {
                         editVisitorName.setError(getString(R.string.inviting_visitors_valid_name));
                     }
-                    if (phoneNumber.length() <= 0) {
+                    if (phoneNumber.length() <= Constants.NUMBER_MIN_LENGTH) {
                         editVisitorMobile.setError(getString(R.string.inviting_visitors_valid_mobile_number));
                     }
                 }
