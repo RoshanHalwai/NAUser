@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswee
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsListAdapter;
 
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -327,5 +329,39 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
         }
         dialog.cancel();
+    }
+
+    /**
+     * This method is used to check whether user is entering valid name or not.
+     */
+    public boolean isValidPersonName(String name) throws NumberFormatException {
+        boolean check;
+        check = !name.matches("[a-zA-Z ]+");
+        return check;
+    }
+
+    /**
+     * This method is to validate whether the user is entering a valid phone number or not.
+     */
+    public boolean isValidPhone(String phone) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
+        return check;
+    }
+
+    /**
+     * This method gets invoked to check if all the editTexts are filled or not.
+     *
+     * @param fields consists of array of editText fields.
+     * @return boolean variable which returns true or false based on the context.
+     */
+    public boolean isAllFieldsFilled(EditText[] fields) {
+        for (EditText currentField : fields) {
+            if (currentField.getText().toString().length() <= 0) {
+                currentField.requestFocus();
+                return false;
+            }
+        }
+        return true;
     }
 }

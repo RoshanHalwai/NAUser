@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,6 +47,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private EditText editPickTime;
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
+    private EditText editFamilyMemberRelation;
     private Button buttonAdd;
     private Button buttonYes;
     private Button buttonNo;
@@ -94,7 +97,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
         editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
-        EditText editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
+        editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonYes = findViewById(R.id.buttonYes);
@@ -146,6 +149,9 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
         /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
         setupViewsForProfilePhoto();
+
+        /*Setting events for edit text*/
+        setEventsForEditText();
     }
 
     /*-------------------------------------------------------------------------------
@@ -248,10 +254,12 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
                     startActivity(intentButtonAdd);
                 } else {
-                    if (grantedAccess)
-                        openNotificationDialog();
-                    else {
-                        navigatingToOTPScreen();
+                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})) {
+                        if (grantedAccess)
+                            openNotificationDialog();
+                        else {
+                            navigatingToOTPScreen();
+                        }
                     }
                 }
                 break;
@@ -383,4 +391,72 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         imageSelectingOptions.cancel();
     }
 
+    /**
+     * Once user enters edits some text in editText
+     */
+    private void setEventsForEditText() {
+        editDailyServiceOrFamilyMemberName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String visitorsName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+                if (visitorsName.length() <= 0) {
+                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                } else if (isValidPersonName(visitorsName)) {
+                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                }
+            }
+        });
+
+        editDailyServiceOrFamilyMemberMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                if (!isValidPhone(mobileNumber)) {
+                    editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.sign_in_10digit_validation));
+                }
+            }
+        });
+
+        editFamilyMemberRelation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String relation = editFamilyMemberRelation.getText().toString().trim();
+                if (relation.length() <= 0) {
+                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                } else if (isValidPersonName(relation)) {
+                    editDailyServiceOrFamilyMemberName.setError("Accept Alphabets Only.");
+                }
+            }
+        });
+    }
 }

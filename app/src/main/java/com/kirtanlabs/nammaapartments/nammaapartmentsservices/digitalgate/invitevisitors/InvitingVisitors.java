@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -211,6 +210,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         }
 
     }
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
@@ -321,7 +321,12 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             @Override
             public void afterTextChanged(Editable s) {
-                isValidPersonName(editVisitorName);
+                String visitorsName = editVisitorName.getText().toString().trim();
+                if (visitorsName.length() <= 0) {
+                    editVisitorName.setError("Accept Alphabets Only.");
+                } else if (isValidPersonName(visitorsName)) {
+                    editVisitorName.setError("Accept Alphabets Only.");
+                }
             }
         });
         editVisitorMobile.addTextChangedListener(new TextWatcher() {
@@ -383,21 +388,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * This method gets invoked to check if all the editTexts are filled or not.
-     * @param fields consists of array of editText fields.
-     * @return boolean variable which returns true or false based on the context.
-     */
-    private boolean isAllFieldsFilled(EditText[] fields) {
-        for (EditText currentField : fields) {
-            if (currentField.getText().toString().length() <= 0) {
-                currentField.requestFocus();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * This method is invoked to create an Invitation dialog when user successfully fills all the details.
      */
     private void createInviteDialog() {
@@ -409,26 +399,5 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         new Dialog(this);
         alertInvitationDialog.show();
     }
-
-    /**
-     * This method is used to check whether user is entering valid name or not.
-     */
-    private void isValidPersonName(EditText editText) throws NumberFormatException {
-        if (editText.getText().toString().length() <= 0) {
-            editText.setError("Accept Alphabets Only.");
-        } else if (!editText.getText().toString().matches("[a-zA-Z ]+")) {
-            editText.setError("Accept Alphabets Only.");
-        }
-    }
-
-    /**
-     * This method is to validate whether the user is entering a valid phone number or not.
-     */
-    private boolean isValidPhone(String phone) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
-        return check;
-    }
-
 }
 

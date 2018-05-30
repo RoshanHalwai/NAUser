@@ -180,12 +180,14 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                         startActivity(myDailyServiceIntent);
                     }
                 } else {
-                    if (grantedAccess) {
-                        openNotificationDialog();
-                    } else if (mobileTextChanged) {
-                        navigatingToOTPScreen();
-                    } else {
-                        navigatingToMySweetHomeScreen();
+                    if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber})) {
+                        if (grantedAccess) {
+                            openNotificationDialog();
+                        } else if (mobileTextChanged) {
+                            navigatingToOTPScreen();
+                        } else {
+                            navigatingToMySweetHomeScreen();
+                        }
                     }
                 }
                 break;
@@ -261,6 +263,12 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
 
             @Override
             public void afterTextChanged(Editable s) {
+                String memberOrServiceName = editMemberAndServiceName.getText().toString().trim();
+                if (memberOrServiceName.length() <= 0) {
+                    editMemberAndServiceName.setError("Accept Alphabets Only.");
+                } else if (isValidPersonName(memberOrServiceName)) {
+                    editMemberAndServiceName.setError("Accept Alphabets Only.");
+                }
                 if (editMemberAndServiceName.getText().toString().equals(name)) {
                     nameTextChanged = false;
                 }
@@ -275,11 +283,13 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editMobileNumber.length() > 0) {
+                String mobile = editMobileNumber.getText().toString().trim();
+                if (isValidPhone(mobile)) {
                     textDescription.setVisibility(View.VISIBLE);
                     buttonUpdate.setVisibility(View.VISIBLE);
                     mobileTextChanged = true;
                 } else {
+                    editMobileNumber.setError(getString(R.string.sign_in_10digit_validation));
                     mobileTextChanged = false;
                 }
                 makeViewsVisibleOrInvisible();

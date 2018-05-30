@@ -82,18 +82,4 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
             }
         }
     }
-
-
-    /*-------------------------------------------------------------------------------
-     *Private Methods
-     *-----------------------------------------------------------------------------*/
-
-    /**
-     * This method is to validate whether the user is entering a valid phone number or not.
-     */
-    private boolean isValidPhone(String phone) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 10;
-        return check;
-    }
 }
