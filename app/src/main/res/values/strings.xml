@@ -133,6 +133,8 @@
     <string name="handed_things_to_my_daily_services">Handed Things To My Daily Services</string>
     <string name="raise_fire_alarm">Raise Fire Alarm</string>
     <string name="raise_theft_alarm">Raise Theft Alarm</string>
+    <string name="notification_message">Notification is sent to your Security Guard.</string>
+    <string name="please_fill_details">Please fill details here</string>
 
     <!--Expecting Cab Arrival & Expecting Package Arrival Activities-->
     <string name="cab_number">Cab Number</string>
