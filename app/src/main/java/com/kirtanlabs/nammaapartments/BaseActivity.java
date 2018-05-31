@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,9 +28,11 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswee
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsListAdapter;
 
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
@@ -285,6 +288,45 @@ public abstract class BaseActivity extends AppCompatActivity {
         createCancelDialog();
     }
 
+    /**
+     * This method checks if all the editTexts are filled or not.
+     *
+     * @param fields consists of array of EditTexts.
+     * @return consists of boolean variable based on the context.
+     */
+    public boolean isAllFieldsFilled(EditText[] fields) {
+        for (EditText currentField : fields) {
+            if (currentField.getText().toString().length() <= Constants.EDITTEXT_MIN_LENGTH) {
+                currentField.requestFocus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This method checks if user is entering proper phone number or not.
+     *
+     * @param phone consists of string value of mobile number of that particular activity.
+     * @return returns a boolean variable based on the context.
+     */
+    public boolean isValidPhone(String phone) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
+        return check;
+    }
+
+    /**
+     * This method gets invoked when user is trying to enter improper format of entering name.
+     *
+     * @param name contains that particular editText of name
+     * @throws NumberFormatException because if user tries to enter number in place of name.
+     */
+    public boolean isValidPersonName(String name) throws NumberFormatException {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z ]+", name);
+        return check;
+    }
     /**
      * This method is invoked to create a cancel dialog.
      */
