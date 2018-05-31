@@ -344,7 +344,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                textDescription.setVisibility(View.GONE);
+                buttonInvite.setVisibility(View.GONE);
             }
 
             @Override
@@ -375,14 +376,14 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             @Override
             public void afterTextChanged(Editable s) {
+                String visitorName = editVisitorName.getText().toString().trim();
+                String phoneNumber = editVisitorMobile.getText().toString().trim();
                 boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editVisitorName, editVisitorMobile, editPickDateTime});
-                if (fieldsFilled) {
+                if (fieldsFilled && visitorName.length() > EDITTEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     textDescription.setVisibility(View.VISIBLE);
                     buttonInvite.setVisibility(View.VISIBLE);
                 }
                 if ((!fieldsFilled)) {
-                    String visitorName = editVisitorName.getText().toString().trim();
-                    String phoneNumber = editVisitorMobile.getText().toString().trim();
                     if (visitorName.length() == EDITTEXT_MIN_LENGTH) {
                         editVisitorName.setError(getString(R.string.name_validation));
                     }

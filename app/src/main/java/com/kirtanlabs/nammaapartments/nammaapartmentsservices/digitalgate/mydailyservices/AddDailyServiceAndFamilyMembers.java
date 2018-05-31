@@ -430,7 +430,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                textDescriptionDailyService.setVisibility(View.GONE);
+                buttonAdd.setVisibility(View.GONE);
             }
 
             @Override
@@ -461,14 +462,14 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void afterTextChanged(Editable s) {
+                visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+                mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
                 fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editPickTime});
-                if (fieldsFilled) {
+                if (fieldsFilled && visitorName.length() > EDITTEXT_MIN_LENGTH && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     textDescriptionDailyService.setVisibility(View.VISIBLE);
                     buttonAdd.setVisibility(View.VISIBLE);
                 }
                 if (!fieldsFilled) {
-                    visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
-                    mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
                     if (visitorName.length() == EDITTEXT_MIN_LENGTH) {
                         editDailyServiceOrFamilyMemberName.setError(getString(R.string.name_validation));
                     }
