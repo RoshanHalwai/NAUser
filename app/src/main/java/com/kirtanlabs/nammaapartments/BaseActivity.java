@@ -347,7 +347,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isValidPhone(String phone) {
         boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() == PHONE_NUMBER_MAX_LENGTH;
         return check;
     }
 

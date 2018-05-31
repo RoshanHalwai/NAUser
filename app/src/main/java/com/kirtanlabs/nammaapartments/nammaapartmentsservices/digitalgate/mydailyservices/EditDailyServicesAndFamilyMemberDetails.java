@@ -26,6 +26,7 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 
 
 public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
@@ -182,7 +183,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                         startActivity(myDailyServiceIntent);
                     }
                 } else {
-                    if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber})) {
+                    if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                         if (grantedAccess) {
                             openNotificationDialog();
                         } else if (mobileTextChanged) {

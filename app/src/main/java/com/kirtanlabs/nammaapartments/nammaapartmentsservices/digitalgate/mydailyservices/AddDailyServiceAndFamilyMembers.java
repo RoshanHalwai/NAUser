@@ -36,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
@@ -255,7 +256,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
                     startActivity(intentButtonAdd);
                 } else {
-                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})) {
+                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
+                            && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
                         if (grantedAccess)
                             openNotificationDialog();
                         else {
@@ -455,7 +457,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             public void afterTextChanged(Editable s) {
                 String relation = editFamilyMemberRelation.getText().toString().trim();
                 if (relation.length() == EDITTEXT_MIN_LENGTH) {
-                    editFamilyMemberRelation.setError(getString(R.string.name_validation));
+                    editFamilyMemberRelation.setError(getString(R.string.enter_relation));
                 } else if (isValidPersonName(relation)) {
                     editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
                 }

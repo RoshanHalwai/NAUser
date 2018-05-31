@@ -205,5 +205,6 @@
     <string name="mobile_number_validation">Please Enter Mobile Number</string>
     <string name="name_validation">Please Enter Name</string>
     <string name="accept_alphabets">Accept Alphabets Only.</string>
+    <string name="enter_relation">Please Enter Relation</string>
 
 </resources>
