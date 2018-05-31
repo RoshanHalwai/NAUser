@@ -168,6 +168,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editFourthOTPDigit.requestFocus();
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }

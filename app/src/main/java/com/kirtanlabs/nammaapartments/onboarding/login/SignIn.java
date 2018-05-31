@@ -11,8 +11,6 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
-import java.util.regex.Pattern;
-
 import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 
@@ -72,7 +70,7 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
         if (v.getId() == R.id.buttonLogin) {
             String mobileNumber = editMobileNumber.getText().toString().trim();
             if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
-                editMobileNumber.setError(getString(R.string.sign_in_10digit_validation));
+                editMobileNumber.setError(getString(R.string.number_10digit_validation));
             }
             if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH)) {
                 editMobileNumber.setError(getString(R.string.mobile_number_validation));
@@ -85,4 +83,5 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
             }
         }
     }
+
 }

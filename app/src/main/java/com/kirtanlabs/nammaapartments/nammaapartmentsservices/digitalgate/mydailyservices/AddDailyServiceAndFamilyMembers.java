@@ -54,9 +54,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private Button buttonYes;
     private Button buttonNo;
     private String service_type;
+    private String visitorName;
+    private String mobileNumber;
+    private String familyMemberRelation;
     private AlertDialog imageSelectingOptions;
     private ListView listView;
     private boolean grantedAccess = false;
+    private boolean fieldsFilled;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -152,7 +156,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
         setupViewsForProfilePhoto();
 
-        /*Setting events for edit text*/
+        /*This method gets invoked when user is trying to modify the values on EditTexts.*/
         setEventsForEditText();
     }
 
@@ -285,8 +289,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         if (view.isShown()) {
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             editPickTime.setText(selectedTime);
-            textDescriptionDailyService.setVisibility(View.VISIBLE);
-            buttonAdd.setVisibility(View.VISIBLE);
         }
     }
 
@@ -395,7 +397,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     }
 
     /**
-     * Once user enters edits some text in editText
+     * We are handling events for editTexts name,mobile number and date and time picker editText.
      */
     private void setEventsForEditText() {
         editDailyServiceOrFamilyMemberName.addTextChangedListener(new TextWatcher() {
@@ -411,11 +413,18 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void afterTextChanged(Editable s) {
-                String visitorsName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
-                if (visitorsName.length() == EDITTEXT_MIN_LENGTH) {
-                    editDailyServiceOrFamilyMemberName.setError(getString(R.string.name_validation));
-                } else if (isValidPersonName(visitorsName)) {
+                visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+                String pickTime = editPickTime.getText().toString().trim();
+                String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                if (visitorName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(visitorName)) {
                     editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
+                }
+                if (visitorName.length() > EDITTEXT_MIN_LENGTH) {
+                    if (pickTime.length() > EDITTEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                        textDescriptionDailyService.setVisibility(View.VISIBLE);
+                        buttonAdd.setVisibility(View.VISIBLE);
+                    }
+
                 }
             }
         });
@@ -428,16 +437,54 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                    textDescriptionDailyService.setVisibility(View.GONE);
+                    buttonAdd.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                String pickTime = editPickTime.getText().toString().trim();
+                if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
+                    editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
+                }
+                if (isValidPhone(mobileNumber) && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    if (pickTime.length() > EDITTEXT_MIN_LENGTH) {
+                        textDescriptionDailyService.setVisibility(View.VISIBLE);
+                        buttonAdd.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+        editPickTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                String mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
-                if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH)) {
-                    editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
-                } else if (!isValidPhone(mobileNumber)) {
-                    editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.sign_in_10digit_validation));
+                visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
+                mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
+                fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editPickTime});
+                if (fieldsFilled && visitorName.length() > EDITTEXT_MIN_LENGTH && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    textDescriptionDailyService.setVisibility(View.VISIBLE);
+                    buttonAdd.setVisibility(View.VISIBLE);
+                }
+                if (!fieldsFilled) {
+                    if (visitorName.length() == EDITTEXT_MIN_LENGTH) {
+                        editDailyServiceOrFamilyMemberName.setError(getString(R.string.name_validation));
+                    }
+                    if (mobileNumber.length() == EDITTEXT_MIN_LENGTH) {
+                        editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
+                    }
                 }
             }
         });
@@ -455,13 +502,14 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void afterTextChanged(Editable s) {
-                String relation = editFamilyMemberRelation.getText().toString().trim();
-                if (relation.length() == EDITTEXT_MIN_LENGTH) {
+                familyMemberRelation = editFamilyMemberRelation.getText().toString().trim();
+                if (familyMemberRelation.length() == EDITTEXT_MIN_LENGTH) {
                     editFamilyMemberRelation.setError(getString(R.string.enter_relation));
-                } else if (isValidPersonName(relation)) {
+                } else if (isValidPersonName(familyMemberRelation)) {
                     editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
                 }
             }
         });
     }
+
 }

@@ -48,8 +48,6 @@
     <!--SignIn Activity-->
     <string name="create_an_account">Create an Account</string>
     <string name="login">LOGIN</string>
-    <string name="sign_in_10digit_validation">Please Enter a valid 10 digit mobile number</string>
-    <string name="sign_in_validation">Please Enter Mobile Number</string>
 
     <!--NammaApartmentsHome Activity-->
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
