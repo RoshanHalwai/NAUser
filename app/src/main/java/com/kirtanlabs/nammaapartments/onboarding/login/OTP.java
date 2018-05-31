@@ -31,7 +31,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private TextView textPhoneVerification;
     private Button buttonVerifyOTP;
     private int previousScreenTitle;
-    private boolean allFieldsFilled;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -139,6 +138,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkEditTextFilled();
             }
         });
 
@@ -155,6 +155,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkEditTextFilled();
             }
         });
 
@@ -170,6 +171,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             }
             @Override
             public void afterTextChanged(Editable editable) {
+                checkEditTextFilled();
             }
         });
 
@@ -186,6 +188,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkEditTextFilled();
             }
         });
 
@@ -202,6 +205,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkEditTextFilled();
             }
         });
 
@@ -217,10 +221,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                allFieldsFilled = isAllFieldsFilled(new EditText[]{editFirstOTPDigit, editSecondOTPDigit, editThirdOTPDigit, editFourthOTPDigit, editFifthOTPDigit, editSixthOTPDigit});
-                if (allFieldsFilled) {
-                    buttonVerifyOTP.setVisibility(View.VISIBLE);
-                }
+                checkEditTextFilled();
             }
         });
     }
@@ -247,4 +248,16 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * This method gets invoked to check if all the editTexts are filled and display the proper views.
+     */
+    private void checkEditTextFilled() {
+        boolean allFieldsFilled = isAllFieldsFilled(new EditText[]{editFirstOTPDigit, editSecondOTPDigit, editThirdOTPDigit, editFourthOTPDigit, editFifthOTPDigit, editSixthOTPDigit});
+        if (allFieldsFilled) {
+            buttonVerifyOTP.setVisibility(View.VISIBLE);
+        }
+        if (!allFieldsFilled) {
+            buttonVerifyOTP.setVisibility(View.INVISIBLE);
+        }
+    }
 }
