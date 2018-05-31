@@ -115,6 +115,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         /*Setting events for views*/
         buttonYes.setOnClickListener(this);
         buttonNo.setOnClickListener(this);
+        buttonNotifyGate.setOnClickListener(this);
 
         /*Since we are using same layout for handed things to my guest and handed things to my daily services we need to
          * change some Titles in layout*/
@@ -156,6 +157,14 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
                 buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
                 buttonYes.setTextColor(Color.BLACK);
                 buttonNo.setTextColor(Color.WHITE);
+                break;
+
+            case R.id.buttonNotifyGate:
+                if (isAllFieldsFilled(new EditText[]{editDescription})) {
+                    createNotifyGateDialog();
+                } else {
+                    editDescription.setError(getString(R.string.please_fill_details));
+                }
                 break;
         }
     }
