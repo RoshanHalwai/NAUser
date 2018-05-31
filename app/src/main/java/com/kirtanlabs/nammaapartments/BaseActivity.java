@@ -31,7 +31,9 @@ import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
@@ -345,7 +347,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isValidPhone(String phone) {
         boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= Constants.NUMBER_MAX_LENGTH;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
         return check;
     }
 
@@ -357,7 +359,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isAllFieldsFilled(EditText[] fields) {
         for (EditText currentField : fields) {
-            if (currentField.getText().toString().length() <= Constants.NUMBER_MIN_LENGTH) {
+            if (currentField.getText().toString().length() == EDITTEXT_MIN_LENGTH) {
                 currentField.requestFocus();
                 return false;
             }

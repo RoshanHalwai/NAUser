@@ -34,6 +34,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
@@ -409,8 +410,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             @Override
             public void afterTextChanged(Editable s) {
                 String visitorsName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
-                if (visitorsName.length() <= Constants.NUMBER_MIN_LENGTH) {
-                    editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
+                if (visitorsName.length() == EDITTEXT_MIN_LENGTH) {
+                    editDailyServiceOrFamilyMemberName.setError(getString(R.string.name_validation));
                 } else if (isValidPersonName(visitorsName)) {
                     editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
                 }
@@ -431,7 +432,9 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             @Override
             public void afterTextChanged(Editable s) {
                 String mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
-                if (!isValidPhone(mobileNumber)) {
+                if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH)) {
+                    editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
+                } else if (!isValidPhone(mobileNumber)) {
                     editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.sign_in_10digit_validation));
                 }
             }
@@ -451,8 +454,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             @Override
             public void afterTextChanged(Editable s) {
                 String relation = editFamilyMemberRelation.getText().toString().trim();
-                if (relation.length() <= Constants.NUMBER_MIN_LENGTH) {
-                    editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
+                if (relation.length() == EDITTEXT_MIN_LENGTH) {
+                    editFamilyMemberRelation.setError(getString(R.string.name_validation));
                 } else if (isValidPersonName(relation)) {
                     editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
                 }

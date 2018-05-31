@@ -13,6 +13,9 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.regex.Pattern;
 
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+
 public class SignIn extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
@@ -68,11 +71,11 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonLogin) {
             String mobileNumber = editMobileNumber.getText().toString().trim();
-            if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+            if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
                 editMobileNumber.setError(getString(R.string.sign_in_10digit_validation));
             }
-            if ((mobileNumber.length() <= Constants.NUMBER_MIN_LENGTH)) {
-                editMobileNumber.setError(getString(R.string.sign_in_validation));
+            if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH)) {
+                editMobileNumber.setError(getString(R.string.mobile_number_validation));
             }
             if (isValidPhone(mobileNumber)) {
                 Intent intentOTP = new Intent(SignIn.this, OTP.class);

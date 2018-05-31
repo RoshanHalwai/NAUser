@@ -25,6 +25,8 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
+
 
 public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
@@ -264,8 +266,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             @Override
             public void afterTextChanged(Editable s) {
                 String memberOrServiceName = editMemberAndServiceName.getText().toString().trim();
-                if (memberOrServiceName.length() <= Constants.NUMBER_MIN_LENGTH) {
-                    editMemberAndServiceName.setError(getString(R.string.accept_alphabets));
+                if (memberOrServiceName.length() == EDITTEXT_MIN_LENGTH) {
+                    editMemberAndServiceName.setError(getString(R.string.name_validation));
                 } else if (isValidPersonName(memberOrServiceName)) {
                     editMemberAndServiceName.setError(getString(R.string.accept_alphabets));
                 }
@@ -283,11 +285,13 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String mobile = editMobileNumber.getText().toString().trim();
-                if (isValidPhone(mobile)) {
+                String mobileNumber = editMobileNumber.getText().toString().trim();
+                if (isValidPhone(mobileNumber)) {
                     textDescription.setVisibility(View.VISIBLE);
                     buttonUpdate.setVisibility(View.VISIBLE);
                     mobileTextChanged = true;
+                } else if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH)) {
+                    editMobileNumber.setError(getString(R.string.mobile_number_validation));
                 } else {
                     editMobileNumber.setError(getString(R.string.sign_in_10digit_validation));
                     mobileTextChanged = false;

@@ -36,7 +36,9 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
 public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -322,8 +324,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             @Override
             public void afterTextChanged(Editable s) {
                 String visitorsName = editVisitorName.getText().toString().trim();
-                if (visitorsName.length() <= Constants.NUMBER_MIN_LENGTH) {
-                    editVisitorName.setError(getString(R.string.accept_alphabets));
+                if (visitorsName.length() == EDITTEXT_MIN_LENGTH) {
+                    editVisitorName.setError(getString(R.string.name_validation));
                 } else if (isValidPersonName(visitorsName)) {
                     editVisitorName.setError(getString(R.string.accept_alphabets));
                 }
@@ -343,10 +345,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             @Override
             public void afterTextChanged(Editable s) {
                 mobileNumber = editVisitorMobile.getText().toString().trim();
-                if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
                     editVisitorMobile.setError(getString(R.string.sign_in_10digit_validation));
                 }
-                if (isValidPhone(mobileNumber) && mobileNumber.length() >= Constants.NUMBER_MAX_LENGTH) {
+                if (isValidPhone(mobileNumber) && mobileNumber.length() >= PHONE_NUMBER_MAX_LENGTH) {
                     String dateTime = editPickDateTime.getText().toString().trim();
                     if (dateTime.length() > 0) {
                         textDescription.setVisibility(View.VISIBLE);
@@ -376,11 +378,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 if ((!fieldsFilled)) {
                     String visitorName = editVisitorName.getText().toString().trim();
                     String phoneNumber = editVisitorMobile.getText().toString().trim();
-                    if (visitorName.length() <= Constants.NUMBER_MIN_LENGTH) {
-                        editVisitorName.setError(getString(R.string.inviting_visitors_valid_name));
+                    if (visitorName.length() == EDITTEXT_MIN_LENGTH) {
+                        editVisitorName.setError(getString(R.string.name_validation));
                     }
-                    if (phoneNumber.length() <= Constants.NUMBER_MIN_LENGTH) {
-                        editVisitorMobile.setError(getString(R.string.inviting_visitors_valid_mobile_number));
+                    if (phoneNumber.length() <= PHONE_NUMBER_MAX_LENGTH) {
+                        editVisitorMobile.setError(getString(R.string.number_10digit_validation));
                     }
                 }
             }
