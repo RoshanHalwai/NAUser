@@ -173,17 +173,17 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                 break;
 
             case R.id.buttonUpdate:
-                if (screenTitle == R.string.edit_my_daily_service_details) {
-                    if (mobileTextChanged) {
-                        navigatingToOTPScreen();
+                if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    if (screenTitle == R.string.edit_my_daily_service_details) {
+                        if (mobileTextChanged) {
+                            navigatingToOTPScreen();
+                        } else {
+                            Intent myDailyServiceIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, DailyServicesHome.class);
+                            myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(myDailyServiceIntent);
+                        }
                     } else {
-                        Intent myDailyServiceIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, DailyServicesHome.class);
-                        myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(myDailyServiceIntent);
-                    }
-                } else {
-                    if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                         if (grantedAccess) {
                             openNotificationDialog();
                         } else if (mobileTextChanged) {
@@ -353,7 +353,11 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         alertNotificationDialog.setView(notificationDialog);
 
         // Setting Custom Dialog Buttons
-        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToMySweetHomeScreen());
+        if (mobileTextChanged) {
+            alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
+        } else {
+            alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToMySweetHomeScreen());
+        }
         alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
 
         new Dialog(getApplicationContext());
