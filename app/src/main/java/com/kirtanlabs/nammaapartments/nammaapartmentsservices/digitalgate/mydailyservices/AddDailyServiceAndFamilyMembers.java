@@ -34,7 +34,9 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
@@ -408,11 +410,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
                 String pickTime = editPickTime.getText().toString().trim();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
-                if (visitorName.length() <= Constants.EDITTEXT_MIN_LENGTH || isValidPersonName(visitorName)) {
+                if (visitorName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(visitorName)) {
                     editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
                 }
-                if (visitorName.length() > Constants.EDITTEXT_MIN_LENGTH) {
-                    if (pickTime.length() > Constants.EDITTEXT_MIN_LENGTH && phoneNumber.length() == Constants.NUMBER_MAX_LENGTH) {
+                if (visitorName.length() > EDITTEXT_MIN_LENGTH) {
+                    if (pickTime.length() > EDITTEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                         textDescriptionDailyService.setVisibility(View.VISIBLE);
                         buttonAdd.setVisibility(View.VISIBLE);
                     }
@@ -435,11 +437,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             public void afterTextChanged(Editable s) {
                 mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
                 String pickTime = editPickTime.getText().toString().trim();
-                if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
                     editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
                 }
-                if (isValidPhone(mobileNumber) && mobileNumber.length() == Constants.NUMBER_MAX_LENGTH) {
-                    if (pickTime.length() > Constants.EDITTEXT_MIN_LENGTH) {
+                if (isValidPhone(mobileNumber) && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    if (pickTime.length() > EDITTEXT_MIN_LENGTH) {
                         textDescriptionDailyService.setVisibility(View.VISIBLE);
                         buttonAdd.setVisibility(View.VISIBLE);
                     }
@@ -467,10 +469,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 if (!fieldsFilled) {
                     visitorName = editDailyServiceOrFamilyMemberName.getText().toString().trim();
                     mobileNumber = editDailyServiceOrFamilyMemberMobile.getText().toString().trim();
-                    if (visitorName.length() == Constants.EDITTEXT_MIN_LENGTH) {
+                    if (visitorName.length() == EDITTEXT_MIN_LENGTH) {
                         editDailyServiceOrFamilyMemberName.setError(getString(R.string.name_validation));
                     }
-                    if (mobileNumber.length() < Constants.NUMBER_MAX_LENGTH) {
+                    if (mobileNumber.length() == EDITTEXT_MIN_LENGTH) {
                         editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
                     }
                 }
