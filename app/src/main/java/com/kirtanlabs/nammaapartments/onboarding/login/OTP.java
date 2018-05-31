@@ -168,6 +168,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editFourthOTPDigit.requestFocus();
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
@@ -224,6 +225,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             }
         });
     }
+
     /**
      * We update the Phone Verification text based on the activity calling this class.
      */

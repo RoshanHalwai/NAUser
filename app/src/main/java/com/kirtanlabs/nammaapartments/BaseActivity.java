@@ -327,6 +327,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         check = !Pattern.matches("[a-zA-Z ]+", name);
         return check;
     }
+
     /**
      * This method is invoked to create a cancel dialog.
      */

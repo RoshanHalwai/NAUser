@@ -212,6 +212,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         }
 
     }
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
@@ -394,6 +395,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             }
         });
     }
+
     /**
      * This method is invoked to create an Invitation dialog when user successfully fills all the details.
      */

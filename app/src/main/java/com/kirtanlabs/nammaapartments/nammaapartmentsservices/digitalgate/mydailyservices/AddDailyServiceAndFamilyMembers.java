@@ -49,12 +49,14 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private EditText editPickTime;
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
+    private EditText editFamilyMemberRelation;
     private Button buttonAdd;
     private Button buttonYes;
     private Button buttonNo;
     private String service_type;
     private String visitorName;
     private String mobileNumber;
+    private String familyMemberRelation;
     private AlertDialog imageSelectingOptions;
     private ListView listView;
     private boolean grantedAccess = false;
@@ -101,7 +103,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
         editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
-        EditText editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
+        editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonYes = findViewById(R.id.buttonYes);
@@ -153,6 +155,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
         /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
         setupViewsForProfilePhoto();
+
         /*This method gets invoked when user is trying to modify the values on EditTexts.*/
         setEventsForEditText();
     }
@@ -257,10 +260,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
                     startActivity(intentButtonAdd);
                 } else {
-                    if (grantedAccess)
-                        openNotificationDialog();
-                    else {
-                        navigatingToOTPScreen();
+                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
+                            && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
+                        if (grantedAccess)
+                            openNotificationDialog();
+                        else {
+                            navigatingToOTPScreen();
+                        }
                     }
                 }
                 break;
@@ -422,6 +428,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 }
             }
         });
+
         editDailyServiceOrFamilyMemberMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -430,8 +437,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textDescriptionDailyService.setVisibility(View.GONE);
-                buttonAdd.setVisibility(View.GONE);
+                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                    textDescriptionDailyService.setVisibility(View.GONE);
+                    buttonAdd.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -476,6 +485,28 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     if (mobileNumber.length() == EDITTEXT_MIN_LENGTH) {
                         editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
                     }
+                }
+            }
+        });
+
+        editFamilyMemberRelation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                familyMemberRelation = editFamilyMemberRelation.getText().toString().trim();
+                if (familyMemberRelation.length() == EDITTEXT_MIN_LENGTH) {
+                    editFamilyMemberRelation.setError(getString(R.string.enter_relation));
+                } else if (isValidPersonName(familyMemberRelation)) {
+                    editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
                 }
             }
         });

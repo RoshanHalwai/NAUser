@@ -25,6 +25,9 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+
 
 public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
@@ -180,12 +183,14 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                         startActivity(myDailyServiceIntent);
                     }
                 } else {
-                    if (grantedAccess) {
-                        openNotificationDialog();
-                    } else if (mobileTextChanged) {
-                        navigatingToOTPScreen();
-                    } else {
-                        navigatingToMySweetHomeScreen();
+                    if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                        if (grantedAccess) {
+                            openNotificationDialog();
+                        } else if (mobileTextChanged) {
+                            navigatingToOTPScreen();
+                        } else {
+                            navigatingToMySweetHomeScreen();
+                        }
                     }
                 }
                 break;
@@ -261,6 +266,10 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
 
             @Override
             public void afterTextChanged(Editable s) {
+                String memberOrServiceName = editMemberAndServiceName.getText().toString().trim();
+                if (memberOrServiceName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(memberOrServiceName)) {
+                    editMemberAndServiceName.setError(getString(R.string.accept_alphabets));
+                }
                 if (editMemberAndServiceName.getText().toString().equals(name)) {
                     nameTextChanged = false;
                 }
@@ -275,11 +284,13 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editMobileNumber.length() > 0) {
+                String mobileNumber = editMobileNumber.getText().toString().trim();
+                if (isValidPhone(mobileNumber)) {
                     textDescription.setVisibility(View.VISIBLE);
                     buttonUpdate.setVisibility(View.VISIBLE);
                     mobileTextChanged = true;
-                } else {
+                } else if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH) || mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
+                    editMobileNumber.setError(getString(R.string.number_10digit_validation));
                     mobileTextChanged = false;
                 }
                 makeViewsVisibleOrInvisible();
