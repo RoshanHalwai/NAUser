@@ -329,6 +329,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
+     */
+    public void createNotifyGateDialog() {
+        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setMessage(R.string.notification_message);
+        alertNotifyGateDialog.setTitle("Notification Message");
+        alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
+
+        new Dialog(this);
+        alertNotifyGateDialog.show();
+    }
+
+    /**
      * This method is invoked to create a cancel dialog.
      */
     private void createCancelDialog() {

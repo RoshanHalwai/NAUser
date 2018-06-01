@@ -4,6 +4,8 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,6 +19,8 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.text.DateFormatSymbols;
 import java.util.Locale;
+
+import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
 
 
 /**
@@ -37,9 +41,11 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button12Hr,
             R.id.button16Hr,
             R.id.button24Hr};
-    private EditText editPickDateTime;
+    private EditText editPickDateTime, editCabOrVendorValue;
     private int arrivalType;
     private String selectedDate;
+    private String packageVendorName;
+    private boolean isValidForSelected;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -73,7 +79,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         TextView textCabOrVendorTitle = findViewById(R.id.textCabOrVendorTitle);
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
-        EditText editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
+        editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
         editPickDateTime = findViewById(R.id.editPickDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
@@ -105,6 +111,9 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
          * set text for textCabOrVendorTitle to either Package Vendor Name or Cab Number*/
         textCabOrVendorTitle.setText(getCarOrPackageArrivalTitle());
 
+        /*This method gets invoked when user is trying to modify the values on EditTexts.*/
+        setEventsForEditText();
+
         /*Setting event for views*/
         button1hr.setOnClickListener(this);
         button2hr.setOnClickListener(this);
@@ -116,6 +125,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         button24hr.setOnClickListener(this);
         editPickDateTime.setOnFocusChangeListener(this);
         editPickDateTime.setOnClickListener(this);
+        buttonNotifyGate.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -151,6 +161,13 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.editPickDateTime:
                 pickDate(this, this);
+                break;
+            case R.id.buttonNotifyGate:
+                if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
+                    createNotifyGateDialog();
+                } else if (editCabOrVendorValue.length() == EDITTEXT_MIN_LENGTH) {
+                    editCabOrVendorValue.setError(getString(R.string.please_fill_details));
+                }
                 break;
         }
     }
@@ -197,6 +214,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
 
     /*Method for ValidFor 8 Button clicks*/
     private void selectButton(int id) {
+        isValidForSelected = true;
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
@@ -205,5 +223,36 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
         }
+    }
+
+    /**
+     * We are handling events for editText Cab or Vendor Name.
+     */
+    private void setEventsForEditText() {
+        editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (arrivalType == R.string.expecting_cab_arrival) {
+                    if (editCabOrVendorValue.length() == EDITTEXT_MIN_LENGTH) {
+                        editCabOrVendorValue.setError(getString(R.string.please_fill_details));
+                    }
+                } else {
+                    packageVendorName = editCabOrVendorValue.getText().toString().trim();
+                    if (packageVendorName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(packageVendorName)) {
+                        editCabOrVendorValue.setError(getString(R.string.accept_alphabets));
+                    }
+                }
+            }
+        });
     }
 }
