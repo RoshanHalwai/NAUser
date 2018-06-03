@@ -408,7 +408,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                    textDescriptionDailyService.setVisibility(View.GONE);
+                    buttonAdd.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -419,7 +422,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 if (visitorName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(visitorName)) {
                     editDailyServiceOrFamilyMemberName.setError(getString(R.string.accept_alphabets));
                 }
-                if (visitorName.length() > EDITTEXT_MIN_LENGTH) {
+                if (visitorName.length() > EDITTEXT_MIN_LENGTH && !isValidPersonName(visitorName)) {
+                    editDailyServiceOrFamilyMemberName.setError(null);
                     if (pickTime.length() > EDITTEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                         textDescriptionDailyService.setVisibility(View.VISIBLE);
                         buttonAdd.setVisibility(View.VISIBLE);
@@ -451,6 +455,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     editDailyServiceOrFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
                 }
                 if (isValidPhone(mobileNumber) && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    editDailyServiceOrFamilyMemberMobile.setError(null);
                     if (pickTime.length() > EDITTEXT_MIN_LENGTH) {
                         textDescriptionDailyService.setVisibility(View.VISIBLE);
                         buttonAdd.setVisibility(View.VISIBLE);
