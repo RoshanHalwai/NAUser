@@ -2,19 +2,32 @@ package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
+
+import java.util.concurrent.TimeUnit;
 
 public class OTP extends BaseActivity implements View.OnClickListener {
 
@@ -33,6 +46,22 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private int previousScreenTitle;
 
     /* ------------------------------------------------------------- *
+     * Private Members for Phone Authentication
+     * ------------------------------------------------------------- */
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
+    private PhoneAuthProvider.ForceResendingToken resendToken;
+    private String userMobileNumber;
+    private String phoneVerificationId;
+
+    /* ------------------------------------------------------------- *
+     * Private Members for Firebase
+     * ------------------------------------------------------------- */
+
+    private DatabaseReference userPrivateInfo;
+    private FirebaseAuth fbAuth;
+
+    /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
      * ------------------------------------------------------------- */
 
@@ -49,6 +78,12 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fbAuth = FirebaseAuth.getInstance();
+
+        /*Will generate an OTP to user's mobile number*/
+        userMobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        sendOTP();
 
         /* Since we wouldn't want the users to go back to previous screen,
          * hence hiding the back button from the Title Bar*/
@@ -95,7 +130,8 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         if (v.getId() == R.id.buttonVerifyOTP) {
             switch (previousScreenTitle) {
                 case R.string.login:
-                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+
+                    //startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
                     break;
                 case R.string.add_my_service:
                     Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
@@ -109,6 +145,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intentMySweetHome);
                     break;
+
             }
             finish();
         }
@@ -117,6 +154,74 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
+
+    private void sendOTP() {
+        setUpVerificationCallbacks();
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+91" + userMobileNumber,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                verificationCallbacks);
+    }
+
+    private void setUpVerificationCallbacks() {
+        verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                Toast.makeText(OTP.this, "Verification Success", Toast.LENGTH_LONG).show();
+                if (phoneAuthCredential.getSmsCode() != null) {
+                    char[] smsCode = phoneAuthCredential.getSmsCode().toCharArray();
+                    editFirstOTPDigit.setText(String.valueOf(smsCode[0]));
+                    editSecondOTPDigit.setText(String.valueOf(smsCode[1]));
+                    editThirdOTPDigit.setText(String.valueOf(smsCode[2]));
+                    editFourthOTPDigit.setText(String.valueOf(smsCode[3]));
+                    editFifthOTPDigit.setText(String.valueOf(smsCode[4]));
+                    editSixthOTPDigit.setText(String.valueOf(smsCode[5]));
+                }
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Toast.makeText(OTP.this, "Verification Failed", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                phoneVerificationId = s;
+                resendToken = forceResendingToken;
+            }
+        };
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
+        fbAuth.signInWithCredential(phoneAuthCredential)
+                .addOnCompleteListener(this, (task) -> {
+                    if (task.isSuccessful()) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL);
+                        userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                /* Check if User already exists */
+                                if (dataSnapshot.hasChild(userMobileNumber)) {
+                                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                                }
+                                /* User is Logging in for the first time */
+                                else {
+                                    Toast.makeText(OTP.this, "Record not found", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+    }
 
     private void getPreviousScreenTitle() {
         previousScreenTitle = getIntent().getIntExtra(Constants.SCREEN_TITLE, 0);

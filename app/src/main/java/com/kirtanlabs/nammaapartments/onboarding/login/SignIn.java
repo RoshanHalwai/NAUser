@@ -78,6 +78,7 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
             if (isValidPhone(mobileNumber)) {
                 Intent intentOTP = new Intent(SignIn.this, OTP.class);
                 intentOTP.putExtra(Constants.SCREEN_TITLE, R.string.login);
+                intentOTP.putExtra(Constants.MOBILE_NUMBER, mobileNumber);
                 startActivity(intentOTP);
                 finish();
             }

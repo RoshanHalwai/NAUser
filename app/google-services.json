@@ -8,6 +8,41 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:703896080530:android:de9b59a0ffc6f395",
+        "android_client_info": {
+          "package_name": "com.kirtanlabs.guardapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:703896080530:android:67ab068074f57ad3",
         "android_client_info": {
           "package_name": "com.kirtanlabs.nammaapartments"
@@ -15,12 +50,16 @@
       },
       "oauth_client": [
         {
-          "client_id": "703896080530-f9hi0d6lqcbm05cp9q869fva40mv8e7t.apps.googleusercontent.com",
+          "client_id": "703896080530-fed01aj634dj036rsq511781dog3lfoa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kirtanlabs.nammaapartments",
-            "certificate_hash": "98d08f4c15952f73ae8a367ecb75337c19c5f0b2"
+            "certificate_hash": "105ae319c77151d25227b6f8dd439d32480e2bc0"
           }
+        },
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
@@ -39,6 +78,13 @@
         "appinvite_service": {
           "status": 2,
           "other_platform_oauth_client": [
+            {
+              "client_id": "703896080530-rvec26kakspvjha14e0al4j515ig46tg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vikasnayak.nammaapartments"
+              }
+            },
             {
               "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
               "client_type": 3
