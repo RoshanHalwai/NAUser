@@ -45,9 +45,15 @@ public class Constants {
     public static final int PHONE_NUMBER_MAX_LENGTH = 10;
     public static final int EDITTEXT_MIN_LENGTH = 0;
 
-    /* -------------------------------------------------------------- *
+    /* ------------------------------------------------------------- *
+     * Login/OTP Constants
+     * ------------------------------------------------------------- */
+    public static final String COUNTRY_CODE = "+91";
+    public static final int OTP_TIMER = 60;
+
+    /* ------------------------------------------------------------- *
      * Firebase objects
-     */
+     * ------------------------------------------------------------- */
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_CHILD_PRIVATE = "private";

@@ -1,5 +1,7 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,6 +45,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private EditText editSixthOTPDigit;
     private TextView textPhoneVerification;
     private Button buttonVerifyOTP;
+    private Button buttonResendOTP;
     private int previousScreenTitle;
 
     /* ------------------------------------------------------------- *
@@ -92,6 +95,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         /*Getting Id's for all the views*/
         textPhoneVerification = findViewById(R.id.textPhoneVerification);
         buttonVerifyOTP = findViewById(R.id.buttonVerifyOTP);
+        buttonResendOTP = findViewById(R.id.buttonResendOTP);
         editFirstOTPDigit = findViewById(R.id.editFirstOTPDigit);
         editSecondOTPDigit = findViewById(R.id.editSecondOTPDigit);
         editThirdOTPDigit = findViewById(R.id.editThirdOTPDigit);
@@ -102,18 +106,27 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         /*Setting font for all the views*/
         textPhoneVerification.setTypeface(Constants.setLatoRegularFont(this));
         buttonVerifyOTP.setTypeface(Constants.setLatoLightFont(this));
+        buttonResendOTP.setTypeface(Constants.setLatoLightFont(this));
         editFirstOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editSecondOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editThirdOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editFourthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editFifthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editSixthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
+        buttonResendOTP.setEnabled(false);
+
 
         /*Setting events for OTP edit text*/
         setEventsForEditText();
 
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(this);
+        buttonResendOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resendOTP();
+            }
+        });
 
         /* Since multiple activities make use of this class we get previous
          * screen title and update the views accordingly*/
@@ -130,8 +143,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         if (v.getId() == R.id.buttonVerifyOTP) {
             switch (previousScreenTitle) {
                 case R.string.login:
-
-                    //startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
                     break;
                 case R.string.add_my_service:
                     Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
@@ -149,27 +161,59 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             }
             finish();
         }
+        if (v.getId() == R.id.buttonResendOTP) {
+            switch (previousScreenTitle) {
+                case R.string.resend_otp:
+                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+            }
+
+        }
     }
 
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * This dialog pops up when users who are not registered in Firebase, try to login from the app
+     */
+    private void openAlertDialog() {
+        AlertDialog.Builder alertRecordNotFoundDialog = new AlertDialog.Builder(this);
+        View RecordNotFoundDialog = View.inflate(this, R.layout.record_not_found_dialog, null);
+        alertRecordNotFoundDialog.setView(RecordNotFoundDialog).create();
+
+        new Dialog(getApplicationContext());
+        alertRecordNotFoundDialog.show();
+    }
+
     private void sendOTP() {
         setUpVerificationCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+91" + userMobileNumber,
-                60,
+                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
                 verificationCallbacks);
+    }
+
+    /**
+     * Resend OTP if the user doesn't receive it for the first time
+     */
+    private void resendOTP() {
+        setUpVerificationCallbacks();
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.OTP_TIMER,
+                TimeUnit.SECONDS,
+                this,
+                verificationCallbacks, resendToken);
     }
 
     private void setUpVerificationCallbacks() {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText(OTP.this, "Verification Success", Toast.LENGTH_LONG).show();
+                //TODO: Toast message has been removed because successfully logged in user's are not required to view this Toast message.
                 if (phoneAuthCredential.getSmsCode() != null) {
                     char[] smsCode = phoneAuthCredential.getSmsCode().toCharArray();
                     editFirstOTPDigit.setText(String.valueOf(smsCode[0]));
@@ -180,6 +224,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     editSixthOTPDigit.setText(String.valueOf(smsCode[5]));
                 }
                 signInWithPhoneAuthCredential(phoneAuthCredential);
+                buttonResendOTP.setEnabled(false);
             }
 
             @Override
@@ -191,10 +236,14 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 phoneVerificationId = s;
                 resendToken = forceResendingToken;
+                buttonResendOTP.setEnabled(true);
             }
         };
     }
 
+    /**
+     * Checking if user's mobile number exists in Firebase or not
+     */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
         fbAuth.signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(this, (task) -> {
@@ -210,7 +259,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                                 }
                                 /* User is Logging in for the first time */
                                 else {
-                                    Toast.makeText(OTP.this, "Record not found", Toast.LENGTH_LONG).show();
+                                    openAlertDialog();
                                 }
                             }
 
@@ -362,9 +411,11 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         boolean allFieldsFilled = isAllFieldsFilled(new EditText[]{editFirstOTPDigit, editSecondOTPDigit, editThirdOTPDigit, editFourthOTPDigit, editFifthOTPDigit, editSixthOTPDigit});
         if (allFieldsFilled) {
             buttonVerifyOTP.setVisibility(View.VISIBLE);
+            buttonResendOTP.setVisibility(View.VISIBLE);
         }
         if (!allFieldsFilled) {
             buttonVerifyOTP.setVisibility(View.INVISIBLE);
+            buttonResendOTP.setVisibility(View.VISIBLE);
         }
     }
 }

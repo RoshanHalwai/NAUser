@@ -2,15 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageNotificationService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:contentDescription="@string/image_notification"
+        android:contentDescription="@string/image_description"
         android:src="@drawable/danger" />
 
     <TextView
@@ -19,7 +18,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal"
-        android:text="@string/access_to_notifications"
+        android:text="@string/record_not_found"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size" />
 
