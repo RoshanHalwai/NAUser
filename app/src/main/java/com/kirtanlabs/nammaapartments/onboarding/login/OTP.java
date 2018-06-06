@@ -179,7 +179,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
      */
     private void openAlertDialog() {
         AlertDialog.Builder alertRecordNotFoundDialog = new AlertDialog.Builder(this);
-        View RecordNotFoundDialog = View.inflate(this, R.layout.record_not_found_dialog, null);
+        View RecordNotFoundDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
+        TextView tv = RecordNotFoundDialog.findViewById(R.id.textAlertMessage);
+        tv.setText(R.string.record_not_found);
         alertRecordNotFoundDialog.setView(RecordNotFoundDialog).create();
 
         new Dialog(getApplicationContext());
@@ -213,7 +215,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                //TODO: Toast message has been removed because successfully logged in user's are not required to view this Toast message.
                 if (phoneAuthCredential.getSmsCode() != null) {
                     char[] smsCode = phoneAuthCredential.getSmsCode().toCharArray();
                     editFirstOTPDigit.setText(String.valueOf(smsCode[0]));
@@ -415,7 +416,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         }
         if (!allFieldsFilled) {
             buttonVerifyOTP.setVisibility(View.INVISIBLE);
-            buttonResendOTP.setVisibility(View.VISIBLE);
+            buttonResendOTP.setVisibility(View.INVISIBLE);
         }
     }
 }
