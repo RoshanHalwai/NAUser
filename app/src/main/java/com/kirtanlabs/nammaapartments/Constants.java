@@ -31,6 +31,28 @@ public class Constants {
     public static final String SCREEN_TITLE = "screen_title";
 
     /* ------------------------------------------------------------- *
+     * Validation Keys
+     * ------------------------------------------------------------- */
+
+    public static final int PHONE_NUMBER_MAX_LENGTH = 10;
+    public static final int EDIT_TEXT_EMPTY_LENGTH = 0;
+    public static final String COUNTRY_CODE = "+91";
+
+    /* ------------------------------------------------------------- *
+     * Login/OTP Constants
+     * ------------------------------------------------------------- */
+
+    public static final int OTP_TIMER = 120;
+
+    /* ------------------------------------------------------------- *
+     * Firebase objects
+     * ------------------------------------------------------------- */
+
+    public static final String FIREBASE_CHILD_PRIVATE = "private";
+    public static final String FIREBASE_CHILD_USERS = "users";
+    public static final String FIREBASE_CHILD_ALL = "all";
+
+    /* ------------------------------------------------------------- *
      * Request Code
      * ------------------------------------------------------------- */
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
@@ -38,25 +60,6 @@ public class Constants {
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
-
-    /* ------------------------------------------------------------- *
-     * Validation Keys
-     * ------------------------------------------------------------- */
-    public static final int PHONE_NUMBER_MAX_LENGTH = 10;
-    public static final int EDITTEXT_MIN_LENGTH = 0;
-
-    /* ------------------------------------------------------------- *
-     * Login/OTP Constants
-     * ------------------------------------------------------------- */
-    public static final String COUNTRY_CODE = "+91";
-    public static final int OTP_TIMER = 60;
-
-    /* ------------------------------------------------------------- *
-     * Firebase objects
-     * ------------------------------------------------------------- */
-    public static final String FIREBASE_CHILD_USERS = "users";
-    public static final String FIREBASE_CHILD_ALL = "all";
-    public static final String FIREBASE_CHILD_PRIVATE = "private";
 
     /* ------------------------------------------------------------- *
      * Font Types

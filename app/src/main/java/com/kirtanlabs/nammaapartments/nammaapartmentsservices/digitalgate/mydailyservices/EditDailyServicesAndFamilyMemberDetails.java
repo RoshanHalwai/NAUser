@@ -25,7 +25,7 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.util.Locale;
 
-import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 
 
@@ -267,7 +267,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             @Override
             public void afterTextChanged(Editable s) {
                 String memberOrServiceName = editMemberAndServiceName.getText().toString().trim();
-                if (memberOrServiceName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(memberOrServiceName)) {
+                if (memberOrServiceName.length() == EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(memberOrServiceName)) {
                     editMemberAndServiceName.setError(getString(R.string.accept_alphabets));
                 }
                 if (editMemberAndServiceName.getText().toString().equals(name)) {
@@ -289,7 +289,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                     textDescription.setVisibility(View.VISIBLE);
                     buttonUpdate.setVisibility(View.VISIBLE);
                     mobileTextChanged = true;
-                } else if ((mobileNumber.length() == EDITTEXT_MIN_LENGTH) || mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
+                } else if ((mobileNumber.length() == EDIT_TEXT_EMPTY_LENGTH) || mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
                     editMobileNumber.setError(getString(R.string.number_10digit_validation));
                     mobileTextChanged = false;
                 }
