@@ -1,7 +1,5 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +27,9 @@ import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class OTP extends BaseActivity implements View.OnClickListener {
@@ -37,6 +38,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
+    private int RESEND_OTP_SECONDS;
+    private int RESEND_OTP_MINUTE;
+
     private EditText editFirstOTPDigit;
     private EditText editSecondOTPDigit;
     private EditText editThirdOTPDigit;
@@ -44,18 +48,18 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private EditText editFifthOTPDigit;
     private EditText editSixthOTPDigit;
     private TextView textPhoneVerification;
+    private TextView textResendOTPOrVerificationMessage;
+    private TextView textChangeNumberOrTimer;
     private Button buttonVerifyOTP;
-    private Button buttonResendOTP;
     private int previousScreenTitle;
 
     /* ------------------------------------------------------------- *
      * Private Members for Phone Authentication
      * ------------------------------------------------------------- */
-
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
-    private String userMobileNumber;
     private String phoneVerificationId;
+    private String userMobileNumber;
 
     /* ------------------------------------------------------------- *
      * Private Members for Firebase
@@ -84,9 +88,14 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
         fbAuth = FirebaseAuth.getInstance();
 
-        /*Will generate an OTP to user's mobile number*/
+        /* Generate an OTP to user's mobile number */
         userMobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
         sendOTP();
+
+        /* Start the Resend OTP timer, valid for 120 seconds*/
+        textResendOTPOrVerificationMessage = findViewById(R.id.textResendOTPOrVerificationMessage);
+        textChangeNumberOrTimer = findViewById(R.id.textChangeNumberOrTimer);
+        startResendOTPTimer();
 
         /* Since we wouldn't want the users to go back to previous screen,
          * hence hiding the back button from the Title Bar*/
@@ -95,7 +104,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         /*Getting Id's for all the views*/
         textPhoneVerification = findViewById(R.id.textPhoneVerification);
         buttonVerifyOTP = findViewById(R.id.buttonVerifyOTP);
-        buttonResendOTP = findViewById(R.id.buttonResendOTP);
         editFirstOTPDigit = findViewById(R.id.editFirstOTPDigit);
         editSecondOTPDigit = findViewById(R.id.editSecondOTPDigit);
         editThirdOTPDigit = findViewById(R.id.editThirdOTPDigit);
@@ -105,28 +113,23 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
         /*Setting font for all the views*/
         textPhoneVerification.setTypeface(Constants.setLatoRegularFont(this));
+        textResendOTPOrVerificationMessage.setTypeface(Constants.setLatoRegularFont(this));
+        textChangeNumberOrTimer.setTypeface(Constants.setLatoRegularFont(this));
         buttonVerifyOTP.setTypeface(Constants.setLatoLightFont(this));
-        buttonResendOTP.setTypeface(Constants.setLatoLightFont(this));
         editFirstOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editSecondOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editThirdOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editFourthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editFifthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editSixthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        buttonResendOTP.setEnabled(false);
-
 
         /*Setting events for OTP edit text*/
         setEventsForEditText();
 
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(this);
-        buttonResendOTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resendOTP();
-            }
-        });
+        textResendOTPOrVerificationMessage.setOnClickListener(v -> resendOTP());
+        textChangeNumberOrTimer.setOnClickListener(v -> startActivity(new Intent(this, SignIn.class)));
 
         /* Since multiple activities make use of this class we get previous
          * screen title and update the views accordingly*/
@@ -141,52 +144,46 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonVerifyOTP) {
-            switch (previousScreenTitle) {
-                case R.string.login:
-                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
-                    break;
-                case R.string.add_my_service:
-                    Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
-                    intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intentDailyServiceHome);
-                    break;
-                case R.string.add_family_members_details_screen:
-                    Intent intentMySweetHome = new Intent(OTP.this, MySweetHome.class);
-                    intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intentMySweetHome);
-                    break;
+            boolean allFieldsFilled = isAllFieldsFilled(new EditText[]{
+                    editFirstOTPDigit,
+                    editSecondOTPDigit,
+                    editThirdOTPDigit,
+                    editFourthOTPDigit,
+                    editFifthOTPDigit,
+                    editSixthOTPDigit
+            });
+            if (allFieldsFilled) {
+                switch (previousScreenTitle) {
+                    case R.string.login:
+                        String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
+                                editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
+                                editSixthOTPDigit.getText().toString();
+                        signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
+                        break;
 
-            }
-            finish();
-        }
-        if (v.getId() == R.id.buttonResendOTP) {
-            switch (previousScreenTitle) {
-                case R.string.resend_otp:
-                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
-            }
+                    case R.string.add_my_service:
+                        Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
+                        intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentDailyServiceHome);
+                        finish();
+                        break;
 
+                    case R.string.add_family_members_details_screen:
+                        Intent intentMySweetHome = new Intent(OTP.this, MySweetHome.class);
+                        intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentMySweetHome);
+                        finish();
+                        break;
+                }
+            }
         }
     }
 
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
-
-    /**
-     * This dialog pops up when users who are not registered in Firebase, try to login from the app
-     */
-    private void openAlertDialog() {
-        AlertDialog.Builder alertRecordNotFoundDialog = new AlertDialog.Builder(this);
-        View RecordNotFoundDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
-        TextView tv = RecordNotFoundDialog.findViewById(R.id.textAlertMessage);
-        tv.setText(R.string.record_not_found);
-        alertRecordNotFoundDialog.setView(RecordNotFoundDialog).create();
-
-        new Dialog(getApplicationContext());
-        alertRecordNotFoundDialog.show();
-    }
 
     private void sendOTP() {
         setUpVerificationCallbacks();
@@ -198,23 +195,13 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 verificationCallbacks);
     }
 
-    /**
-     * Resend OTP if the user doesn't receive it for the first time
-     */
-    private void resendOTP() {
-        setUpVerificationCallbacks();
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE + userMobileNumber,
-                Constants.OTP_TIMER,
-                TimeUnit.SECONDS,
-                this,
-                verificationCallbacks, resendToken);
-    }
-
     private void setUpVerificationCallbacks() {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                textResendOTPOrVerificationMessage.setText(R.string.auto_verification_completed);
+                textResendOTPOrVerificationMessage.setEnabled(false);
+                textChangeNumberOrTimer.setVisibility(View.INVISIBLE);
                 if (phoneAuthCredential.getSmsCode() != null) {
                     char[] smsCode = phoneAuthCredential.getSmsCode().toCharArray();
                     editFirstOTPDigit.setText(String.valueOf(smsCode[0]));
@@ -225,19 +212,17 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     editSixthOTPDigit.setText(String.valueOf(smsCode[5]));
                 }
                 signInWithPhoneAuthCredential(phoneAuthCredential);
-                buttonResendOTP.setEnabled(false);
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                Toast.makeText(OTP.this, "Verification Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(OTP.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 phoneVerificationId = s;
                 resendToken = forceResendingToken;
-                buttonResendOTP.setEnabled(true);
             }
         };
     }
@@ -250,18 +235,19 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 .addOnCompleteListener(this, (task) -> {
                     if (task.isSuccessful()) {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL);
+                        userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL).child(userMobileNumber);
                         userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                /* Check if User already exists */
-                                if (dataSnapshot.hasChild(userMobileNumber)) {
+                                /* Check if User mobile number is found in database */
+                                if (dataSnapshot.exists()) {
                                     startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
                                 }
-                                /* User is Logging in for the first time */
+                                /* User record was not found in firebase hence we navigate them to Sign Up page*/
                                 else {
-                                    openAlertDialog();
+                                    startActivity(new Intent(OTP.this, SignUp.class));
                                 }
+                                finish();
                             }
 
                             @Override
@@ -269,8 +255,63 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
                             }
                         });
+                    } else {
+                        textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
                     }
                 });
+    }
+
+    /**
+     * Resend OTP if the user doesn't receive after 120 seconds
+     */
+    private void resendOTP() {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.OTP_TIMER,
+                TimeUnit.SECONDS,
+                this,
+                verificationCallbacks,
+                resendToken);
+        startResendOTPTimer();
+    }
+
+    private void startResendOTPTimer() {
+        textResendOTPOrVerificationMessage.setText(R.string.waiting_for_otp);
+        RESEND_OTP_MINUTE = 1;
+        RESEND_OTP_SECONDS = 59;
+        String timer = timeFormatter(RESEND_OTP_MINUTE) + ":" + timeFormatter(RESEND_OTP_SECONDS);
+        textChangeNumberOrTimer.setText(timer);
+        textChangeNumberOrTimer.setEnabled(false);
+        textResendOTPOrVerificationMessage.setEnabled(false);
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(() -> {
+                    RESEND_OTP_SECONDS -= 1;
+                    String timer = timeFormatter(RESEND_OTP_MINUTE) + ":" + timeFormatter(RESEND_OTP_SECONDS);
+                    textChangeNumberOrTimer.setText(timer);
+                    if (RESEND_OTP_MINUTE == 0 && RESEND_OTP_SECONDS == 0) {
+                        t.cancel();
+
+                        /*User can either change their mobile number or Resend OTP to their mobile number*/
+                        textChangeNumberOrTimer.setText(R.string.change_mobile_number);
+                        textResendOTPOrVerificationMessage.setText(R.string.resend_otp);
+                        textResendOTPOrVerificationMessage.setEnabled(true);
+                        textChangeNumberOrTimer.setEnabled(true);
+                    } else if (RESEND_OTP_SECONDS == 0) {
+                        timer = timeFormatter(RESEND_OTP_MINUTE) + ":" + timeFormatter(RESEND_OTP_SECONDS);
+                        textChangeNumberOrTimer.setText(timer);
+                        RESEND_OTP_SECONDS = 60;
+                        RESEND_OTP_MINUTE = RESEND_OTP_MINUTE - 1;
+                    }
+                });
+            }
+        }, 0, 1000);
+    }
+
+    private String timeFormatter(int time) {
+        return String.format(Locale.ENGLISH, "%02d", time % 60);
     }
 
     private void getPreviousScreenTitle() {
@@ -293,7 +334,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkEditTextFilled();
+
             }
         });
 
@@ -310,7 +351,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkEditTextFilled();
+
             }
         });
 
@@ -327,7 +368,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkEditTextFilled();
+
             }
         });
 
@@ -344,7 +385,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkEditTextFilled();
+
             }
         });
 
@@ -361,7 +402,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkEditTextFilled();
+
             }
         });
 
@@ -373,11 +414,12 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                buttonVerifyOTP.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                checkEditTextFilled();
+
             }
         });
     }
@@ -405,18 +447,4 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    /**
-     * This method gets invoked to check if all the editTexts are filled and display the proper views.
-     */
-    private void checkEditTextFilled() {
-        boolean allFieldsFilled = isAllFieldsFilled(new EditText[]{editFirstOTPDigit, editSecondOTPDigit, editThirdOTPDigit, editFourthOTPDigit, editFifthOTPDigit, editSixthOTPDigit});
-        if (allFieldsFilled) {
-            buttonVerifyOTP.setVisibility(View.VISIBLE);
-            buttonResendOTP.setVisibility(View.VISIBLE);
-        }
-        if (!allFieldsFilled) {
-            buttonVerifyOTP.setVisibility(View.INVISIBLE);
-            buttonResendOTP.setVisibility(View.INVISIBLE);
-        }
-    }
 }

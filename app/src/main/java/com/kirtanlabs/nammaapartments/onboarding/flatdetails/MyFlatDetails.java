@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.onboarding.flatdetails;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
 import java.util.Arrays;
 
@@ -80,6 +82,10 @@ public class MyFlatDetails extends BaseActivity {
         });
         editCity.setOnClickListener(view -> searchCitiesList());
 
+        buttonContinue.setOnClickListener(v -> {
+            startActivity(new Intent(this, NammaApartmentsHome.class));
+            finish();
+        });
     }
 
     private void searchCitiesList() {

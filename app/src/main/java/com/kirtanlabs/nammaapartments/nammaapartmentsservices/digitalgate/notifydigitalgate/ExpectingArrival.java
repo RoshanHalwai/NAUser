@@ -20,7 +20,7 @@ import com.kirtanlabs.nammaapartments.R;
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 
-import static com.kirtanlabs.nammaapartments.Constants.EDITTEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 
 
 /**
@@ -165,7 +165,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             case R.id.buttonNotifyGate:
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
                     createNotifyGateDialog();
-                } else if (editCabOrVendorValue.length() == EDITTEXT_MIN_LENGTH) {
+                } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
                 }
                 break;
@@ -243,12 +243,12 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             @Override
             public void afterTextChanged(Editable s) {
                 if (arrivalType == R.string.expecting_cab_arrival) {
-                    if (editCabOrVendorValue.length() == EDITTEXT_MIN_LENGTH) {
+                    if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                         editCabOrVendorValue.setError(getString(R.string.please_fill_details));
                     }
                 } else {
                     packageVendorName = editCabOrVendorValue.getText().toString().trim();
-                    if (packageVendorName.length() == EDITTEXT_MIN_LENGTH || isValidPersonName(packageVendorName)) {
+                    if (packageVendorName.length() == EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(packageVendorName)) {
                         editCabOrVendorValue.setError(getString(R.string.accept_alphabets));
                     }
                 }

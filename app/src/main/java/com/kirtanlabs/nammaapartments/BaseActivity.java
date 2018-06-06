@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -296,7 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isAllFieldsFilled(EditText[] fields) {
         for (EditText currentField : fields) {
-            if (currentField.getText().toString().length() <= Constants.EDITTEXT_MIN_LENGTH) {
+            if (TextUtils.isEmpty(currentField.getText().toString())) {
                 currentField.requestFocus();
                 return false;
             }
