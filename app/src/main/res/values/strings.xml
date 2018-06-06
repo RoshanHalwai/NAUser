@@ -23,7 +23,10 @@
     code sent to your mobile number.</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="incorrect_otp">You have entered an incorrect OTP</string>
-
+    <string name="record_not_found">Record not found. Please contact your Association.</string>
+    <string name="image_description">Image to indicate that the user does not exist in the database.</string>
+    <string name="resend_otp">Resend OTP</string>
+    
     <!--Flat Details Screen-->
     <string name="my_flat_details">My Flat Details</string>
     <string name="city">CITY</string>

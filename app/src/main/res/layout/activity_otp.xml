@@ -122,4 +122,23 @@
         android:textSize="@dimen/button_default_size"
         android:visibility="invisible" />
 
+    <Button
+        android:id="@+id/buttonResendOTP"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonVerifyOTP"
+        android:layout_marginEnd="@dimen/button_right_margin"
+        android:layout_marginLeft="@dimen/button_left_margin"
+        android:layout_marginRight="@dimen/button_right_margin"
+        android:layout_marginStart="@dimen/button_left_margin"
+        android:background="@android:color/black"
+        android:layout_marginTop="@dimen/button_top_margin"
+        android:text="@string/resend_otp"
+        android:textAllCaps="true"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size"
+        android:visibility="invisible" />
+
+
 </RelativeLayout>
