@@ -134,7 +134,7 @@
         android:layout_marginStart="@dimen/button_left_margin"
         android:background="@android:color/black"
         android:layout_marginTop="@dimen/button_top_margin"
-        android:text="RESEND OTP"
+        android:text="@string/resend_otp"
         android:textAllCaps="true"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size"
