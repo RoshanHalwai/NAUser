@@ -3,7 +3,6 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invit
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,6 +23,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
@@ -36,7 +39,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_MIN_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -207,7 +210,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonInvite:
-                createInviteDialog();
+                storeVisitorDetailsInFirebase();
                 break;
         }
 
@@ -318,8 +321,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textDescription.setVisibility(View.GONE);
-                buttonInvite.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -327,12 +329,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 String visitorsName = editVisitorName.getText().toString().trim();
                 String phoneNumber = editVisitorMobile.getText().toString().trim();
                 String dateTime = editPickDateTime.getText().toString().trim();
-                if (visitorsName.length() == Constants.EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(visitorsName)) {
+                if (visitorsName.length() == Constants.EDIT_TEXT_MIN_LENGTH || isValidPersonName(visitorsName)) {
                     editVisitorName.setError(getString(R.string.accept_alphabets));
                 }
-                if (visitorsName.length() > EDIT_TEXT_EMPTY_LENGTH && !isValidPersonName(visitorsName)) {
-                    editVisitorName.setError(null);
-                    if (dateTime.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                if (visitorsName.length() > EDIT_TEXT_MIN_LENGTH) {
+                    if (dateTime.length() > EDIT_TEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                         textDescription.setVisibility(View.VISIBLE);
                         buttonInvite.setVisibility(View.VISIBLE);
                     }
@@ -358,9 +359,9 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     editVisitorMobile.setError(getString(R.string.number_10digit_validation));
                 }
                 if (isValidPhone(mobileNumber) && mobileNumber.length() >= PHONE_NUMBER_MAX_LENGTH) {
-                    editVisitorMobile.setError(null);
+                    //editVisitorMobile.setError(null);
                     String dateTime = editPickDateTime.getText().toString().trim();
-                    if (dateTime.length() > EDIT_TEXT_EMPTY_LENGTH) {
+                    if (dateTime.length() > EDIT_TEXT_MIN_LENGTH) {
                         textDescription.setVisibility(View.VISIBLE);
                         buttonInvite.setVisibility(View.VISIBLE);
                     }
@@ -383,15 +384,15 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 String visitorName = editVisitorName.getText().toString().trim();
                 String phoneNumber = editVisitorMobile.getText().toString().trim();
                 boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editVisitorName, editVisitorMobile, editPickDateTime});
-                if (fieldsFilled && visitorName.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                if (fieldsFilled && visitorName.length() > EDIT_TEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     textDescription.setVisibility(View.VISIBLE);
                     buttonInvite.setVisibility(View.VISIBLE);
                 }
                 if ((!fieldsFilled)) {
-                    if (visitorName.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                    if (visitorName.length() == EDIT_TEXT_MIN_LENGTH) {
                         editVisitorName.setError(getString(R.string.name_validation));
                     }
-                    if (phoneNumber.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                    if (phoneNumber.length() == EDIT_TEXT_MIN_LENGTH) {
                         editVisitorMobile.setError(getString(R.string.mobile_number_validation));
                     }
                 }
@@ -406,11 +407,49 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         AlertDialog.Builder alertInvitationDialog = new AlertDialog.Builder(this);
         alertInvitationDialog.setMessage(R.string.invitation_message);
         alertInvitationDialog.setTitle("Invitation Message");
-        alertInvitationDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
+        alertInvitationDialog.setPositiveButton("Ok", (dialog, which) -> dialog.dismiss());
+        alertInvitationDialog.create().show();
+    }
 
-        new Dialog(this);
-        alertInvitationDialog.show();
+    /**
+     * Stores Visitor's record in Firebase
+     */
+    private void storeVisitorDetailsInFirebase() {
+        //Map Mobile number with visitor's UID
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference preApprovedVisitorsMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_VISITORS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
+        String visitorUID = preApprovedVisitorsMobileNumberReference.push().getKey();
+        preApprovedVisitorsMobileNumberReference.child(mobileNumber).child(visitorUID).setValue(true);
+
+        //Store Visitor's UID under Users->myVisitors Child
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String inviterUID = firebaseUser.getUid();
+            DatabaseReference myVisitorsReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(inviterUID)
+                    .child(Constants.FIREBASE_CHILD_MYVISITORS);
+            myVisitorsReference.child(visitorUID).setValue(true);
+
+            //Add Visitor record under visitors->private->preApprovedVisitors
+            DatabaseReference preApprovedVisitorsReference = database
+                    .getReference(Constants.FIREBASE_CHILD_VISITORS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS);
+            String visitorName = editVisitorName.getText().toString();
+            String visitorMobile = editVisitorMobile.getText().toString();
+            String visitorDateTime = editPickDateTime.getText().toString();
+            NammaApartmentVisitor nammaApartmentVisitor = new NammaApartmentVisitor(visitorUID,
+                    visitorName, visitorMobile, visitorDateTime, Constants.NOT_ENTERED, inviterUID);
+            preApprovedVisitorsReference.child(visitorUID).setValue(nammaApartmentVisitor);
+
+            //Notify users that they have successfully invited their visitor
+            createInviteDialog();
+        }
     }
 
 }
-
