@@ -36,6 +36,7 @@ public class Constants {
 
     public static final int PHONE_NUMBER_MAX_LENGTH = 10;
     public static final int EDIT_TEXT_EMPTY_LENGTH = 0;
+    public static final int EDIT_TEXT_MIN_LENGTH = 0;
     public static final String COUNTRY_CODE = "+91";
 
     /* ------------------------------------------------------------- *
@@ -51,6 +52,11 @@ public class Constants {
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_ALL = "all";
+    public static final String FIREBASE_CHILD_VISITORS = "visitors";
+    public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
+    public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
+    public static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
+    public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
      * Request Code
