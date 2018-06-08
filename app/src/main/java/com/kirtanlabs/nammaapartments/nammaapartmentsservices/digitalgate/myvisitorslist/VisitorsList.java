@@ -4,10 +4,25 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class VisitorsList extends BaseActivity {
+
+    private List<NammaApartmentVisitor> nammaApartmentVisitorList;
+    private VisitorsListAdapter adapter;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -30,16 +45,63 @@ public class VisitorsList extends BaseActivity {
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        nammaApartmentVisitorList = new ArrayList<>();
+
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Creating recycler view adapter
-        VisitorsListAdapter adapter = new VisitorsListAdapter(this);
+        adapter = new VisitorsListAdapter(nammaApartmentVisitorList, this);
 
         //Setting adapter to recycler view
         recyclerView.setAdapter(adapter);
+
+        //This method gets invoked whenever user is trying to see all the visitors under MyVisitors section.
+        retrieveVisitorsDetailsFromFirebase();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private void retrieveVisitorsDetailsFromFirebase() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myVisitorsReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .child(Constants.FIREBASE_CHILD_MYVISITORS);
+        myVisitorsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
+                    DatabaseReference preApprovedVisitorReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_VISITORS)
+                            .child(Constants.FIREBASE_CHILD_PRIVATE)
+                            .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                            .child(visitorsSnapshot.getKey());
+                    preApprovedVisitorReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
+                            nammaApartmentVisitorList.add(nammaApartmentVisitor);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }
