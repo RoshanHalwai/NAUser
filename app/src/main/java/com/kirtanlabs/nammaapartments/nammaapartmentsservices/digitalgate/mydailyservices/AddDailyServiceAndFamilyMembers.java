@@ -22,6 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
@@ -259,6 +263,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
                     intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
                     startActivity(intentButtonAdd);
+                    storeCookDetails();
                 } else {
                     if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
                             && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
@@ -394,6 +399,45 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private void onFailedUpload() {
         circleImageView.setVisibility(View.INVISIBLE);
         imageSelectingOptions.cancel();
+    }
+
+    /**
+     * This method gets invoked when user adds his 'My Daily Services' record. Data gets stored in Firebase.
+     */
+    private void storeCookDetails() {
+        //Map cook's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference cooksMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_COOK)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String cookUID = cooksMobileNumberReference.push().getKey();
+        cooksMobileNumberReference.child(mobileNumber).setValue(cookUID);
+
+        //Store cook's details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference myCooksReference = database
+                    .getReference(Constants.FIREBASE_CHILD_COOK)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String cookName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String cookMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String cookPhoto = "";
+            boolean providedThings = false;
+            int rating = 3;
+            NammaApartmentCook nammaApartmentCook = new NammaApartmentCook(cookName,
+                    cookMobile, cookPhoto, providedThings, rating);
+            myCooksReference.child(cookUID).setValue(nammaApartmentCook);
+
+            //Map cook's UID and Phone Number in users->private->userUID->myDailyServices->cook
+            DatabaseReference cookUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MY_DAILY_SERVICES)
+                    .child(Constants.FIREBASE_COOK);
+            cookUserReference.child(cookUID).setValue(true);
+        }
     }
 
     /**
