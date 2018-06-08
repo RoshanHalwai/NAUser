@@ -11,7 +11,7 @@ class NammaApartmentVisitor {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private String UID;
+    private String uid;
     private String fullName;
     private String mobileNumber;
     private String dateAndTimeOfVisit;
@@ -25,8 +25,8 @@ class NammaApartmentVisitor {
     public NammaApartmentVisitor() {
     }
 
-    public NammaApartmentVisitor(String UID, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
-        this.UID = UID;
+    public NammaApartmentVisitor(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
+        this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
         this.dateAndTimeOfVisit = dateAndTimeOfVisit;
@@ -38,8 +38,8 @@ class NammaApartmentVisitor {
      * Getters
      * ------------------------------------------------------------- */
 
-    public String getUID() {
-        return UID;
+    public String getUid() {
+        return uid;
     }
 
     public String getFullName() {
