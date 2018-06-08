@@ -50,6 +50,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "703896080530-vuebuiood3mri4qd1mvtc33hgsjhvqm4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartments",
+            "certificate_hash": "35352bfd108cf6b8a973b1a29179ac3335c7c067"
+          }
+        },
+        {
           "client_id": "703896080530-fed01aj634dj036rsq511781dog3lfoa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
