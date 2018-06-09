@@ -45,6 +45,12 @@ public class SignUp extends BaseActivity {
         buttonSignUp.setTypeface(Constants.setLatoLightFont(this));
 
         /*Setting event for  button*/
-        buttonSignUp.setOnClickListener(view -> startActivity(new Intent(this, MyFlatDetails.class)));
+        buttonSignUp.setOnClickListener(view -> {
+            Intent intent = new Intent(this, MyFlatDetails.class);
+            intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
+            intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
+            intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
+            startActivity(intent);
+        });
     }
 }

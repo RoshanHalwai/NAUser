@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +14,54 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/2/2018
  */
 
-public class MyFlatDetails extends BaseActivity {
+public class MyFlatDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
+    Dialog dialog;
+    private List<String> itemsInList = new ArrayList<>();
     private ListView listView;
     private ArrayAdapter<String> adapter;
 
     private EditText editCity;
+    private EditText editSociety;
+    private EditText editApartment;
+    private EditText editFlat;
+    private RadioButton radioButtonOwner;
+    private RadioButton radioButtonTenant;
+
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Methods
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -56,9 +85,11 @@ public class MyFlatDetails extends BaseActivity {
         TextView textResidentType = findViewById(R.id.textResidentType);
         TextView textVerificationMessage = findViewById(R.id.textVerificationMessage);
         editCity = findViewById(R.id.editCity);
-        EditText editSociety = findViewById(R.id.editSociety);
-        EditText editApartment = findViewById(R.id.editApartment);
-        EditText editFlat = findViewById(R.id.editFlat);
+        editSociety = findViewById(R.id.editSociety);
+        editApartment = findViewById(R.id.editApartment);
+        editFlat = findViewById(R.id.editFlat);
+        radioButtonOwner = findViewById(R.id.radioButtonOwner);
+        radioButtonTenant = findViewById(R.id.radioButtonTenant);
         Button buttonContinue = findViewById(R.id.buttonContinue);
 
         /*Setting font for all the views*/
@@ -74,36 +105,119 @@ public class MyFlatDetails extends BaseActivity {
         editFlat.setTypeface(Constants.setLatoRegularFont(this));
         buttonContinue.setTypeface(Constants.setLatoLightFont(this));
 
-        /*Attaching listeners to EditText*/
-        editCity.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                searchCitiesList();
-            }
-        });
-        editCity.setOnClickListener(view -> searchCitiesList());
+        /*Allow users to search for City, Society, Apartment and Flat*/
+        initializeListWithSearchView();
 
-        buttonContinue.setOnClickListener(v -> {
-            startActivity(new Intent(this, NammaApartmentsHome.class));
-            finish();
-        });
+        /*Show only City during start of activity*/
+        hideViews(R.id.editCity);
+
+        /*We don't want the keyboard to be displayed when user clicks edit views*/
+        editCity.setInputType(InputType.TYPE_NULL);
+        editSociety.setInputType(InputType.TYPE_NULL);
+        editApartment.setInputType(InputType.TYPE_NULL);
+        editFlat.setInputType(InputType.TYPE_NULL);
+
+        /*Attaching listeners to Views*/
+        editCity.setOnFocusChangeListener(this);
+        editSociety.setOnFocusChangeListener(this);
+        editApartment.setOnFocusChangeListener(this);
+        editFlat.setOnFocusChangeListener(this);
+
+        editCity.setOnClickListener(this);
+        editSociety.setOnClickListener(this);
+        editApartment.setOnClickListener(this);
+        editFlat.setOnClickListener(this);
+        radioButtonOwner.setOnClickListener(this);
+        radioButtonTenant.setOnClickListener(this);
+        buttonContinue.setOnClickListener(this);
     }
 
-    private void searchCitiesList() {
-        final Dialog dialog = new Dialog(MyFlatDetails.this);
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick and OnFocusChange Listeners
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.editCity:
+                searchItemInList(R.id.editCity);
+                break;
+            case R.id.editSociety:
+                searchItemInList(R.id.editSociety);
+                break;
+            case R.id.editApartment:
+                searchItemInList(R.id.editApartment);
+                break;
+            case R.id.editFlat:
+                searchItemInList(R.id.editFlat);
+                break;
+            case R.id.radioButtonOwner:
+            case R.id.radioButtonTenant:
+                showViews(R.id.radioResidentType);
+                break;
+            case R.id.buttonContinue:
+                writeDataToFirebase();
+                startActivity(new Intent(this, NammaApartmentsHome.class));
+                finish();
+        }
+    }
+
+    /**
+     * Store all user data to firebase
+     */
+    private void writeDataToFirebase() {
+        /*Create an instance of NammaApartmentUser class*/
+        String apartmentName = editApartment.getText().toString();
+        String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
+        String flatNumber = editFlat.getText().toString();
+        String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
+        String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        String societyName = editSociety.getText().toString();
+        String tenantType = radioButtonTenant.isChecked()
+                ? radioButtonTenant.getText().toString()
+                : radioButtonOwner.getText().toString();
+        NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
+                flatNumber, fullName, mobileNumber, societyName, tenantType);
+
+        /*Store this instance to Global class for future use*/
+        ((NammaApartmentsGlobal) getApplicationContext())
+                .setNammaApartmentUser(nammaApartmentUser);
+
+        /*Mapping Mobile Number to UID in firebase under users->all*/
+        String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+                .child(Constants.FIREBASE_CHILD_ALL)
+                .child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+                .setValue(userUID);
+
+        /*Storing user details in firebase under users->private->uid*/
+        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(userUID).setValue(nammaApartmentUser);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            onClick(v);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private void initializeListWithSearchView() {
+        dialog = new Dialog(MyFlatDetails.this);
         dialog.setContentView(R.layout.cities_listview);
-        listView = dialog.findViewById(R.id.list);
+
         EditText inputSearch = dialog.findViewById(R.id.inputSearch);
-        inputSearch.setTypeface(Constants.setLatoBoldFont(MyFlatDetails.this));
-
-        String[] values = new String[]{"Delhi", "Bengaluru", "Chennai", "Lucknow", "Goa", "Pune",
-                "Agra", "Dehradun", "Hyderabad", "Gurgaon", "Kerala", "Mumbai", "Gujarat"};
-        Arrays.sort(values);
-
-        dialog.show();
+        listView = dialog.findViewById(R.id.list);
+        inputSearch.setTypeface(Constants.setLatoItalicFont(MyFlatDetails.this));
 
         /*Setting font for all the items in the list view*/
         adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values) {
+                android.R.layout.simple_list_item_1, android.R.id.text1, itemsInList) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -118,16 +232,16 @@ public class MyFlatDetails extends BaseActivity {
         /*Attaching listeners to ListView*/
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String itemValue = (String) listView.getItemAtPosition(position);
-            editCity.setText(itemValue);
+            int viewId = Objects.requireNonNull(getCurrentFocus()).getId();
+            showViews(viewId);
             dialog.cancel();
+            ((EditText) findViewById(viewId)).setText(itemValue);
         });
 
         /*Attaching listeners to Search Field*/
         inputSearch.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user search for the Text
                 MyFlatDetails.this.adapter.getFilter().filter(cs);
             }
 
@@ -140,7 +254,139 @@ public class MyFlatDetails extends BaseActivity {
             public void afterTextChanged(Editable arg0) {
             }
         });
+    }
 
+    /**
+     * Hides unwanted views and updates list
+     *
+     * @param viewId of edit text views
+     */
+    private void searchItemInList(int viewId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        itemsInList.clear();
+        switch (viewId) {
+            case R.id.editCity:
+                hideViews(R.id.editCity);
+                updateItemsInList(database.getReference("clients")
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child("cities"));
+                break;
+            case R.id.editSociety:
+                hideViews(R.id.editSociety);
+                updateItemsInList(database.getReference("clients")
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child("cities")
+                        .child(editCity.getText().toString())
+                        .child("Societies"));
+                break;
+            case R.id.editApartment:
+                hideViews(R.id.editApartment);
+                updateItemsInList(database.getReference("clients")
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child("cities")
+                        .child(editCity.getText().toString())
+                        .child("Societies")
+                        .child(editSociety.getText().toString())
+                        .child("Apartments"));
+                break;
+            case R.id.editFlat:
+                hideViews(R.id.editFlat);
+                updateItemsInList(database.getReference("clients")
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child("cities")
+                        .child(editCity.getText().toString())
+                        .child("Societies")
+                        .child(editSociety.getText().toString())
+                        .child("Apartments")
+                        .child(editApartment.getText().toString())
+                        .child("Flats"));
+                break;
+        }
+    }
+
+    /**
+     * Updates the list by getting values from firebase and shows it to user
+     *
+     * @param databaseReference for getting values from firebase
+     */
+    private void updateItemsInList(DatabaseReference databaseReference) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot values : dataSnapshot.getChildren()) {
+                    itemsInList.add(values.getKey());
+                    adapter.notifyDataSetChanged();
+                }
+                Collections.sort(itemsInList);
+                dialog.show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * Hides view which are not required
+     *
+     * @param viewId from which other views need to be hidden
+     */
+    private void hideViews(int viewId) {
+        switch (viewId) {
+            case R.id.editCity:
+            case R.id.textSociety:
+                findViewById(R.id.textSociety).setVisibility(View.INVISIBLE);
+                findViewById(R.id.editSociety).setVisibility(View.INVISIBLE);
+            case R.id.editSociety:
+                findViewById(R.id.textApartment).setVisibility(View.INVISIBLE);
+                findViewById(R.id.editApartment).setVisibility(View.INVISIBLE);
+            case R.id.editApartment:
+                findViewById(R.id.textFlat).setVisibility(View.INVISIBLE);
+                findViewById(R.id.editFlat).setVisibility(View.INVISIBLE);
+            case R.id.editFlat:
+                findViewById(R.id.textResidentType).setVisibility(View.INVISIBLE);
+                findViewById(R.id.radioResidentType).setVisibility(View.INVISIBLE);
+            case R.id.radioResidentType:
+                findViewById(R.id.textVerificationMessage).setVisibility(View.INVISIBLE);
+                findViewById(R.id.buttonContinue).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Shows view which are  required
+     *
+     * @param viewId from which other views need to be shown
+     */
+    private void showViews(int viewId) {
+        switch (viewId) {
+            case R.id.editCity:
+                findViewById(R.id.textSociety).setVisibility(View.VISIBLE);
+                findViewById(R.id.editSociety).setVisibility(View.VISIBLE);
+                ((EditText) findViewById(R.id.editSociety)).getText().clear();
+                break;
+            case R.id.editSociety:
+                findViewById(R.id.textApartment).setVisibility(View.VISIBLE);
+                findViewById(R.id.editApartment).setVisibility(View.VISIBLE);
+                ((EditText) findViewById(R.id.editApartment)).getText().clear();
+                break;
+            case R.id.editApartment:
+                findViewById(R.id.textFlat).setVisibility(View.VISIBLE);
+                findViewById(R.id.editFlat).setVisibility(View.VISIBLE);
+                ((EditText) findViewById(R.id.editFlat)).getText().clear();
+                break;
+            case R.id.editFlat:
+                findViewById(R.id.textResidentType).setVisibility(View.VISIBLE);
+                findViewById(R.id.radioResidentType).setVisibility(View.VISIBLE);
+                ((RadioButton) findViewById(R.id.radioButtonOwner)).setChecked(false);
+                ((RadioButton) findViewById(R.id.radioButtonTenant)).setChecked(false);
+                break;
+            case R.id.radioResidentType:
+                findViewById(R.id.textVerificationMessage).setVisibility(View.VISIBLE);
+                findViewById(R.id.buttonContinue).setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
 }
