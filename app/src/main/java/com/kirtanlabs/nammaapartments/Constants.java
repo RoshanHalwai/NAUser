@@ -29,6 +29,8 @@ public class Constants {
     public static final String MOBILE_NUMBER = "mobile_number";
     public static final String SERVICE_TYPE = "service_type";
     public static final String SCREEN_TITLE = "screen_title";
+    public static final String FULL_NAME = "full_name";
+    public static final String EMAIL_ID = "email_id";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -67,6 +69,7 @@ public class Constants {
     /* ------------------------------------------------------------- *
      * Request Code
      * ------------------------------------------------------------- */
+
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;

@@ -56,6 +56,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Members for Phone Authentication
      * ------------------------------------------------------------- */
+
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
     private String phoneVerificationId;
@@ -245,13 +246,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                                 }
                                 /* User record was not found in firebase hence we navigate them to Sign Up page*/
                                 else {
-                                    //TODO: We should store the user record only after the user is done with the sign up process
-                                    //TODO: Remove this and place it in FlatDetails.class
-                                    database.getReference(Constants.FIREBASE_CHILD_USERS)
-                                            .child(Constants.FIREBASE_CHILD_ALL)
-                                            .child(userMobileNumber)
-                                            .setValue(fbAuth.getCurrentUser().getUid());
-                                    startActivity(new Intent(OTP.this, SignUp.class));
+                                    Intent intent = new Intent(OTP.this, SignUp.class);
+                                    intent.putExtra(Constants.MOBILE_NUMBER, userMobileNumber);
+                                    startActivity(intent);
                                 }
                                 finish();
                             }
