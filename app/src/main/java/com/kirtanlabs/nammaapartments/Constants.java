@@ -59,8 +59,15 @@ public class Constants {
     public static final String NOT_ENTERED = "Not Entered";
     public static final String FIREBASE_CHILD_COOK = "cooks";
     public static final String FIREBASE_CHILD_PUBLIC = "public";
-    public static final String FIREBASE_CHILD_MY_DAILY_SERVICES = "myDailyServices";
+    public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
     public static final String FIREBASE_COOK = "cook";
+    public static final String FIREBASE_CHILD_MAID = "maids";
+    public static final String FIREBASE_CHILD_CLEANER = "carBikeCleaning";
+    public static final String FIREBASE_CHILD_DAYCARE = "childDayCare";
+    public static final String FIREBASE_CHILD_DAILYNEWSPAPER = "dailyNewspaper";
+    public static final String FIREBASE_CHILD_MILKMAN = "milkman";
+    public static final String FIREBASE_CHILD_LAUNDRY = "laundry";
+    public static final String FIREBASE_CHILD_DRIVER = "driver";
     public static final int FIREBASE_RATING = 3;
 
     /* ------------------------------------------------------------- *

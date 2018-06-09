@@ -75,7 +75,7 @@ public class VisitorsList extends BaseActivity {
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .child(Constants.FIREBASE_CHILD_MYVISITORS);
-        myVisitorsReference.addValueEventListener(new ValueEventListener() {
+        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
