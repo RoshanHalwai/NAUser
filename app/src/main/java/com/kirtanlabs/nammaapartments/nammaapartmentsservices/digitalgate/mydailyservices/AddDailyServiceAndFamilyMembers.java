@@ -258,12 +258,37 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 pickTime(this, this);
                 break;
             case R.id.buttonAdd:
+                //Stores data in Firebase for different modules of 'My Daily Services'
                 if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
                     Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
                     intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
+                    service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
                     intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
                     startActivity(intentButtonAdd);
-                    storeCookDetails();
+                    if (service_type.equals("Cook")) {
+                        storeCookDetails();
+                    }
+                    if (service_type.equals("Maid")) {
+                        storeMaidDetails();
+                    }
+                    if (service_type.equals("Car/Bike Cleaning")) {
+                        storeCarBikeCleanerDetails();
+                    }
+                    if (service_type.equals("Child Day Care")) {
+                        storeChildDayCareDetails();
+                    }
+                    if (service_type.equals("Daily NewsPaper")) {
+                        storeDailyNewspaperDetails();
+                    }
+                    if (service_type.equals("Milk Man")) {
+                        storeMilkmanDetails();
+                    }
+                    if (service_type.equals("Laundry")) {
+                        storeLaundryDetails();
+                    }
+                    if (service_type.equals("Driver")) {
+                        storeDriverDetails();
+                    }
                 } else {
                     if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
                             && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
@@ -402,7 +427,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     }
 
     /**
-     * This method gets invoked when user adds his 'My Daily Services' record. Data gets stored in Firebase.
+     * This method gets invoked when user adds his cook's details 'My Daily Services'. Data gets stored in Firebase.
      */
     private void storeCookDetails() {
         //Map cook's mobile number and uid
@@ -423,10 +448,9 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             String cookName = editDailyServiceOrFamilyMemberName.getText().toString();
             String cookMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
             String cookPhoto = "";
-            boolean providedThings = false;
-            int rating = 3;
-            NammaApartmentCook nammaApartmentCook = new NammaApartmentCook(cookName,
-                    cookMobile, cookPhoto, providedThings, rating);
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentCook = new NammaApartmentDailyServices(cookName,
+                    cookMobile, cookPhoto, false, rating);
             myCooksReference.child(cookUID).setValue(nammaApartmentCook);
 
             //Map cook's UID and Phone Number in users->private->userUID->myDailyServices->cook
@@ -437,6 +461,272 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
                     .child(Constants.FIREBASE_MYCOOK);
             cookUserReference.child(cookUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds his maid's details 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeMaidDetails() {
+        //Map Maid's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference maidsMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_MAIDS)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String maidUID = maidsMobileNumberReference.push().getKey();
+        maidsMobileNumberReference.child(mobileNumber).setValue(maidUID);
+
+        //Store Maid's details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference myMaidsReference = database
+                    .getReference(Constants.FIREBASE_CHILD_MAIDS)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String maidName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String maidMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String maidPhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentMaid = new NammaApartmentDailyServices(maidName,
+                    maidMobile, maidPhoto, false, rating);
+            myMaidsReference.child(maidUID).setValue(nammaApartmentMaid);
+
+            //Map Maid's UID and Phone Number in users->private->userUID->myDailyServices->maid
+            DatabaseReference cookUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYMAID);
+            cookUserReference.child(maidUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds car/bike cleaner details in 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeCarBikeCleanerDetails() {
+        //Map Car/Bike cleaner's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference cleanerMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_CLEANERS)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String cleanerUID = cleanerMobileNumberReference.push().getKey();
+        cleanerMobileNumberReference.child(mobileNumber).setValue(cleanerUID);
+
+        //Store Car/Bike cleaner's details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference myCleanerReference = database
+                    .getReference(Constants.FIREBASE_CHILD_CLEANERS)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String cleanerName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String cleanerMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String cleanerPhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentCleaner = new NammaApartmentDailyServices(cleanerName,
+                    cleanerMobile, cleanerPhoto, false, rating);
+            myCleanerReference.child(cleanerUID).setValue(nammaApartmentCleaner);
+
+            //Map Car/Bike cleaner's UID and Phone Number in users->private->userUID->myDailyServices->carBikeCleaner
+            DatabaseReference cleanerUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_CHILD_MYCLEANER);
+            cleanerUserReference.child(cleanerUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds Child Day Care details in 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeChildDayCareDetails() {
+        //Map Child Day Care mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference childDayCareMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_CHILDDAYCARES)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String childDayCareUID = childDayCareMobileNumberReference.push().getKey();
+        childDayCareMobileNumberReference.child(mobileNumber).setValue(childDayCareUID);
+
+        //Store Child Day Care details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference myChildDayCareReference = database
+                    .getReference(Constants.FIREBASE_CHILD_CHILDDAYCARES)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String childDayCareName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String childDayCareMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String childDayCarePhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentChildDayCare = new NammaApartmentDailyServices(childDayCareName,
+                    childDayCareMobile, childDayCarePhoto, false, rating);
+            myChildDayCareReference.child(childDayCareUID).setValue(nammaApartmentChildDayCare);
+
+            //Map Child Day Care UID and Phone Number in users->private->userUID->myDailyServices->childDayCare
+            DatabaseReference childDayCareUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYCHILDDAYCARE);
+            childDayCareUserReference.child(childDayCareUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds Daily Newspaper details in 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeDailyNewspaperDetails() {
+        //Map Daily Newspaper's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dailyNewspaperMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_DAILYNEWSPAPERS)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String dailyNewspaperUID = dailyNewspaperMobileNumberReference.push().getKey();
+        dailyNewspaperMobileNumberReference.child(mobileNumber).setValue(dailyNewspaperUID);
+
+        //Store Child Day Care details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference dailyNewspaperReference = database
+                    .getReference(Constants.FIREBASE_CHILD_DAILYNEWSPAPERS)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String dailyNewspaperName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String dailyNewspaperMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String dailyNewspaperPhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentDailyNewspaper = new NammaApartmentDailyServices(dailyNewspaperName,
+                    dailyNewspaperMobile, dailyNewspaperPhoto, false, rating);
+            dailyNewspaperReference.child(dailyNewspaperUID).setValue(nammaApartmentDailyNewspaper);
+
+            //Map Child Day Care UID and Phone Number in users->private->userUID->myDailyServices->dailyNewspaper
+            DatabaseReference dailyNewspaperUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYDAILYNEWSPAPER);
+            dailyNewspaperUserReference.child(dailyNewspaperUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds Milkman details in 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeMilkmanDetails() {
+        //Map Daily Milkman's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference milkmanMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_MILKMEN)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String milkmanUID = milkmanMobileNumberReference.push().getKey();
+        milkmanMobileNumberReference.child(mobileNumber).setValue(milkmanUID);
+
+        //Store Milkman details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference milkmanReference = database
+                    .getReference(Constants.FIREBASE_CHILD_MILKMEN)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String milkmanName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String milkmanMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String milkmanPhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentDailyNewspaper = new NammaApartmentDailyServices(milkmanName,
+                    milkmanMobile, milkmanPhoto, false, rating);
+            milkmanReference.child(milkmanUID).setValue(nammaApartmentDailyNewspaper);
+
+            //Map Milkman's UID and Phone Number in users->private->userUID->myDailyServices->milkman
+            DatabaseReference milkmanUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYMILKMAN);
+            milkmanUserReference.child(milkmanUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds Laundry details in 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeLaundryDetails() {
+        //Map Daily Laundry's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference laundryMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_LAUNDRIES)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String laundryUID = laundryMobileNumberReference.push().getKey();
+        laundryMobileNumberReference.child(mobileNumber).setValue(laundryUID);
+
+        //Store Laundry details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference laundryReference = database
+                    .getReference(Constants.FIREBASE_CHILD_LAUNDRIES)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String laundryName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String laundryMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String laundryPhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentLaundry = new NammaApartmentDailyServices(laundryName,
+                    laundryMobile, laundryPhoto, false, rating);
+            laundryReference.child(laundryUID).setValue(nammaApartmentLaundry);
+
+            //Map Laundry's UID and Phone Number in users->private->userUID->myDailyServices->laundry
+            DatabaseReference laundryUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYLAUNDRY);
+            laundryUserReference.child(laundryUID).setValue(true);
+        }
+    }
+
+    /**
+     * This method gets invoked when user adds Driver details in 'My Daily Services'. Data gets stored in Firebase.
+     */
+    private void storeDriverDetails() {
+        //Map Daily Driver's mobile number and uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference driverMobileNumberReference = database
+                .getReference(Constants.FIREBASE_CHILD_DRIVERS)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String driverUID = driverMobileNumberReference.push().getKey();
+        driverMobileNumberReference.child(mobileNumber).setValue(driverUID);
+
+        //Store Driver details in Firebase
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            DatabaseReference driverReference = database
+                    .getReference(Constants.FIREBASE_CHILD_DRIVERS)
+                    .child(Constants.FIREBASE_CHILD_PUBLIC);
+
+            String driverName = editDailyServiceOrFamilyMemberName.getText().toString();
+            String driverMobile = editDailyServiceOrFamilyMemberMobile.getText().toString();
+            String driverPhoto = "";
+            int rating = Constants.FIREBASE_CHILD_RATING;
+            NammaApartmentDailyServices nammaApartmentDriver = new NammaApartmentDailyServices(driverName,
+                    driverMobile, driverPhoto, false, rating);
+            driverReference.child(driverUID).setValue(nammaApartmentDriver);
+
+            //Map Driver's UID and Phone Number in users->private->userUID->myDailyServices->driver
+            DatabaseReference driverUserReference = database
+                    .getReference(Constants.FIREBASE_CHILD_USERS)
+                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                    .child(firebaseUser.getUid())
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYDRIVER);
+            driverUserReference.child(driverUID).setValue(true);
         }
     }
 

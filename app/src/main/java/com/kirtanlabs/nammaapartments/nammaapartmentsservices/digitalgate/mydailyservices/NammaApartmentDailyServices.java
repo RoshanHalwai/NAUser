@@ -5,16 +5,16 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
  * Created by Ashish Jha on 6/8/2018
  */
 
-class NammaApartmentCook {
+class NammaApartmentDailyServices {
 
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
-    private String cookName;
-    private String cookPhoneNumber;
-    private String cookProfilePhoto;
+    private String fullName;
+    private String phoneNumber;
+    private String profilePhoto;
     private Boolean providedThings;
     private int rating;
 
@@ -22,13 +22,13 @@ class NammaApartmentCook {
      * Constructors
      * ------------------------------------------------------------- */
 
-    public NammaApartmentCook() {
+    public NammaApartmentDailyServices() {
     }
 
-    public NammaApartmentCook(String cookName, String cookPhoneNumber, String cookProfilePhoto, boolean providedThings, int rating) {
-        this.cookName = cookName;
-        this.cookPhoneNumber = cookPhoneNumber;
-        this.cookProfilePhoto = cookProfilePhoto;
+    public NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, boolean providedThings, int rating) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.profilePhoto = profilePhoto;
         this.providedThings = providedThings;
         this.rating = rating;
     }
@@ -37,16 +37,16 @@ class NammaApartmentCook {
      * Getters
      * ------------------------------------------------------------- */
 
-    public String getCookName() {
-        return cookName;
+    public String getfullName() {
+        return fullName;
     }
 
-    public String getCookPhoneNumber() {
-        return cookPhoneNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String getCookProfilePhoto() {
-        return cookProfilePhoto;
+    public String getProfilePhoto() {
+        return profilePhoto;
     }
 
     public Boolean getProvidedThings() {

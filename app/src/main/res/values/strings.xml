@@ -122,7 +122,7 @@
     <string name="type">Type:</string>
     <string name="date">Date:</string>
     <string name="time">In Time:</string>
-    <string name="invited_by">Invited By:</string>
+    <string name="invited_by">Inviter</string>
     <string name="call">Call</string>
     <string name="message">Message</string>
     <string name="reschedule">Reschedule</string>
