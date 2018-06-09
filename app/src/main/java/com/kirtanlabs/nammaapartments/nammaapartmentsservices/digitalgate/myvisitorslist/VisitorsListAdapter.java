@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -41,7 +43,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
      * Public Members
      * ------------------------------------------------------------- */
 
-    public static int count = 5;
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private View rescheduleDialog;
@@ -54,7 +55,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
      * Constructor
      * ------------------------------------------------------------- */
 
-    public VisitorsListAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
+    VisitorsListAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
         this.nammaApartmentVisitorList = nammaApartmentVisitorList;
@@ -102,10 +103,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             case R.id.editPickTime:
                 baseActivity.pickTime(mCtx, this);
                 break;
-            case R.id.buttonReschedule:
-                //TODO: On click of Reschedule button the rescheduled date and time should go to firebase.
-                dialog.cancel();
-                break;
             case R.id.buttonCancel:
                 dialog.cancel();
                 break;
@@ -139,7 +136,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     /**
      * This method is invoked when user clicks on reschedule icon.
      */
-    private void openRescheduleDialog(String existingDate, String existingTime) {
+    private void openRescheduleDialog(String existingDate, String existingTime, int position) {
         rescheduleDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
 
         /*Getting Id's for all the views*/
@@ -171,7 +168,10 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         editPickDate.setOnClickListener(this);
         editPickTime.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
-        buttonReschedule.setOnClickListener(this);
+        buttonReschedule.setOnClickListener(v -> {
+            updateVisitorDataInFirebase(position);
+            dialog.cancel();
+        });
     }
 
     /**
@@ -184,6 +184,23 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
         new Dialog(mCtx);
         dialog.show();
+    }
+
+    /**
+     * Based on the position the date and time is updated in both UI and Firebase
+     *
+     * @param position of card view for which date and time has been manipulated
+     */
+    private void updateVisitorDataInFirebase(int position) {
+        NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+        String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
+        nammaApartmentVisitor.setDateAndTimeOfVisit(updatedDateAndTime);
+        notifyItemChanged(position);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference(Constants.FIREBASE_CHILD_VISITORS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                .child(nammaApartmentVisitor.getUid()).child(Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
     }
 
     /* ------------------------------------------------------------- *
@@ -266,12 +283,19 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                     baseActivity.sendTextMessage(nammaApartmentVisitor.getMobileNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    openRescheduleDialog(textInvitationDateOrServiceRatingValue.getText().toString(), textInvitationTimeValue.getText().toString());
+                    openRescheduleDialog(textInvitationDateOrServiceRatingValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
                     nammaApartmentVisitorList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
+                            .child(Constants.FIREBASE_CHILD_PRIVATE)
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child(Constants.FIREBASE_CHILD_MYVISITORS)
+                            .child(nammaApartmentVisitor.getUid())
+                            .removeValue();
                     break;
             }
         }

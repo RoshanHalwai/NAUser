@@ -408,7 +408,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         //Map cook's mobile number and uid
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference cooksMobileNumberReference = database
-                .getReference(Constants.FIREBASE_CHILD_COOK)
+                .getReference(Constants.FIREBASE_CHILD_COOKS)
                 .child(Constants.FIREBASE_CHILD_ALL);
         String cookUID = cooksMobileNumberReference.push().getKey();
         cooksMobileNumberReference.child(mobileNumber).setValue(cookUID);
@@ -417,7 +417,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             DatabaseReference myCooksReference = database
-                    .getReference(Constants.FIREBASE_CHILD_COOK)
+                    .getReference(Constants.FIREBASE_CHILD_COOKS)
                     .child(Constants.FIREBASE_CHILD_PUBLIC);
 
             String cookName = editDailyServiceOrFamilyMemberName.getText().toString();
@@ -434,8 +434,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     .getReference(Constants.FIREBASE_CHILD_USERS)
                     .child(Constants.FIREBASE_CHILD_PRIVATE)
                     .child(firebaseUser.getUid())
-                    .child(Constants.FIREBASE_CHILD_MY_DAILY_SERVICES)
-                    .child(Constants.FIREBASE_COOK);
+                    .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    .child(Constants.FIREBASE_MYCOOK);
             cookUserReference.child(cookUID).setValue(true);
         }
     }

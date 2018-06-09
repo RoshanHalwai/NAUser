@@ -49,19 +49,20 @@ public class Constants {
      * Firebase objects
      * ------------------------------------------------------------- */
 
-    public static final String FIREBASE_CHILD_PRIVATE = "private";
-    public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_ALL = "all";
-    public static final String FIREBASE_CHILD_VISITORS = "visitors";
+    public static final String FIREBASE_CHILD_COOKS = "cooks";
+    public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
+    public static final String FIREBASE_MYCOOK = "myCook";
+    public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
-    public static final String NOT_ENTERED = "Not Entered";
-    public static final String FIREBASE_CHILD_COOK = "cooks";
+    public static final String FIREBASE_CHILD_PRIVATE = "private";
+    public static final String FIREBASE_CHILD_VISITORS = "visitors";
     public static final String FIREBASE_CHILD_PUBLIC = "public";
-    public static final String FIREBASE_CHILD_MY_DAILY_SERVICES = "myDailyServices";
-    public static final String FIREBASE_COOK = "cook";
-    public static final int FIREBASE_RATING = 3;
+    public static final String FIREBASE_CHILD_USERS = "users";
+
+    public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
      * Request Code
