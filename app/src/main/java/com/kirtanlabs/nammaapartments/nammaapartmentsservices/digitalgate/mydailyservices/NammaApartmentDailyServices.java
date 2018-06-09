@@ -25,7 +25,7 @@ class NammaApartmentDailyServices {
     public NammaApartmentDailyServices() {
     }
 
-    public NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, boolean providedThings, int rating) {
+    NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, boolean providedThings, int rating) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
@@ -56,4 +56,5 @@ class NammaApartmentDailyServices {
     public int getRating() {
         return rating;
     }
+
 }

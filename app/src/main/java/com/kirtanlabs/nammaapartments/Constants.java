@@ -54,7 +54,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
-    public static final String FIREBASE_CHILD_CLEANERS = "carBikeCleanings";
+    public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -69,7 +69,7 @@ public class Constants {
     public static final String FIREBASE_MYLAUNDRY = "myLaundry";
     public static final String FIREBASE_MYDRIVER = "myDriver";
     public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
-    public static final String FIREBASE_CHILD_MYCLEANER = "myCarBikeCleaner";
+    public static final String FIREBASE_CHILD_MYCARBIKECLEANER = "myCarBikeCleaner";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
@@ -90,6 +90,8 @@ public class Constants {
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
+
+    public static final int OTP_STATUS_REQUEST_CODE = 6;
 
     /* ------------------------------------------------------------- *
      * Font Types
