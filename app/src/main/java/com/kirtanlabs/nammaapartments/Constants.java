@@ -51,9 +51,23 @@ public class Constants {
 
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
+    public static final String FIREBASE_CHILD_MAIDS = "maids";
+    public static final String FIREBASE_CHILD_CLEANERS = "carBikeCleanings";
+    public static final String FIREBASE_CHILD_DRIVERS = "drivers";
+    public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
+    public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
+    public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
+    public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
     public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
     public static final String FIREBASE_MYCOOK = "myCook";
+    public static final String FIREBASE_MYMAID = "myMaid";
+    public static final String FIREBASE_MYCHILDDAYCARE = "myChildDayCare";
+    public static final String FIREBASE_MYDAILYNEWSPAPER = "myDailyNewspaper";
+    public static final String FIREBASE_MYMILKMAN = "myMilkman";
+    public static final String FIREBASE_MYLAUNDRY = "myLaundry";
+    public static final String FIREBASE_MYDRIVER = "myDriver";
     public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
+    public static final String FIREBASE_CHILD_MYCLEANER = "myCarBikeCleaner";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
@@ -62,6 +76,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PUBLIC = "public";
     public static final String FIREBASE_CHILD_USERS = "users";
 
+    public static final int FIREBASE_CHILD_RATING = 3;
     public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
