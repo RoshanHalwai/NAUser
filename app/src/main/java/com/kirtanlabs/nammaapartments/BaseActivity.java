@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHomeAdapter;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHomeAdapter;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsListAdapter;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -53,12 +53,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
+
     private View cancelDialog;
     private AlertDialog dialog;
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
-
+    private AVLoadingIndicatorView progressIndicator;
     private int screenTitle;
 
     /* ------------------------------------------------------------- *
@@ -342,6 +343,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         alertNotifyGateDialog.show();
     }
 
+    public void showProgressIndicator() {
+        progressIndicator = findViewById(R.id.animationWaitingForCustomers);
+        progressIndicator.smoothToShow();
+    }
+
+    public void hideProgressIndicator() {
+        progressIndicator.smoothToHide();
+    }
+
     /**
      * This method is invoked to create a cancel dialog.
      */
@@ -364,12 +374,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         switch (screenTitle) {
-            case R.string.my_visitors_list:
-                VisitorsListAdapter adapterVisitorsList = new VisitorsListAdapter(this);
-                recyclerView.setAdapter(adapterVisitorsList);
-                --VisitorsListAdapter.count;
-                adapterVisitorsList.notifyDataSetChanged();
-                break;
             case R.string.my_daily_services:
                 DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
                 recyclerView.setAdapter(adapterDailyServices);

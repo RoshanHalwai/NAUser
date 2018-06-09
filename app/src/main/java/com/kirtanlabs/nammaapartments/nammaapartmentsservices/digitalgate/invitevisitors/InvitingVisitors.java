@@ -401,7 +401,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * This method is invoked to create an Invitation dialog when user successfully fills all the details.
+     * Shows Invitation success dialog when user successfully fills all the details.
      */
     private void createInviteDialog() {
         AlertDialog.Builder alertInvitationDialog = new AlertDialog.Builder(this);

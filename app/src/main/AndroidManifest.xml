@@ -15,6 +15,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
+        android:name=".NammaApartmentsGlobal"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
