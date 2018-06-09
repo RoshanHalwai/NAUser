@@ -29,6 +29,8 @@ public class Constants {
     public static final String MOBILE_NUMBER = "mobile_number";
     public static final String SERVICE_TYPE = "service_type";
     public static final String SCREEN_TITLE = "screen_title";
+    public static final String FULL_NAME = "full_name";
+    public static final String EMAIL_ID = "email_id";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -52,7 +54,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
-    public static final String FIREBASE_CHILD_CLEANERS = "carBikeCleanings";
+    public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -67,7 +69,7 @@ public class Constants {
     public static final String FIREBASE_MYLAUNDRY = "myLaundry";
     public static final String FIREBASE_MYDRIVER = "myDriver";
     public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
-    public static final String FIREBASE_CHILD_MYCLEANER = "myCarBikeCleaner";
+    public static final String FIREBASE_CHILD_MYCARBIKECLEANER = "myCarBikeCleaner";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
@@ -82,11 +84,14 @@ public class Constants {
     /* ------------------------------------------------------------- *
      * Request Code
      * ------------------------------------------------------------- */
+
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
+
+    public static final int OTP_STATUS_REQUEST_CODE = 6;
 
     /* ------------------------------------------------------------- *
      * Font Types

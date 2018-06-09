@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -56,6 +57,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Members for Phone Authentication
      * ------------------------------------------------------------- */
+
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
     private String phoneVerificationId;
@@ -234,33 +236,34 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         fbAuth.signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(this, (task) -> {
                     if (task.isSuccessful()) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL).child(userMobileNumber);
-                        userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                /* Check if User mobile number is found in database */
-                                if (dataSnapshot.exists()) {
-                                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                        if (previousScreenTitle == R.string.login) {
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL).child(userMobileNumber);
+                            userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    /* Check if User mobile number is found in database */
+                                    if (dataSnapshot.exists()) {
+                                        startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                                    }
+                                    /* User record was not found in firebase hence we navigate them to Sign Up page*/
+                                    else {
+                                        Intent intent = new Intent(OTP.this, SignUp.class);
+                                        intent.putExtra(Constants.MOBILE_NUMBER, userMobileNumber);
+                                        startActivity(intent);
+                                    }
+                                    finish();
                                 }
-                                /* User record was not found in firebase hence we navigate them to Sign Up page*/
-                                else {
-                                    //TODO: We should store the user record only after the user is done with the sign up process
-                                    //TODO: Remove this and place it in FlatDetails.class
-                                    database.getReference(Constants.FIREBASE_CHILD_USERS)
-                                            .child(Constants.FIREBASE_CHILD_ALL)
-                                            .child(userMobileNumber)
-                                            .setValue(fbAuth.getCurrentUser().getUid());
-                                    startActivity(new Intent(OTP.this, SignUp.class));
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
                                 }
-                                finish();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                            });
+                        } else if (previousScreenTitle == R.string.add_my_service) {
+                            setResult(Activity.RESULT_OK, new Intent());
+                            finish();
+                        }
                     } else {
                         textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
                     }

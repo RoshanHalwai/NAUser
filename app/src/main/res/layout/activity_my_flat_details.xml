@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:cursorVisible="false"
             android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
@@ -76,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:cursorVisible="false"
             android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
@@ -98,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:cursorVisible="false"
             android:inputType="textCapWords|textVisiblePassword"
             android:textSize="@dimen/edit_text_default_size"
             tools:ignore="LabelFor" />
@@ -115,19 +118,24 @@
             android:textSize="@dimen/text_view_default_size" />
 
         <RadioGroup
+            android:id="@+id/radioResidentType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
 
             <RadioButton
+                android:id="@+id/radioButtonOwner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 android:text="@string/owner" />
 
             <RadioButton
+                android:id="@+id/radioButtonTenant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="false"
                 android:text="@string/tenant" />
 
         </RadioGroup>
