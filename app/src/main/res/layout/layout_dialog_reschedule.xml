@@ -88,7 +88,7 @@
             android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/nmBlack"
-            android:textSize="@dimen/button_default_size" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/buttonReschedule"
@@ -99,7 +99,7 @@
             android:text="@string/reschedule"
             android:textAllCaps="false"
             android:textColor="@color/nmBlack"
-            android:textSize="@dimen/button_default_size" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

@@ -21,6 +21,7 @@ import java.util.Objects;
 
 public class VisitorsList extends BaseActivity {
 
+    private com.wang.avi.AVLoadingIndicatorView animationWaitingForCustomers;
     private List<NammaApartmentVisitor> nammaApartmentVisitorList;
     private VisitorsListAdapter adapter;
 
@@ -42,10 +43,11 @@ public class VisitorsList extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Progress Indicator in this screen*/
+        showProgressIndicator();
+
         /*We need Info Button in this screen*/
         showInfoButton();
-
-        nammaApartmentVisitorList = new ArrayList<>();
 
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -53,12 +55,13 @@ public class VisitorsList extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Creating recycler view adapter
+        nammaApartmentVisitorList = new ArrayList<>();
         adapter = new VisitorsListAdapter(nammaApartmentVisitorList, this);
 
         //Setting adapter to recycler view
         recyclerView.setAdapter(adapter);
 
-        //This method gets invoked whenever user is trying to see all the visitors under MyVisitors section.
+        //To retrieve user visitor list from firebase
         retrieveVisitorsDetailsFromFirebase();
     }
 
@@ -94,6 +97,7 @@ public class VisitorsList extends BaseActivity {
                         }
                     });
                 }
+                hideProgressIndicator();
             }
 
             @Override

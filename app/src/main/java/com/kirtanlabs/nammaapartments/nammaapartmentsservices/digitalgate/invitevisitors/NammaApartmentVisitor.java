@@ -54,11 +54,24 @@ public class NammaApartmentVisitor {
         return dateAndTimeOfVisit;
     }
 
+    public String getInviterUID() {
+        return inviterUID;
+    }
+
     public String getStatus() {
         return status;
     }
 
-    public String getInviterUID() {
-        return inviterUID;
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setDateAndTimeOfVisit(String dateAndTimeOfVisit) {
+        this.dateAndTimeOfVisit = dateAndTimeOfVisit;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }
