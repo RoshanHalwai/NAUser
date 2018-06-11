@@ -12,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -23,24 +20,21 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_MAP;
-
 public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
+    private final Context mCtx;
+    private final BaseActivity baseActivity;
     /* ------------------------------------------------------------- *
      * Public Members
      * ------------------------------------------------------------- */
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
-    private final Context mCtx;
-    private final BaseActivity baseActivity;
     private String service_name_value;
     private String service_inTime_value;
     private String service_type_value;
-    private String dailyServiceUID;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -132,31 +126,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     /* ------------------------------------------------------------- *
      * Daily Service Holder class
      * ------------------------------------------------------------- */
-
-    private void getDailyServiceUID(NammaApartmentDailyService nammaApartmentDailyService) {
-        String dailyServiceType = "my" + nammaApartmentDailyService.getDailyServiceType();
-        FirebaseDatabase.getInstance().getReference(DAILY_SERVICE_MAP.get(dailyServiceType))
-                .child(Constants.FIREBASE_CHILD_ALL)
-                .child(nammaApartmentDailyService.getPhoneNumber())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dailyServiceUID = dataSnapshot.getValue().toString();
-                        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
-                                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                                .child(((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser().getUID())
-                                .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
-                                .child(dailyServiceType)
-                                .child(dailyServiceUID)
-                                .removeValue();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
 
     class DailyServicesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -250,7 +219,14 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     nammaApartmentDailyServiceList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
-                    getDailyServiceUID(nammaApartmentDailyService);
+                    String dailyServiceType = "my" + nammaApartmentDailyService.getDailyServiceType();
+                    FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+                            .child(Constants.FIREBASE_CHILD_PRIVATE)
+                            .child(((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser().getUID())
+                            .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                            .child(dailyServiceType)
+                            .child(nammaApartmentDailyService.getUID())
+                            .removeValue();
                     break;
             }
         }

@@ -22,6 +22,7 @@ class NammaApartmentDailyService {
     private String timeOfVisit;
     private Boolean providedThings;
     private int rating;
+    private String uid;
     private Map<String, Boolean> ownersUID = new HashMap<>();
 
     /* ------------------------------------------------------------- *
@@ -31,7 +32,8 @@ class NammaApartmentDailyService {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+        this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
@@ -78,6 +80,10 @@ class NammaApartmentDailyService {
 
     public Map<String, Boolean> getOwnersUID() {
         return ownersUID;
+    }
+
+    public String getUID() {
+        return uid;
     }
 
 }

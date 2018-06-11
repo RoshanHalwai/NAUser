@@ -87,8 +87,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private boolean grantedAccess = false;
     private boolean fieldsFilled;
 
-    String dailyServiceUID = null;
-
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
      *----------------------------------------------------*/
@@ -477,27 +475,22 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * @param userDailyServiceChild root of users daily service reference
      */
     private void storeDailyServiceDetails(final String dailyServiceChild, final String userDailyServiceChild) {
-        //Check if this daily service already exists
-        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
+        //Map daily service to mobile number
+        DatabaseReference dailyServiceMobileNumberReference = FirebaseDatabase.getInstance()
+                .getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
                 .child(Constants.FIREBASE_CHILD_ALL)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(mobileNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                .child(mobileNumber);
+        dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
-                DatabaseReference dailyServiceMobileNumberReference = FirebaseDatabase.getInstance()
-                        .getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
-                        .child(Constants.FIREBASE_CHILD_ALL)
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child(mobileNumber);
+                String dailyServiceUID;
                 if (!dataSnapshot.exists()) {
                     dailyServiceUID = dailyServiceMobileNumberReference.push().getKey();
-                    dailyServiceMobileNumberReference.child(dailyServiceUID).setValue(true);
+                    dailyServiceMobileNumberReference.setValue(dailyServiceUID);
                 } else {
-                    dailyServiceUID = dataSnapshot.g
+                    dailyServiceUID = dataSnapshot.getValue().toString();
                 }
-                //Map daily service to true
-                dailyServiceMobileNumberReference.child(userDailyServiceChild.substring(2)).setValue(true);
 
                 //Store daily service details in Firebase
                 DatabaseReference dailyServicePublicReference = FirebaseDatabase.getInstance()
@@ -510,7 +503,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 String profilePhoto = "";
                 String timeOfVisit = editPickTime.getText().toString();
                 int rating = Constants.FIREBASE_CHILD_RATING;
-                NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(fullName,
+                String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
+                NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(dailyServiceUID, fullName,
                         phoneNumber, profilePhoto, timeOfVisit, false, rating);
                 nammaApartmentDailyService.getOwnersUID().put(userUID, true);
                 dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
