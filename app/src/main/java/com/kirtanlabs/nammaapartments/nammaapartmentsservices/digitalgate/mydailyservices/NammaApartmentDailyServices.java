@@ -15,6 +15,7 @@ class NammaApartmentDailyServices {
     private String fullName;
     private String phoneNumber;
     private String profilePhoto;
+    private String timeOfVisit;
     private Boolean providedThings;
     private int rating;
 
@@ -25,10 +26,11 @@ class NammaApartmentDailyServices {
     public NammaApartmentDailyServices() {
     }
 
-    NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, boolean providedThings, int rating) {
+    NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
+        this.timeOfVisit = timeOfVisit;
         this.providedThings = providedThings;
         this.rating = rating;
     }
@@ -47,6 +49,10 @@ class NammaApartmentDailyServices {
 
     public String getProfilePhoto() {
         return profilePhoto;
+    }
+
+    public String getTimeOfVisit() {
+        return timeOfVisit;
     }
 
     public Boolean getProvidedThings() {

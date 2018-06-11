@@ -13,6 +13,7 @@ public class NammaApartmentUser {
     private String phoneNumber;
     private String societyName;
     private String tenantType;
+    private String uid;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -21,7 +22,7 @@ public class NammaApartmentUser {
     public NammaApartmentUser() {
     }
 
-    public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName, String phoneNumber, String societyName, String tenantType) {
+    public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName, String phoneNumber, String societyName, String tenantType, String uid) {
         this.apartmentName = apartmentName;
         this.emailId = emailId;
         this.flatNumber = flatNumber;
@@ -29,6 +30,7 @@ public class NammaApartmentUser {
         this.phoneNumber = phoneNumber;
         this.societyName = societyName;
         this.tenantType = tenantType;
+        this.uid = uid;
     }
 
     /* ------------------------------------------------------------- *
@@ -63,4 +65,7 @@ public class NammaApartmentUser {
         return tenantType;
     }
 
+    public String getUID() {
+        return uid;
+    }
 }

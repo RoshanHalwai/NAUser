@@ -29,7 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.io.IOException;
@@ -40,6 +42,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.DS_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CARBIKECLEANERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CHILDDAYCARES;
@@ -57,7 +60,6 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYLAUNDRY;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYMAID;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYMILKMAN;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 
@@ -245,7 +247,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     }
                     break;
 
-                case OTP_STATUS_REQUEST_CODE:
+                case DS_OTP_STATUS_REQUEST_CODE:
                     if (resultCode == Activity.RESULT_OK) {
                         switch (service_type) {
                             case "Cook":
@@ -276,6 +278,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         startActivity(new Intent(this, DailyServicesHome.class));
                     }
                     break;
+
+                case Constants.AFM_OTP_STATUS_REQUEST_CODE:
+                    storeFamilyMembersDetails();
+                    startActivity(new Intent(this, MySweetHome.class));
+
             }
         }
     }
@@ -316,14 +323,17 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     intentButtonAdd.putExtra(Constants.MOBILE_NUMBER, mobileNumber);
                     intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
                     intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
-                    startActivityForResult(intentButtonAdd, Constants.OTP_STATUS_REQUEST_CODE);
+                    startActivityForResult(intentButtonAdd, Constants.DS_OTP_STATUS_REQUEST_CODE);
                 } else {
                     if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
                             && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
                         if (grantedAccess)
                             openNotificationDialog();
                         else {
-                            navigatingToOTPScreen();
+                            Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+                            intentButtonAdd.putExtra(Constants.MOBILE_NUMBER, mobileNumber);
+                            intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
+                            startActivityForResult(intentButtonAdd, Constants.AFM_OTP_STATUS_REQUEST_CODE);
                         }
                     }
                 }
@@ -469,24 +479,56 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         dailyServiceMobileNumberReference.child(mobileNumber).setValue(dailyServiceUID);
 
         //Store daily service details in Firebase
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference dailyServicePublicReference = dailyServiceRootReference.child(Constants.FIREBASE_CHILD_PUBLIC);
         String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
         String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
         String profilePhoto = "";
+        String timeOfVisit = editPickTime.getText().toString();
         int rating = Constants.FIREBASE_CHILD_RATING;
         NammaApartmentDailyServices nammaApartmentDailyServices = new NammaApartmentDailyServices(fullName,
-                phoneNumber, profilePhoto, false, rating);
+                phoneNumber, profilePhoto, timeOfVisit, false, rating);
         dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyServices);
 
         //Store daily service UID under users data structure for future use
         FirebaseDatabase.getInstance()
                 .getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Objects.requireNonNull(firebaseUser).getUid())
+                .child(((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID())
                 .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
                 .child(userDailyServiceChild)
                 .child(dailyServiceUID).setValue(true);
+    }
+
+    /**
+     * Store family member's details to firebase and map them to the users family members for future use
+     */
+    private void storeFamilyMembersDetails() {
+        //Map family member's mobile number with uid
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference familyMembersMobileNumberReference = database
+                .getReference(Constants.FIREBASE_FAMILYMEMBERS)
+                .child(Constants.FIREBASE_CHILD_ALL);
+        String familyMemberUID = familyMembersMobileNumberReference.push().getKey();
+        familyMembersMobileNumberReference.child(mobileNumber).setValue(familyMemberUID);
+
+        //Store family member's details in Firebase
+        DatabaseReference familyMemberReference = database
+                .getReference(Constants.FIREBASE_FAMILYMEMBERS)
+                .child(Constants.FIREBASE_CHILD_PUBLIC);
+        String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
+        String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
+        String relation = familyMemberRelation;
+        NammaApartmentFamilyMembers nammaApartmentFamilyMembers = new NammaApartmentFamilyMembers(fullName,
+                phoneNumber, relation, grantedAccess);
+        familyMemberReference.child(familyMemberUID).setValue(nammaApartmentFamilyMembers);
+
+        //Store family member's UID under users data structure for future use
+        DatabaseReference myUsersReference = database
+                .getReference(Constants.FIREBASE_CHILD_USERS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID())
+                .child(Constants.FIREBASE_CHILD_MYFAMILYMEMBERS);
+        myUsersReference.child(familyMemberUID).setValue(true);
     }
 
     /**

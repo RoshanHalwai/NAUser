@@ -176,15 +176,15 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         String tenantType = radioButtonTenant.isChecked()
                 ? radioButtonTenant.getText().toString()
                 : radioButtonOwner.getText().toString();
+        String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
-                flatNumber, fullName, mobileNumber, societyName, tenantType);
+                flatNumber, fullName, mobileNumber, societyName, tenantType, userUID);
 
         /*Store this instance to Global class for future use*/
         ((NammaApartmentsGlobal) getApplicationContext())
                 .setNammaApartmentUser(nammaApartmentUser);
 
         /*Mapping Mobile Number to UID in firebase under users->all*/
-        String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_ALL)
                 .child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
