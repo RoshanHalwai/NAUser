@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHomeAdapter;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHomeAdapter;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -374,12 +373,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         switch (screenTitle) {
-            case R.string.my_daily_services:
+            /*case R.string.my_daily_services:
                 DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
                 recyclerView.setAdapter(adapterDailyServices);
                 --DailyServicesHomeAdapter.count;
                 adapterDailyServices.notifyDataSetChanged();
-                break;
+                break;*/
             case R.string.my_sweet_home:
                 MySweetHomeAdapter adapterMySweetHome = new MySweetHomeAdapter(this);
                 recyclerView.setAdapter(adapterMySweetHome);
