@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,12 +21,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_MAP;
 
 public class DailyServicesHome extends BaseActivity implements View.OnClickListener, DialogInterface.OnCancelListener, AdapterView.OnItemClickListener {
 
@@ -39,7 +41,7 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     private AlertDialog dialog;
     private Animation rotate_clockwise, rotate_anticlockwise;
     private ListView listView;
-    private List<NammaApartmentDailyServices> nammaApartmentDailyServicesList;
+    private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;
 
     /* ------------------------------------------------------------- *
@@ -75,8 +77,8 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Creating recycler view adapter
-        nammaApartmentDailyServicesList = new ArrayList<>();
-        dailyServicesHomeAdapter = new DailyServicesHomeAdapter(nammaApartmentDailyServicesList, this);
+        nammaApartmentDailyServiceList = new ArrayList<>();
+        dailyServicesHomeAdapter = new DailyServicesHomeAdapter(nammaApartmentDailyServiceList, this);
 
         //Setting adapter to recycler view
         recyclerView.setAdapter(dailyServicesHomeAdapter);
@@ -152,28 +154,37 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
      */
     private void retrieveDailyServicesDetailsFromFirebase() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
         DatabaseReference dailyServicesReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .child(userUID)
                 .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES);
-        dailyServicesReference.addValueEventListener(new ValueEventListener() {
+        dailyServicesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot dailyServicesSnapshot : dataSnapshot.getChildren()) {
-                        dailyServicesReference.child(dailyServicesSnapshot.getKey());
-                        dailyServicesReference.addValueEventListener(new ValueEventListener() {
+                        String dailyServiceType = dailyServicesSnapshot.getKey();
+                        firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
+                                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                                .child(userUID)
+                                .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                                .child(dailyServiceType)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                    DatabaseReference childReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_COOKS)
+                                    firebaseDatabase.getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
+                                            .child(Constants.FIREBASE_CHILD_ALL)
                                             .child(Constants.FIREBASE_CHILD_PUBLIC)
-                                            .child(Objects.requireNonNull(childSnapshot.getValue()).toString());
-                                    childReference.addValueEventListener(new ValueEventListener() {
+                                            .child(DAILY_SERVICE_MAP.get(dataSnapshot.getKey()))
+                                            .child(Objects.requireNonNull(childSnapshot.getKey()))
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            NammaApartmentDailyServices nammaApartmentDailyServices = dataSnapshot.getValue(NammaApartmentDailyServices.class);
-                                            nammaApartmentDailyServicesList.add(0, nammaApartmentDailyServices);
+                                            NammaApartmentDailyService nammaApartmentDailyService = dataSnapshot.getValue(NammaApartmentDailyService.class);
+                                            Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(2));
+                                            nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
                                             dailyServicesHomeAdapter.notifyDataSetChanged();
                                         }
 
