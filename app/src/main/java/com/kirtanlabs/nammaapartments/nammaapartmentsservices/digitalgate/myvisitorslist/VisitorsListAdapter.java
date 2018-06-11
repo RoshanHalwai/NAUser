@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -84,6 +85,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
         holder.textInvitedByOrNumberOfFlatsValue.setText(((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser().getFullName());
+        Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto()).into(holder.visitorOrDailyServiceProfilePic);
     }
 
     @Override
@@ -196,7 +198,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
         nammaApartmentVisitor.setDateAndTimeOfVisit(updatedDateAndTime);
         notifyItemChanged(position);
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = Constants.FIREBASE_DATABASE;
         firebaseDatabase.getReference(Constants.FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
@@ -226,6 +228,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         private final TextView textMessage;
         private final TextView textReschedule;
         private final TextView textCancel;
+        private final de.hdodenhof.circleimageview.CircleImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -247,6 +250,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textMessage = itemView.findViewById(R.id.textMessage);
             textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             //Setting Fonts for all the views on cardview
             textVisitorName.setTypeface(Constants.setLatoRegularFont(mCtx));
@@ -289,7 +293,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                     nammaApartmentVisitorList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    FirebaseDatabase firebaseDatabase = Constants.FIREBASE_DATABASE;
                     firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
                             .child(Constants.FIREBASE_CHILD_PRIVATE)
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

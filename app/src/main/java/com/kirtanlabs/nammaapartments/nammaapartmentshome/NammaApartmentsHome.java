@@ -45,7 +45,7 @@ public class NammaApartmentsHome extends BaseActivity {
 
         /*At this point new user and existing user would have their records in firebase and hence we store
          * the values to NammaApartmentsGlobal*/
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = Constants.FIREBASE_DATABASE;
         FirebaseAuth fbAuth = FirebaseAuth.getInstance();
         DatabaseReference userDataReference = database.getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)

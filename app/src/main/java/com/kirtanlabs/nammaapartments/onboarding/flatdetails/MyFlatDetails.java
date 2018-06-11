@@ -185,13 +185,13 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
         /*Mapping Mobile Number to UID in firebase under users->all*/
         String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+        Constants.FIREBASE_DATABASE.getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_ALL)
                 .child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
                 .setValue(userUID);
 
         /*Storing user details in firebase under users->private->uid*/
-        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+        Constants.FIREBASE_DATABASE.getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(userUID).setValue(nammaApartmentUser);
     }
@@ -262,7 +262,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * @param viewId of edit text views
      */
     private void searchItemInList(int viewId) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = Constants.FIREBASE_DATABASE;
         itemsInList.clear();
         switch (viewId) {
             case R.id.editCity:

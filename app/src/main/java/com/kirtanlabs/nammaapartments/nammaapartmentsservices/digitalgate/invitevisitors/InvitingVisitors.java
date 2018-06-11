@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invit
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,11 +23,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
@@ -35,6 +39,7 @@ import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +65,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private ListView listView;
     private String selectedDate;
     private String mobileNumber;
+    private Uri selectedImage;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -163,6 +169,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
                     if (data.getExtras() != null) {
+                        selectedImage = data.getData();
                         Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
                         circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
                         onSuccessfulUpload();
@@ -175,7 +182,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
                 case GALLERY_PERMISSION_REQUEST_CODE:
                     if (data != null && data.getData() != null) {
-                        Uri selectedImage = data.getData();
+                        selectedImage = data.getData();
                         try {
                             Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                             circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
@@ -417,7 +424,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private void storeVisitorDetailsInFirebase() {
         //Map Mobile number with visitor's UID
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference preApprovedVisitorsMobileNumberReference = database
+        DatabaseReference preApprovedVisitorsMobileNumberReference = Constants.FIREBASE_DATABASE
                 .getReference(Constants.FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
@@ -428,7 +435,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             String inviterUID = firebaseUser.getUid();
-            DatabaseReference myVisitorsReference = database
+            DatabaseReference myVisitorsReference = Constants.FIREBASE_DATABASE
                     .getReference(Constants.FIREBASE_CHILD_USERS)
                     .child(Constants.FIREBASE_CHILD_PRIVATE)
                     .child(inviterUID)
@@ -436,20 +443,52 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             myVisitorsReference.child(visitorUID).setValue(true);
 
             //Add Visitor record under visitors->private->preApprovedVisitors
-            DatabaseReference preApprovedVisitorsReference = database
+            DatabaseReference preApprovedVisitorsReference = Constants.FIREBASE_DATABASE
                     .getReference(Constants.FIREBASE_CHILD_VISITORS)
                     .child(Constants.FIREBASE_CHILD_PRIVATE)
-                    .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS);
+                    .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                    .child(visitorUID);
             String visitorName = editVisitorName.getText().toString();
             String visitorMobile = editVisitorMobile.getText().toString();
             String visitorDateTime = editPickDateTime.getText().toString();
             NammaApartmentVisitor nammaApartmentVisitor = new NammaApartmentVisitor(visitorUID,
                     visitorName, visitorMobile, visitorDateTime, Constants.NOT_ENTERED, inviterUID);
-            preApprovedVisitorsReference.child(visitorUID).setValue(nammaApartmentVisitor);
-
-            //Notify users that they have successfully invited their visitor
-            createInviteDialog();
+            uploadFile(visitorUID, selectedImage, preApprovedVisitorsReference, nammaApartmentVisitor);
         }
+    }
+
+    private void uploadFile(final String visitorUID, final Uri filePath, final DatabaseReference preApprovedVisitorsReference, NammaApartmentVisitor nammaApartmentVisitor) {
+        //checking if file is available
+        //displaying progress dialog while image is uploading
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Inviting your Visitor");
+        progressDialog.show();
+
+        //getting the storage reference
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_VISITORS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                .child(visitorUID);
+
+        //adding the file to reference
+        storageReference.putFile(filePath)
+                .addOnSuccessListener(taskSnapshot -> {
+                    //creating the upload object to store uploaded image details
+                    nammaApartmentVisitor.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
+
+                    //adding an upload to firebase database
+                    preApprovedVisitorsReference.setValue(nammaApartmentVisitor);
+
+                    //dismissing the progress dialog
+                    progressDialog.dismiss();
+
+                    //Notify users that they have successfully invited their visitor
+                    createInviteDialog();
+                })
+                .addOnFailureListener(exception -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
 }

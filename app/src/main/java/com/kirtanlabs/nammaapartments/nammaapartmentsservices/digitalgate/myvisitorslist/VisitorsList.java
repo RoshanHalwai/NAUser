@@ -68,7 +68,7 @@ public class VisitorsList extends BaseActivity {
      * ------------------------------------------------------------- */
 
     private void retrieveVisitorsDetailsFromFirebase() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = Constants.FIREBASE_DATABASE;
         DatabaseReference myVisitorsReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())

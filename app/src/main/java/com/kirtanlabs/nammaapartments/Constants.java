@@ -3,6 +3,8 @@ package com.kirtanlabs.nammaapartments;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/1/2018
@@ -39,7 +41,7 @@ public class Constants {
     public static final int PHONE_NUMBER_MAX_LENGTH = 10;
     public static final int EDIT_TEXT_EMPTY_LENGTH = 0;
     public static final int EDIT_TEXT_MIN_LENGTH = 0;
-    public static final String COUNTRY_CODE = "+91";
+    public static final String COUNTRY_CODE_IN = "+91";
 
     /* ------------------------------------------------------------- *
      * Login/OTP Constants
@@ -50,6 +52,8 @@ public class Constants {
     /* ------------------------------------------------------------- *
      * Firebase objects
      * ------------------------------------------------------------- */
+
+    public static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance();
 
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
@@ -88,10 +92,9 @@ public class Constants {
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
+    public static final int OTP_STATUS_REQUEST_CODE = 6;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
-
-    public static final int OTP_STATUS_REQUEST_CODE = 6;
 
     /* ------------------------------------------------------------- *
      * Font Types
