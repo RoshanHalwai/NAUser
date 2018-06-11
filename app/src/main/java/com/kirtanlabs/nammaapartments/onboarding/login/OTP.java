@@ -25,8 +25,6 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -155,30 +153,10 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     editSixthOTPDigit
             });
             if (allFieldsFilled) {
-                switch (previousScreenTitle) {
-                    case R.string.login:
-                        String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
-                                editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
-                                editSixthOTPDigit.getText().toString();
-                        signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
-                        break;
-
-                    case R.string.add_my_service:
-                        Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
-                        intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentDailyServiceHome);
-                        finish();
-                        break;
-
-                    case R.string.add_family_members_details_screen:
-                        Intent intentMySweetHome = new Intent(OTP.this, MySweetHome.class);
-                        intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentMySweetHome);
-                        finish();
-                        break;
-                }
+                String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
+                        editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
+                        editSixthOTPDigit.getText().toString();
+                signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
             }
         }
     }
@@ -260,7 +238,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
                                 }
                             });
-                        } else if (previousScreenTitle == R.string.add_my_service) {
+                        } else {
                             setResult(Activity.RESULT_OK, new Intent());
                             finish();
                         }

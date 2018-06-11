@@ -54,8 +54,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
-    public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
+    public static final String FIREBASE_FAMILYMEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
@@ -68,15 +68,17 @@ public class Constants {
     public static final String FIREBASE_MYMILKMAN = "myMilkman";
     public static final String FIREBASE_MYLAUNDRY = "myLaundry";
     public static final String FIREBASE_MYDRIVER = "myDriver";
+    public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
+    public static final String FIREBASE_CHILD_MYFAMILYMEMBERS = "myFamilyMembers";
     public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
     public static final String FIREBASE_CHILD_MYCARBIKECLEANER = "myCarBikeCleaner";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
-    public static final String FIREBASE_CHILD_VISITORS = "visitors";
     public static final String FIREBASE_CHILD_PUBLIC = "public";
     public static final String FIREBASE_CHILD_USERS = "users";
+    public static final String FIREBASE_CHILD_VISITORS = "visitors";
 
     public static final int FIREBASE_CHILD_RATING = 3;
     public static final String NOT_ENTERED = "Not Entered";
@@ -91,7 +93,8 @@ public class Constants {
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
-    public static final int OTP_STATUS_REQUEST_CODE = 6;
+    public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
+    public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
 
     /* ------------------------------------------------------------- *
      * Font Types
