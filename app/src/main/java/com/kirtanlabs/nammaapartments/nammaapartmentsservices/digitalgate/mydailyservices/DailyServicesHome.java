@@ -14,12 +14,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class DailyServicesHome extends BaseActivity implements View.OnClickListener, DialogInterface.OnCancelListener, AdapterView.OnItemClickListener {
 
@@ -31,6 +39,8 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     private AlertDialog dialog;
     private Animation rotate_clockwise, rotate_anticlockwise;
     private ListView listView;
+    private List<NammaApartmentDailyServices> nammaApartmentDailyServicesList;
+    private DailyServicesHomeAdapter dailyServicesHomeAdapter;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -53,14 +63,23 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        /*We need Progress Indicator in this screen*/
+        showProgressIndicator();
+
         /*Getting Id's for all the views*/
         fab = findViewById(R.id.fab);
 
+        /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
-        recyclerView.setAdapter(adapterDailyServices);
+
+        //Creating recycler view adapter
+        nammaApartmentDailyServicesList = new ArrayList<>();
+        dailyServicesHomeAdapter = new DailyServicesHomeAdapter(nammaApartmentDailyServicesList, this);
+
+        //Setting adapter to recycler view
+        recyclerView.setAdapter(dailyServicesHomeAdapter);
 
         rotate_clockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         rotate_anticlockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
@@ -71,6 +90,9 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         fab.setOnClickListener(this);
         dialog.setOnCancelListener(this);
         listView.setOnItemClickListener(this);
+
+        //To retrieve user DailyServicesList from firebase.
+        retrieveDailyServicesDetailsFromFirebase();
     }
 
     /* ------------------------------------------------------------- *
@@ -124,4 +146,59 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * This method gets invoked when user is trying to access all their DailyServices details
+     * from firebase.
+     */
+    private void retrieveDailyServicesDetailsFromFirebase() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference dailyServicesReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES);
+        dailyServicesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dailyServicesSnapshot : dataSnapshot.getChildren()) {
+                        dailyServicesReference.child(dailyServicesSnapshot.getKey());
+                        dailyServicesReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                    DatabaseReference childReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_COOKS)
+                                            .child(Constants.FIREBASE_CHILD_PUBLIC)
+                                            .child(Objects.requireNonNull(childSnapshot.getValue()).toString());
+                                    childReference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            NammaApartmentDailyServices nammaApartmentDailyServices = dataSnapshot.getValue(NammaApartmentDailyServices.class);
+                                            nammaApartmentDailyServicesList.add(0, nammaApartmentDailyServices);
+                                            dailyServicesHomeAdapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+                hideProgressIndicator();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
