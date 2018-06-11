@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,22 +12,26 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
-public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> implements View.OnClickListener {
+import java.util.List;
+
+public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
+    private final Context mCtx;
+    private final BaseActivity baseActivity;
     /* ------------------------------------------------------------- *
      * Public Members
      * ------------------------------------------------------------- */
-    public static int count = 1;
-    private final Context mCtx;
-    private final BaseActivity baseActivity;
+    private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private String service_name_value;
     private String service_inTime_value;
     private String service_type_value;
@@ -35,9 +40,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      * Constructor
      * ------------------------------------------------------------- */
 
-    public DailyServicesHomeAdapter(Context mCtx) {
+    DailyServicesHomeAdapter(List<NammaApartmentDailyService> nammaApartmentDailyServiceList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
+        this.nammaApartmentDailyServiceList = nammaApartmentDailyServiceList;
     }
 
     /* ------------------------------------------------------------- *
@@ -71,32 +77,16 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
         holder.layoutTitle.setLayoutParams(layoutTitleParams);
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
-
-        holder.textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
-
-        holder.textServiceNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textServiceTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-
-        holder.textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textEdit.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
-
         String stringServiceName = mCtx.getResources().getString(R.string.name) + ":";
         holder.textServiceName.setText(stringServiceName);
         holder.textInvitationDateOrServiceRating.setText(R.string.rating);
         holder.textInvitedByOrNumberOfFlats.setText(R.string.flats);
 
-        holder.textServiceNameValue.setText("Ramesh Singh");
-        holder.textServiceTypeValue.setText(R.string.cook);
-        holder.textInvitationDateOrServiceRatingValue.setText("4.2");
+        //Creating an instance of NammaApartmentDailyService class and retrieving the values from Firebase
+        NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
+        holder.textServiceNameValue.setText(nammaApartmentDailyService.getfullName());
+        holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
+        holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitedByOrNumberOfFlatsValue.setText("3");
 
         holder.textEdit.setText(R.string.edit);
@@ -109,38 +99,13 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         service_inTime_value = holder.textInvitationTimeValue.getText().toString();
         service_type_value = holder.textServiceTypeValue.getText().toString();
 
-        /*Handling Click event of icons*/
-        holder.textCall.setOnClickListener(this);
-        holder.textMessage.setOnClickListener(this);
-        holder.textEdit.setOnClickListener(this);
-        holder.textCancel.setOnClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        //TODO: To change the get item count here
-        return count;
+        return nammaApartmentDailyServiceList.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.textCall:
-                //TODO: Change Mobile Number here
-                baseActivity.makePhoneCall("9885665744");
-                break;
-            case R.id.textMessage:
-                //TODO: Change Mobile Number here
-                baseActivity.sendTextMessage("9885665744");
-                break;
-            case R.id.textRescheduleOrEdit:
-                editMyServiceDetails(service_name_value, service_inTime_value, service_type_value);
-                break;
-            case R.id.textCancel:
-                baseActivity.openCancelDialog(R.string.my_daily_services);
-                break;
-        }
-    }
 
     /* ------------------------------------------------------------- *
      * Private Methods
@@ -162,7 +127,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      * Daily Service Holder class
      * ------------------------------------------------------------- */
 
-    class DailyServicesHolder extends RecyclerView.ViewHolder {
+    class DailyServicesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
          * Private Members
@@ -210,6 +175,60 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textMessage = itemView.findViewById(R.id.textMessage);
             textEdit = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
+
+            textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+            textServiceNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textServiceTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+
+            textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textEdit.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+            //Setting events for items in card view
+            textCall.setOnClickListener(this);
+            textMessage.setOnClickListener(this);
+            textEdit.setOnClickListener(this);
+            textCancel.setOnClickListener(this);
+        }
+
+        @SuppressLint("RestrictedApi")
+        @Override
+        public void onClick(View v) {
+            int position = getLayoutPosition();
+            NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
+            switch (v.getId()) {
+                case R.id.textCall:
+                    baseActivity.makePhoneCall(nammaApartmentDailyService.getPhoneNumber());
+                    break;
+                case R.id.textMessage:
+                    baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber());
+                    break;
+                case R.id.textRescheduleOrEdit:
+                    editMyServiceDetails(service_name_value, service_inTime_value, service_type_value);
+                    break;
+                case R.id.textCancel:
+                    nammaApartmentDailyServiceList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
+                    String dailyServiceType = "my" + nammaApartmentDailyService.getDailyServiceType();
+                    FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+                            .child(Constants.FIREBASE_CHILD_PRIVATE)
+                            .child(((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser().getUID())
+                            .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                            .child(dailyServiceType)
+                            .child(nammaApartmentDailyService.getUID())
+                            .removeValue();
+                    break;
+            }
         }
     }
 

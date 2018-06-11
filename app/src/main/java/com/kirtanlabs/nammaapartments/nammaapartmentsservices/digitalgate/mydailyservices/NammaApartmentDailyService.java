@@ -1,32 +1,39 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Ashish Jha on 6/8/2018
  */
 
-class NammaApartmentDailyServices {
+class NammaApartmentDailyService {
 
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
+    private String dailyServiceType;
     private String fullName;
     private String phoneNumber;
     private String profilePhoto;
     private String timeOfVisit;
     private Boolean providedThings;
     private int rating;
+    private String uid;
+    private Map<String, Boolean> ownersUID = new HashMap<>();
 
     /* ------------------------------------------------------------- *
      * Constructors
      * ------------------------------------------------------------- */
 
-    public NammaApartmentDailyServices() {
+    public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+        this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
@@ -61,6 +68,22 @@ class NammaApartmentDailyServices {
 
     public int getRating() {
         return rating;
+    }
+
+    public String getDailyServiceType() {
+        return dailyServiceType;
+    }
+
+    public void setDailyServiceType(String dailyServiceType) {
+        this.dailyServiceType = dailyServiceType;
+    }
+
+    public Map<String, Boolean> getOwnersUID() {
+        return ownersUID;
+    }
+
+    public String getUID() {
+        return uid;
     }
 
 }

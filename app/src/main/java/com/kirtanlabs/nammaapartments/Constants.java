@@ -3,6 +3,10 @@ package com.kirtanlabs.nammaapartments;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/1/2018
@@ -55,6 +59,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_COOKS = "cooks";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
+    public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
     public static final String FIREBASE_FAMILYMEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -84,17 +89,34 @@ public class Constants {
     public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
+     * Mapping Daily Services
+     * ------------------------------------------------------------- */
+
+    public static final Map<String, String> DAILY_SERVICE_MAP;
+    static {
+        final Map<String, String> aMap = new HashMap<>();
+        aMap.put(FIREBASE_MYCOOK, FIREBASE_CHILD_COOKS);
+        aMap.put(FIREBASE_MYDRIVER, FIREBASE_CHILD_DRIVERS);
+        aMap.put(FIREBASE_MYMILKMAN, FIREBASE_CHILD_MILKMEN);
+        aMap.put(FIREBASE_MYLAUNDRY, FIREBASE_CHILD_LAUNDRIES);
+        aMap.put(FIREBASE_MYMAID, FIREBASE_CHILD_MAIDS);
+        aMap.put(FIREBASE_MYCHILDDAYCARE, FIREBASE_CHILD_CHILDDAYCARES);
+        aMap.put(FIREBASE_MYDAILYNEWSPAPER, FIREBASE_CHILD_DAILYNEWSPAPERS);
+        aMap.put(FIREBASE_CHILD_MYCARBIKECLEANER, FIREBASE_CHILD_CARBIKECLEANERS);
+        DAILY_SERVICE_MAP = Collections.unmodifiableMap(aMap);
+    }
+
+    /* ------------------------------------------------------------- *
      * Request Code
      * ------------------------------------------------------------- */
 
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
-    static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
-    static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
-
     public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
     public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
+    static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
+    static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
     /* ------------------------------------------------------------- *
      * Font Types
