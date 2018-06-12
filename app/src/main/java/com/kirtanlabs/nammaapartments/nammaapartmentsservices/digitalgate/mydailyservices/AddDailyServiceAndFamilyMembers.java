@@ -65,6 +65,9 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYMILKMAN;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SERVICE_TYPE;
@@ -144,7 +147,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         buttonYes = findViewById(R.id.buttonYes);
         buttonNo = findViewById(R.id.buttonNo);
         buttonAdd = findViewById(R.id.buttonAdd);
-        circleImageView = findViewById(R.id.dailyServiceOrFamilyMemberProfilePic);
+        circleImageView = findViewById(R.id.visitorOrDailyServiceProfilePic);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick time edit field*/
         editPickTime.setInputType(InputType.TYPE_NULL);
@@ -309,7 +312,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.dailyServiceOrFamilyMemberProfilePic:
+            case R.id.visitorOrDailyServiceProfilePic:
                 imageSelectingOptions.show();
                 break;
             case R.id.buttonSelectFromContact:
@@ -486,17 +489,14 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * @param dailyServiceChild     root of DailyService reference
      * @param userDailyServiceChild root of users daily service reference
      */
-    private void storeDailyServiceDetails(final String dailyServiceChild, final String userDailyServiceChild) {
+    private void storeDailyServiceDetails(String dailyServiceChild, String userDailyServiceChild) {
         //Map daily service to mobile number
-        DatabaseReference dailyServiceMobileNumberReference = FirebaseDatabase.getInstance()
-                .getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
-                .child(Constants.FIREBASE_CHILD_ALL)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(mobileNumber);
+        DatabaseReference dailyServiceMobileNumberReference = PRIVATE_DAILYSERVICES_REFERENCE.child(mobileNumber);
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String dailyServiceUID;
+                //If daily service mobile number already exists we don't create a new UID for them
                 if (!dataSnapshot.exists()) {
                     dailyServiceUID = dailyServiceMobileNumberReference.push().getKey();
                     dailyServiceMobileNumberReference.setValue(dailyServiceUID);
@@ -505,11 +505,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 }
 
                 //Store daily service details in Firebase
-                DatabaseReference dailyServicePublicReference = FirebaseDatabase.getInstance()
-                        .getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
-                        .child(Constants.FIREBASE_CHILD_ALL)
-                        .child(Constants.FIREBASE_CHILD_PUBLIC)
-                        .child(dailyServiceChild);
+                DatabaseReference dailyServicePublicReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceChild);
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
                 String profilePhoto = "";
@@ -522,13 +518,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
 
                 //Store daily service UID under users data structure for future use
-                FirebaseDatabase.getInstance()
-                        .getReference(Constants.FIREBASE_CHILD_USERS)
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child(userUID)
+                DatabaseReference dailyServiceReference = PRIVATE_USERS_REFERENCE.child(userUID)
                         .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
-                        .child(userDailyServiceChild)
-                        .child(dailyServiceUID).setValue(true);
+                        .child(userDailyServiceChild);
+                dailyServiceReference.child(dailyServiceUID).setValue(true);
             }
 
             @Override

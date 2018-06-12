@@ -17,6 +17,7 @@ public class NammaApartmentVisitor {
     private String dateAndTimeOfVisit;
     private String status;
     private String inviterUID;
+    private String profilePhoto;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -54,20 +55,28 @@ public class NammaApartmentVisitor {
         return dateAndTimeOfVisit;
     }
 
-    public String getInviterUID() {
-        return inviterUID;
+    public void setDateAndTimeOfVisit(String dateAndTimeOfVisit) {
+        this.dateAndTimeOfVisit = dateAndTimeOfVisit;
     }
 
-    public String getStatus() {
-        return status;
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
 
-    public void setDateAndTimeOfVisit(String dateAndTimeOfVisit) {
-        this.dateAndTimeOfVisit = dateAndTimeOfVisit;
+    public String getInviterUID() {
+        return inviterUID;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public void setStatus(String status) {

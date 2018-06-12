@@ -46,7 +46,7 @@ public class Constants {
     public static final int PHONE_NUMBER_MAX_LENGTH = 10;
     public static final int EDIT_TEXT_EMPTY_LENGTH = 0;
     public static final int EDIT_TEXT_MIN_LENGTH = 0;
-    public static final String COUNTRY_CODE = "+91";
+    public static final String COUNTRY_CODE_IN = "+91";
 
     /* ------------------------------------------------------------- *
      * Login/OTP Constants
@@ -59,20 +59,18 @@ public class Constants {
      * ------------------------------------------------------------- */
 
     public static final String FIREBASE_CHILD_ALL = "all";
-    //TODO: Change the key to "apartments" in firebase
-    public static final String FIREBASE_CHILD_APARTMENTS = "Apartments";
+    public static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
     private static final String FIREBASE_CHILD_CITIES = "cities";
     private static final String FIREBASE_CHILD_CLIENTS = "clients";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
-    public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
+    private static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
     public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_FAMILYMEMBERS = "familyMembers";
-    //TODO: Change the key to "flats" in firebase
-    public static final String FIREBASE_CHILD_FLATS = "Flats";
+    public static final String FIREBASE_CHILD_FLATS = "flats";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -87,14 +85,13 @@ public class Constants {
     public static final String FIREBASE_MYMILKMAN = "myMilkman";
     public static final String FIREBASE_MYLAUNDRY = "myLaundry";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
-    private static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
+    public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_PUBLIC = "public";
-    //TODO: Change the key to "socieities" in firebase
-    public static final String FIREBASE_CHILD_SOCIETIES = "Societies";
+    public static final String FIREBASE_CHILD_SOCIETIES = "societies";
     public static final String FIREBASE_CHILD_USERS = "users";
-    private static final String FIREBASE_CHILD_VISITORS = "visitors";
+    public static final String FIREBASE_CHILD_VISITORS = "visitors";
 
     public static final int FIREBASE_CHILD_RATING = 3;
     public static final String NOT_ENTERED = "Not Entered";
@@ -108,15 +105,12 @@ public class Constants {
     private static final DatabaseReference VISITORS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VISITORS);
     private static final DatabaseReference DAILYSERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DAILYSERVICES);
     private static final DatabaseReference PRIVATE_CLIENTS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CLIENTS).child(FIREBASE_CHILD_PRIVATE);
-
     public static final DatabaseReference CITIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_CITIES);
-
     public static final DatabaseReference PRIVATE_USERS_REFERENCE = USER_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_USERS_REFERENCE = USER_REFERENCE.child(FIREBASE_CHILD_ALL);
-
     private static final DatabaseReference ALL_DAILYSERVICES_REFERENCE = DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference PUBLIC_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
-
+    public static final DatabaseReference PRIVATE_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
     public static final DatabaseReference PREAPPROVED_VISITORS_MOBILE_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
 
@@ -132,6 +126,7 @@ public class Constants {
      * ------------------------------------------------------------- */
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
+
     public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
     public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;

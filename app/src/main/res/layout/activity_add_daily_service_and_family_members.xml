@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/dailyServiceOrFamilyMemberProfilePic"
+                android:id="@+id/visitorOrDailyServiceProfilePic"
                 android:layout_width="120dp"
                 android:layout_marginTop="5dp"
                 android:focusable="true"

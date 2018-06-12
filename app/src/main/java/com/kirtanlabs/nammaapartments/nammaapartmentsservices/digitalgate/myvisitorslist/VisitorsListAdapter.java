@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -87,7 +88,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
-
         //Since we need inviters name we get the details by inviter UID
         PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -100,6 +100,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                         holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
                         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
                         holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getFullName());
+                        Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto()).into(holder.visitorOrDailyServiceProfilePic);
                     }
 
                     @Override
@@ -246,6 +247,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         private final TextView textMessage;
         private final TextView textReschedule;
         private final TextView textCancel;
+        private final de.hdodenhof.circleimageview.CircleImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -267,6 +269,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textMessage = itemView.findViewById(R.id.textMessage);
             textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             //Setting Fonts for all the views on cardview
             textVisitorName.setTypeface(setLatoRegularFont(mCtx));

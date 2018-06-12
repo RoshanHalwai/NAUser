@@ -167,7 +167,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private void sendOTP() {
         setUpVerificationCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.COUNTRY_CODE_IN + userMobileNumber,
                 Constants.OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
@@ -202,6 +202,11 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 phoneVerificationId = s;
                 resendToken = forceResendingToken;
+            }
+
+            @Override
+            public void onCodeAutoRetrievalTimeOut(String s) {
+                super.onCodeAutoRetrievalTimeOut(s);
             }
         };
     }
@@ -251,7 +256,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
      */
     private void resendOTP() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.COUNTRY_CODE_IN + userMobileNumber,
                 Constants.OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
