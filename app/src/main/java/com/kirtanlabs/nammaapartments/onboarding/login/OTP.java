@@ -19,7 +19,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -215,8 +214,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 .addOnCompleteListener(this, (task) -> {
                     if (task.isSuccessful()) {
                         if (previousScreenTitle == R.string.login) {
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL).child(userMobileNumber);
+                            userPrivateInfo = Constants.ALL_USERS_REFERENCE.child(userMobileNumber);
                             userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

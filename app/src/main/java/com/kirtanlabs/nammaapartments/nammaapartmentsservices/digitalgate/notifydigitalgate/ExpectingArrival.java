@@ -14,13 +14,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 
 /**
@@ -60,7 +63,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     protected int getActivityTitle() {
         /*We use a common class for Expecting Cab Arrival and Package Arrival, we set the title
          * based on the user click on NotifyGate Home screen*/
-        if (getIntent().getIntExtra(Constants.ARRIVAL_TYPE, 0) == R.string.expecting_cab_arrival) {
+        if (getIntent().getIntExtra(ARRIVAL_TYPE, 0) == R.string.expecting_cab_arrival) {
             arrivalType = R.string.expecting_cab_arrival;
         } else {
             arrivalType = R.string.expecting_package_arrival;
@@ -92,20 +95,20 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         Button buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
         /*Setting font for all the views*/
-        textCabOrVendorTitle.setTypeface(Constants.setLatoBoldFont(this));
-        textDateTime.setTypeface(Constants.setLatoBoldFont(this));
-        textValidFor.setTypeface(Constants.setLatoBoldFont(this));
-        editPickDateTime.setTypeface(Constants.setLatoRegularFont(this));
-        editCabOrVendorValue.setTypeface(Constants.setLatoRegularFont(this));
-        button1hr.setTypeface(Constants.setLatoRegularFont(this));
-        button2hr.setTypeface(Constants.setLatoRegularFont(this));
-        button4hr.setTypeface(Constants.setLatoRegularFont(this));
-        button6hr.setTypeface(Constants.setLatoRegularFont(this));
-        button8hr.setTypeface(Constants.setLatoRegularFont(this));
-        button12hr.setTypeface(Constants.setLatoRegularFont(this));
-        button16hr.setTypeface(Constants.setLatoRegularFont(this));
-        button24hr.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
+        textCabOrVendorTitle.setTypeface(setLatoBoldFont(this));
+        textDateTime.setTypeface(setLatoBoldFont(this));
+        textValidFor.setTypeface(setLatoBoldFont(this));
+        editPickDateTime.setTypeface(setLatoRegularFont(this));
+        editCabOrVendorValue.setTypeface(setLatoRegularFont(this));
+        button1hr.setTypeface(setLatoRegularFont(this));
+        button2hr.setTypeface(setLatoRegularFont(this));
+        button4hr.setTypeface(setLatoRegularFont(this));
+        button6hr.setTypeface(setLatoRegularFont(this));
+        button8hr.setTypeface(setLatoRegularFont(this));
+        button12hr.setTypeface(setLatoRegularFont(this));
+        button16hr.setTypeface(setLatoRegularFont(this));
+        button24hr.setTypeface(setLatoRegularFont(this));
+        buttonNotifyGate.setTypeface(setLatoLightFont(this));
 
         /*Since we are using same layout for Expecting cab and package arrival we need to
          * set text for textCabOrVendorTitle to either Package Vendor Name or Cab Number*/

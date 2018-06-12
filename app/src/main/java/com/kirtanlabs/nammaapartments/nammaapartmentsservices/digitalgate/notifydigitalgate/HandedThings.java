@@ -11,8 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+
+import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 public class HandedThings extends BaseActivity implements View.OnClickListener {
 
@@ -47,7 +51,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     protected int getActivityTitle() {
         /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
          * based on the user click on NotifyGate Home screen*/
-        if (getIntent().getIntExtra(Constants.HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
+        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
             handed_Things_To = R.string.handed_things_to_my_guest;
         } else {
             handed_Things_To = R.string.handed_things_to_my_daily_services;
@@ -93,24 +97,24 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         buttonNo = findViewById(R.id.buttonNo);
 
         /*Setting fonts to the views*/
-        textVisitorAndServiceName.setTypeface(Constants.setLatoRegularFont(this));
-        textVisitorAndServiceType.setTypeface(Constants.setLatoRegularFont(this));
-        textInvitationDateAndRating.setTypeface(Constants.setLatoRegularFont(this));
-        textInvitationTime.setTypeface(Constants.setLatoRegularFont(this));
-        textInvitedByAndApartmentNo.setTypeface(Constants.setLatoRegularFont(this));
+        textVisitorAndServiceName.setTypeface(setLatoRegularFont(this));
+        textVisitorAndServiceType.setTypeface(setLatoRegularFont(this));
+        textInvitationDateAndRating.setTypeface(setLatoRegularFont(this));
+        textInvitationTime.setTypeface(setLatoRegularFont(this));
+        textInvitedByAndApartmentNo.setTypeface(setLatoRegularFont(this));
 
-        textVisitorNameAndServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorAndServiceTypeValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationDateAndRatingValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitedByAndApartmentNoValue.setTypeface(Constants.setLatoBoldFont(this));
+        textVisitorNameAndServiceNameValue.setTypeface(setLatoBoldFont(this));
+        textVisitorAndServiceTypeValue.setTypeface(setLatoBoldFont(this));
+        textInvitationDateAndRatingValue.setTypeface(setLatoBoldFont(this));
+        textInvitationTimeValue.setTypeface(setLatoBoldFont(this));
+        textInvitedByAndApartmentNoValue.setTypeface(setLatoBoldFont(this));
 
-        textGivenThings.setTypeface(Constants.setLatoBoldFont(this));
-        textDescription.setTypeface(Constants.setLatoBoldFont(this));
-        editDescription.setTypeface(Constants.setLatoRegularFont(this));
-        buttonYes.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNo.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
+        textGivenThings.setTypeface(setLatoBoldFont(this));
+        textDescription.setTypeface(setLatoBoldFont(this));
+        editDescription.setTypeface(setLatoRegularFont(this));
+        buttonYes.setTypeface(setLatoRegularFont(this));
+        buttonNo.setTypeface(setLatoRegularFont(this));
+        buttonNotifyGate.setTypeface(setLatoLightFont(this));
 
         /*Setting events for views*/
         buttonYes.setOnClickListener(this);

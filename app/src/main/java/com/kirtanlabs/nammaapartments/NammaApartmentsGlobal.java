@@ -11,6 +11,7 @@ public class NammaApartmentsGlobal extends Application {
      * Private Members
      * ------------------------------------------------------------- */
 
+    public static String userUID;
     private NammaApartmentUser nammaApartmentUser;
 
     /* ------------------------------------------------------------- *
@@ -27,6 +28,7 @@ public class NammaApartmentsGlobal extends Application {
 
     public void setNammaApartmentUser(NammaApartmentUser nammaApartmentUser) {
         this.nammaApartmentUser = nammaApartmentUser;
+        userUID = nammaApartmentUser.getUID();
     }
 
 }

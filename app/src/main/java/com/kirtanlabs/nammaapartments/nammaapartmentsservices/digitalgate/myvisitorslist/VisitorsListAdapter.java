@@ -17,10 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
@@ -28,6 +29,14 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invite
 import java.text.DateFormatSymbols;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -78,12 +87,26 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
-        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
-        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
-        holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
-        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-        holder.textInvitedByOrNumberOfFlatsValue.setText(((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser().getFullName());
+
+        //Since we need inviters name we get the details by inviter UID
+        PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+                        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+                        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
+                        holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
+                        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+                        holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getFullName());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
@@ -148,10 +171,10 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         TextView buttonCancel = rescheduleDialog.findViewById(R.id.buttonCancel);
 
         /*Setting Fonts for all the views*/
-        textPickDate.setTypeface(Constants.setLatoRegularFont(mCtx));
-        textPickTime.setTypeface(Constants.setLatoRegularFont(mCtx));
-        buttonReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
-        buttonCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+        textPickDate.setTypeface(setLatoRegularFont(mCtx));
+        textPickTime.setTypeface(setLatoRegularFont(mCtx));
+        buttonReschedule.setTypeface(setLatoRegularFont(mCtx));
+        buttonCancel.setTypeface(setLatoRegularFont(mCtx));
 
         /*Setting existing values*/
         editPickDate.setText(existingDate);
@@ -196,11 +219,8 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
         nammaApartmentVisitor.setDateAndTimeOfVisit(updatedDateAndTime);
         notifyItemChanged(position);
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference(Constants.FIREBASE_CHILD_VISITORS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
-                .child(nammaApartmentVisitor.getUid()).child(Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
+        PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid())
+                .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
     }
 
     /* ------------------------------------------------------------- *
@@ -249,20 +269,20 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textCancel = itemView.findViewById(R.id.textCancel);
 
             //Setting Fonts for all the views on cardview
-            textVisitorName.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textVisitorType.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textVisitorNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textVisitorTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textVisitorName.setTypeface(setLatoRegularFont(mCtx));
+            textVisitorType.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationDateOrServiceRating.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
+            textInvitedByOrNumberOfFlats.setTypeface(setLatoRegularFont(mCtx));
+            textVisitorNameValue.setTypeface(setLatoBoldFont(mCtx));
+            textVisitorTypeValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationDateOrServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitedByOrNumberOfFlatsValue.setTypeface(setLatoBoldFont(mCtx));
+            textCall.setTypeface(setLatoRegularFont(mCtx));
+            textMessage.setTypeface(setLatoRegularFont(mCtx));
+            textReschedule.setTypeface(setLatoRegularFont(mCtx));
+            textCancel.setTypeface(setLatoRegularFont(mCtx));
 
             //Setting events for items in card view
             textCall.setOnClickListener(this);
@@ -289,11 +309,8 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                     nammaApartmentVisitorList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
-                            .child(Constants.FIREBASE_CHILD_PRIVATE)
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child(Constants.FIREBASE_CHILD_MYVISITORS)
+                    PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                            .child(FIREBASE_CHILD_MYVISITORS)
                             .child(nammaApartmentVisitor.getUid())
                             .removeValue();
                     break;

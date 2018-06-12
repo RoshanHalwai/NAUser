@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import java.util.Map;
  * Created by Ashish Jha on 6/8/2018
  */
 
-class NammaApartmentDailyService {
+class NammaApartmentDailyService implements Serializable {
 
 
     /* ------------------------------------------------------------- *

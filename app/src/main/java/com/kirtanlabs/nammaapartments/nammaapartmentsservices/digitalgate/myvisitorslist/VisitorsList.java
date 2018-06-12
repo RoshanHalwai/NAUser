@@ -4,20 +4,21 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 
 public class VisitorsList extends BaseActivity {
 
@@ -68,25 +69,26 @@ public class VisitorsList extends BaseActivity {
      * ------------------------------------------------------------- */
 
     private void retrieveVisitorsDetailsFromFirebase() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myVisitorsReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .child(Constants.FIREBASE_CHILD_MYVISITORS);
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                .child(FIREBASE_CHILD_MYVISITORS)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    hideProgressIndicator();
+                }
                 for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
-                    DatabaseReference preApprovedVisitorReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_VISITORS)
-                            .child(Constants.FIREBASE_CHILD_PRIVATE)
-                            .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
                             .child(visitorsSnapshot.getKey());
                     preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
+                        public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
+                            NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
                             nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
                             adapter.notifyDataSetChanged();
+                            if (nammaApartmentVisitorList.size() == dataSnapshot.getChildrenCount()) {
+                                hideProgressIndicator();
+                            }
                         }
 
                         @Override
@@ -95,7 +97,6 @@ public class VisitorsList extends BaseActivity {
                         }
                     });
                 }
-                hideProgressIndicator();
             }
 
             @Override

@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -12,13 +11,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
+
+import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDAILYSERVICES;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
 
@@ -28,13 +31,11 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
+
     /* ------------------------------------------------------------- *
      * Public Members
      * ------------------------------------------------------------- */
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
-    private String service_name_value;
-    private String service_inTime_value;
-    private String service_type_value;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -87,6 +88,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textServiceNameValue.setText(nammaApartmentDailyService.getfullName());
         holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
+        holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textInvitedByOrNumberOfFlatsValue.setText("3");
 
         holder.textEdit.setText(R.string.edit);
@@ -94,11 +96,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
         /*Here we are changing edit icon*/
         holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit, 0, 0);
-
-        service_name_value = holder.textServiceNameValue.getText().toString();
-        service_inTime_value = holder.textInvitationTimeValue.getText().toString();
-        service_type_value = holder.textServiceTypeValue.getText().toString();
-
     }
 
     @Override
@@ -106,23 +103,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         return nammaApartmentDailyServiceList.size();
     }
 
-
-    /* ------------------------------------------------------------- *
-     * Private Methods
-     * ------------------------------------------------------------- */
-
-    /**
-     * This method is invoked when user clicks on Edit icon in the list and passes all daily service details in EditMy daily Services Details
-     */
-    private void editMyServiceDetails(String name, String inTime, String serviceType) {
-        Intent EditIntent = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
-        EditIntent.putExtra(Constants.SCREEN_TITLE, R.string.my_daily_services);
-        EditIntent.putExtra(Constants.NAME, name);
-        EditIntent.putExtra(Constants.MOBILE_NUMBER, "7895185103");    //TODO :  To change the mobile number here
-        EditIntent.putExtra(Constants.IN_TIME, inTime);
-        EditIntent.putExtra(Constants.SERVICE_TYPE, serviceType);
-        mCtx.startActivity(EditIntent);
-    }
     /* ------------------------------------------------------------- *
      * Daily Service Holder class
      * ------------------------------------------------------------- */
@@ -200,7 +180,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textCancel.setOnClickListener(this);
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
@@ -213,17 +192,18 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    editMyServiceDetails(service_name_value, service_inTime_value, service_type_value);
+                    Intent EditIntent = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
+                    EditIntent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
+                    EditIntent.putExtra(DAILY_SERVICE_OBJECT, nammaApartmentDailyService);
+                    mCtx.startActivity(EditIntent);
                     break;
                 case R.id.textCancel:
                     nammaApartmentDailyServiceList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
                     String dailyServiceType = "my" + nammaApartmentDailyService.getDailyServiceType();
-                    FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
-                            .child(Constants.FIREBASE_CHILD_PRIVATE)
-                            .child(((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser().getUID())
-                            .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                    PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                            .child(FIREBASE_CHILD_MYDAILYSERVICES)
                             .child(dailyServiceType)
                             .child(nammaApartmentDailyService.getUID())
                             .removeValue();

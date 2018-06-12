@@ -16,11 +16,8 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
@@ -30,6 +27,11 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_MAP;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDAILYSERVICES;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.SERVICE_TYPE;
 
 public class DailyServicesHome extends BaseActivity implements View.OnClickListener, DialogInterface.OnCancelListener, AdapterView.OnItemClickListener {
 
@@ -118,8 +120,8 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String selectedFromList = (String) listView.getItemAtPosition(position);
         Intent intent = new Intent(DailyServicesHome.this, AddDailyServiceAndFamilyMembers.class);
-        intent.putExtra(Constants.SCREEN_TITLE, R.string.my_daily_services);
-        intent.putExtra(Constants.SERVICE_TYPE, selectedFromList);
+        intent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
+        intent.putExtra(SERVICE_TYPE, selectedFromList);
         startActivity(intent);
         dialog.cancel();
     }
@@ -153,54 +155,46 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
      * from firebase.
      */
     private void retrieveDailyServicesDetailsFromFirebase() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
-        DatabaseReference dailyServicesReference = firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(userUID)
-                .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES);
-        dailyServicesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                .child(FIREBASE_CHILD_MYDAILYSERVICES)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot dailyServicesSnapshot : dataSnapshot.getChildren()) {
+            public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
+                if (myDailyServiceSnapshot.exists()) {
+                    for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                         String dailyServiceType = dailyServicesSnapshot.getKey();
-                        firebaseDatabase.getReference(Constants.FIREBASE_CHILD_USERS)
-                                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                                .child(userUID)
-                                .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
+                        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                                .child(FIREBASE_CHILD_MYDAILYSERVICES)
                                 .child(dailyServiceType)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                    firebaseDatabase.getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
-                                            .child(Constants.FIREBASE_CHILD_ALL)
-                                            .child(Constants.FIREBASE_CHILD_PUBLIC)
-                                            .child(DAILY_SERVICE_MAP.get(dataSnapshot.getKey()))
-                                            .child(Objects.requireNonNull(childSnapshot.getKey()))
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            NammaApartmentDailyService nammaApartmentDailyService = dataSnapshot.getValue(NammaApartmentDailyService.class);
-                                            Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(2));
-                                            nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
-                                            dailyServicesHomeAdapter.notifyDataSetChanged();
+                                    @Override
+                                    public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
+                                        for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
+                                            PUBLIC_DAILYSERVICES_REFERENCE
+                                                    .child(DAILY_SERVICE_MAP.get(dailyServiceUIDSnapshot.getKey()))
+                                                    .child(Objects.requireNonNull(childSnapshot.getKey()))
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dailyServiceDataSnapshot) {
+                                                            NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
+                                                            Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(2));
+                                                            nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
+                                                            dailyServicesHomeAdapter.notifyDataSetChanged();
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
                                         }
+                                    }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                                    }
+                                });
                     }
                 }
                 hideProgressIndicator();
