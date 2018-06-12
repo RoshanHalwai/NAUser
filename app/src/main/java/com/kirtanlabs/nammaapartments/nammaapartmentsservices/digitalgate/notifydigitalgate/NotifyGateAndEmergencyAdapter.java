@@ -10,13 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentService;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.emergency.RaiseAlarm;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
 
 import java.util.List;
+
+import static com.kirtanlabs.nammaapartments.Constants.ALARM_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -45,7 +49,7 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
     @Override
     public void onBindViewHolder(@NonNull NotifyGateAndEmergencyAdapter.NotifyGateHolder holder, int position) {
         NammaApartmentService nammaApartmentService = notificationServicesList.get(position);
-        holder.textNotification.setTypeface(Constants.setLatoRegularFont(mCtx));
+        holder.textNotification.setTypeface(setLatoRegularFont(mCtx));
         holder.textNotification.setText(nammaApartmentService.getServiceName());
         holder.imageNotificationService.setImageResource(nammaApartmentService.getServiceImage());
     }
@@ -78,13 +82,13 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
                 switch (position) {
                     case 0: {
                         Intent intent = new Intent(mCtx, ExpectingArrival.class);
-                        intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_cab_arrival);
+                        intent.putExtra(ARRIVAL_TYPE, R.string.expecting_cab_arrival);
                         mCtx.startActivity(intent);
                         break;
                     }
                     case 1: {
                         Intent intent = new Intent(mCtx, ExpectingArrival.class);
-                        intent.putExtra(Constants.ARRIVAL_TYPE, R.string.expecting_package_arrival);
+                        intent.putExtra(ARRIVAL_TYPE, R.string.expecting_package_arrival);
                         mCtx.startActivity(intent);
                         break;
                     }
@@ -95,13 +99,13 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
                     }
                     case 3: {
                         Intent intent = new Intent(mCtx, HandedThings.class);
-                        intent.putExtra(Constants.HANDED_THINGS_TO, R.string.handed_things_to_my_guest);
+                        intent.putExtra(HANDED_THINGS_TO, R.string.handed_things_to_my_guest);
                         mCtx.startActivity(intent);
                         break;
                     }
                     case 4: {
                         Intent intent = new Intent(mCtx, HandedThings.class);
-                        intent.putExtra(Constants.HANDED_THINGS_TO, R.string.handed_things_to_my_daily_services);
+                        intent.putExtra(HANDED_THINGS_TO, R.string.handed_things_to_my_daily_services);
                         mCtx.startActivity(intent);
                         break;
                     }
@@ -110,15 +114,15 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
                 Intent intent = new Intent(mCtx, RaiseAlarm.class);
                 switch (position) {
                     case 0: {
-                        intent.putExtra(Constants.ALARM_TYPE, R.string.medical_emergency);
+                        intent.putExtra(ALARM_TYPE, R.string.medical_emergency);
                         break;
                     }
                     case 1: {
-                        intent.putExtra(Constants.ALARM_TYPE, R.string.raise_fire_alarm);
+                        intent.putExtra(ALARM_TYPE, R.string.raise_fire_alarm);
                         break;
                     }
                     case 2: {
-                        intent.putExtra(Constants.ALARM_TYPE, R.string.raise_theft_alarm);
+                        intent.putExtra(ALARM_TYPE, R.string.raise_theft_alarm);
                         break;
                     }
                 }

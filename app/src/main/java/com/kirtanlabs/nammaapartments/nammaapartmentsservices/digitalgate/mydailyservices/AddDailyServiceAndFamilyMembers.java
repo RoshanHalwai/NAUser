@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -41,11 +42,13 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.kirtanlabs.nammaapartments.Constants.AFM_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.DS_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CARBIKECLEANERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CHILDDAYCARES;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_COOKS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYNEWSPAPERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DRIVERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
@@ -60,8 +63,15 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYLAUNDRY;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYMAID;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYMILKMAN;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.SERVICE_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
@@ -99,7 +109,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     protected int getActivityTitle() {
         /*We use a common class for Add Daily Service and Add Family Members, we set the title
          * based on the user click on MySweetHome screen and on click of listview on MyDailyServices*/
-        if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_sweet_home) {
+        if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_sweet_home) {
             return R.string.add_family_members_details_screen;
         } else {
             return R.string.add_my_service;
@@ -136,28 +146,31 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         buttonAdd = findViewById(R.id.buttonAdd);
         circleImageView = findViewById(R.id.dailyServiceOrFamilyMemberProfilePic);
 
+        /*We don't want the keyboard to be displayed when user clicks on the pick time edit field*/
+        editPickTime.setInputType(InputType.TYPE_NULL);
+
         /*Setting font for all the views*/
-        textDailyServiceOrFamilyMemberName.setTypeface(Constants.setLatoBoldFont(this));
-        textDailyServiceOrFamilyMemberMobile.setTypeface(Constants.setLatoBoldFont(this));
-        textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
-        textRelation.setTypeface(Constants.setLatoBoldFont(this));
-        textOr.setTypeface(Constants.setLatoBoldFont(this));
-        textTime.setTypeface(Constants.setLatoBoldFont(this));
-        textGrantAccess.setTypeface(Constants.setLatoBoldFont(this));
-        textDescriptionDailyService.setTypeface(Constants.setLatoBoldFont(this));
-        textDescriptionFamilyMember.setTypeface(Constants.setLatoBoldFont(this));
-        editDailyServiceOrFamilyMemberName.setTypeface(Constants.setLatoRegularFont(this));
-        editDailyServiceOrFamilyMemberMobile.setTypeface(Constants.setLatoRegularFont(this));
-        editFamilyMemberRelation.setTypeface(Constants.setLatoRegularFont(this));
-        editPickTime.setTypeface(Constants.setLatoRegularFont(this));
-        buttonSelectFromContact.setTypeface(Constants.setLatoLightFont(this));
-        buttonYes.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNo.setTypeface(Constants.setLatoRegularFont(this));
-        buttonAdd.setTypeface(Constants.setLatoLightFont(this));
+        textDailyServiceOrFamilyMemberName.setTypeface(setLatoBoldFont(this));
+        textDailyServiceOrFamilyMemberMobile.setTypeface(setLatoBoldFont(this));
+        textCountryCode.setTypeface(setLatoItalicFont(this));
+        textRelation.setTypeface(setLatoBoldFont(this));
+        textOr.setTypeface(setLatoBoldFont(this));
+        textTime.setTypeface(setLatoBoldFont(this));
+        textGrantAccess.setTypeface(setLatoBoldFont(this));
+        textDescriptionDailyService.setTypeface(setLatoBoldFont(this));
+        textDescriptionFamilyMember.setTypeface(setLatoBoldFont(this));
+        editDailyServiceOrFamilyMemberName.setTypeface(setLatoRegularFont(this));
+        editDailyServiceOrFamilyMemberMobile.setTypeface(setLatoRegularFont(this));
+        editFamilyMemberRelation.setTypeface(setLatoRegularFont(this));
+        editPickTime.setTypeface(setLatoRegularFont(this));
+        buttonSelectFromContact.setTypeface(setLatoLightFont(this));
+        buttonYes.setTypeface(setLatoRegularFont(this));
+        buttonNo.setTypeface(setLatoRegularFont(this));
+        buttonAdd.setTypeface(setLatoLightFont(this));
 
          /*Since we are using same layout for add my daily services and add my family members we need to show different layout
           according to the user choice.*/
-        if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_sweet_home) {
+        if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_sweet_home) {
             RelativeLayout relativeLayoutAccess = findViewById(R.id.relativeLayoutAccess);
             textRelation.setVisibility(View.VISIBLE);
             editFamilyMemberRelation.setVisibility(View.VISIBLE);
@@ -251,7 +264,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     if (resultCode == Activity.RESULT_OK) {
                         switch (service_type) {
                             case "Cook":
-                                storeDailyServiceDetails(Constants.FIREBASE_CHILD_COOKS, FIREBASE_MYCOOK);
+                                storeDailyServiceDetails(FIREBASE_CHILD_COOKS, FIREBASE_MYCOOK);
                                 break;
                             case "Maid":
                                 storeDailyServiceDetails(FIREBASE_CHILD_MAIDS, FIREBASE_MYMAID);
@@ -282,7 +295,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     }
                     break;
 
-                case Constants.AFM_OTP_STATUS_REQUEST_CODE:
+                case AFM_OTP_STATUS_REQUEST_CODE:
                     storeFamilyMembersDetails();
                     startActivity(new Intent(this, MySweetHome.class));
 
@@ -320,13 +333,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 pickTime(this, this);
                 break;
             case R.id.buttonAdd:
-                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
                     Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-                    service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
-                    intentButtonAdd.putExtra(Constants.MOBILE_NUMBER, mobileNumber);
-                    intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
-                    intentButtonAdd.putExtra(Constants.SERVICE_TYPE, service_type);
-                    startActivityForResult(intentButtonAdd, Constants.DS_OTP_STATUS_REQUEST_CODE);
+                    service_type = getIntent().getStringExtra(SERVICE_TYPE);
+                    intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
+                    intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_service);
+                    intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
+                    startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
                 } else {
                     if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
                             && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
@@ -334,9 +347,9 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                             openNotificationDialog();
                         else {
                             Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-                            intentButtonAdd.putExtra(Constants.MOBILE_NUMBER, mobileNumber);
-                            intentButtonAdd.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
-                            startActivityForResult(intentButtonAdd, Constants.AFM_OTP_STATUS_REQUEST_CODE);
+                            intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
+                            intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+                            startActivityForResult(intentButtonAdd, AFM_OTP_STATUS_REQUEST_CODE);
                         }
                     }
                 }
@@ -391,7 +404,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      */
     private void updateOTPDescription() {
         if (getIntent().getExtras() != null) {
-            service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+            service_type = getIntent().getStringExtra(SERVICE_TYPE);
             String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
             textDescriptionDailyService.setText(description);
         }
@@ -402,8 +415,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      */
     private void navigatingToOTPScreen() {
         Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-        intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
-        intentNotification.putExtra(Constants.SERVICE_TYPE, "Family Member");
+        intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+        intentNotification.putExtra(SERVICE_TYPE, "Family Member");
         startActivity(intentNotification);
     }
 
@@ -447,9 +460,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 case 1:
                     pickImageFromGallery();
                     break;
-                case 2:
-                    imageSelectingOptions.cancel();
             }
+            imageSelectingOptions.cancel();
         });
     }
 
@@ -570,7 +582,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
                     textDescriptionDailyService.setVisibility(View.GONE);
                     buttonAdd.setVisibility(View.GONE);
                 }
@@ -603,7 +615,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
                     textDescriptionDailyService.setVisibility(View.GONE);
                     buttonAdd.setVisibility(View.GONE);
                 }

@@ -21,12 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentUser;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
@@ -180,20 +178,12 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
                 flatNumber, fullName, mobileNumber, societyName, tenantType, userUID);
 
-        /*Store this instance to Global class for future use*/
-        ((NammaApartmentsGlobal) getApplicationContext())
-                .setNammaApartmentUser(nammaApartmentUser);
-
         /*Mapping Mobile Number to UID in firebase under users->all*/
-        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
-                .child(Constants.FIREBASE_CHILD_ALL)
-                .child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+        Constants.ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
                 .setValue(userUID);
 
         /*Storing user details in firebase under users->private->uid*/
-        FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(userUID).setValue(nammaApartmentUser);
+        Constants.PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
     }
 
     @Override
@@ -262,44 +252,35 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * @param viewId of edit text views
      */
     private void searchItemInList(int viewId) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
         itemsInList.clear();
         switch (viewId) {
             case R.id.editCity:
                 hideViews(R.id.editCity);
-                updateItemsInList(database.getReference("clients")
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child("cities"));
+                updateItemsInList(Constants.CITIES_REFERENCE);
                 break;
             case R.id.editSociety:
                 hideViews(R.id.editSociety);
-                updateItemsInList(database.getReference("clients")
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child("cities")
+                updateItemsInList(Constants.CITIES_REFERENCE
                         .child(editCity.getText().toString())
-                        .child("Societies"));
+                        .child(Constants.FIREBASE_CHILD_SOCIETIES));
                 break;
             case R.id.editApartment:
                 hideViews(R.id.editApartment);
-                updateItemsInList(database.getReference("clients")
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child("cities")
+                updateItemsInList(Constants.CITIES_REFERENCE
                         .child(editCity.getText().toString())
-                        .child("Societies")
+                        .child(Constants.FIREBASE_CHILD_SOCIETIES)
                         .child(editSociety.getText().toString())
-                        .child("Apartments"));
+                        .child(Constants.FIREBASE_CHILD_APARTMENTS));
                 break;
             case R.id.editFlat:
                 hideViews(R.id.editFlat);
-                updateItemsInList(database.getReference("clients")
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child("cities")
+                updateItemsInList(Constants.CITIES_REFERENCE
                         .child(editCity.getText().toString())
-                        .child("Societies")
+                        .child(Constants.FIREBASE_CHILD_SOCIETIES)
                         .child(editSociety.getText().toString())
-                        .child("Apartments")
+                        .child(Constants.FIREBASE_CHILD_APARTMENTS)
                         .child(editApartment.getText().toString())
-                        .child("Flats"));
+                        .child(Constants.FIREBASE_CHILD_FLATS));
                 break;
         }
     }
