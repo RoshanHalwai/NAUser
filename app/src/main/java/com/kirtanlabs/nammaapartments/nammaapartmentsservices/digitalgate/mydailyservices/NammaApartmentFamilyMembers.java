@@ -1,12 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
-/**
- * KirtanLabs Pvt. Ltd.
- * Created by Ashish Jha on 6/8/2018
- */
-
-class NammaApartmentDailyServices {
-
+class NammaApartmentFamilyMembers {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -14,23 +8,21 @@ class NammaApartmentDailyServices {
 
     private String fullName;
     private String phoneNumber;
-    private String profilePhoto;
-    private Boolean providedThings;
-    private int rating;
+    private String relation;
+    private Boolean grantedAccess;
 
     /* ------------------------------------------------------------- *
      * Constructors
      * ------------------------------------------------------------- */
 
-    public NammaApartmentDailyServices() {
+    public NammaApartmentFamilyMembers() {
     }
 
-    NammaApartmentDailyServices(String fullName, String phoneNumber, String profilePhoto, boolean providedThings, int rating) {
+    NammaApartmentFamilyMembers(String fullName, String phoneNumber, String relation, boolean grantedAccess) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
-        this.profilePhoto = profilePhoto;
-        this.providedThings = providedThings;
-        this.rating = rating;
+        this.relation = relation;
+        this.grantedAccess = grantedAccess;
     }
 
     /* ------------------------------------------------------------- *
@@ -41,20 +33,16 @@ class NammaApartmentDailyServices {
         return fullName;
     }
 
-    public String getPhoneNumber() {
+    public String getphoneNumber() {
         return phoneNumber;
     }
 
-    public String getProfilePhoto() {
-        return profilePhoto;
+    public String getrelation() {
+        return relation;
     }
 
-    public Boolean getProvidedThings() {
-        return providedThings;
-    }
-
-    public int getRating() {
-        return rating;
+    public Boolean getgrantedAccess() {
+        return grantedAccess;
     }
 
 }

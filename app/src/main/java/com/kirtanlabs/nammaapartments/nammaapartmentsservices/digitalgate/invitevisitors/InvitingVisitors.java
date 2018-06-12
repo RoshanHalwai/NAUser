@@ -25,14 +25,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.io.IOException;
@@ -45,9 +43,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_MOBILE_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -109,17 +115,17 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         editPickDateTime.setInputType(InputType.TYPE_NULL);
 
         /*Setting font for all the views*/
-        textVisitorName.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorMobile.setTypeface(Constants.setLatoBoldFont(this));
-        textOr.setTypeface(Constants.setLatoBoldFont(this));
-        textDateTime.setTypeface(Constants.setLatoBoldFont(this));
-        textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
-        editPickDateTime.setTypeface(Constants.setLatoRegularFont(this));
-        textDescription.setTypeface(Constants.setLatoBoldFont(this));
-        editVisitorName.setTypeface(Constants.setLatoRegularFont(this));
-        editVisitorMobile.setTypeface(Constants.setLatoRegularFont(this));
-        buttonSelectFromContact.setTypeface(Constants.setLatoLightFont(this));
-        buttonInvite.setTypeface(Constants.setLatoLightFont(this));
+        textVisitorName.setTypeface(setLatoBoldFont(this));
+        textVisitorMobile.setTypeface(setLatoBoldFont(this));
+        textOr.setTypeface(setLatoBoldFont(this));
+        textDateTime.setTypeface(setLatoBoldFont(this));
+        textCountryCode.setTypeface(setLatoItalicFont(this));
+        editPickDateTime.setTypeface(setLatoRegularFont(this));
+        textDescription.setTypeface(setLatoBoldFont(this));
+        editVisitorName.setTypeface(setLatoRegularFont(this));
+        editVisitorMobile.setTypeface(setLatoRegularFont(this));
+        buttonSelectFromContact.setTypeface(setLatoLightFont(this));
+        buttonInvite.setTypeface(setLatoLightFont(this));
 
         /*Setting event for views */
         circleImageInvitingVisitors.setOnClickListener(this);
@@ -295,9 +301,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 case 1:
                     pickImageFromGallery();
                     break;
-                case 2:
-                    imageSelectingOptions.cancel();
             }
+            imageSelectingOptions.cancel();
         });
     }
 
@@ -422,62 +427,43 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * Stores Visitor's record in Firebase
      */
     private void storeVisitorDetailsInFirebase() {
-        //Map Mobile number with visitor's UID
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference preApprovedVisitorsMobileNumberReference = Constants.FIREBASE_DATABASE
-                .getReference(Constants.FIREBASE_CHILD_VISITORS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
-        String visitorUID = preApprovedVisitorsMobileNumberReference.push().getKey();
-        preApprovedVisitorsMobileNumberReference.child(mobileNumber).child(visitorUID).setValue(true);
-
-        //Store Visitor's UID under Users->myVisitors Child
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            String inviterUID = firebaseUser.getUid();
-            DatabaseReference myVisitorsReference = Constants.FIREBASE_DATABASE
-                    .getReference(Constants.FIREBASE_CHILD_USERS)
-                    .child(Constants.FIREBASE_CHILD_PRIVATE)
-                    .child(inviterUID)
-                    .child(Constants.FIREBASE_CHILD_MYVISITORS);
-            myVisitorsReference.child(visitorUID).setValue(true);
-
-            //Add Visitor record under visitors->private->preApprovedVisitors
-            DatabaseReference preApprovedVisitorsReference = Constants.FIREBASE_DATABASE
-                    .getReference(Constants.FIREBASE_CHILD_VISITORS)
-                    .child(Constants.FIREBASE_CHILD_PRIVATE)
-                    .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
-                    .child(visitorUID);
-            String visitorName = editVisitorName.getText().toString();
-            String visitorMobile = editVisitorMobile.getText().toString();
-            String visitorDateTime = editPickDateTime.getText().toString();
-            NammaApartmentVisitor nammaApartmentVisitor = new NammaApartmentVisitor(visitorUID,
-                    visitorName, visitorMobile, visitorDateTime, Constants.NOT_ENTERED, inviterUID);
-            uploadFile(visitorUID, selectedImage, preApprovedVisitorsReference, nammaApartmentVisitor);
-        }
-    }
-
-    private void uploadFile(final String visitorUID, final Uri filePath, final DatabaseReference preApprovedVisitorsReference, NammaApartmentVisitor nammaApartmentVisitor) {
-        //checking if file is available
         //displaying progress dialog while image is uploading
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Inviting your Visitor");
         progressDialog.show();
 
+        //Map Mobile number with visitor's UID
+        DatabaseReference preApprovedVisitorsMobileNumberReference = PREAPPROVED_VISITORS_MOBILE_REFERENCE;
+        String visitorUID = preApprovedVisitorsMobileNumberReference.push().getKey();
+        preApprovedVisitorsMobileNumberReference.child(mobileNumber).child(visitorUID).setValue(true);
+
+        //Store Visitor's UID under Users->myVisitors Child
+        DatabaseReference preApprovedVisitorUID = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                .child(FIREBASE_CHILD_MYVISITORS);
+        preApprovedVisitorUID.child(visitorUID).setValue(true);
+
+        //Add Visitor record under visitors->private->preApprovedVisitors
+        String visitorName = editVisitorName.getText().toString();
+        String visitorMobile = editVisitorMobile.getText().toString();
+        String visitorDateTime = editPickDateTime.getText().toString();
+        NammaApartmentVisitor nammaApartmentVisitor = new NammaApartmentVisitor(visitorUID,
+                visitorName, visitorMobile, visitorDateTime, Constants.NOT_ENTERED, NammaApartmentsGlobal.userUID);
+
         //getting the storage reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
-                .child(visitorUID);
+                .child(nammaApartmentVisitor.getUid());
 
-        //adding the file to reference
-        storageReference.putFile(filePath)
+        //adding the profile photo to storage reference and visitor data to real time database
+        storageReference.putFile(selectedImage)
                 .addOnSuccessListener(taskSnapshot -> {
                     //creating the upload object to store uploaded image details
                     nammaApartmentVisitor.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
-                    //adding an upload to firebase database
-                    preApprovedVisitorsReference.setValue(nammaApartmentVisitor);
+                    //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
+                    DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid());
+                    preApprovedVisitorData.setValue(nammaApartmentVisitor);
 
                     //dismissing the progress dialog
                     progressDialog.dismiss();

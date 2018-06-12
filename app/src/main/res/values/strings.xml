@@ -99,6 +99,7 @@
     <string name="invite_visitors">Invite Visitors</string>
     <string name="my_visitors_list">My Visitors List</string>
     <string name="my_daily_services">My Daily Services</string>
+    <string name="my_family_members">My Family Members</string>
     <string name="notify_digital_gate">Notify Digital Gate</string>
     <string name="my_sweet_home">My Sweet Home</string>
     <string name="emergency">Emergency</string>
@@ -122,7 +123,7 @@
     <string name="type">Type:</string>
     <string name="date">Date:</string>
     <string name="time">In Time:</string>
-    <string name="invited_by">Inviter</string>
+    <string name="invited_by">Inviter:</string>
     <string name="call">Call</string>
     <string name="message">Message</string>
     <string name="reschedule">Reschedule</string>

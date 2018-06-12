@@ -18,15 +18,24 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
 import java.util.Locale;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.GRANTED_ACCESS_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.SERVICE_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 
 public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
@@ -64,7 +73,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     protected int getActivityTitle() {
         /*We use a common class for Edit Daily Service Details and Edit Family Members details, we set the title
          * based on the user click on listview of MySweetHome and MyDailyServices*/
-        if (getIntent().getIntExtra(Constants.SCREEN_TITLE, 0) == R.string.my_sweet_home) {
+        if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_sweet_home) {
             screenTitle = R.string.edit_my_family_member_details;
         } else {
             screenTitle = R.string.edit_my_daily_service_details;
@@ -97,18 +106,18 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         editPickInTime.setInputType(InputType.TYPE_NULL);
 
         /*Setting font for all the views*/
-        textMemberAndServiceName.setTypeface(Constants.setLatoBoldFont(this));
-        textMemberAndServiceMobile.setTypeface(Constants.setLatoBoldFont(this));
-        textCountryCode.setTypeface(Constants.setLatoItalicFont(this));
-        textInTime.setTypeface(Constants.setLatoBoldFont(this));
-        textGrantAccess.setTypeface(Constants.setLatoBoldFont(this));
-        textDescription.setTypeface(Constants.setLatoBoldFont(this));
-        editMemberAndServiceName.setTypeface(Constants.setLatoRegularFont(this));
-        editMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
-        editPickInTime.setTypeface(Constants.setLatoRegularFont(this));
-        buttonYes.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNo.setTypeface(Constants.setLatoRegularFont(this));
-        buttonUpdate.setTypeface(Constants.setLatoLightFont(this));
+        textMemberAndServiceName.setTypeface(setLatoBoldFont(this));
+        textMemberAndServiceMobile.setTypeface(setLatoBoldFont(this));
+        textCountryCode.setTypeface(setLatoItalicFont(this));
+        textInTime.setTypeface(setLatoBoldFont(this));
+        textGrantAccess.setTypeface(setLatoBoldFont(this));
+        textDescription.setTypeface(setLatoBoldFont(this));
+        editMemberAndServiceName.setTypeface(setLatoRegularFont(this));
+        editMobileNumber.setTypeface(setLatoRegularFont(this));
+        editPickInTime.setTypeface(setLatoRegularFont(this));
+        buttonYes.setTypeface(setLatoRegularFont(this));
+        buttonNo.setTypeface(setLatoRegularFont(this));
+        buttonUpdate.setTypeface(setLatoLightFont(this));
 
         /*To fill Details Automatically in all EditTexts when screen is loaded*/
         getMyDailyServiceAndFamilyMemberDetails();
@@ -179,8 +188,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                             navigatingToOTPScreen();
                         } else {
                             Intent myDailyServiceIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, DailyServicesHome.class);
-                            myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            myDailyServiceIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            myDailyServiceIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                            myDailyServiceIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myDailyServiceIntent);
                         }
                     } else {
@@ -225,21 +234,20 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
      * in editText accordingly
      */
     private void getMyDailyServiceAndFamilyMemberDetails() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        assert bundle != null;
-        name = bundle.getString(Constants.NAME);
-        mobile = bundle.getString(Constants.MOBILE_NUMBER);
+        NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
+        name = nammaApartmentDailyService.getfullName();
+        mobile = nammaApartmentDailyService.getPhoneNumber();
         editMemberAndServiceName.setText(name);
+        editMemberAndServiceName.setSelection(name.length());
         editMobileNumber.setText(mobile);
         if (screenTitle == R.string.edit_my_daily_service_details) {
-            inTime = bundle.getString(Constants.IN_TIME);
-            service_type = bundle.getString(Constants.SERVICE_TYPE);
+            inTime = nammaApartmentDailyService.getTimeOfVisit();
+            service_type = nammaApartmentDailyService.getDailyServiceType();
             editPickInTime.setText(inTime);
             String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
             textDescription.setText(description);
         } else {
-            granted_access_type = bundle.getString(Constants.GRANTED_ACCESS_TYPE);
+            granted_access_type = getIntent().getStringExtra(GRANTED_ACCESS_TYPE);
             textDescription.setText(getResources().getString(R.string.otp_message_family_member));
         }
     }
@@ -370,11 +378,11 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private void navigatingToOTPScreen() {
         Intent intentNotification = new Intent(EditDailyServicesAndFamilyMemberDetails.this, OTP.class);
         if (screenTitle == R.string.edit_my_daily_service_details) {
-            intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_my_service);
-            intentNotification.putExtra(Constants.SERVICE_TYPE, service_type);
+            intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_service);
+            intentNotification.putExtra(SERVICE_TYPE, service_type);
         } else {
-            intentNotification.putExtra(Constants.SCREEN_TITLE, R.string.add_family_members_details_screen);
-            intentNotification.putExtra(Constants.SERVICE_TYPE, "Family Member");
+            intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+            intentNotification.putExtra(SERVICE_TYPE, "Family Member");
         }
         startActivity(intentNotification);
     }
@@ -384,8 +392,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
      */
     private void navigatingToMySweetHomeScreen() {
         Intent mySweetHomeIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, MySweetHome.class);
-        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mySweetHomeIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        mySweetHomeIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mySweetHomeIntent);
     }
 }
