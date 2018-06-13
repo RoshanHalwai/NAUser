@@ -38,6 +38,7 @@ public class Constants {
     public static final String FULL_NAME = "full_name";
     public static final String EMAIL_ID = "email_id";
     public static final String DAILY_SERVICE_OBJECT = "daily_service_object";
+    public static final String FAMILY_MEMBER_OBJECT = "family_member_object";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -104,11 +105,14 @@ public class Constants {
     private static final DatabaseReference USER_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_USERS);
     private static final DatabaseReference VISITORS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VISITORS);
     private static final DatabaseReference DAILYSERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DAILYSERVICES);
+    private static final DatabaseReference FAMILYMEMBERS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_FAMILYMEMBERS);
     private static final DatabaseReference PRIVATE_CLIENTS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CLIENTS).child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference CITIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_CITIES);
     public static final DatabaseReference PRIVATE_USERS_REFERENCE = USER_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_USERS_REFERENCE = USER_REFERENCE.child(FIREBASE_CHILD_ALL);
     private static final DatabaseReference ALL_DAILYSERVICES_REFERENCE = DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL);
+    public static final DatabaseReference ALL_FAMILYMEMBERS_REFERENCE = FAMILYMEMBERS_REFERENCE.child(FIREBASE_CHILD_ALL);
+    public static final DatabaseReference PUBLIC_FAMILYMEMBERS_REFERENCE = FAMILYMEMBERS_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PUBLIC_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PRIVATE_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORS);

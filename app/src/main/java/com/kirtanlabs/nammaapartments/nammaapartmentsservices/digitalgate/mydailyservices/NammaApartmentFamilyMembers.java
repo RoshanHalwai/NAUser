@@ -1,6 +1,8 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
-class NammaApartmentFamilyMembers {
+import java.io.Serializable;
+
+public class NammaApartmentFamilyMembers implements Serializable {
 
     /* ------------------------------------------------------------- *
      * Private Members

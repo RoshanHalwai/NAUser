@@ -300,7 +300,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
                 case AFM_OTP_STATUS_REQUEST_CODE:
                     storeFamilyMembersDetails();
-                    startActivity(new Intent(this, MySweetHome.class));
+                    Intent MySweetHomeIntent = new Intent(this, MySweetHome.class);
+                    MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(MySweetHomeIntent);
 
             }
         }
