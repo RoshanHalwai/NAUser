@@ -27,7 +27,6 @@ import android.widget.TimePicker;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -43,6 +42,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.AFM_OTP_STATUS_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.DS_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
@@ -55,6 +55,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCARBIKECLEANER;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYFAMILYMEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYCHILDDAYCARE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYCOOK;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYDAILYNEWSPAPER;
@@ -535,32 +536,49 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * Store family member's details to firebase and map them to the users family members for future use
      */
     private void storeFamilyMembersDetails() {
-        //Map family member's mobile number with uid
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference familyMembersMobileNumberReference = database
-                .getReference(Constants.FIREBASE_FAMILYMEMBERS)
-                .child(Constants.FIREBASE_CHILD_ALL);
-        String familyMemberUID = familyMembersMobileNumberReference.push().getKey();
-        familyMembersMobileNumberReference.child(mobileNumber).setValue(familyMemberUID);
+        //Map family member's mobile number with uid in users->all
+        DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
+        familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String familyMemberUID;
+                //If family members mobile number already exists we don't create a new UID for them
+                if (!dataSnapshot.exists()) {
+                    familyMemberUID = familyMemberMobileNumberReference.push().getKey();
+                    familyMemberMobileNumberReference.setValue(familyMemberUID);
+                } else {
+                    familyMemberUID = dataSnapshot.getValue().toString();
+                }
 
-        //Store family member's details in Firebase
-        DatabaseReference familyMemberReference = database
-                .getReference(Constants.FIREBASE_FAMILYMEMBERS)
-                .child(Constants.FIREBASE_CHILD_PUBLIC);
-        String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
-        String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
-        String relation = familyMemberRelation;
-        NammaApartmentFamilyMembers nammaApartmentFamilyMembers = new NammaApartmentFamilyMembers(fullName,
-                phoneNumber, relation, grantedAccess);
-        familyMemberReference.child(familyMemberUID).setValue(nammaApartmentFamilyMembers);
+                //Store family member's UID under users data structure for future use
+                String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
+                String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
+                String profilePhoto = "";
+                String relation = familyMemberRelation;
+                String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
+                NammaApartmentFamilyMembers nammaApartmentFamilyMembers = new NammaApartmentFamilyMembers(fullName,
+                        phoneNumber, profilePhoto, relation, false);
+                nammaApartmentFamilyMembers.getOwnersUID().put(userUID, true);
+                DatabaseReference familyMemberReference = PRIVATE_USERS_REFERENCE.child(userUID)
+                        .child(Constants.FIREBASE_CHILD_MYFAMILYMEMBERS);
+                familyMemberReference.child(familyMemberUID).setValue(nammaApartmentFamilyMembers);
 
-        //Store family member's UID under users data structure for future use
-        DatabaseReference myUsersReference = database
-                .getReference(Constants.FIREBASE_CHILD_USERS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID())
-                .child(Constants.FIREBASE_CHILD_MYFAMILYMEMBERS);
-        myUsersReference.child(familyMemberUID).setValue(true);
+                //Add family member's UID to users->private
+                DatabaseReference familyMemberPrivateReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID);
+                familyMemberPrivateReference.setValue(familyMemberUID);
+
+                //Add user's UID, mapped with its value, to family member's UID (in myFamilyMembers)
+                DatabaseReference familyMembersReverseReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID)
+                        .child(FIREBASE_CHILD_MYFAMILYMEMBERS);
+                familyMembersReverseReference.child(userUID).setValue(true);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
