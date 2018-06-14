@@ -92,6 +92,30 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textDailyServiceOrFamilyMemberEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/email_id"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/editDailyServiceOrFamilyMemberEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="textCapWords"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor"
+                android:visibility="gone"/>
+
+            <TextView
                 android:id="@+id/textFamilyMemberRelation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

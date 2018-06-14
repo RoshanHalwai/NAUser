@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.onboarding.flatdetails;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 
 /**
@@ -158,8 +160,6 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.buttonContinue:
                 writeDataToFirebase();
-                startActivity(new Intent(this, NammaApartmentsHome.class));
-                finish();
         }
     }
 
@@ -167,26 +167,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * Store all user data to firebase
      */
     private void writeDataToFirebase() {
-        /*Create an instance of NammaApartmentUser class*/
-        String apartmentName = editApartment.getText().toString();
-        String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
         String flatNumber = editFlat.getText().toString();
-        String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
-        String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
-        String societyName = editSociety.getText().toString();
-        String tenantType = radioButtonTenant.isChecked()
-                ? radioButtonTenant.getText().toString()
-                : radioButtonOwner.getText().toString();
-        String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
-                flatNumber, fullName, mobileNumber, societyName, tenantType, userUID, false);
-
-        /*Mapping Mobile Number to UID in firebase under users->all*/
-        ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
-                .setValue(userUID);
-
-        /*Storing user details in firebase under users->private->uid*/
-        PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+        checkIsAdmin(flatNumber);
     }
 
     @Override
@@ -371,6 +353,57 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 findViewById(R.id.buttonContinue).setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    private void checkIsAdmin(String flatNumber) {
+        //Flats->flatNumber
+        DatabaseReference flatsReference = PRIVATE_FLATS_REFERENCE.child(flatNumber);
+        flatsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(MyFlatDetails.this);
+                    View notificationDialog = View.inflate(MyFlatDetails.this, R.layout.layout_dialog_grant_access_yes, null);
+                    alertNotificationDialog.setView(notificationDialog);
+                    //TODO: Change the text
+                    ((TextView) notificationDialog.findViewById(R.id.textAlertMessage)).setText("We have reached here");
+                    alertNotificationDialog.show();
+                } else {
+                    /*Create an instance of NammaApartmentUser class*/
+                    String apartmentName = editApartment.getText().toString();
+                    String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
+                    String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
+                    String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+                    String societyName = editSociety.getText().toString();
+                    String tenantType = radioButtonTenant.isChecked()
+                            ? radioButtonTenant.getText().toString()
+                            : radioButtonOwner.getText().toString();
+                    String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                    NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
+                            flatNumber, fullName, mobileNumber, societyName, tenantType, userUID,
+                            false, true, true
+                    );
+
+                    /*Mapping Mobile Number to UID in firebase under users->all*/
+                    ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+                            .setValue(userUID);
+
+                    /*Storing user details in firebase under users->private->uid*/
+                    PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+
+                    /*Adding user UID under Flats->FlatNumber*/
+                    flatsReference.child(userUID).setValue(true);
+
+                    startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
