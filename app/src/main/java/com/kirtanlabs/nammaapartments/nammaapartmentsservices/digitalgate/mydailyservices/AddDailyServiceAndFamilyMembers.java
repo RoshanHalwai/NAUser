@@ -24,12 +24,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
@@ -76,6 +78,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
@@ -541,37 +544,35 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String familyMemberUID;
+                String familyMemberUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 //If family members mobile number already exists we don't create a new UID for them
                 if (!dataSnapshot.exists()) {
-                    familyMemberUID = familyMemberMobileNumberReference.push().getKey();
                     familyMemberMobileNumberReference.setValue(familyMemberUID);
-                } else {
-                    familyMemberUID = dataSnapshot.getValue().toString();
                 }
+
+                //Adding family members UID as a child under myFamilyMembers parent
+                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_MYFAMILYMEMBERS).child(familyMemberUID);
+                userPrivateReference.child("relationship").setValue(familyMemberRelation);
 
                 //Store family member's UID under users data structure for future use
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
-                String profilePhoto = "";
-                String relation = familyMemberRelation;
-                String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
-                NammaApartmentFamilyMembers nammaApartmentFamilyMembers = new NammaApartmentFamilyMembers(fullName,
-                        phoneNumber, profilePhoto, relation, false);
-                nammaApartmentFamilyMembers.getOwnersUID().put(userUID, true);
-                DatabaseReference familyMemberReference = PRIVATE_USERS_REFERENCE.child(userUID)
-                        .child(Constants.FIREBASE_CHILD_MYFAMILYMEMBERS);
-                familyMemberReference.child(familyMemberUID).setValue(nammaApartmentFamilyMembers);
+                NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
 
-                //Add family member's UID to users->private
-                DatabaseReference familyMemberPrivateReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID);
-                familyMemberPrivateReference.setValue(familyMemberUID);
+                NammaApartmentUser familyMember = new NammaApartmentUser(
+                        currentNammaApartmentUser.getApartmentName(),
+                        currentNammaApartmentUser.getEmailId(),
+                        currentNammaApartmentUser.getFlatNumber(),
+                        fullName,
+                        phoneNumber,
+                        currentNammaApartmentUser.getSocietyName(),
+                        currentNammaApartmentUser.getTenantType(),
+                        familyMemberUID,
+                        false
+                );
 
-                //Add user's UID, mapped with its value, to family member's UID (in myFamilyMembers)
-                DatabaseReference familyMembersReverseReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID)
-                        .child(FIREBASE_CHILD_MYFAMILYMEMBERS);
-                familyMembersReverseReference.child(userUID).setValue(true);
-
+                /*Storing new family member details in firebase under users->private->family member uid*/
+                PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
             }
 
             @Override
