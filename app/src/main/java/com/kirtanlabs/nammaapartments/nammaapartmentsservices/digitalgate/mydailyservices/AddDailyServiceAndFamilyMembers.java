@@ -57,7 +57,6 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCARBIKECLEANER;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYFAMILYMEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYCHILDDAYCARE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYCOOK;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYDAILYNEWSPAPER;
@@ -69,6 +68,7 @@ import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUES
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -91,6 +91,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private EditText editPickTime;
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
+    private EditText editDailyServiceOrFamilyMemberEmail;
     private EditText editFamilyMemberRelation;
     private Button buttonAdd;
     private Button buttonYes;
@@ -101,7 +102,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private String familyMemberRelation;
     private AlertDialog imageSelectingOptions;
     private ListView listView;
-    private boolean grantedAccess = false;
+    private boolean grantedAccess;
     private boolean fieldsFilled;
 
     /*----------------------------------------------------
@@ -136,6 +137,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         /*Getting Id's for all the views*/
         TextView textDailyServiceOrFamilyMemberName = findViewById(R.id.textDailyServiceOrFamilyMemberName);
         TextView textDailyServiceOrFamilyMemberMobile = findViewById(R.id.textDailyServiceOrFamilyMemberMobile);
+        TextView textDailyServiceOrFamilyMemberEmail = findViewById(R.id.textDailyServiceOrFamilyMemberEmail);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         TextView textRelation = findViewById(R.id.textFamilyMemberRelation);
         TextView textOr = findViewById(R.id.textOr);
@@ -145,6 +147,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
         editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
+        editDailyServiceOrFamilyMemberEmail = findViewById(R.id.editDailyServiceOrFamilyMemberEmail);
         editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
@@ -159,6 +162,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         /*Setting font for all the views*/
         textDailyServiceOrFamilyMemberName.setTypeface(setLatoBoldFont(this));
         textDailyServiceOrFamilyMemberMobile.setTypeface(setLatoBoldFont(this));
+        textDailyServiceOrFamilyMemberEmail.setTypeface(setLatoBoldFont(this));
         textCountryCode.setTypeface(setLatoItalicFont(this));
         textRelation.setTypeface(setLatoBoldFont(this));
         textOr.setTypeface(setLatoBoldFont(this));
@@ -167,6 +171,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         textDescriptionDailyService.setTypeface(setLatoBoldFont(this));
         textDescriptionFamilyMember.setTypeface(setLatoBoldFont(this));
         editDailyServiceOrFamilyMemberName.setTypeface(setLatoRegularFont(this));
+        editDailyServiceOrFamilyMemberEmail.setTypeface(setLatoRegularFont(this));
         editDailyServiceOrFamilyMemberMobile.setTypeface(setLatoRegularFont(this));
         editFamilyMemberRelation.setTypeface(setLatoRegularFont(this));
         editPickTime.setTypeface(setLatoRegularFont(this));
@@ -181,6 +186,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             RelativeLayout relativeLayoutAccess = findViewById(R.id.relativeLayoutAccess);
             textRelation.setVisibility(View.VISIBLE);
             editFamilyMemberRelation.setVisibility(View.VISIBLE);
+            textDailyServiceOrFamilyMemberEmail.setVisibility(View.VISIBLE);
+            editDailyServiceOrFamilyMemberEmail.setVisibility(View.VISIBLE);
             relativeLayoutAccess.setVisibility(View.VISIBLE);
             buttonAdd.setVisibility(View.VISIBLE);
         } else {
@@ -223,6 +230,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                                 cursor.moveToFirst();
                                 int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                                 int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                                //int emailIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.);
                                 String phoneNo = cursor.getString(phoneIndex);
                                 String name = cursor.getString(nameIndex);
                                 String formattedPhoneNumber = phoneNo.replaceAll("\\D+", "");
@@ -351,15 +359,12 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
                     startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
                 } else {
-                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editFamilyMemberRelation})
+                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editDailyServiceOrFamilyMemberEmail, editFamilyMemberRelation})
                             && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
                         if (grantedAccess)
                             openNotificationDialog();
                         else {
-                            Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-                            intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
-                            intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
-                            startActivityForResult(intentButtonAdd, AFM_OTP_STATUS_REQUEST_CODE);
+                            navigatingToOTPScreen();
                         }
                     }
                 }
@@ -424,10 +429,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * We need to navigate to OTP Screen based on the user selection of giving access and also on not giving access.
      */
     private void navigatingToOTPScreen() {
-        Intent intentNotification = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-        intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
-        intentNotification.putExtra(SERVICE_TYPE, "Family Member");
-        startActivity(intentNotification);
+        Intent otpIntent = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+        otpIntent.putExtra(MOBILE_NUMBER, mobileNumber);
+        otpIntent.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+        otpIntent.putExtra(SERVICE_TYPE, "Family Member");
+        startActivityForResult(otpIntent, AFM_OTP_STATUS_REQUEST_CODE);
     }
 
     /**
@@ -554,28 +560,34 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 }
 
                 //Adding family members UID as a child under myFamilyMembers parent
-                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_MYFAMILYMEMBERS).child(familyMemberUID);
-                userPrivateReference.child("relationship").setValue(familyMemberRelation);
+/*                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_MYFAMILYMEMBERS);
+                userPrivateReference.child(familyMemberUID).setValue(true);*/
 
                 //Store family member's UID under users data structure for future use
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
+                String email = editDailyServiceOrFamilyMemberEmail.getText().toString();
                 NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
 
                 NammaApartmentUser familyMember = new NammaApartmentUser(
                         currentNammaApartmentUser.getApartmentName(),
-                        currentNammaApartmentUser.getEmailId(),
+                        email,
                         currentNammaApartmentUser.getFlatNumber(),
                         fullName,
                         phoneNumber,
                         currentNammaApartmentUser.getSocietyName(),
                         currentNammaApartmentUser.getTenantType(),
                         familyMemberUID,
+                        false,
+                        grantedAccess,
                         false
                 );
 
                 /*Storing new family member details in firebase under users->private->family member uid*/
                 PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
+
+                /*Storing user UID under Family Member's UID*/
+                PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber()).child(familyMemberUID).setValue(true);
             }
 
             @Override

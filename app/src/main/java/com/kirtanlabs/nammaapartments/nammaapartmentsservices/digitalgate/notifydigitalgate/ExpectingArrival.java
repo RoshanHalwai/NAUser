@@ -13,14 +13,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.text.DateFormatSymbols;
+import java.util.Arrays;
 import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCABS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDELIVERIES;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDIGITALGATE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -167,6 +175,12 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.buttonNotifyGate:
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
+                    if (arrivalType == R.string.expecting_cab_arrival) {
+                        storeDigitalGateDetails(FIREBASE_CHILD_MYCABS);
+
+                    } else {
+                        storeDigitalGateDetails(FIREBASE_CHILD_MYDELIVERIES);
+                    }
                     createNotifyGateDialog();
                 } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
@@ -206,6 +220,24 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
+
+    /**
+     * Store the details of Arriving Cabs and Delivery details to Firebase
+     */
+
+    private void storeDigitalGateDetails(String digitalGateChild) {
+        String cabDeliveryReference = editCabOrVendorValue.getText().toString();
+        String timeOfVisit = editPickDateTime.getText().toString();
+        String validFor = Arrays.toString(buttonIds);
+        String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
+        NammaApartmentDigitalGate nammaApartmentDigitalGate = new NammaApartmentDigitalGate(cabDeliveryReference, timeOfVisit, validFor);
+        nammaApartmentDigitalGate.getOwnersUID().put(userUID, true);
+        DatabaseReference digitaGateReference = PRIVATE_USERS_REFERENCE.child(userUID)
+                .child(FIREBASE_CHILD_MYDIGITALGATE);
+        digitaGateReference.child(digitalGateChild).setValue(nammaApartmentDigitalGate);
+
+    }
+
 
     private int getCarOrPackageArrivalTitle() {
         if (arrivalType == R.string.expecting_cab_arrival) {
