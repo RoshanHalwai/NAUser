@@ -15,6 +15,8 @@ public class NammaApartmentUser {
     private String tenantType;
     private String uid;
     private boolean verified;
+    private boolean grantedAccess;
+    private boolean admin;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -23,7 +25,9 @@ public class NammaApartmentUser {
     public NammaApartmentUser() {
     }
 
-    public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName, String phoneNumber, String societyName, String tenantType, String uid, boolean verified) {
+    public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName,
+                              String phoneNumber, String societyName, String tenantType, String uid,
+                              boolean verified, boolean grantedAccess, boolean admin) {
         this.apartmentName = apartmentName;
         this.emailId = emailId;
         this.flatNumber = flatNumber;
@@ -33,11 +37,21 @@ public class NammaApartmentUser {
         this.tenantType = tenantType;
         this.uid = uid;
         this.verified = verified;
+        this.grantedAccess = grantedAccess;
+        this.admin = admin;
     }
 
     /* ------------------------------------------------------------- *
      * Getters
      * ------------------------------------------------------------- */
+
+    public boolean isGrantedAccess() {
+        return grantedAccess;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
 
     public String getApartmentName() {
         return apartmentName;
