@@ -14,6 +14,7 @@ public class NammaApartmentUser {
     private String societyName;
     private String tenantType;
     private String uid;
+    private boolean verified;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -22,7 +23,7 @@ public class NammaApartmentUser {
     public NammaApartmentUser() {
     }
 
-    public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName, String phoneNumber, String societyName, String tenantType, String uid) {
+    public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName, String phoneNumber, String societyName, String tenantType, String uid, boolean verified) {
         this.apartmentName = apartmentName;
         this.emailId = emailId;
         this.flatNumber = flatNumber;
@@ -31,6 +32,7 @@ public class NammaApartmentUser {
         this.societyName = societyName;
         this.tenantType = tenantType;
         this.uid = uid;
+        this.verified = verified;
     }
 
     /* ------------------------------------------------------------- *
@@ -67,5 +69,9 @@ public class NammaApartmentUser {
 
     public String getUID() {
         return uid;
+    }
+
+    public boolean isVerified() {
+        return verified;
     }
 }

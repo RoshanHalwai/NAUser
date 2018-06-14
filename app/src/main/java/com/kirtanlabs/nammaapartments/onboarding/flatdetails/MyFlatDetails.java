@@ -33,6 +33,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/2/2018
@@ -176,14 +179,14 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 : radioButtonOwner.getText().toString();
         String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
-                flatNumber, fullName, mobileNumber, societyName, tenantType, userUID);
+                flatNumber, fullName, mobileNumber, societyName, tenantType, userUID, false);
 
         /*Mapping Mobile Number to UID in firebase under users->all*/
-        Constants.ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+        ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
                 .setValue(userUID);
 
         /*Storing user details in firebase under users->private->uid*/
-        Constants.PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+        PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
     }
 
     @Override

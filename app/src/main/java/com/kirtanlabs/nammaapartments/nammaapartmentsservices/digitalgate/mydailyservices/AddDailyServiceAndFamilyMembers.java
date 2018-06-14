@@ -24,13 +24,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
@@ -43,6 +44,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.AFM_OTP_STATUS_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.DS_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
@@ -55,6 +57,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCARBIKECLEANER;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYFAMILYMEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYCHILDDAYCARE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYCOOK;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_MYDAILYNEWSPAPER;
@@ -75,6 +78,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
@@ -538,32 +542,47 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * Store family member's details to firebase and map them to the users family members for future use
      */
     private void storeFamilyMembersDetails() {
-        //Map family member's mobile number with uid
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference familyMembersMobileNumberReference = database
-                .getReference(Constants.FIREBASE_FAMILYMEMBERS)
-                .child(Constants.FIREBASE_CHILD_ALL);
-        String familyMemberUID = familyMembersMobileNumberReference.push().getKey();
-        familyMembersMobileNumberReference.child(mobileNumber).setValue(familyMemberUID);
+        //Map family member's mobile number with uid in users->all
+        DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
+        familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String familyMemberUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                //If family members mobile number already exists we don't create a new UID for them
+                if (!dataSnapshot.exists()) {
+                    familyMemberMobileNumberReference.setValue(familyMemberUID);
+                }
 
-        //Store family member's details in Firebase
-        DatabaseReference familyMemberReference = database
-                .getReference(Constants.FIREBASE_FAMILYMEMBERS)
-                .child(Constants.FIREBASE_CHILD_PUBLIC);
-        String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
-        String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
-        String relation = familyMemberRelation;
-        NammaApartmentFamilyMembers nammaApartmentFamilyMembers = new NammaApartmentFamilyMembers(fullName,
-                phoneNumber, relation, grantedAccess);
-        familyMemberReference.child(familyMemberUID).setValue(nammaApartmentFamilyMembers);
+                //Adding family members UID as a child under myFamilyMembers parent
+                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_MYFAMILYMEMBERS).child(familyMemberUID);
+                userPrivateReference.child("relationship").setValue(familyMemberRelation);
 
-        //Store family member's UID under users data structure for future use
-        DatabaseReference myUsersReference = database
-                .getReference(Constants.FIREBASE_CHILD_USERS)
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID())
-                .child(Constants.FIREBASE_CHILD_MYFAMILYMEMBERS);
-        myUsersReference.child(familyMemberUID).setValue(true);
+                //Store family member's UID under users data structure for future use
+                String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
+                String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
+                NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+
+                NammaApartmentUser familyMember = new NammaApartmentUser(
+                        currentNammaApartmentUser.getApartmentName(),
+                        currentNammaApartmentUser.getEmailId(),
+                        currentNammaApartmentUser.getFlatNumber(),
+                        fullName,
+                        phoneNumber,
+                        currentNammaApartmentUser.getSocietyName(),
+                        currentNammaApartmentUser.getTenantType(),
+                        familyMemberUID,
+                        false
+                );
+
+                /*Storing new family member details in firebase under users->private->family member uid*/
+                PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
