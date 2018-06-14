@@ -34,7 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/button_margin"
         android:background="@color/nmBlack"
         android:text="@string/add_my_family_members"
         android:textAllCaps="false"

@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswe
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,16 +12,10 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails;
 
 import java.util.List;
-
-import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYFAMILYMEMBERS;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
 
@@ -31,13 +24,13 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
      * ------------------------------------------------------------- */
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private List<NammaApartmentFamilyMembers> nammaApartmentFamilyMembersList;
+    private List<NammaApartmentUser> nammaApartmentFamilyMembersList;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    MySweetHomeAdapter(List<NammaApartmentFamilyMembers> nammaApartmentFamilyMembers, Context mCtx) {
+    MySweetHomeAdapter(List<NammaApartmentUser> nammaApartmentFamilyMembers, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
         this.nammaApartmentFamilyMembersList = nammaApartmentFamilyMembers;
@@ -58,31 +51,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MySweetHomeHolder holder, int position) {
-        /*Since we are reusing the layouts we need to modify the Layout weight for Title
-         * and values, since in My Sweet Home list title take less space than Visitors
-         * list*/
-        LinearLayout.LayoutParams layoutTitleParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.1f
-        );
-        layoutTitleParams.setMargins(0, 40, 0, 0);
-        LinearLayout.LayoutParams layoutTitleValuesParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.8f
-        );
-        layoutTitleValuesParams.setMargins(0, 40, 0, 0);
-        LinearLayout.LayoutParams textGrantedAccessValueParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        textGrantedAccessValueParams.setMargins(0, 20, 0, 0);
-
-        holder.layoutTitle.setLayoutParams(layoutTitleParams);
-        holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
-        holder.textGrantedAccessValue.setLayoutParams(textGrantedAccessValueParams);
-
         String stringMemberName = mCtx.getResources().getString(R.string.name) + ":";
         String stringMemberRelation = mCtx.getResources().getString(R.string.relation) + ":";
 
@@ -91,10 +59,10 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         holder.textGrantedAccess.setText(R.string.granted_access);
 
         //Creating an instance of NammaApartmentFamilyMembers class and retrieving the values from Firebase.
-        NammaApartmentFamilyMembers nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
-        holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getfullName());
-        holder.textMemberRelationValue.setText(nammaApartmentFamilyMembers.getrelation());
-        boolean grantedAccess = nammaApartmentFamilyMembers.getgrantedAccess();
+        NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
+        holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getFullName());
+        holder.textMemberRelationValue.setText("Family Member");
+        boolean grantedAccess = nammaApartmentFamilyMembers.isGrantedAccess();
         holder.textGrantedAccessValue.setText(String.valueOf(grantedAccess));
 
         holder.textEdit.setText(R.string.edit);
@@ -196,7 +164,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
         @Override
         public void onClick(View v) {
-            int position = getLayoutPosition();
+            /*int position = getLayoutPosition();
             NammaApartmentFamilyMembers nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
             switch (v.getId()) {
                 case R.id.textCall:
@@ -219,7 +187,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                             .child(FIREBASE_CHILD_MYFAMILYMEMBERS)
                             .removeValue();
                     break;
-            }
+            }*/
         }
     }
 }

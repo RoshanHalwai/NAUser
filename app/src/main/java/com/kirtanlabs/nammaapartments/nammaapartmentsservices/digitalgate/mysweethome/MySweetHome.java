@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers;
@@ -20,16 +21,16 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydail
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYFAMILYMEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_FAMILYMEMBERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 
 public class MySweetHome extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-    private List<NammaApartmentFamilyMembers> nammaApartmentFamilyMembersList;
+    private List<NammaApartmentUser> nammaApartmentFamilyMembersList;
     private MySweetHomeAdapter mySweetHomeAdapter;
 
     /*---------------------------------------------------------
@@ -57,9 +58,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
 
         /*Getting Id for the button*/
         Button buttonAddFamilyMembers = findViewById(R.id.buttonAddFamilyMembers);
-
-        /*Setting Fonts for Add My Family Members Button*/
-        buttonAddFamilyMembers.setTypeface(Constants.setLatoLightFont(this));
+        buttonAddFamilyMembers.setTypeface(setLatoLightFont(this));
 
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -98,38 +97,38 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
      * ------------------------------------------------------------- */
 
     private void retrieveFamilyMembersDetailsFromFirebase() {
-        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                .child(FIREBASE_CHILD_MYFAMILYMEMBERS)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.exists()) {
-                            hideProgressIndicator();
-                        }
-                        for (DataSnapshot familyMemberSnapshot : dataSnapshot.getChildren()) {
-                            DatabaseReference familyMemberReference = PUBLIC_FAMILYMEMBERS_REFERENCE
-                                    .child(familyMemberSnapshot.getKey());
-                            familyMemberReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot familyMemberDataSnapshot) {
-                                    NammaApartmentFamilyMembers nammaApartmentFamilyMembers = familyMemberDataSnapshot.getValue(NammaApartmentFamilyMembers.class);
-                                    nammaApartmentFamilyMembersList.add(0, nammaApartmentFamilyMembers);
-                                    mySweetHomeAdapter.notifyDataSetChanged();
-                                }
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        DatabaseReference privateFlatReference = PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber());
+        privateFlatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
+                    if (flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
+                        continue;
+                    } else {
+                        DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
+                        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                NammaApartmentUser nammaApartmentFamilyMember = dataSnapshot.getValue(NammaApartmentUser.class);
+                                nammaApartmentFamilyMembersList.add(0, nammaApartmentFamilyMember);
+                                mySweetHomeAdapter.notifyDataSetChanged();
+                            }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
-                        }
-                        hideProgressIndicator();
+                            }
+                        });
                     }
+                }
+                hideProgressIndicator();
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
     }
 }
