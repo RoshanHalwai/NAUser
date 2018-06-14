@@ -61,6 +61,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         //Creating an instance of NammaApartmentFamilyMembers class and retrieving the values from Firebase.
         NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
         holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getFullName());
+        //TODO: Change text here
         holder.textMemberRelationValue.setText("Family Member");
         boolean grantedAccess = nammaApartmentFamilyMembers.isGrantedAccess();
         holder.textGrantedAccessValue.setText(String.valueOf(grantedAccess));
