@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHomeAdapter;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
@@ -52,14 +50,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-
-    private View cancelDialog;
-    private AlertDialog dialog;
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
     private AVLoadingIndicatorView progressIndicator;
-    private int screenTitle;
 
     /* ------------------------------------------------------------- *
      * Abstract Methods
@@ -273,23 +267,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is invoked when user clicks on cancel or remove icon.
-     */
-    public void openCancelDialog(int screenTitle) {
-        this.screenTitle = screenTitle;
-        cancelDialog = View.inflate(this, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(this));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
      * This method checks if all the editTexts are filled or not.
      *
      * @param fields consists of array of EditTexts.
@@ -349,43 +326,5 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void hideProgressIndicator() {
         progressIndicator.smoothToHide();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(this);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteListData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(this);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor or daily services or family member data.
-     */
-    private void deleteListData() {
-        /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        switch (screenTitle) {
-            /*case R.string.my_daily_services:
-                DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
-                recyclerView.setAdapter(adapterDailyServices);
-                --DailyServicesHomeAdapter.count;
-                adapterDailyServices.notifyDataSetChanged();
-                break;*/
-            case R.string.my_sweet_home:
-                MySweetHomeAdapter adapterMySweetHome = new MySweetHomeAdapter(this);
-                recyclerView.setAdapter(adapterMySweetHome);
-                --MySweetHomeAdapter.count;
-                adapterMySweetHome.notifyDataSetChanged();
-                break;
-        }
-        dialog.cancel();
     }
 }

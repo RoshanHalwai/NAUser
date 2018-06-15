@@ -38,6 +38,7 @@ public class Constants {
     public static final String FULL_NAME = "full_name";
     public static final String EMAIL_ID = "email_id";
     public static final String DAILY_SERVICE_OBJECT = "daily_service_object";
+    public static final String FAMILY_MEMBER_OBJECT = "family_member_object";
 
     /* ------------------------------------------------------------- *
      * Validation Keys

@@ -302,16 +302,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                                 storeDailyServiceDetails(FIREBASE_CHILD_DRIVERS, FIREBASE_MYDRIVER);
                                 break;
                         }
-                        Intent DailyServiceHomeIntent = new Intent(this, DailyServicesHome.class);
-                        DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(DailyServiceHomeIntent);
                     }
                     break;
 
                 case AFM_OTP_STATUS_REQUEST_CODE:
                     storeFamilyMembersDetails();
-                    startActivity(new Intent(this, MySweetHome.class));
 
             }
         }
@@ -529,6 +524,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         .child(Constants.FIREBASE_CHILD_MYDAILYSERVICES)
                         .child(userDailyServiceChild);
                 dailyServiceReference.child(dailyServiceUID).setValue(true);
+
+                /*Once we are done with storing data we need o call the Daily Services Home screen again
+                    to show users that their Daily Service has been added successfully*/
+                Intent DailyServiceHomeIntent = new Intent(AddDailyServiceAndFamilyMembers.this, DailyServicesHome.class);
+                DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(DailyServiceHomeIntent);
             }
 
             @Override
@@ -578,6 +580,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
                 /*Storing user UID under Family Member's UID*/
                 PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber()).child(familyMemberUID).setValue(true);
+
+                /*Once we are done with storing data we need o call the MySweetHome screen again
+                to show users that their family member has been added successfully*/
+                Intent MySweetHomeIntent = new Intent(AddDailyServiceAndFamilyMembers.this, MySweetHome.class);
+                MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(MySweetHomeIntent);
             }
 
             @Override
