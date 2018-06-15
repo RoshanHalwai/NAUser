@@ -234,21 +234,31 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
      * in editText accordingly
      */
     private void getMyDailyServiceAndFamilyMemberDetails() {
-        NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
-        name = nammaApartmentDailyService.getfullName();
-        mobile = nammaApartmentDailyService.getPhoneNumber();
-        editMemberAndServiceName.setText(name);
-        editMemberAndServiceName.setSelection(name.length());
-        editMobileNumber.setText(mobile);
-        if (screenTitle == R.string.edit_my_daily_service_details) {
-            inTime = nammaApartmentDailyService.getTimeOfVisit();
-            service_type = nammaApartmentDailyService.getDailyServiceType();
-            editPickInTime.setText(inTime);
-            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
-            textDescription.setText(description);
+        if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
+            NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
+            name = nammaApartmentDailyService.getfullName();
+            mobile = nammaApartmentDailyService.getPhoneNumber();
+            editMemberAndServiceName.setText(name);
+            editMemberAndServiceName.setSelection(name.length());
+            editMobileNumber.setText(mobile);
+            if (screenTitle == R.string.edit_my_daily_service_details) {
+                inTime = nammaApartmentDailyService.getTimeOfVisit();
+                service_type = nammaApartmentDailyService.getDailyServiceType();
+                editPickInTime.setText(inTime);
+                String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
+                textDescription.setText(description);
+            }
         } else {
-            granted_access_type = getIntent().getStringExtra(GRANTED_ACCESS_TYPE);
-            textDescription.setText(getResources().getString(R.string.otp_message_family_member));
+          /*  NammaApartmentFamilyMembers nammaApartmentFamilyMembers = (NammaApartmentFamilyMembers) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+            name = nammaApartmentFamilyMembers.getfullName();
+            mobile = nammaApartmentFamilyMembers.getphoneNumber();*/
+            editMemberAndServiceName.setText(name);
+            editMemberAndServiceName.setSelection(name.length());
+            editMobileNumber.setText(mobile);
+            if (screenTitle == R.string.edit_my_family_member_details) {
+                granted_access_type = getIntent().getStringExtra(GRANTED_ACCESS_TYPE);
+                textDescription.setText(getResources().getString(R.string.otp_message_family_member));
+            }
         }
     }
 
