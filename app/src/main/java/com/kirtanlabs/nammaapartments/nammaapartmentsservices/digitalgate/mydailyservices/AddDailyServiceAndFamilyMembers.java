@@ -78,7 +78,6 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
-import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
 public class AddDailyServiceAndFamilyMembers extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
@@ -505,13 +504,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String dailyServiceUID;
-                //If daily service mobile number already exists we don't create a new UID for them
+                String dailyServiceUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                //If daily service mobile number already exists we don't map it with mobile number
                 if (!dataSnapshot.exists()) {
-                    dailyServiceUID = dailyServiceMobileNumberReference.push().getKey();
                     dailyServiceMobileNumberReference.setValue(dailyServiceUID);
-                } else {
-                    dailyServiceUID = dataSnapshot.getValue().toString();
                 }
 
                 //Store daily service details in Firebase
@@ -555,10 +552,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 if (!dataSnapshot.exists()) {
                     familyMemberMobileNumberReference.setValue(familyMemberUID);
                 }
-
-                //Adding family members UID as a child under myFamilyMembers parent
-/*                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_MYFAMILYMEMBERS);
-                userPrivateReference.child(familyMemberUID).setValue(true);*/
 
                 //Store family member's UID under users data structure for future use
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
