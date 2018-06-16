@@ -4,16 +4,32 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
 
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -31,12 +47,15 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     private TextView textVisitorNameAndServiceNameValue;
     private TextView textVisitorAndServiceTypeValue;
     private TextView textInvitationDateAndRatingValue;
+    private CircleImageView profileImage;
     private TextView textInvitedByAndApartmentNoValue;
     private TextView textDescription;
     private EditText editDescription;
     private Button buttonYes;
     private Button buttonNo;
     private Button buttonNotifyGate;
+    private TextView textInvitationTimeValue;
+    private CardView cardViewVisitors;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -66,6 +85,9 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        /*We need Progress Indicator in this screen*/
+        showProgressIndicator();
+
         //TODO: Write business logic to check if there are any visitors at resident house.
         /* If there are no visitors at resident house then we show
          * feature unavailable layout and pass some sensible message*/
@@ -75,10 +97,12 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
 
         /* We show current visitors list at resident house, so resident has
          * the ability to give things to their visitors and notify gate about it*/
-        CardView cardViewVisitors = findViewById(R.id.cardViewVisitors);
-        cardViewVisitors.setVisibility(View.VISIBLE);
+
+        /*Initialising the CardView*/
+        cardViewVisitors = findViewById(R.id.cardViewVisitors);
 
         /*Initialising all the views*/
+        profileImage = findViewById(R.id.profileImage);
         textVisitorAndServiceName = findViewById(R.id.textVisitorAndServiceName);
         TextView textVisitorAndServiceType = findViewById(R.id.textVisitorAndServiceType);
         textInvitationDateAndRating = findViewById(R.id.textInvitationDate);
@@ -87,7 +111,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         textVisitorNameAndServiceNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
         textVisitorAndServiceTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
         textInvitationDateAndRatingValue = findViewById(R.id.textInvitationDateValue);
-        TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
+        textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
         textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
         textDescription = findViewById(R.id.textDescription);
@@ -177,8 +201,14 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * Since we are using same layout for handed things to my guest and handed things to my daily services we need to
+     * change some Titles in layout
+     */
     private void changeTitles() {
         if (handed_Things_To == R.string.handed_things_to_my_daily_services) {
+            hideProgressIndicator();
+            cardViewVisitors.setVisibility(View.VISIBLE);
             String stringServiceName = getResources().getString(R.string.name) + ":";
             textVisitorAndServiceName.setText(stringServiceName);
             textVisitorNameAndServiceNameValue.setText("Ramesh");
@@ -187,6 +217,50 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
             textInvitationDateAndRatingValue.setText("4.2");
             textInvitedByAndApartmentNo.setText(R.string.flats);
             textInvitedByAndApartmentNoValue.setText("3");
+        } else {
+            DatabaseReference handedThingsReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                    .child(FIREBASE_CHILD_MYVISITORS);
+            handedThingsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        hideProgressIndicator();
+                        cardViewVisitors.setVisibility(View.GONE);
+                    }
+                    for (DataSnapshot visitorSnapshot : dataSnapshot.getChildren()) {
+                        DatabaseReference preApprovedReference = PREAPPROVED_VISITORS_REFERENCE
+                                .child(visitorSnapshot.getKey());
+                        preApprovedReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
+                                if (Objects.requireNonNull(nammaApartmentVisitor).getStatus().equals(Constants.ENTERED)) {
+                                    Glide.with(getApplicationContext()).load(Objects.requireNonNull(nammaApartmentVisitor).getProfilePhoto()).into(profileImage);
+                                    textVisitorNameAndServiceNameValue.setText(Objects.requireNonNull(nammaApartmentVisitor).getFullName());
+                                    String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+                                    String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+                                    textInvitationDateAndRatingValue.setText(separatedDateAndTime[0]);
+                                    textInvitationTimeValue.setText(separatedDateAndTime[1]);
+                                    String userName = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFullName();
+                                    textInvitedByAndApartmentNoValue.setText(userName);
+                                    cardViewVisitors.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    hideProgressIndicator();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
