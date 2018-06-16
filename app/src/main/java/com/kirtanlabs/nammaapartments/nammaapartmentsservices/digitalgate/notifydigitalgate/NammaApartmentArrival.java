@@ -1,30 +1,36 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Ashish Jha on 6/16/2018
+ */
 
-class NammaApartmentDigitalGate {
+class NammaApartmentArrival {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
+    /**
+     * 'Reference' variable is a common variable used here to specify the cab number (in Expecting cab arrival) / vendor name (in expecting package arrival)
+     */
     private String reference;
-    private String dateTimeOfArrival;
+    private String dateAndTimeOfArrival;
     private String validFor;
-    private Map<String, Boolean> ownersUID = new HashMap<>();
+    private String uid;
 
     /* ------------------------------------------------------------- *
      * Constructors
      * ------------------------------------------------------------- */
 
-    public NammaApartmentDigitalGate() {
+    public NammaApartmentArrival() {
     }
 
-    NammaApartmentDigitalGate(String reference, String dateTimeOfArrival, String validFor) {
+    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String uid) {
         this.reference = reference;
-        this.dateTimeOfArrival = dateTimeOfArrival;
+        this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;
+        this.uid = uid;
     }
 
     /* ------------------------------------------------------------- *
@@ -35,16 +41,15 @@ class NammaApartmentDigitalGate {
         return reference;
     }
 
-    public String getDateTimeOfArrival() {
-        return dateTimeOfArrival;
+    public String getDateAndTimeOfArrival() {
+        return dateAndTimeOfArrival;
     }
 
     public String getValidFor() {
         return validFor;
     }
 
-    public Map<String, Boolean> getOwnersUID() {
-        return ownersUID;
+    public String getUid() {
+        return uid;
     }
-
 }
