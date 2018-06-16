@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
@@ -28,6 +29,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.GRANTED_ACCESS_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
@@ -249,9 +251,9 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                 textDescription.setText(description);
             }
         } else {
-          /*  NammaApartmentFamilyMembers nammaApartmentFamilyMembers = (NammaApartmentFamilyMembers) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
-            name = nammaApartmentFamilyMembers.getfullName();
-            mobile = nammaApartmentFamilyMembers.getphoneNumber();*/
+            NammaApartmentUser nammaApartmentFamilyMembers = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+            name = nammaApartmentFamilyMembers.getFullName();
+            mobile = nammaApartmentFamilyMembers.getPhoneNumber();
             editMemberAndServiceName.setText(name);
             editMemberAndServiceName.setSelection(name.length());
             editMobileNumber.setText(mobile);
