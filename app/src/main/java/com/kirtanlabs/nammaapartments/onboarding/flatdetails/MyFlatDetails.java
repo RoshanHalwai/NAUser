@@ -60,7 +60,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
     private EditText editFlat;
     private RadioButton radioButtonOwner;
     private RadioButton radioButtonTenant;
-
+    private String relation;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -381,7 +381,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                     String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                     NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
                             flatNumber, fullName, mobileNumber, societyName, tenantType, userUID,
-                            false, true, true
+                            false, true, true, relation
                     );
 
                     /*Mapping Mobile Number to UID in firebase under users->all*/

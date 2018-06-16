@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
@@ -234,10 +236,11 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     private void storeDigitalGateDetails(String digitalGateChild) {
 
         //Get the details from user
+        NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         String cabDeliveryReference = editCabOrVendorValue.getText().toString();
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
-        String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
+        String userUID = nammaApartmentUser.getUID();
         NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID);
 
         //Store cabs/deliveries uid and value under users->private
@@ -253,9 +256,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             DatabaseReference cabDetailsReference = PUBLIC_CABS_REFERENCE.child(digitalGateUID);
             cabDetailsReference.setValue(nammaApartmentArrival);
         } else {
-            FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference deliveryReference = PRIVATE_DELIVERY_REFERENCE.child(FIREBASE_CHILD_ALL);
-            deliveryReference.child(Objects.requireNonNull(user).getPhoneNumber()).setValue(digitalGateUID);
+            deliveryReference.child(nammaApartmentUser.getPhoneNumber()).setValue(digitalGateUID);
             DatabaseReference deliveryDetailsReference = PUBLIC_DELIVERIES_REFERENCE.child(digitalGateUID);
             deliveryDetailsReference.setValue(nammaApartmentArrival);
         }
