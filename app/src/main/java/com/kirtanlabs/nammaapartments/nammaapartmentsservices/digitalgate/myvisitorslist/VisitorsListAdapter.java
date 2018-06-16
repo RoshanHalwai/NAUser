@@ -18,6 +18,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -47,10 +50,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     /* ------------------------------------------------------------- *
      * Private Members
-     * ------------------------------------------------------------- */
-
-    /* ------------------------------------------------------------- *
-     * Public Members
      * ------------------------------------------------------------- */
 
     private final Context mCtx;
@@ -100,7 +99,22 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                         holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
                         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
                         holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getFullName());
-                        Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto()).into(holder.visitorOrDailyServiceProfilePic);
+                        baseActivity.showProgressIndicator();
+                        Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto())
+                                .listener(new RequestListener<String, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        baseActivity.hideProgressIndicator();
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        baseActivity.hideProgressIndicator();
+                                        return false;
+                                    }
+                                })
+                                .into(holder.visitorOrDailyServiceProfilePic);
                     }
 
                     @Override

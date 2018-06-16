@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -90,6 +94,21 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textInvitedByOrNumberOfFlatsValue.setText("3");
+        Glide.with(mCtx).load(nammaApartmentDailyService.getProfilePhoto())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        baseActivity.hideProgressIndicator();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        baseActivity.hideProgressIndicator();
+                        return false;
+                    }
+                })
+                .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);
         holder.textCancel.setText(R.string.remove);
@@ -129,6 +148,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         final TextView textMessage;
         final TextView textEdit;
         final TextView textCancel;
+        final de.hdodenhof.circleimageview.CircleImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -155,6 +175,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textMessage = itemView.findViewById(R.id.textMessage);
             textEdit = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
             textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));

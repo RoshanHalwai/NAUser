@@ -70,7 +70,7 @@ public class Constants {
     private static final String FIREBASE_CHILD_CABS = "cabs";
     private static final String FIREBASE_CHILD_DELIVERIES = "deliveries";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
-    private static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
+    public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
     public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_FLATS = "flats";
