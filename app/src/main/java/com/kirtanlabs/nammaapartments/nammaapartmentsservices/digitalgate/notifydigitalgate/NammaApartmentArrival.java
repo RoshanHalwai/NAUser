@@ -5,12 +5,15 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
  * Created by Ashish Jha on 6/16/2018
  */
 
-class NammaApartmentDigitalGate {
+class NammaApartmentArrival {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
+    /**
+     * 'Reference' variable is a common variable used here to specify the cab number (in Expecting cab arrival) / vendor name (in expecting package arrival)
+     */
     private String reference;
     private String dateAndTimeOfArrival;
     private String validFor;
@@ -20,10 +23,10 @@ class NammaApartmentDigitalGate {
      * Constructors
      * ------------------------------------------------------------- */
 
-    public NammaApartmentDigitalGate() {
+    public NammaApartmentArrival() {
     }
 
-    NammaApartmentDigitalGate(String reference, String dateAndTimeOfArrival, String validFor, String uid) {
+    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String uid) {
         this.reference = reference;
         this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;

@@ -238,7 +238,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
         String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
-        NammaApartmentDigitalGate nammaApartmentDigitalGate = new NammaApartmentDigitalGate(cabDeliveryReference, dateTimeOfVisit, validFor, userUID);
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID);
 
         //Store cabs/deliveries uid and value under users->private
         DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(cabDeliveryReference);
@@ -251,13 +251,13 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             DatabaseReference cabNumberReference = PRIVATE_CABS_REFERENCE.child(FIREBASE_CHILD_ALL);
             cabNumberReference.child(cabDeliveryReference).setValue(digitalGateUID);
             DatabaseReference cabDetailsReference = PUBLIC_CABS_REFERENCE.child(digitalGateUID);
-            cabDetailsReference.setValue(nammaApartmentDigitalGate);
+            cabDetailsReference.setValue(nammaApartmentArrival);
         } else {
             FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference deliveryReference = PRIVATE_DELIVERY_REFERENCE.child(FIREBASE_CHILD_ALL);
             deliveryReference.child(Objects.requireNonNull(user).getPhoneNumber()).setValue(digitalGateUID);
             DatabaseReference deliveryDetailsReference = PUBLIC_DELIVERIES_REFERENCE.child(digitalGateUID);
-            deliveryDetailsReference.setValue(nammaApartmentDigitalGate);
+            deliveryDetailsReference.setValue(nammaApartmentArrival);
         }
     }
 
