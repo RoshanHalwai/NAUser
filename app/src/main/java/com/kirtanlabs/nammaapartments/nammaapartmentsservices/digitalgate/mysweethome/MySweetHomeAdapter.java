@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentUser;
@@ -74,6 +78,21 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         String grantedAccessValue = String.valueOf(grantedAccess);
         String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);
         holder.textGrantedAccessValue.setText(accessValue);
+        Glide.with(mCtx).load(nammaApartmentFamilyMembers.getProfilePhoto())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        baseActivity.hideProgressIndicator();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        baseActivity.hideProgressIndicator();
+                        return false;
+                    }
+                })
+                .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);
         holder.textCancel.setText(R.string.remove);
@@ -120,6 +139,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         final TextView textMessage;
         final TextView textEdit;
         final TextView textCancel;
+        private final de.hdodenhof.circleimageview.CircleImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -143,6 +163,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
             textGrantedAccessValue = itemView.findViewById(R.id.textInvitationTimeValue);
             textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);

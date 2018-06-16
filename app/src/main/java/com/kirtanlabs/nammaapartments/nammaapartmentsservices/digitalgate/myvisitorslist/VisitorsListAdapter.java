@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentUser;
@@ -87,9 +88,10 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+
         //Since we need inviters name we get the details by inviter UID
-        PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
+        userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);

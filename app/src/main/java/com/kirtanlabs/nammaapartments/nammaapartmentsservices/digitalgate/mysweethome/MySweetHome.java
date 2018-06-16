@@ -103,9 +103,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
-                    if (flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
-                        continue;
-                    } else {
+                    if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
                         DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
                         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

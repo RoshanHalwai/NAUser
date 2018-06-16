@@ -520,7 +520,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String dailyServiceUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
                 //If daily service mobile number already exists we don't map it with mobile number
                 if (!dataSnapshot.exists()) {
@@ -589,12 +589,17 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * Store family member's details to firebase and map them to the users family members for future use
      */
     private void storeFamilyMembersDetails() {
+        //displaying progress dialog while image is uploading
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Adding your Family Member");
+        progressDialog.show();
+
         //Map family member's mobile number with uid in users->all
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
         familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String familyMemberUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String familyMemberUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 //If family members mobile number already exists we don't create a new UID for them
                 if (!dataSnapshot.exists()) {
                     familyMemberMobileNumberReference.setValue(familyMemberUID);
@@ -620,18 +625,37 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         false
                 );
 
-                /*Storing new family member details in firebase under users->private->family member uid*/
-                PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
+                //getting the storage reference
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child(familyMemberUID);
 
-                /*Storing user UID under Family Member's UID*/
-                PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber()).child(familyMemberUID).setValue(true);
+                //adding the profile photo to storage reference and daily service data to real time database
+                storageReference.putFile(selectedImage)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            //creating the upload object to store uploaded image details
+                            familyMember.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
-                /*Once we are done with storing data we need o call the MySweetHome screen again
-                to show users that their family member has been added successfully*/
-                Intent MySweetHomeIntent = new Intent(AddDailyServiceAndFamilyMembers.this, MySweetHome.class);
-                MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(MySweetHomeIntent);
+                            /*Storing new family member details in firebase under users->private->family member uid*/
+                            PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
+
+                            //dismissing the progress dialog
+                            progressDialog.dismiss();
+
+                            /*Storing user UID under Flats*/
+                            PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber()).child(familyMemberUID).setValue(true);
+
+                            /* Once we are done with storing data we need to call MySweetHome screen again
+                             * to show users that their family member have been added successfully*/
+                            Intent MySweetHomeIntent = new Intent(AddDailyServiceAndFamilyMembers.this, MySweetHome.class);
+                            MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(MySweetHomeIntent);
+                        })
+                        .addOnFailureListener(exception -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        });
             }
 
             @Override

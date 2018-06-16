@@ -94,7 +94,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
     public static final String FIREBASE_CHILD_SOCIETIES = "societies";
-    private static final String FIREBASE_CHILD_USERS = "users";
+    public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
 
     public static final int FIREBASE_CHILD_RATING = 3;

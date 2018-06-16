@@ -16,6 +16,7 @@ public class NammaApartmentUser implements Serializable {
     private String societyName;
     private String tenantType;
     private String uid;
+    private String profilePhoto;
     private boolean verified;
     private boolean grantedAccess;
     private boolean admin;
@@ -89,5 +90,17 @@ public class NammaApartmentUser implements Serializable {
 
     public boolean isVerified() {
         return verified;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 }

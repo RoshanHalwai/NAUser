@@ -69,33 +69,32 @@ public class VisitorsList extends BaseActivity {
      * ------------------------------------------------------------- */
 
     private void retrieveVisitorsDetailsFromFirebase() {
-        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                .child(FIREBASE_CHILD_MYVISITORS)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference myVisitorsReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                .child(FIREBASE_CHILD_MYVISITORS);
+        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                hideProgressIndicator();
                 if (!dataSnapshot.exists()) {
-                    hideProgressIndicator();
-                }
-                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
-                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                            .child(visitorsSnapshot.getKey());
-                    preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
-                            NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
-                            nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
-                            adapter.notifyDataSetChanged();
-                            if (nammaApartmentVisitorList.size() == dataSnapshot.getChildrenCount()) {
-                                hideProgressIndicator();
+                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                } else {
+                    for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
+                        DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
+                                .child(visitorsSnapshot.getKey());
+                        preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
+                                NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
+                                nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                adapter.notifyDataSetChanged();
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             }
 

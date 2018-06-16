@@ -163,7 +163,7 @@
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
     <string name="description">Description:</string>
-    <string name="feature_unavailable_message">Sorry you cannot use this feature since currently you do not have any visitors at your resident.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since there has been no visitors at your flat.</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
 
