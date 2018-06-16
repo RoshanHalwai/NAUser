@@ -13,6 +13,9 @@
     <include
         android:id="@+id/layoutFeatureUnavailable"
         layout="@layout/layout_feature_unavailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/baseActivity"
         android:visibility="gone" />
 
     <com.wang.avi.AVLoadingIndicatorView
@@ -25,12 +28,12 @@
         app:indicatorName="BallSpinFadeLoaderIndicator" />
 
     <android.support.v7.widget.CardView
+        android:layout_margin="10dp"
         android:id="@+id/cardViewVisitors"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_below="@id/baseActivity"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"

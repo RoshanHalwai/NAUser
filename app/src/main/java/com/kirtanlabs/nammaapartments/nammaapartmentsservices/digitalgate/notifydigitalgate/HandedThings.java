@@ -56,6 +56,8 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     private Button buttonNotifyGate;
     private TextView textInvitationTimeValue;
     private CardView cardViewVisitors;
+    private boolean visitorsAvailable = false;
+    private int visitorsCount = 0;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -226,34 +228,42 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
                     if (!dataSnapshot.exists()) {
                         hideProgressIndicator();
                         cardViewVisitors.setVisibility(View.GONE);
-                    }
-                    for (DataSnapshot visitorSnapshot : dataSnapshot.getChildren()) {
-                        DatabaseReference preApprovedReference = PREAPPROVED_VISITORS_REFERENCE
-                                .child(visitorSnapshot.getKey());
-                        preApprovedReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
-                                if (Objects.requireNonNull(nammaApartmentVisitor).getStatus().equals(Constants.ENTERED)) {
-                                    Glide.with(getApplicationContext()).load(Objects.requireNonNull(nammaApartmentVisitor).getProfilePhoto()).into(profileImage);
-                                    textVisitorNameAndServiceNameValue.setText(Objects.requireNonNull(nammaApartmentVisitor).getFullName());
-                                    String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
-                                    String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-                                    textInvitationDateAndRatingValue.setText(separatedDateAndTime[0]);
-                                    textInvitationTimeValue.setText(separatedDateAndTime[1]);
-                                    String userName = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFullName();
-                                    textInvitedByAndApartmentNoValue.setText(userName);
-                                    cardViewVisitors.setVisibility(View.VISIBLE);
+                        showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                    } else {
+                        for (DataSnapshot visitorSnapshot : dataSnapshot.getChildren()) {
+                            DatabaseReference preApprovedReference = PREAPPROVED_VISITORS_REFERENCE
+                                    .child(visitorSnapshot.getKey());
+                            preApprovedReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot visitorDataSnapshot) {
+                                    NammaApartmentVisitor nammaApartmentVisitor = visitorDataSnapshot.getValue(NammaApartmentVisitor.class);
+                                    if (nammaApartmentVisitor.getStatus().equals(Constants.ENTERED)) {
+                                        Glide.with(getApplicationContext()).load(Objects.requireNonNull(nammaApartmentVisitor).getProfilePhoto()).into(profileImage);
+                                        textVisitorNameAndServiceNameValue.setText(Objects.requireNonNull(nammaApartmentVisitor).getFullName());
+                                        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+                                        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+                                        textInvitationDateAndRatingValue.setText(separatedDateAndTime[0]);
+                                        textInvitationTimeValue.setText(separatedDateAndTime[1]);
+                                        String userName = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFullName();
+                                        textInvitedByAndApartmentNoValue.setText(userName);
+                                        visitorsAvailable = true;
+                                        cardViewVisitors.setVisibility(View.VISIBLE);
+                                    }
+                                    visitorsCount++;
+                                    if (!visitorsAvailable && visitorsCount == dataSnapshot.getChildrenCount()) {
+                                        cardViewVisitors.setVisibility(View.GONE);
+                                        showFeatureUnavailableLayout(R.string.current_visitors_unavailable_message);
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
+                        hideProgressIndicator();
                     }
-                    hideProgressIndicator();
                 }
 
                 @Override
