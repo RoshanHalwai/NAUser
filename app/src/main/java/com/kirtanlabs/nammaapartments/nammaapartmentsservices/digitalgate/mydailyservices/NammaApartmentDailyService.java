@@ -75,16 +75,24 @@ class NammaApartmentDailyService implements Serializable {
         return dailyServiceType;
     }
 
-    public void setDailyServiceType(String dailyServiceType) {
-        this.dailyServiceType = dailyServiceType;
-    }
-
     public Map<String, Boolean> getOwnersUID() {
         return ownersUID;
     }
 
     public String getUID() {
         return uid;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setDailyServiceType(String dailyServiceType) {
+        this.dailyServiceType = dailyServiceType;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
 }

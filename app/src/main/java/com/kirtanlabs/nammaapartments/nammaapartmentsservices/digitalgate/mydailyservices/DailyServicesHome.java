@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -155,25 +156,25 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
      * from firebase.
      */
     private void retrieveDailyServicesDetailsFromFirebase() {
-        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                .child(FIREBASE_CHILD_MYDAILYSERVICES)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference myDailyServiceReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                .child(FIREBASE_CHILD_MYDAILYSERVICES);
+        myDailyServiceReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
                 if (myDailyServiceSnapshot.exists()) {
                     for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                         String dailyServiceType = dailyServicesSnapshot.getKey();
-                        PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                        DatabaseReference serviceTypeReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
                                 .child(FIREBASE_CHILD_MYDAILYSERVICES)
-                                .child(dailyServiceType)
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                .child(dailyServiceType);
+                        serviceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
                                         for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
-                                            PUBLIC_DAILYSERVICES_REFERENCE
+                                            DatabaseReference dailyServiceDataReference = PUBLIC_DAILYSERVICES_REFERENCE
                                                     .child(DAILY_SERVICE_MAP.get(dailyServiceUIDSnapshot.getKey()))
-                                                    .child(Objects.requireNonNull(childSnapshot.getKey()))
-                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    .child(Objects.requireNonNull(childSnapshot.getKey()));
+                                            dailyServiceDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dailyServiceDataSnapshot) {
                                                             NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);

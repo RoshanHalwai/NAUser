@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,12 +24,15 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentUser;
@@ -40,6 +44,7 @@ import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -87,6 +92,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
     private CircleImageView circleImageView;
     private TextView textDescriptionDailyService;
+    private TextView textErrorProfilePic;
     private EditText editPickTime;
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
@@ -103,6 +109,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private ListView listView;
     private boolean grantedAccess;
     private boolean fieldsFilled;
+    private Uri selectedImage;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -144,6 +151,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         TextView textGrantAccess = findViewById(R.id.textGrantAccess);
         textDescriptionDailyService = findViewById(R.id.textDescriptionDailyService);
         TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
+        textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         editDailyServiceOrFamilyMemberEmail = findViewById(R.id.editDailyServiceOrFamilyMemberEmail);
@@ -169,6 +177,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         textGrantAccess.setTypeface(setLatoBoldFont(this));
         textDescriptionDailyService.setTypeface(setLatoBoldFont(this));
         textDescriptionFamilyMember.setTypeface(setLatoBoldFont(this));
+        textErrorProfilePic.setTypeface(setLatoRegularFont(this));
         editDailyServiceOrFamilyMemberName.setTypeface(setLatoRegularFont(this));
         editDailyServiceOrFamilyMemberEmail.setTypeface(setLatoRegularFont(this));
         editDailyServiceOrFamilyMemberMobile.setTypeface(setLatoRegularFont(this));
@@ -246,11 +255,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     }
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
+                    selectedImage = data.getData();
                     if (data.getExtras() != null) {
                         Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
                         circleImageView.setImageBitmap(bitmapProfilePic);
                         onSuccessfulUpload();
                         imageSelectingOptions.cancel();
+                        textErrorProfilePic.setVisibility(View.GONE);
                     } else {
                         onFailedUpload();
                         imageSelectingOptions.cancel();
@@ -259,12 +270,13 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
 
                 case GALLERY_PERMISSION_REQUEST_CODE:
                     if (data != null && data.getData() != null) {
-                        Uri selectedImage = data.getData();
+                        selectedImage = data.getData();
                         try {
                             Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                             circleImageView.setImageBitmap(bitmapProfilePic);
                             onSuccessfulUpload();
                             imageSelectingOptions.cancel();
+                            textErrorProfilePic.setVisibility(View.GONE);
                         } catch (IOException exception) {
                             exception.getStackTrace();
                         }
@@ -342,20 +354,24 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 pickTime(this, this);
                 break;
             case R.id.buttonAdd:
-                if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
-                    Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
-                    service_type = getIntent().getStringExtra(SERVICE_TYPE);
-                    intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
-                    intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_service);
-                    intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
-                    startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
+                if (selectedImage == null) {
+                    textErrorProfilePic.setVisibility(View.VISIBLE);
                 } else {
-                    if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editDailyServiceOrFamilyMemberEmail, editFamilyMemberRelation})
-                            && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
-                        if (grantedAccess)
-                            openNotificationDialog();
-                        else {
-                            navigatingToOTPScreen();
+                    if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
+                        Intent intentButtonAdd = new Intent(AddDailyServiceAndFamilyMembers.this, OTP.class);
+                        service_type = getIntent().getStringExtra(SERVICE_TYPE);
+                        intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
+                        intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_service);
+                        intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
+                        startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
+                    } else {
+                        if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editDailyServiceOrFamilyMemberEmail, editFamilyMemberRelation})
+                                && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
+                            if (grantedAccess)
+                                openNotificationDialog();
+                            else {
+                                navigatingToOTPScreen();
+                            }
                         }
                     }
                 }
@@ -494,6 +510,11 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * @param userDailyServiceChild root of users daily service reference
      */
     private void storeDailyServiceDetails(String dailyServiceChild, String userDailyServiceChild) {
+        //displaying progress dialog while image is uploading
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Adding your Daily Service");
+        progressDialog.show();
+
         //Map daily service to mobile number
         DatabaseReference dailyServiceMobileNumberReference = PRIVATE_DAILYSERVICES_REFERENCE.child(mobileNumber);
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -517,7 +538,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(dailyServiceUID, fullName,
                         phoneNumber, profilePhoto, timeOfVisit, false, rating);
                 nammaApartmentDailyService.getOwnersUID().put(userUID, true);
-                dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
+
 
                 //Store daily service UID under users data structure for future use
                 DatabaseReference dailyServiceReference = PRIVATE_USERS_REFERENCE.child(userUID)
@@ -525,12 +546,36 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         .child(userDailyServiceChild);
                 dailyServiceReference.child(dailyServiceUID).setValue(true);
 
-                /*Once we are done with storing data we need o call the Daily Services Home screen again
-                    to show users that their Daily Service has been added successfully*/
-                Intent DailyServiceHomeIntent = new Intent(AddDailyServiceAndFamilyMembers.this, DailyServicesHome.class);
-                DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(DailyServiceHomeIntent);
+                //getting the storage reference
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child(dailyServiceChild)
+                        .child(dailyServiceUID);
+
+                //adding the profile photo to storage reference and daily service data to real time database
+                storageReference.putFile(selectedImage)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            //creating the upload object to store uploaded image details
+                            nammaApartmentDailyService.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
+
+                            //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
+                            dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
+
+                            //dismissing the progress dialog
+                            progressDialog.dismiss();
+
+                            /*Once we are done with storing data we need to call the Daily Services
+                             * Home screen again to show users that their Daily Service has been added successfully*/
+                            Intent DailyServiceHomeIntent = new Intent(AddDailyServiceAndFamilyMembers.this, DailyServicesHome.class);
+                            DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(DailyServiceHomeIntent);
+                        })
+                        .addOnFailureListener(exception -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+
             }
 
             @Override

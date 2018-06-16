@@ -63,10 +63,6 @@ public class NammaApartmentVisitor {
         return profilePhoto;
     }
 
-    public void setProfilePhoto(String profilePhoto) {
-        this.profilePhoto = profilePhoto;
-    }
-
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -81,6 +77,10 @@ public class NammaApartmentVisitor {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
 }

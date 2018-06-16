@@ -52,10 +52,6 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
      * Private Members
      * ------------------------------------------------------------- */
 
-    /* ------------------------------------------------------------- *
-     * Public Members
-     * ------------------------------------------------------------- */
-
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private View rescheduleDialog;
