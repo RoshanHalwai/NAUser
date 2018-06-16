@@ -66,6 +66,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private EditText editVisitorName;
     private EditText editVisitorMobile;
     private TextView textDescription;
+    private TextView textErrorProfilePic;
     private Button buttonInvite;
     private AlertDialog imageSelectingOptions;
     private ListView listView;
@@ -99,6 +100,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
         /*Getting Id's for all the views*/
         circleImageInvitingVisitors = findViewById(R.id.invitingVisitorsProfilePic);
+        textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         TextView textVisitorName = findViewById(R.id.textVisitorAndServiceName);
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
         TextView textOr = findViewById(R.id.textOr);
@@ -115,6 +117,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         editPickDateTime.setInputType(InputType.TYPE_NULL);
 
         /*Setting font for all the views*/
+        textErrorProfilePic.setTypeface(setLatoBoldFont(this));
         textVisitorName.setTypeface(setLatoBoldFont(this));
         textVisitorMobile.setTypeface(setLatoBoldFont(this));
         textOr.setTypeface(setLatoBoldFont(this));
@@ -180,6 +183,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                         circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
                         onSuccessfulUpload();
                         imageSelectingOptions.cancel();
+                        textErrorProfilePic.setVisibility(View.GONE);
                     } else {
                         onFailedUpload();
                         imageSelectingOptions.cancel();
@@ -194,6 +198,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                             circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
                             onSuccessfulUpload();
                             imageSelectingOptions.cancel();
+                            textErrorProfilePic.setVisibility(View.GONE);
                         } catch (IOException exception) {
                             exception.getStackTrace();
                         }
@@ -223,7 +228,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonInvite:
-                storeVisitorDetailsInFirebase();
+                if (selectedImage != null) {
+                    storeVisitorDetailsInFirebase();
+                } else {
+                    textErrorProfilePic.setVisibility(View.VISIBLE);
+                }
                 break;
         }
 
