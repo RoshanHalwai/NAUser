@@ -2,6 +2,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswe
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +14,15 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails;
 
 import java.util.List;
+
+import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
 
@@ -64,7 +71,9 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         //TODO: Change text here
         holder.textMemberRelationValue.setText("Family Member");
         boolean grantedAccess = nammaApartmentFamilyMembers.isGrantedAccess();
-        holder.textGrantedAccessValue.setText(String.valueOf(grantedAccess));
+        String grantedAccessValue = String.valueOf(grantedAccess);
+        String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);
+        holder.textGrantedAccessValue.setText(accessValue);
 
         holder.textEdit.setText(R.string.edit);
         holder.textCancel.setText(R.string.remove);
@@ -119,6 +128,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         MySweetHomeHolder(View itemView) {
             super(itemView);
 
+            /*Getting Id's for all the views*/
             layoutTitle = itemView.findViewById(R.id.layoutTitle);
             layoutTitleValues = itemView.findViewById(R.id.layoutTitleValues);
 
@@ -139,6 +149,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textEdit = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
 
+            /*Setting font for all the views*/
             textMemberName.setTypeface(Constants.setLatoRegularFont(mCtx));
             textMemberRelation.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
@@ -165,14 +176,14 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
         @Override
         public void onClick(View v) {
-            /*int position = getLayoutPosition();
-            NammaApartmentFamilyMembers nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
+            int position = getLayoutPosition();
+            NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
             switch (v.getId()) {
                 case R.id.textCall:
-                    baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getphoneNumber());
+                    baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPhoneNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getphoneNumber());
+                    baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
                     Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
@@ -184,11 +195,13 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     nammaApartmentFamilyMembersList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
-                    PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                            .child(FIREBASE_CHILD_MYFAMILYMEMBERS)
+                    String familyMemberUid = nammaApartmentFamilyMembers.getUID();
+                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
+                    PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber())
+                            .child(familyMemberUid)
                             .removeValue();
                     break;
-            }*/
+            }
         }
     }
 }

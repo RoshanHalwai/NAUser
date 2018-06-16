@@ -1,6 +1,8 @@
 package com.kirtanlabs.nammaapartments;
 
-public class NammaApartmentUser {
+import java.io.Serializable;
+
+public class NammaApartmentUser implements Serializable {
 
     /* ------------------------------------------------------------- *
      * Private Members
