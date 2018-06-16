@@ -13,22 +13,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.text.DateFormatSymbols;
-import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCABS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDELIVERIES;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDIGITALGATE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -57,6 +63,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     private String selectedDate;
     private String packageVendorName;
     private boolean isValidForSelected;
+    private Button selectedButton;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -224,18 +231,34 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     /**
      * Store the details of Arriving Cabs and Delivery details to Firebase
      */
-
     private void storeDigitalGateDetails(String digitalGateChild) {
-        String cabDeliveryReference = editCabOrVendorValue.getText().toString();
-        String timeOfVisit = editPickDateTime.getText().toString();
-        String validFor = Arrays.toString(buttonIds);
-        String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
-        NammaApartmentDigitalGate nammaApartmentDigitalGate = new NammaApartmentDigitalGate(cabDeliveryReference, timeOfVisit, validFor);
-        nammaApartmentDigitalGate.getOwnersUID().put(userUID, true);
-        DatabaseReference digitaGateReference = PRIVATE_USERS_REFERENCE.child(userUID)
-                .child(FIREBASE_CHILD_MYDIGITALGATE);
-        digitaGateReference.child(digitalGateChild).setValue(nammaApartmentDigitalGate);
 
+        //Get the details from user
+        String cabDeliveryReference = editCabOrVendorValue.getText().toString();
+        String dateTimeOfVisit = editPickDateTime.getText().toString();
+        String validFor = selectedButton.getText().toString();
+        String userUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getUID();
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID);
+
+        //Store cabs/deliveries uid and value under users->private
+        DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(cabDeliveryReference);
+        String digitalGateUID = digitalGateUIDReference.push().getKey();
+        DatabaseReference digitalGateReference = PRIVATE_USERS_REFERENCE.child(userUID);
+        digitalGateReference.child(digitalGateChild).child(digitalGateUID).setValue(true);
+
+        //Store the details of cab/delivery in cabs/deliveries->public->uid
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            DatabaseReference cabNumberReference = PRIVATE_CABS_REFERENCE.child(FIREBASE_CHILD_ALL);
+            cabNumberReference.child(cabDeliveryReference).setValue(digitalGateUID);
+            DatabaseReference cabDetailsReference = PUBLIC_CABS_REFERENCE.child(digitalGateUID);
+            cabDetailsReference.setValue(nammaApartmentArrival);
+        } else {
+            FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference deliveryReference = PRIVATE_DELIVERY_REFERENCE.child(FIREBASE_CHILD_ALL);
+            deliveryReference.child(Objects.requireNonNull(user).getPhoneNumber()).setValue(digitalGateUID);
+            DatabaseReference deliveryDetailsReference = PUBLIC_DELIVERIES_REFERENCE.child(digitalGateUID);
+            deliveryDetailsReference.setValue(nammaApartmentArrival);
+        }
     }
 
 
@@ -253,6 +276,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
+                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
