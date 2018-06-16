@@ -556,10 +556,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                     familyMemberMobileNumberReference.setValue(familyMemberUID);
                 }
 
-                //Adding family members UID as a child under myFamilyMembers parent
-/*                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_MYFAMILYMEMBERS);
-                userPrivateReference.child(familyMemberUID).setValue(true);*/
-
                 //Store family member's UID under users data structure for future use
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();

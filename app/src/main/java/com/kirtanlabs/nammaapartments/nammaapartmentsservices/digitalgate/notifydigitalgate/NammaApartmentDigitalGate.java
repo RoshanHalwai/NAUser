@@ -1,7 +1,9 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * KirtanLabs Pvt. Ltd.
+ * Created by Ashish Jha on 6/16/2018
+ */
 
 class NammaApartmentDigitalGate {
 
@@ -10,9 +12,9 @@ class NammaApartmentDigitalGate {
      * ------------------------------------------------------------- */
 
     private String reference;
-    private String dateTimeOfArrival;
+    private String dateAndTimeOfArrival;
     private String validFor;
-    private Map<String, Boolean> ownersUID = new HashMap<>();
+    private String uid;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -21,10 +23,11 @@ class NammaApartmentDigitalGate {
     public NammaApartmentDigitalGate() {
     }
 
-    NammaApartmentDigitalGate(String reference, String dateTimeOfArrival, String validFor) {
+    NammaApartmentDigitalGate(String reference, String dateAndTimeOfArrival, String validFor, String uid) {
         this.reference = reference;
-        this.dateTimeOfArrival = dateTimeOfArrival;
+        this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;
+        this.uid = uid;
     }
 
     /* ------------------------------------------------------------- *
@@ -35,16 +38,15 @@ class NammaApartmentDigitalGate {
         return reference;
     }
 
-    public String getDateTimeOfArrival() {
-        return dateTimeOfArrival;
+    public String getDateAndTimeOfArrival() {
+        return dateAndTimeOfArrival;
     }
 
     public String getValidFor() {
         return validFor;
     }
 
-    public Map<String, Boolean> getOwnersUID() {
-        return ownersUID;
+    public String getUid() {
+        return uid;
     }
-
 }
