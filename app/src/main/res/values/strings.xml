@@ -198,6 +198,8 @@
     <string name="add_family_members_details_screen">Add Family Members Details Screen</string>
     <string name="grant_access">Grant Access</string>
     <string name="relation">Relation</string>
+    <string name="family_member">Family Member</string>
+    <string name="friend">Friend</string>
     <string name="otp_message_family_member">We will send an OTP to your family member for Authentication.</string>
     <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
