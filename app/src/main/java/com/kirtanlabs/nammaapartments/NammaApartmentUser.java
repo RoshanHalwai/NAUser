@@ -20,6 +20,7 @@ public class NammaApartmentUser implements Serializable {
     private boolean verified;
     private boolean grantedAccess;
     private boolean admin;
+    private String relation;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -30,7 +31,7 @@ public class NammaApartmentUser implements Serializable {
 
     public NammaApartmentUser(String apartmentName, String emailId, String flatNumber, String fullName,
                               String phoneNumber, String societyName, String tenantType, String uid,
-                              boolean verified, boolean grantedAccess, boolean admin) {
+                              boolean verified, boolean grantedAccess, boolean admin, String relation) {
         this.apartmentName = apartmentName;
         this.emailId = emailId;
         this.flatNumber = flatNumber;
@@ -42,6 +43,7 @@ public class NammaApartmentUser implements Serializable {
         this.verified = verified;
         this.grantedAccess = grantedAccess;
         this.admin = admin;
+        this.relation = relation;
     }
 
     /* ------------------------------------------------------------- *
@@ -96,6 +98,10 @@ public class NammaApartmentUser implements Serializable {
         return profilePhoto;
     }
 
+    public String getRelation() {
+        return relation;
+    }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -103,4 +109,9 @@ public class NammaApartmentUser implements Serializable {
     public void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
     }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
 }

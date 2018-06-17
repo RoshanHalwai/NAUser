@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -97,14 +99,14 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
     private EditText editDailyServiceOrFamilyMemberEmail;
-    private EditText editFamilyMemberRelation;
+    private RadioButton radioButtonFamilyMember;
+    private RadioButton radioButtonFriend;
     private Button buttonAdd;
     private Button buttonYes;
     private Button buttonNo;
     private String service_type;
     private String visitorName;
     private String mobileNumber;
-    private String familyMemberRelation;
     private AlertDialog imageSelectingOptions;
     private ListView listView;
     private boolean grantedAccess;
@@ -155,7 +157,9 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         editDailyServiceOrFamilyMemberName = findViewById(R.id.editDailyServiceOrFamilyMemberName);
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         editDailyServiceOrFamilyMemberEmail = findViewById(R.id.editDailyServiceOrFamilyMemberEmail);
-        editFamilyMemberRelation = findViewById(R.id.editFamilyMemberRelation);
+        RadioGroup radioRelation = findViewById(R.id.radioRelation);
+        radioButtonFamilyMember = findViewById(R.id.radioButtonFamilyMember);
+        radioButtonFriend = findViewById(R.id.radioButtonFriend);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonYes = findViewById(R.id.buttonYes);
@@ -181,7 +185,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         editDailyServiceOrFamilyMemberName.setTypeface(setLatoRegularFont(this));
         editDailyServiceOrFamilyMemberEmail.setTypeface(setLatoRegularFont(this));
         editDailyServiceOrFamilyMemberMobile.setTypeface(setLatoRegularFont(this));
-        editFamilyMemberRelation.setTypeface(setLatoRegularFont(this));
         editPickTime.setTypeface(setLatoRegularFont(this));
         buttonSelectFromContact.setTypeface(setLatoLightFont(this));
         buttonYes.setTypeface(setLatoRegularFont(this));
@@ -193,7 +196,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_sweet_home) {
             RelativeLayout relativeLayoutAccess = findViewById(R.id.relativeLayoutAccess);
             textRelation.setVisibility(View.VISIBLE);
-            editFamilyMemberRelation.setVisibility(View.VISIBLE);
+            radioRelation.setVisibility(View.VISIBLE);
             textDailyServiceOrFamilyMemberEmail.setVisibility(View.VISIBLE);
             editDailyServiceOrFamilyMemberEmail.setVisibility(View.VISIBLE);
             relativeLayoutAccess.setVisibility(View.VISIBLE);
@@ -212,6 +215,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         buttonNo.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         editPickTime.setOnFocusChangeListener(this);
+        radioButtonFamilyMember.setOnClickListener(this);
+        radioButtonFriend.setOnClickListener(this);
 
         /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
         setupViewsForProfilePhoto();
@@ -336,6 +341,10 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             case R.id.buttonSelectFromContact:
                 showUserContacts();
                 break;
+            case R.id.radioButtonFamilyMember:
+                break;
+            case R.id.radioButtonFriend:
+                break;
             case R.id.buttonYes:
                 grantedAccess = true;
                 buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
@@ -365,7 +374,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
                         startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
                     } else {
-                        if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editDailyServiceOrFamilyMemberEmail, editFamilyMemberRelation})
+                        if (isAllFieldsFilled(new EditText[]{editDailyServiceOrFamilyMemberName, editDailyServiceOrFamilyMemberMobile, editDailyServiceOrFamilyMemberEmail})
                                 && editDailyServiceOrFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
                             if (grantedAccess)
                                 openNotificationDialog();
@@ -509,7 +518,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
      * @param dailyServiceChild     root of DailyService reference
      * @param userDailyServiceChild root of users daily service reference
      */
-    private void storeDailyServiceDetails(String dailyServiceChild, String userDailyServiceChild) {
+    private void storeDailyServiceDetails(String dailyServiceChild, String
+            userDailyServiceChild) {
         //displaying progress dialog while image is uploading
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Adding your Daily Service");
@@ -610,6 +620,9 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
                 String email = editDailyServiceOrFamilyMemberEmail.getText().toString();
+                String relation = radioButtonFriend.isChecked()
+                        ? radioButtonFriend.getText().toString()
+                        : radioButtonFamilyMember.getText().toString();
                 NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
 
                 NammaApartmentUser familyMember = new NammaApartmentUser(
@@ -623,7 +636,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         familyMemberUID,
                         false,
                         grantedAccess,
-                        false
+                        false, relation
                 );
 
                 //getting the storage reference
@@ -765,27 +778,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
             }
         });
 
-        editFamilyMemberRelation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                familyMemberRelation = editFamilyMemberRelation.getText().toString().trim();
-                if (familyMemberRelation.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                    editFamilyMemberRelation.setError(getString(R.string.enter_relation));
-                } else if (isValidPersonName(familyMemberRelation)) {
-                    editFamilyMemberRelation.setError(getString(R.string.accept_alphabets));
-                }
-            }
-        });
     }
 
 }
