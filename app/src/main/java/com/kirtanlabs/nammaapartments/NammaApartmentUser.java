@@ -96,4 +96,12 @@ public class NammaApartmentUser implements Serializable {
     public String getRelation() {
         return relation;
     }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
 }

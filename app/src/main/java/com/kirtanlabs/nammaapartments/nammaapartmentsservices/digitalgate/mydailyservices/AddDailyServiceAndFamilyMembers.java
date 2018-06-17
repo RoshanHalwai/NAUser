@@ -630,8 +630,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                         familyMemberUID,
                         false,
                         grantedAccess,
-                        false,
-                        relation
+                        false, relation
                 );
 
                 /*Storing new family member details in firebase under users->private->family member uid*/

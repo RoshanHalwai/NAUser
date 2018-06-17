@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
@@ -60,7 +61,6 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
     private EditText editFlat;
     private RadioButton radioButtonOwner;
     private RadioButton radioButtonTenant;
-    private String relation;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -379,9 +379,10 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                             ? radioButtonTenant.getText().toString()
                             : radioButtonOwner.getText().toString();
                     String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
                     NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
                             flatNumber, fullName, mobileNumber, societyName, tenantType, userUID,
-                            false, true, true, relation
+                            false, true, true, currentNammaApartmentUser.getRelation()
                     );
 
                     /*Mapping Mobile Number to UID in firebase under users->all*/
