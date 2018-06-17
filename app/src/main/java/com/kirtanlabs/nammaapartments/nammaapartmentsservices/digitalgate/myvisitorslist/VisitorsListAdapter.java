@@ -93,38 +93,38 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         //Since we need inviters name we get the details by inviter UID
         DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
         userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
-                        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-                        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
-                        holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
-                        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-                        holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                        baseActivity.showProgressIndicator();
-                        Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto())
-                                .listener(new RequestListener<String, GlideDrawable>() {
-                                    @Override
-                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                        baseActivity.hideProgressIndicator();
-                                        return false;
-                                    }
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+                String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+                holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
+                holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
+                holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+                holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                baseActivity.showProgressIndicator();
+                Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto())
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                baseActivity.hideProgressIndicator();
+                                return false;
+                            }
 
-                                    @Override
-                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                        baseActivity.hideProgressIndicator();
-                                        return false;
-                                    }
-                                })
-                                .into(holder.visitorOrDailyServiceProfilePic);
-                    }
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                baseActivity.hideProgressIndicator();
+                                return false;
+                            }
+                        })
+                        .into(holder.visitorOrDailyServiceProfilePic);
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
     }
 
     @Override
@@ -326,12 +326,12 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                     openRescheduleDialog(textInvitationDateOrServiceRatingValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
-                    nammaApartmentVisitorList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
                     String inviterUID = nammaApartmentVisitor.getInviterUID();
                     String visitorUID = nammaApartmentVisitor.getUid();
                     if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+                        nammaApartmentVisitorList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
                         ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
                                 .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
                     } else {

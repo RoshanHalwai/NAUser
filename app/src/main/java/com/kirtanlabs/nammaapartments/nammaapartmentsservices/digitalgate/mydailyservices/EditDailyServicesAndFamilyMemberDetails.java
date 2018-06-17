@@ -390,7 +390,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private void navigatingToOTPScreen() {
         Intent intentNotification = new Intent(EditDailyServicesAndFamilyMemberDetails.this, OTP.class);
         if (screenTitle == R.string.edit_my_daily_service_details) {
-            intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_service);
+            intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
             intentNotification.putExtra(SERVICE_TYPE, service_type);
         } else {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);

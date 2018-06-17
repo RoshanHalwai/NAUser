@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.userpojo;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class NammaApartmentUser implements Serializable {
 
@@ -11,6 +12,8 @@ public class NammaApartmentUser implements Serializable {
     private UserFlatDetails flatDetails;
     private UserPersonalDetails personalDetails;
     private UserPrivileges privileges;
+    private Map<String, Boolean> familyMembers;
+    private Map<String, Boolean> friends;
     private String uid;
 
     /* ------------------------------------------------------------- *
@@ -47,4 +50,11 @@ public class NammaApartmentUser implements Serializable {
         return uid;
     }
 
+    public Map<String, Boolean> getFamilyMembers() {
+        return familyMembers;
+    }
+
+    public Map<String, Boolean> getFriends() {
+        return friends;
+    }
 }

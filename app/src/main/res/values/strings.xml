@@ -178,7 +178,7 @@
     <string name="daily_service_cancel">Are you sure you want to remove this DailyService data?</string>
 
     <!--Adding My Daily Services-->
-    <string name="add_my_service">Add My Service</string>
+    <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="name">Name</string>
     <string name="mobile">Mobile</string>
     <string name="pick_time">Time</string>

@@ -13,9 +13,11 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class VisitorsList extends BaseActivity {
 
@@ -69,17 +71,18 @@ public class VisitorsList extends BaseActivity {
      * We retrieve visitors for current user and their family members if any
      */
     private void retrieveVisitorsDetailsFromFirebase() {
-        //TODO: Retrieve visitors of Family Members
-        DatabaseReference myVisitorsReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference()
-                .child(Constants.FIREBASE_CHILD_VISITORS);
+        //First retrieve the current user visitors
+        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference();
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
+
         myVisitorsReference.child(NammaApartmentsGlobal.userUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                hideProgressIndicator();
-                if (!dataSnapshot.exists()) {
+                if (!dataSnapshot.exists() && currentNammaApartmentUser.getFamilyMembers() == null) {
                     showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
-                } else {
+                } else if (dataSnapshot.exists()) {
                     for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
                         DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
                                 .child(visitorsSnapshot.getKey());
@@ -89,6 +92,68 @@ public class VisitorsList extends BaseActivity {
                                 NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
                                 nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
                                 adapter.notifyDataSetChanged();
+
+                                //Check if current user has any familyMembers
+                                if (nammaApartmentVisitorList.size() == dataSnapshot.getChildrenCount() &&
+                                        currentNammaApartmentUser.getFamilyMembers() != null) {
+                                    //Take each of their Visitors and add it to Visitors List
+                                    addFamilyMembersVisitors();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                } else {
+                    addFamilyMembersVisitors();
+                }
+                hideProgressIndicator();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //TODO: Ensure that Current user friends Visitors are not added to Visitors List
+    }
+
+    private void addFamilyMembersVisitors() {
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        for (Map.Entry<String, Boolean> familyMembersUID : currentNammaApartmentUser.getFamilyMembers().entrySet()) {
+            DatabaseReference visitorsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                    .child(Constants.FIREBASE_CHILD_VISITORS);
+            visitorsReference.child(familyMembersUID.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        DatabaseReference visitorsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                                .child(Constants.FIREBASE_CHILD_VISITORS);
+                        visitorsReference.child(dataSnapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
+                                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
+                                            .child(visitorsSnapshot.getKey());
+                                    preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
+                                            nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                            adapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
                             }
 
                             @Override
@@ -98,14 +163,12 @@ public class VisitorsList extends BaseActivity {
                         });
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
+                }
+            });
+        }
     }
-
 }

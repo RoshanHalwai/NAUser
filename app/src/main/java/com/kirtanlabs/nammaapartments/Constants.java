@@ -70,10 +70,13 @@ public class Constants {
     private static final String FIREBASE_CHILD_DELIVERIES = "deliveries";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
     public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
+    public static final String FIREBASE_CHILD_DAILYSERVICE_TYPE = "dailyServiceType";
     public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_FLATS = "flats";
+    public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
+    public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";

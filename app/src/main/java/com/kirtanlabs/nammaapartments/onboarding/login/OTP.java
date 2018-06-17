@@ -429,7 +429,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             case R.string.login:
                 textPhoneVerification.setText(R.string.enter_verification_code);
                 break;
-            case R.string.add_my_service:
+            case R.string.add_my_daily_service:
                 String service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
                 String description = getResources().getString(R.string.enter_verification_code);
                 description = description.replace("account", service_type + " account");
