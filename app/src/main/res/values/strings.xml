@@ -34,8 +34,8 @@
     <!--Flat Details Screen-->
     <string name="my_flat_details">My Flat Details</string>
     <string name="city">CITY</string>
-    <string name="society">SOCIETY</string>
-    <string name="apartment">APARTMENT</string>
+    <string name="societyName">SOCIETY</string>
+    <string name="apartmentName">APARTMENT</string>
     <string name="flat">FLAT</string>
     <string name="resident_type">RESIDENT TYPE</string>
     <string name="owner">Owner</string>
@@ -115,7 +115,7 @@
     <string name="contacts_information" tools:keep="@string/contacts_information">Contacts Information</string>
     <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="select_future_time">Please select future time.</string>
-    <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your society.</string>
+    <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your societyName.</string>
     <string name="invitation_message">You have successfully invited your visitor.</string>
 
     <!--Visitors List Activity-->
@@ -163,7 +163,7 @@
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
     <string name="description">Description:</string>
-    <string name="feature_unavailable_message">Sorry you cannot use this feature since currently you do not have any visitors at your resident.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since there has been no visitors at your flat.</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
 
@@ -178,7 +178,7 @@
     <string name="daily_service_cancel">Are you sure you want to remove this DailyService data?</string>
 
     <!--Adding My Daily Services-->
-    <string name="add_my_service">Add My Service</string>
+    <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="name">Name</string>
     <string name="mobile">Mobile</string>
     <string name="pick_time">Time</string>

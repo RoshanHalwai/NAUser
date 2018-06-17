@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers">
+    tools:context=".nammaapartmentsservices.digitalgate.mysweethome.AddFamilyMember">
 
     <include layout="@layout/activity_base" />
 
@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/visitorOrDailyServiceProfilePic"
+                android:id="@+id/familyMemberProfilePic"
                 android:layout_width="120dp"
                 android:layout_marginTop="5dp"
                 android:focusable="true"
@@ -38,7 +38,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/textDailyServiceOrFamilyMemberName"
+                android:id="@+id/textFamilyMemberName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -49,7 +49,7 @@
                 android:textSize="@dimen/text_view_default_size" />
 
             <EditText
-                android:id="@+id/editDailyServiceOrFamilyMemberName"
+                android:id="@+id/editFamilyMemberName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -60,7 +60,7 @@
                 tools:ignore="LabelFor" />
 
             <TextView
-                android:id="@+id/textDailyServiceOrFamilyMemberMobile"
+                android:id="@+id/textFamilyMemberMobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -89,7 +89,7 @@
                     android:textSize="@dimen/text_view_default_size" />
 
                 <EditText
-                    android:id="@+id/editDailyServiceOrFamilyMemberMobile"
+                    android:id="@+id/editFamilyMemberMobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
@@ -100,66 +100,6 @@
                     tools:ignore="LabelFor" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textDailyServiceOrFamilyMemberEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/email_id"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size"
-                android:visibility="gone"/>
-
-            <EditText
-                android:id="@+id/editDailyServiceOrFamilyMemberEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:inputType="textCapWords"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/edit_text_default_size"
-                tools:ignore="LabelFor"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/textFamilyMemberRelation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/relation"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size"
-                android:visibility="gone" />
-
-            <RadioGroup
-                android:id="@+id/radioRelation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <RadioButton
-                    android:id="@+id/radioButtonFamilyMember"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/family_member" />
-
-                <RadioButton
-                    android:id="@+id/radioButtonFriend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/friend" />
-
-            </RadioGroup>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -226,12 +166,87 @@
                     android:layerType="software" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textFamilyMemberEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/email_id"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/editFamilyMemberEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/edit_text_default_size"
+                android:visibility="visible"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:id="@+id/textFamilyMemberRelation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/relation"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/radioRelation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:visibility="visible">
+
+                <RadioButton
+                    android:id="@+id/radioButtonFamilyMember"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/family_member" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonFriend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/friend" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/dash_line"
+                    android:layerType="software" />
+            </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/relativeLayoutAccess"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/layoutYesNo"
@@ -286,54 +301,9 @@
                     android:gravity="center"
                     android:text="@string/otp_message_family_member"
                     android:textColor="@color/nmBlack"
+                    android:visibility="visible"
                     android:textSize="@dimen/text_view_default_size" />
             </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutTime"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:layout_weight="0.5"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/textTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/time"
-                    android:textColor="@color/nmBlack"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/editPickTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/textTime"
-                    android:layout_toRightOf="@id/textTime"
-                    android:cursorVisible="false"
-                    android:drawableEnd="@drawable/clock"
-                    android:drawableRight="@drawable/clock"
-                    android:gravity="center"
-                    android:textColor="@color/nmBlack"
-                    android:textSize="18sp"
-                    tools:ignore="LabelFor,TextFields" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/textDescriptionDailyService"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/send_otp_message"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size"
-                android:visibility="gone" />
 
             <Button
                 android:id="@+id/buttonAdd"
@@ -344,7 +314,7 @@
                 android:text="@string/add"
                 android:textColor="@color/nmLightYellow"
                 android:textSize="@dimen/button_default_size"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 

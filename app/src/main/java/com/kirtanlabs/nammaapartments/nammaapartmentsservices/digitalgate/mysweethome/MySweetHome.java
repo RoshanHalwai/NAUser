@@ -13,15 +13,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 
@@ -86,7 +85,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonAddFamilyMembers:
-                Intent intent = new Intent(MySweetHome.this, AddDailyServiceAndFamilyMembers.class);
+                Intent intent = new Intent(MySweetHome.this, AddFamilyMember.class);
                 intent.putExtra(Constants.SCREEN_TITLE, R.string.my_sweet_home);
                 startActivity(intent);
         }
@@ -97,15 +96,12 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
      * ------------------------------------------------------------- */
 
     private void retrieveFamilyMembersDetailsFromFirebase() {
-        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-        DatabaseReference privateFlatReference = PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber());
-        privateFlatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
+        privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
-                    if (flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
-                        continue;
-                    } else {
+                    if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
                         DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
                         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

@@ -18,10 +18,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.Locale;
 
@@ -252,8 +252,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             }
         } else {
             NammaApartmentUser nammaApartmentFamilyMembers = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
-            name = nammaApartmentFamilyMembers.getFullName();
-            mobile = nammaApartmentFamilyMembers.getPhoneNumber();
+            name = nammaApartmentFamilyMembers.getPersonalDetails().getFullName();
+            mobile = nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber();
             editMemberAndServiceName.setText(name);
             editMemberAndServiceName.setSelection(name.length());
             editMobileNumber.setText(mobile);
@@ -390,7 +390,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private void navigatingToOTPScreen() {
         Intent intentNotification = new Intent(EditDailyServicesAndFamilyMemberDetails.this, OTP.class);
         if (screenTitle == R.string.edit_my_daily_service_details) {
-            intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_service);
+            intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
             intentNotification.putExtra(SERVICE_TYPE, service_type);
         } else {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);

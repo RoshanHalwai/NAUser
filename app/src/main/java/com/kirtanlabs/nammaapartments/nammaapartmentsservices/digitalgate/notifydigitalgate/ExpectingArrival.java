@@ -15,9 +15,9 @@ import android.widget.TimePicker;
 
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
 import java.util.Locale;
@@ -253,7 +253,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             cabDetailsReference.setValue(nammaApartmentArrival);
         } else {
             DatabaseReference deliveryReference = PRIVATE_DELIVERY_REFERENCE.child(FIREBASE_CHILD_ALL);
-            deliveryReference.child(nammaApartmentUser.getPhoneNumber()).setValue(digitalGateUID);
+            deliveryReference.child(nammaApartmentUser.getPersonalDetails().getPhoneNumber()).setValue(digitalGateUID);
             DatabaseReference deliveryDetailsReference = PUBLIC_DELIVERIES_REFERENCE.child(digitalGateUID);
             deliveryDetailsReference.setValue(nammaApartmentArrival);
         }

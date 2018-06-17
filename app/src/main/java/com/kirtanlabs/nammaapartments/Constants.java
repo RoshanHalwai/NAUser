@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.provider.ContactsContract;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -71,9 +70,13 @@ public class Constants {
     private static final String FIREBASE_CHILD_DELIVERIES = "deliveries";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
     public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
+    public static final String FIREBASE_CHILD_DAILYSERVICE_TYPE = "dailyServiceType";
     public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_FLATS = "flats";
+    public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
+    public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
+    public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -94,7 +97,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
     public static final String FIREBASE_CHILD_SOCIETIES = "societies";
-    private static final String FIREBASE_CHILD_USERS = "users";
+    public static final String FIREBASE_CHILD_USERS = "users";
+    public static final String FIREBASE_CHILD_USER_DATA = "userData";
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
 
     public static final int FIREBASE_CHILD_RATING = 3;
