@@ -439,6 +439,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         //displaying progress dialog while image is uploading
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Inviting your Visitor");
+        progressDialog.setMessage("Please wait a moment");
         progressDialog.show();
 
         //Map Mobile number with visitor's UID

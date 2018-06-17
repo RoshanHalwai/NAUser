@@ -592,6 +592,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         //displaying progress dialog while image is uploading
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Adding your Family Member");
+        progressDialog.setMessage("Please wait a moment");
         progressDialog.show();
 
         //Map family member's mobile number with uid in users->all
@@ -633,6 +634,7 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 //adding the profile photo to storage reference and daily service data to real time database
                 storageReference.putFile(selectedImage)
                         .addOnSuccessListener(taskSnapshot -> {
+
                             //creating the upload object to store uploaded image details
                             familyMember.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
