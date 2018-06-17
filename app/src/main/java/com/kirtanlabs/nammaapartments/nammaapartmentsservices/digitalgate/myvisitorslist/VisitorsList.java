@@ -17,9 +17,6 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invite
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
-
 public class VisitorsList extends BaseActivity {
 
     private List<NammaApartmentVisitor> nammaApartmentVisitorList;
@@ -68,10 +65,15 @@ public class VisitorsList extends BaseActivity {
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * We retrieve visitors for current user and their family members if any
+     */
     private void retrieveVisitorsDetailsFromFirebase() {
-        DatabaseReference myVisitorsReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                .child(FIREBASE_CHILD_MYVISITORS);
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        //TODO: Retrieve visitors of Family Members
+        DatabaseReference myVisitorsReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(Constants.FIREBASE_CHILD_VISITORS);
+        myVisitorsReference.child(NammaApartmentsGlobal.userUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hideProgressIndicator();

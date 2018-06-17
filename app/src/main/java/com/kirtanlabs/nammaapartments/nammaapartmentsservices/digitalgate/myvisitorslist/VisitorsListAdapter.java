@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +27,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -328,10 +329,15 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                     nammaApartmentVisitorList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
-                    PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                            .child(FIREBASE_CHILD_MYVISITORS)
-                            .child(nammaApartmentVisitor.getUid())
-                            .removeValue();
+                    String inviterUID = nammaApartmentVisitor.getInviterUID();
+                    String visitorUID = nammaApartmentVisitor.getUid();
+                    if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+                        ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
+                                .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
+                    } else {
+                        //TODO: Show Dialog box indicating that they cannot delete this visitor since they haven't invited them
+                        Log.d("NammaApartment TAG", "User cannot delete this record since they haven't invited them");
+                    }
                     break;
             }
         }

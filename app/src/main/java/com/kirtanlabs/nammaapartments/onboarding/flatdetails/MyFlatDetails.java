@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 
 /**
@@ -361,7 +363,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 : radioButtonOwner.getText().toString();
         String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        DatabaseReference flatsReference = FirebaseDatabase.getInstance().getReference().child("userData")
+        DatabaseReference flatsReference = FirebaseDatabase.getInstance().getReference().child(FIREBASE_CHILD_USER_DATA)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(city).child(societyName)
                 .child(apartmentName)
@@ -383,7 +385,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
 
                 /*Adding user UID under Flats->FlatNumber*/
-                flatsReference.child("flatMembers").child(userUID).setValue(true);
+                flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
 
                 startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
                 finish();
