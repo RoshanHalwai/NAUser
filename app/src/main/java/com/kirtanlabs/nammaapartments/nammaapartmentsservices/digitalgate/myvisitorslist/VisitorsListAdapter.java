@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
@@ -100,7 +100,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                         holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
                         holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
                         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-                        holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getFullName());
+                        holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
                         baseActivity.showProgressIndicator();
                         Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto())
                                 .listener(new RequestListener<String, GlideDrawable>() {

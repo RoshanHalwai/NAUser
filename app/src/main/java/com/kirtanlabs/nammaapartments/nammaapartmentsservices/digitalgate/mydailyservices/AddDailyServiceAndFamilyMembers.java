@@ -32,16 +32,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
+import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
+import com.kirtanlabs.nammaapartments.userpojo.UserPrivileges;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +79,6 @@ import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUES
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -99,8 +102,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
     private EditText editDailyServiceOrFamilyMemberName;
     private EditText editDailyServiceOrFamilyMemberMobile;
     private EditText editDailyServiceOrFamilyMemberEmail;
-    private RadioButton radioButtonFamilyMember;
-    private RadioButton radioButtonFriend;
     private Button buttonAdd;
     private Button buttonYes;
     private Button buttonNo;
@@ -158,8 +159,8 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
         editDailyServiceOrFamilyMemberMobile = findViewById(R.id.editDailyServiceOrFamilyMemberMobile);
         editDailyServiceOrFamilyMemberEmail = findViewById(R.id.editDailyServiceOrFamilyMemberEmail);
         RadioGroup radioRelation = findViewById(R.id.radioRelation);
-        radioButtonFamilyMember = findViewById(R.id.radioButtonFamilyMember);
-        radioButtonFriend = findViewById(R.id.radioButtonFriend);
+        RadioButton radioButtonFamilyMember = findViewById(R.id.radioButtonFamilyMember);
+        RadioButton radioButtonFriend = findViewById(R.id.radioButtonFriend);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonYes = findViewById(R.id.buttonYes);
@@ -620,23 +621,16 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 String fullName = editDailyServiceOrFamilyMemberName.getText().toString();
                 String phoneNumber = editDailyServiceOrFamilyMemberMobile.getText().toString();
                 String email = editDailyServiceOrFamilyMemberEmail.getText().toString();
-                String relation = radioButtonFriend.isChecked()
-                        ? radioButtonFriend.getText().toString()
-                        : radioButtonFamilyMember.getText().toString();
                 NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+                UserPersonalDetails userPersonalDetails = new UserPersonalDetails(email, fullName, phoneNumber, selectedImage.toString());
+                UserFlatDetails userFlatDetails = currentNammaApartmentUser.getFlatDetails();
+                UserPrivileges userPrivileges = new UserPrivileges(false, grantedAccess, false);
 
                 NammaApartmentUser familyMember = new NammaApartmentUser(
-                        currentNammaApartmentUser.getApartmentName(),
-                        email,
-                        currentNammaApartmentUser.getFlatNumber(),
-                        fullName,
-                        phoneNumber,
-                        currentNammaApartmentUser.getSocietyName(),
-                        currentNammaApartmentUser.getTenantType(),
                         familyMemberUID,
-                        false,
-                        grantedAccess,
-                        false, relation
+                        userPersonalDetails,
+                        userFlatDetails,
+                        userPrivileges
                 );
 
                 //getting the storage reference
@@ -648,9 +642,6 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                 storageReference.putFile(selectedImage)
                         .addOnSuccessListener(taskSnapshot -> {
 
-                            //creating the upload object to store uploaded image details
-                            familyMember.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
-
                             /*Storing new family member details in firebase under users->private->family member uid*/
                             PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
 
@@ -658,7 +649,12 @@ public class AddDailyServiceAndFamilyMembers extends BaseActivity implements Vie
                             progressDialog.dismiss();
 
                             /*Storing user UID under Flats*/
-                            PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber()).child(familyMemberUID).setValue(true);
+                            DatabaseReference flatsReference = FirebaseDatabase.getInstance().getReference().child("userData")
+                                    .child(Constants.FIREBASE_CHILD_PRIVATE)
+                                    .child(userFlatDetails.getCity()).child(userFlatDetails.getSocietyName())
+                                    .child(userFlatDetails.getApartmentName())
+                                    .child(userFlatDetails.getFlatNumber());
+                            flatsReference.child("flatMembers").child(familyMemberUID).setValue(true);
 
                             /* Once we are done with storing data we need to call MySweetHome screen again
                              * to show users that their family member have been added successfully*/

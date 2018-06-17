@@ -1,6 +1,5 @@
 package com.kirtanlabs.nammaapartments.onboarding.flatdetails;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,13 +21,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
+import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
+import com.kirtanlabs.nammaapartments.userpojo.UserPrivileges;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +38,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 
 /**
@@ -161,14 +162,6 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
             case R.id.buttonContinue:
                 writeDataToFirebase();
         }
-    }
-
-    /**
-     * Store all user data to firebase
-     */
-    private void writeDataToFirebase() {
-        String flatNumber = editFlat.getText().toString();
-        checkIsAdmin(flatNumber);
     }
 
     @Override
@@ -355,49 +348,45 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    private void checkIsAdmin(String flatNumber) {
-        //Flats->flatNumber
-        DatabaseReference flatsReference = PRIVATE_FLATS_REFERENCE.child(flatNumber);
+    private void writeDataToFirebase() {
+        String city = editCity.getText().toString();
+        String apartmentName = editApartment.getText().toString();
+        String flatNumber = editFlat.getText().toString();
+        String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
+        String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
+        String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        String societyName = editSociety.getText().toString();
+        String tenantType = radioButtonTenant.isChecked()
+                ? radioButtonTenant.getText().toString()
+                : radioButtonOwner.getText().toString();
+        String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+        DatabaseReference flatsReference = FirebaseDatabase.getInstance().getReference().child("userData")
+                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                .child(city).child(societyName)
+                .child(apartmentName)
+                .child(flatNumber);
         flatsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(MyFlatDetails.this);
-                    View notificationDialog = View.inflate(MyFlatDetails.this, R.layout.layout_dialog_grant_access_yes, null);
-                    alertNotificationDialog.setView(notificationDialog);
-                    //TODO: Change the text
-                    ((TextView) notificationDialog.findViewById(R.id.textAlertMessage)).setText("We have reached here");
-                    alertNotificationDialog.show();
-                } else {
-                    /*Create an instance of NammaApartmentUser class*/
-                    String apartmentName = editApartment.getText().toString();
-                    String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
-                    String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
-                    String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
-                    String societyName = editSociety.getText().toString();
-                    String tenantType = radioButtonTenant.isChecked()
-                            ? radioButtonTenant.getText().toString()
-                            : radioButtonOwner.getText().toString();
-                    String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-                    NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(apartmentName, emailId,
-                            flatNumber, fullName, mobileNumber, societyName, tenantType, userUID,
-                            false, true, true, currentNammaApartmentUser.getRelation()
-                    );
+                /*Create an instance of NammaApartmentUser class*/
+                UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, "");
+                UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
+                UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
+                NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
 
-                    /*Mapping Mobile Number to UID in firebase under users->all*/
-                    ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
-                            .setValue(userUID);
+                /*Mapping Mobile Number to UID in firebase under users->all*/
+                ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+                        .setValue(userUID);
 
-                    /*Storing user details in firebase under users->private->uid*/
-                    PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+                /*Storing user details in firebase under users->private->uid*/
+                PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
 
-                    /*Adding user UID under Flats->FlatNumber*/
-                    flatsReference.child(userUID).setValue(true);
+                /*Adding user UID under Flats->FlatNumber*/
+                flatsReference.child("flatMembers").child(userUID).setValue(true);
 
-                    startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
-                    finish();
-                }
+                startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
+                finish();
             }
 
             @Override

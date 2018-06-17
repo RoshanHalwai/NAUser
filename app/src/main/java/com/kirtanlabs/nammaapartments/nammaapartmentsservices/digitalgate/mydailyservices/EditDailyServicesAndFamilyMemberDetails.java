@@ -18,10 +18,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.Locale;
 
@@ -252,8 +252,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             }
         } else {
             NammaApartmentUser nammaApartmentFamilyMembers = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
-            name = nammaApartmentFamilyMembers.getFullName();
-            mobile = nammaApartmentFamilyMembers.getPhoneNumber();
+            name = nammaApartmentFamilyMembers.getPersonalDetails().getFullName();
+            mobile = nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber();
             editMemberAndServiceName.setText(name);
             editMemberAndServiceName.setSelection(name.length());
             editMobileNumber.setText(mobile);

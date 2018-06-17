@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers;
@@ -98,7 +98,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
 
     private void retrieveFamilyMembersDetailsFromFirebase() {
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-        DatabaseReference privateFlatReference = PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber());
+        DatabaseReference privateFlatReference = PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber());
         privateFlatReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

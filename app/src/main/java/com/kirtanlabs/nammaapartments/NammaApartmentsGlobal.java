@@ -2,6 +2,8 @@ package com.kirtanlabs.nammaapartments;
 
 import android.app.Application;
 
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
+
 /**
  * Global NammaApartment class for storing User's Information
  */
