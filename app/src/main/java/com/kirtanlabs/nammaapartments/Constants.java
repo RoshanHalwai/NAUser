@@ -29,16 +29,16 @@ public class Constants {
 
     public static final String ALARM_TYPE = "alarm_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
+    public static final String DAILY_SERVICE_OBJECT = "daily_service_object";
+    public static final String EMAIL_ID = "email_id";
+    public static final String FAMILY_MEMBER_OBJECT = "family_member_object";
+    public static final String FULL_NAME = "full_name";
     public static final String GRANTED_ACCESS_TYPE = "granted_access_type";
     public static final String HANDED_THINGS_TO = "handed_things_to";
-    public static final String NAME = "name";
     public static final String MOBILE_NUMBER = "mobile_number";
-    public static final String SERVICE_TYPE = "service_type";
+    public static final String PROFILE_PHOTO = "profile_photo";
     public static final String SCREEN_TITLE = "screen_title";
-    public static final String FULL_NAME = "full_name";
-    public static final String EMAIL_ID = "email_id";
-    public static final String DAILY_SERVICE_OBJECT = "daily_service_object";
-    public static final String FAMILY_MEMBER_OBJECT = "family_member_object";
+    public static final String SERVICE_TYPE = "service_type";
 
     /* ------------------------------------------------------------- *
      * Validation Keys

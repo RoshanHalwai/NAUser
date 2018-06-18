@@ -12,9 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
@@ -94,21 +91,8 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
-        holder.textInvitedByOrNumberOfFlatsValue.setText("3");
+        holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getOwnersUID().size()));
         Glide.with(mCtx).load(nammaApartmentDailyService.getProfilePhoto())
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        baseActivity.hideProgressIndicator();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        baseActivity.hideProgressIndicator();
-                        return false;
-                    }
-                })
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);

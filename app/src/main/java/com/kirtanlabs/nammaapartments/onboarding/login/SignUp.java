@@ -136,6 +136,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
                     intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
                     intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
                     intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
+                    intent.putExtra(Constants.PROFILE_PHOTO, selectedImage.toString());
                     startActivity(intent);
                 }
                 break;

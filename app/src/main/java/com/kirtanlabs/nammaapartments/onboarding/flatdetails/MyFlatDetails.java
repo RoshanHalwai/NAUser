@@ -357,6 +357,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
         String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
         String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        String profilePhoto = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
         String societyName = editSociety.getText().toString();
         String tenantType = radioButtonTenant.isChecked()
                 ? radioButtonTenant.getText().toString()
@@ -372,7 +373,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 /*Create an instance of NammaApartmentUser class*/
-                UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, "");
+                UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, profilePhoto);
                 UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
                 UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
                 NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
