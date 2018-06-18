@@ -4,32 +4,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
 
-import java.util.Objects;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
-import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -47,17 +31,13 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     private TextView textVisitorNameAndServiceNameValue;
     private TextView textVisitorAndServiceTypeValue;
     private TextView textInvitationDateAndRatingValue;
-    private CircleImageView profileImage;
     private TextView textInvitedByAndApartmentNoValue;
     private TextView textDescription;
     private EditText editDescription;
     private Button buttonYes;
     private Button buttonNo;
     private Button buttonNotifyGate;
-    private TextView textInvitationTimeValue;
     private CardView cardViewVisitors;
-    private boolean visitorsAvailable = false;
-    private int visitorsCount = 0;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -104,7 +84,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         cardViewVisitors = findViewById(R.id.cardViewVisitors);
 
         /*Initialising all the views*/
-        profileImage = findViewById(R.id.profileImage);
         textVisitorAndServiceName = findViewById(R.id.textVisitorAndServiceName);
         TextView textVisitorAndServiceType = findViewById(R.id.textVisitorAndServiceType);
         textInvitationDateAndRating = findViewById(R.id.textInvitationDate);
@@ -113,7 +92,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         textVisitorNameAndServiceNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
         textVisitorAndServiceTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
         textInvitationDateAndRatingValue = findViewById(R.id.textInvitationDateValue);
-        textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
         textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
         textDescription = findViewById(R.id.textDescription);
@@ -132,7 +110,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         textVisitorNameAndServiceNameValue.setTypeface(setLatoBoldFont(this));
         textVisitorAndServiceTypeValue.setTypeface(setLatoBoldFont(this));
         textInvitationDateAndRatingValue.setTypeface(setLatoBoldFont(this));
-        textInvitationTimeValue.setTypeface(setLatoBoldFont(this));
         textInvitedByAndApartmentNoValue.setTypeface(setLatoBoldFont(this));
 
         textGivenThings.setTypeface(setLatoBoldFont(this));
@@ -219,58 +196,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
             textInvitationDateAndRatingValue.setText("4.2");
             textInvitedByAndApartmentNo.setText(R.string.flats);
             textInvitedByAndApartmentNoValue.setText("3");
-        } else {
-            DatabaseReference handedThingsReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                    .child(FIREBASE_CHILD_MYVISITORS);
-            handedThingsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (!dataSnapshot.exists()) {
-                        hideProgressIndicator();
-                        cardViewVisitors.setVisibility(View.GONE);
-                        showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
-                    } else {
-                        for (DataSnapshot visitorSnapshot : dataSnapshot.getChildren()) {
-                            DatabaseReference preApprovedReference = PREAPPROVED_VISITORS_REFERENCE
-                                    .child(visitorSnapshot.getKey());
-                            preApprovedReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot visitorDataSnapshot) {
-                                    NammaApartmentVisitor nammaApartmentVisitor = visitorDataSnapshot.getValue(NammaApartmentVisitor.class);
-                                    if (nammaApartmentVisitor.getStatus().equals(Constants.ENTERED)) {
-                                        Glide.with(getApplicationContext()).load(Objects.requireNonNull(nammaApartmentVisitor).getProfilePhoto()).into(profileImage);
-                                        textVisitorNameAndServiceNameValue.setText(Objects.requireNonNull(nammaApartmentVisitor).getFullName());
-                                        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
-                                        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-                                        textInvitationDateAndRatingValue.setText(separatedDateAndTime[0]);
-                                        textInvitationTimeValue.setText(separatedDateAndTime[1]);
-                                        String userName = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFullName();
-                                        textInvitedByAndApartmentNoValue.setText(userName);
-                                        visitorsAvailable = true;
-                                        cardViewVisitors.setVisibility(View.VISIBLE);
-                                    }
-                                    visitorsCount++;
-                                    if (!visitorsAvailable && visitorsCount == dataSnapshot.getChildrenCount()) {
-                                        cardViewVisitors.setVisibility(View.GONE);
-                                        showFeatureUnavailableLayout(R.string.current_visitors_unavailable_message);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                        hideProgressIndicator();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
         }
     }
 
