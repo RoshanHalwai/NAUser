@@ -26,10 +26,6 @@
 
         <!-- Ignore these activities for now -->
         <activity android:name=".MainActivity" />
-        <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
-        <activity
-            android:name=".onboarding.login.SignUp"
-            android:windowSoftInputMode="adjustResize" />
 
         <!-- Notification Services -->
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
@@ -62,6 +58,12 @@
         <activity
             android:name=".onboarding.login.OTP"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- SignUp and MyFlatDetails Screens -->
+        <activity
+            android:name=".onboarding.login.SignUp"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
 
         <!-- Namma Apartments NammaApartmentsHome Screen -->
         <activity android:name=".nammaapartmentshome.NammaApartmentsHome" />

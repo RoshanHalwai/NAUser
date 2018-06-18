@@ -103,8 +103,6 @@ public class Constants {
 
     public static final int FIREBASE_CHILD_RATING = 3;
     public static final String NOT_ENTERED = "Not Entered";
-    public static final String ENTERED = "Entered";
-    public static final String LEFT = "Left";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References
