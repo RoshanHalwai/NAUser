@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService">
+
+    <include layout="@layout/activity_base" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/dailyServiceProfilePic"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/add_member" />
+
+            <TextView
+                android:id="@+id/textErrorProfilePic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/upload_image"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textDailyServiceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/name"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <EditText
+                android:id="@+id/editDailyServiceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="textCapWords"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:id="@+id/textDailyServiceMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/mobile"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <LinearLayout
+                android:id="@+id/layoutMobileNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/textCountryCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:text="@string/_91"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <EditText
+                    android:id="@+id/editDailyServiceMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="20sp"
+                    tools:ignore="LabelFor" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/dash_line"
+                    android:layerType="software" />
+
+                <TextView
+                    android:id="@+id/textOr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.4"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:text="@string/or"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/dash_line"
+                    android:layerType="software" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonSelectFromContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/nmBlack"
+                android:text="@string/select_from_contact"
+                android:textAllCaps="false"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size" />
+
+            <LinearLayout
+                android:id="@+id/layoutLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/dash_line"
+                    android:layerType="software" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutTime"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:id="@+id/textTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/time"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/editPickTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/textTime"
+                    android:layout_toRightOf="@id/textTime"
+                    android:cursorVisible="false"
+                    android:drawableEnd="@drawable/clock"
+                    android:drawableRight="@drawable/clock"
+                    android:gravity="center"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="18sp"
+                    tools:ignore="LabelFor,TextFields" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textDescriptionDailyService"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/send_otp_message"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/buttonAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/nmBlack"
+                android:text="@string/add"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

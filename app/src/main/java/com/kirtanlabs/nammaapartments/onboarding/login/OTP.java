@@ -1,12 +1,14 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -152,6 +155,10 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     editSixthOTPDigit
             });
             if (allFieldsFilled) {
+                InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputManager != null) {
+                    inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
                 String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
                         editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
                         editSixthOTPDigit.getText().toString();
@@ -422,7 +429,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             case R.string.login:
                 textPhoneVerification.setText(R.string.enter_verification_code);
                 break;
-            case R.string.add_my_service:
+            case R.string.add_my_daily_service:
                 String service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
                 String description = getResources().getString(R.string.enter_verification_code);
                 description = description.replace("account", service_type + " account");

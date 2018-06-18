@@ -39,4 +39,5 @@
         android:textAllCaps="false"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size" />
+
 </RelativeLayout>

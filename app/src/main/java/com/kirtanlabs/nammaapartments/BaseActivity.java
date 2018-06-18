@@ -34,6 +34,7 @@ import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -201,6 +202,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
         featureUnavailableLayout.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.textFeatureUnavailable);
+        textView.setTypeface(setLatoItalicFont(this));
         textView.setText(text);
     }
 
@@ -327,4 +329,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void hideProgressIndicator() {
         progressIndicator.smoothToHide();
     }
+
 }

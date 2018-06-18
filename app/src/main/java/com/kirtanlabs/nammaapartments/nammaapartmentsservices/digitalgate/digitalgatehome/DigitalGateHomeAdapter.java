@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
 class DigitalGateHomeAdapter extends BaseAdapter {
@@ -62,6 +63,9 @@ class DigitalGateHomeAdapter extends BaseAdapter {
         /*Getting Id's for all the views*/
         ImageView imageGridDigitalGateServices = gridView.findViewById(R.id.imageDigitalGateGridLayout);
         TextView textGridDigitalGateServices = gridView.findViewById(R.id.textDigitalGateGridLayout);
+
+        /*Setting font for the TextView*/
+        textGridDigitalGateServices.setTypeface(Constants.setLatoRegularFont(context));
 
         /*Setting values for all the views*/
         imageGridDigitalGateServices.setImageResource(icons[position]);

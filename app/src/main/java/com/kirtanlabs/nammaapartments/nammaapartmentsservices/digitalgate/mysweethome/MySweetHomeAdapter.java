@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
 
@@ -67,13 +71,28 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
         //Creating an instance of NammaApartmentFamilyMembers class and retrieving the values from Firebase.
         NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
-        holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getFullName());
+        holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getPersonalDetails().getFullName());
         //TODO: Change text here
         holder.textMemberRelationValue.setText("Family Member");
-        boolean grantedAccess = nammaApartmentFamilyMembers.isGrantedAccess();
+        boolean grantedAccess = nammaApartmentFamilyMembers.getPrivileges().isGrantedAccess();
         String grantedAccessValue = String.valueOf(grantedAccess);
         String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);
         holder.textGrantedAccessValue.setText(accessValue);
+        Glide.with(mCtx).load(nammaApartmentFamilyMembers.getPersonalDetails().getProfilePhoto())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        baseActivity.hideProgressIndicator();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        baseActivity.hideProgressIndicator();
+                        return false;
+                    }
+                })
+                .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);
         holder.textCancel.setText(R.string.remove);
@@ -120,6 +139,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         final TextView textMessage;
         final TextView textEdit;
         final TextView textCancel;
+        private final de.hdodenhof.circleimageview.CircleImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -143,6 +163,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
             textGrantedAccessValue = itemView.findViewById(R.id.textInvitationTimeValue);
             textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
@@ -180,10 +201,10 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
             switch (v.getId()) {
                 case R.id.textCall:
-                    baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPhoneNumber());
+                    baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPhoneNumber());
+                    baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
                     Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
@@ -197,7 +218,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
                     String familyMemberUid = nammaApartmentFamilyMembers.getUID();
                     NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
-                    PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatNumber())
+                    PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
                             .child(familyMemberUid)
                             .removeValue();
                     break;

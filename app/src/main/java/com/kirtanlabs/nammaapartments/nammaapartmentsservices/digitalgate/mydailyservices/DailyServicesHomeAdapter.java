@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -23,8 +24,7 @@ import com.kirtanlabs.nammaapartments.R;
 import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDAILYSERVICES;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
@@ -39,6 +39,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     /* ------------------------------------------------------------- *
      * Public Members
      * ------------------------------------------------------------- */
+
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
 
     /* ------------------------------------------------------------- *
@@ -222,10 +223,11 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     nammaApartmentDailyServiceList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
-                    String dailyServiceType = "my" + nammaApartmentDailyService.getDailyServiceType();
-                    PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                            .child(FIREBASE_CHILD_MYDAILYSERVICES)
-                            .child(dailyServiceType)
+                    String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+                    dailyServiceType = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
+                    DatabaseReference userDailyServiceReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference()
+                            .child(FIREBASE_CHILD_DAILYSERVICES);
+                    userDailyServiceReference.child(dailyServiceType)
                             .child(nammaApartmentDailyService.getUID())
                             .removeValue();
                     break;
