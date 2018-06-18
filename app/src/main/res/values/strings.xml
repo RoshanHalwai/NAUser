@@ -131,6 +131,7 @@
     <string name="visitor_cancel">Are you sure you want to remove this data?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since there has been no visitors at your flat.</string>
 
 
     <!--Digi Gate NammaApartmentService Activity-->
@@ -163,11 +164,10 @@
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
     <string name="description">Description:</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since there has been no visitors at your flat.</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
 
-    <!--My Daily Services-->
+    <!--Daily Services Home-->
     <string name="remove">Remove</string>
     <string name="flats">Flats:</string>
     <string name="rating">Rating:</string>
@@ -176,9 +176,10 @@
     <string name="newspaper_paper_man">NewsPaper man</string>
     <string name="laundry_man">Laundry man</string>
     <string name="daily_service_cancel">Are you sure you want to remove this DailyService data?</string>
+    <string name="add_my_daily_service">Add My Daily Service</string>
+    <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
 
     <!--Adding My Daily Services-->
-    <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="name">Name</string>
     <string name="mobile">Mobile</string>
     <string name="pick_time">Time</string>

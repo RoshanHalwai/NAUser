@@ -132,7 +132,9 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
-                if (myDailyServiceSnapshot.exists()) {
+                if (!myDailyServiceSnapshot.exists()) {
+                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
+                } else {
                     for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                         String dailyServiceType = dailyServicesSnapshot.getKey();
                         DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
