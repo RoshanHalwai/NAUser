@@ -115,7 +115,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textCancel.setText(R.string.remove);
 
         /*Here we are changing edit icon*/
-        holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit, 0, 0);
+        holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit_new, 0, 0);
     }
 
     @Override
@@ -190,10 +190,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
 
-            textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textEdit.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textEdit.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
 
             //Setting events for items in card view
             textCall.setOnClickListener(this);

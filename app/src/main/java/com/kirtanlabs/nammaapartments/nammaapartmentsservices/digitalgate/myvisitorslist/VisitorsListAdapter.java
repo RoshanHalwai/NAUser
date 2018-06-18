@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
@@ -299,10 +300,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textInvitationDateOrServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitedByOrNumberOfFlatsValue.setTypeface(setLatoBoldFont(mCtx));
-            textCall.setTypeface(setLatoRegularFont(mCtx));
-            textMessage.setTypeface(setLatoRegularFont(mCtx));
-            textReschedule.setTypeface(setLatoRegularFont(mCtx));
-            textCancel.setTypeface(setLatoRegularFont(mCtx));
+
+            textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textReschedule.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
 
             //Setting events for items in card view
             textCall.setOnClickListener(this);

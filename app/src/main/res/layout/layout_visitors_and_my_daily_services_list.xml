@@ -185,7 +185,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/call_visitors_list"
+                    android:drawableTop="@drawable/call_new"
                     android:gravity="center"
                     android:text="@string/call"
                     android:textColor="@color/nmBlack" />
@@ -195,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/message_visitors_list"
+                    android:drawableTop="@drawable/message_new"
                     android:gravity="center"
                     android:text="@string/message"
                     android:textColor="@color/nmBlack" />
@@ -205,7 +205,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/calender_visitors_list"
+                    android:drawableTop="@drawable/reschedule_new"
                     android:gravity="center"
                     android:text="@string/reschedule"
                     android:textColor="@color/nmBlack" />
@@ -215,7 +215,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/cancel_visitors_list"
+                    android:drawableTop="@drawable/remove_new"
                     android:gravity="center"
                     android:text="@string/cancel"
                     android:textColor="@color/nmBlack" />
