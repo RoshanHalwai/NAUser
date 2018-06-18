@@ -37,6 +37,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     private Button buttonYes;
     private Button buttonNo;
     private Button buttonNotifyGate;
+    private CardView cardViewVisitors;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -66,6 +67,9 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        /*We need Progress Indicator in this screen*/
+        showProgressIndicator();
+
         //TODO: Write business logic to check if there are any visitors at resident house.
         /* If there are no visitors at resident house then we show
          * feature unavailable layout and pass some sensible message*/
@@ -75,8 +79,9 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
 
         /* We show current visitors list at resident house, so resident has
          * the ability to give things to their visitors and notify gate about it*/
-        CardView cardViewVisitors = findViewById(R.id.cardViewVisitors);
-        cardViewVisitors.setVisibility(View.VISIBLE);
+
+        /*Initialising the CardView*/
+        cardViewVisitors = findViewById(R.id.cardViewVisitors);
 
         /*Initialising all the views*/
         textVisitorAndServiceName = findViewById(R.id.textVisitorAndServiceName);
@@ -87,7 +92,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         textVisitorNameAndServiceNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
         textVisitorAndServiceTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
         textInvitationDateAndRatingValue = findViewById(R.id.textInvitationDateValue);
-        TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
         textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
         TextView textGivenThings = findViewById(R.id.textGivenThings);
         textDescription = findViewById(R.id.textDescription);
@@ -106,7 +110,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         textVisitorNameAndServiceNameValue.setTypeface(setLatoBoldFont(this));
         textVisitorAndServiceTypeValue.setTypeface(setLatoBoldFont(this));
         textInvitationDateAndRatingValue.setTypeface(setLatoBoldFont(this));
-        textInvitationTimeValue.setTypeface(setLatoBoldFont(this));
         textInvitedByAndApartmentNoValue.setTypeface(setLatoBoldFont(this));
 
         textGivenThings.setTypeface(setLatoBoldFont(this));
@@ -177,8 +180,14 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * Since we are using same layout for handed things to my guest and handed things to my daily services we need to
+     * change some Titles in layout
+     */
     private void changeTitles() {
         if (handed_Things_To == R.string.handed_things_to_my_daily_services) {
+            hideProgressIndicator();
+            cardViewVisitors.setVisibility(View.VISIBLE);
             String stringServiceName = getResources().getString(R.string.name) + ":";
             textVisitorAndServiceName.setText(stringServiceName);
             textVisitorNameAndServiceNameValue.setText("Ramesh");
