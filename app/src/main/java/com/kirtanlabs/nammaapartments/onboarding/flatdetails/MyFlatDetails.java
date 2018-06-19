@@ -1,7 +1,9 @@
 package com.kirtanlabs.nammaapartments.onboarding.flatdetails;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
@@ -39,6 +44,7 @@ import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 
@@ -53,8 +59,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * Private Members
      * ------------------------------------------------------------- */
 
-    Dialog dialog;
-    private List<String> itemsInList = new ArrayList<>();
+    private final List<String> itemsInList = new ArrayList<>();
+    private Dialog dialog;
     private ListView listView;
     private ArrayAdapter<String> adapter;
 
@@ -162,7 +168,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 showViews(R.id.radioResidentType);
                 break;
             case R.id.buttonContinue:
-                writeDataToFirebase();
+                storeUserDetailsInFirebase();
         }
     }
 
@@ -350,7 +356,13 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    private void writeDataToFirebase() {
+    private void storeUserDetailsInFirebase() {
+        //displaying progress dialog while image is uploading
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Creating your Account");
+        progressDialog.setMessage("Please wait a moment");
+        progressDialog.show();
+
         String city = editCity.getText().toString();
         String apartmentName = editApartment.getText().toString();
         String flatNumber = editFlat.getText().toString();
@@ -372,24 +384,41 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         flatsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                /*Create an instance of NammaApartmentUser class*/
-                UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, profilePhoto);
-                UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
-                UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
-                NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
+                //getting the storage reference
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child(userUID);
 
-                /*Mapping Mobile Number to UID in firebase under users->all*/
-                ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
-                        .setValue(userUID);
+                //adding the profile photo to storage reference and user data to real time database
+                storageReference.putFile(Uri.parse(profilePhoto))
+                        .addOnSuccessListener(taskSnapshot -> {
+                            /*Create an instance of NammaApartmentUser class*/
+                            UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, taskSnapshot.getDownloadUrl().toString());
+                            UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
+                            UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
+                            NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
 
-                /*Storing user details in firebase under users->private->uid*/
-                PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+                            /*Mapping Mobile Number to UID in firebase under users->all*/
+                            ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+                                    .setValue(userUID);
 
-                /*Adding user UID under Flats->FlatNumber*/
-                flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
+                            /*Storing user details in firebase under users->private->uid*/
+                            PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
 
-                startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
-                finish();
+                            /*Adding user UID under Flats->FlatNumber*/
+                            flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
+
+                            //dismissing the progress dialog
+                            progressDialog.dismiss();
+
+                            startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
+                            finish();
+                        })
+                        .addOnFailureListener(exception -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+
             }
 
             @Override

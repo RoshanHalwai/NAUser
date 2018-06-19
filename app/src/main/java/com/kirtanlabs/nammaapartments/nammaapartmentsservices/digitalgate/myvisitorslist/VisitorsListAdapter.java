@@ -56,7 +56,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     private final BaseActivity baseActivity;
     private View rescheduleDialog;
     private AlertDialog dialog;
-    private List<NammaApartmentVisitor> nammaApartmentVisitorList;
+    private final List<NammaApartmentVisitor> nammaApartmentVisitorList;
     private EditText editPickDate;
     private EditText editPickTime;
 
@@ -100,7 +100,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
                 holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
                 holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
                 holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                Glide.with(mCtx).load(nammaApartmentVisitor.getProfilePhoto())
+                Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
                         .into(holder.visitorOrDailyServiceProfilePic);
             }
 

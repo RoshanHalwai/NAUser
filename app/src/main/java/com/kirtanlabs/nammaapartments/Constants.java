@@ -80,15 +80,15 @@ public class Constants {
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
-    public static final String FIREBASE_CHILD_MYCARBIKECLEANER = "myCarBikeCleaner";
-    public static final String FIREBASE_MYCHILDDAYCARE = "myChildDayCare";
-    public static final String FIREBASE_MYCOOK = "myCook";
-    public static final String FIREBASE_MYDAILYNEWSPAPER = "myDailyNewspaper";
+    private static final String FIREBASE_CHILD_MYCARBIKECLEANER = "myCarBikeCleaner";
+    private static final String FIREBASE_MYCHILDDAYCARE = "myChildDayCare";
+    private static final String FIREBASE_MYCOOK = "myCook";
+    private static final String FIREBASE_MYDAILYNEWSPAPER = "myDailyNewspaper";
     public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
-    public static final String FIREBASE_MYDRIVER = "myDriver";
-    public static final String FIREBASE_MYMAID = "myMaid";
-    public static final String FIREBASE_MYMILKMAN = "myMilkman";
-    public static final String FIREBASE_MYLAUNDRY = "myLaundry";
+    private static final String FIREBASE_MYDRIVER = "myDriver";
+    private static final String FIREBASE_MYMAID = "myMaid";
+    private static final String FIREBASE_MYMILKMAN = "myMilkman";
+    private static final String FIREBASE_MYLAUNDRY = "myLaundry";
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_MYCABS = "myCabs";
     public static final String FIREBASE_CHILD_MYDELIVERIES = "myDeliveries ";
@@ -134,7 +134,7 @@ public class Constants {
      * Mapping Daily Services
      * ------------------------------------------------------------- */
 
-    public static final Map<String, String> DAILY_SERVICE_MAP;
+    private static final Map<String, String> DAILY_SERVICE_MAP;
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
 
     /* ------------------------------------------------------------- *

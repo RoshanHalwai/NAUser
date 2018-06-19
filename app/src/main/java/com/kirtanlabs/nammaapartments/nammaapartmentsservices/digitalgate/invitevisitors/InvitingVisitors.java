@@ -32,6 +32,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 
 import java.io.IOException;
 import java.text.DateFormatSymbols;
@@ -427,7 +428,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         AlertDialog.Builder alertInvitationDialog = new AlertDialog.Builder(this);
         alertInvitationDialog.setMessage(R.string.invitation_message);
         alertInvitationDialog.setTitle("Invitation Message");
-        alertInvitationDialog.setPositiveButton("Ok", (dialog, which) -> dialog.dismiss());
+        alertInvitationDialog.setPositiveButton("Ok", (dialog, which) ->
+                startActivity(new Intent(InvitingVisitors.this, VisitorsList.class)));
         alertInvitationDialog.create().show();
     }
 
