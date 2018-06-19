@@ -1,8 +1,10 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,12 +14,16 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class VisitorsList extends BaseActivity {
 
@@ -47,6 +53,12 @@ public class VisitorsList extends BaseActivity {
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        /*Set Listener for back button here since after Inviting visitors we navigate users
+         * to this activity and when back button is pressed we don't want users to
+         * go back to Invite Visitors screen but instead navigate to Digi Gate Home*/
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(view -> onBackPressed());
+
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -61,6 +73,22 @@ public class VisitorsList extends BaseActivity {
 
         //To retrieve user visitor list from firebase
         retrieveVisitorsDetailsFromFirebase();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding Back button
+     * ------------------------------------------------------------- */
+
+    /*We override these methods since after Inviting visitors we navigate users
+     * to this activity and when back button is pressed we don't want users to
+     * go back to Invite Visitors screen but instead navigate to Digi Gate Home*/
+
+    @Override
+    public void onBackPressed() {
+        Intent digitalGateHomeIntent = new Intent(this, DigitalGateHome.class);
+        digitalGateHomeIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        digitalGateHomeIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(digitalGateHomeIntent);
     }
 
     /* ------------------------------------------------------------- *
@@ -80,6 +108,7 @@ public class VisitorsList extends BaseActivity {
         myVisitorsReference.child(NammaApartmentsGlobal.userUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                hideProgressIndicator();
                 if (!dataSnapshot.exists() && currentNammaApartmentUser.getFamilyMembers() == null) {
                     showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
                 } else if (dataSnapshot.exists()) {
@@ -110,7 +139,6 @@ public class VisitorsList extends BaseActivity {
                 } else {
                     addFamilyMembersVisitors();
                 }
-                hideProgressIndicator();
             }
 
             @Override
@@ -171,4 +199,5 @@ public class VisitorsList extends BaseActivity {
             });
         }
     }
+
 }

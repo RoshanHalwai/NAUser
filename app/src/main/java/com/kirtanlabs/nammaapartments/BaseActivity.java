@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         activityTitle.setText(resourceId);
     }
 
-    private void setBackButtonListener() {
+    protected void setBackButtonListener() {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
     }
@@ -85,6 +86,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void showBackButton() {
         backButton.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /* ------------------------------------------------------------- *
@@ -198,7 +206,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param text feature unavailable message
      */
-    public void showFeatureUnavailableLayout(int text) {
+    protected void showFeatureUnavailableLayout(int text) {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
         featureUnavailableLayout.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.textFeatureUnavailable);
@@ -274,7 +282,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param fields consists of array of EditTexts.
      * @return consists of boolean variable based on the context.
      */
-    public boolean isAllFieldsFilled(EditText[] fields) {
+    protected boolean isAllFieldsFilled(EditText[] fields) {
         for (EditText currentField : fields) {
             if (TextUtils.isEmpty(currentField.getText().toString())) {
                 currentField.requestFocus();
@@ -290,7 +298,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param phone consists of string value of mobile number of that particular activity.
      * @return returns a boolean variable based on the context.
      */
-    public boolean isValidPhone(String phone) {
+    protected boolean isValidPhone(String phone) {
         boolean check;
         check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
         return check;
@@ -302,7 +310,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param name contains that particular editText of name
      * @throws NumberFormatException because if user tries to enter number in place of name.
      */
-    public boolean isValidPersonName(String name) throws NumberFormatException {
+    protected boolean isValidPersonName(String name) throws NumberFormatException {
         boolean check;
         check = !Pattern.matches("[a-zA-Z ]+", name);
         return check;
@@ -311,7 +319,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
      */
-    public void createNotifyGateDialog() {
+    protected void createNotifyGateDialog() {
         AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
         alertNotifyGateDialog.setMessage(R.string.notification_message);
         alertNotifyGateDialog.setTitle("Notification Message");
@@ -321,12 +329,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         alertNotifyGateDialog.show();
     }
 
-    public void showProgressIndicator() {
+    protected void showProgressIndicator() {
         progressIndicator = findViewById(R.id.animationWaitingForCustomers);
         progressIndicator.smoothToShow();
     }
 
-    public void hideProgressIndicator() {
+    protected void hideProgressIndicator() {
         progressIndicator.smoothToHide();
     }
 

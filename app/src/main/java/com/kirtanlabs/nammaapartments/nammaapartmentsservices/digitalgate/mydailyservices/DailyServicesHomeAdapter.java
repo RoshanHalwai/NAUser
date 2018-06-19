@@ -37,7 +37,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      * Public Members
      * ------------------------------------------------------------- */
 
-    private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
+    private final List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -92,7 +92,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getOwnersUID().size()));
-        Glide.with(mCtx).load(nammaApartmentDailyService.getProfilePhoto())
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);

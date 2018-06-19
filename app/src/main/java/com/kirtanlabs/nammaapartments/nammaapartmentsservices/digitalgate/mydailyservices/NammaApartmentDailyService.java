@@ -24,7 +24,7 @@ class NammaApartmentDailyService implements Serializable {
     private Boolean providedThings;
     private int rating;
     private String uid;
-    private Map<String, Boolean> ownersUID = new HashMap<>();
+    private final Map<String, Boolean> ownersUID = new HashMap<>();
 
     /* ------------------------------------------------------------- *
      * Constructors

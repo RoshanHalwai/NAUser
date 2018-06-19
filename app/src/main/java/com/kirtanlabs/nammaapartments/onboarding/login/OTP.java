@@ -1,14 +1,12 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,7 +26,6 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -155,10 +152,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     editSixthOTPDigit
             });
             if (allFieldsFilled) {
-                InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputManager != null) {
-                    inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                }
+                hideKeyboard();
                 String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
                         editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
                         editSixthOTPDigit.getText().toString();
@@ -185,6 +179,8 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                //Hiding the Keyboard in case the Auto-Verification is completed
+                hideKeyboard();
                 textResendOTPOrVerificationMessage.setText(R.string.auto_verification_completed);
                 textResendOTPOrVerificationMessage.setEnabled(false);
                 textChangeNumberOrTimer.setVisibility(View.INVISIBLE);
@@ -211,10 +207,6 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 resendToken = forceResendingToken;
             }
 
-            @Override
-            public void onCodeAutoRetrievalTimeOut(String s) {
-                super.onCodeAutoRetrievalTimeOut(s);
-            }
         };
     }
 

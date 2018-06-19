@@ -100,6 +100,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
         privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                hideProgressIndicator();
                 for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
                     if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
                         DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
@@ -118,7 +119,9 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
                         });
                     }
                 }
-                hideProgressIndicator();
+                if (nammaApartmentFamilyMembersList.isEmpty()) {
+                    showFeatureUnavailableLayout(R.string.family_member_unavailable_message);
+                }
             }
 
             @Override

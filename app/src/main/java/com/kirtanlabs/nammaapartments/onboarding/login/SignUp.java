@@ -23,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 
-public class SignUp extends BaseActivity implements View.OnClickListener {
+public class SignUp extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -79,6 +79,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
 
         /*Setting event for  button*/
         circleImageNewUserProfileImage.setOnClickListener(this);
+        circleImageNewUserProfileImage.setOnFocusChangeListener(this);
         buttonSignUp.setOnClickListener(this);
     }
 
@@ -123,7 +124,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
+     * Overriding OnClick & OnFocus Listeners
      * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
@@ -141,8 +142,16 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.newUserProfileImage:
+                hideKeyboard();
                 imageSelectionDialog.show();
                 break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == circleImageNewUserProfileImage && hasFocus) {
+            onClick(v);
         }
     }
 
@@ -175,4 +184,5 @@ public class SignUp extends BaseActivity implements View.OnClickListener {
         });
         imageSelectionDialog = builder.create();
     }
+
 }

@@ -32,7 +32,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
      * ------------------------------------------------------------- */
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private List<NammaApartmentUser> nammaApartmentFamilyMembersList;
+    private final List<NammaApartmentUser> nammaApartmentFamilyMembersList;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -75,7 +75,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         String grantedAccessValue = String.valueOf(grantedAccess);
         String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);
         holder.textGrantedAccessValue.setText(accessValue);
-        Glide.with(mCtx).load(nammaApartmentFamilyMembers.getPersonalDetails().getProfilePhoto())
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentFamilyMembers.getPersonalDetails().getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);

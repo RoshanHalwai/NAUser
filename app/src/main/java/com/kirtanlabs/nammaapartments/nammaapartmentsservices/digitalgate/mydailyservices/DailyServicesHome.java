@@ -132,6 +132,7 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
+                hideProgressIndicator();
                 if (!myDailyServiceSnapshot.exists()) {
                     showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
                 } else {
@@ -169,7 +170,6 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                                 });
                     }
                 }
-                hideProgressIndicator();
             }
 
             @Override
