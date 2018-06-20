@@ -180,8 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * else we show Request permission dialog to allow users to give access.
      */
     protected void showUserContacts() {
-        readContactsIntent = new Intent(Intent.ACTION_PICK);
-        readContactsIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+        readContactsIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_REQUEST_CODE);
         else {
@@ -195,19 +194,19 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void launchCamera() {
         cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile;
+        try {
+            photoFile = createImageFile();
+            imageFilePath = photoFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         else {
-            File photoFile;
-            try {
-                photoFile = createImageFile();
-                imageFilePath = photoFile.getAbsolutePath();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-            Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST_CODE);
         }
     }

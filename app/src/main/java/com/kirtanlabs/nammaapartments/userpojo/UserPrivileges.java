@@ -1,10 +1,12 @@
 package com.kirtanlabs.nammaapartments.userpojo;
 
+import java.io.Serializable;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 6/17/2018
  */
-public class UserPrivileges {
+public class UserPrivileges implements Serializable {
 
     /* ------------------------------------------------------------- *
      * Private Members

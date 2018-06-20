@@ -2,13 +2,18 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswe
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +40,8 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPrivileges;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -60,7 +67,7 @@ import static com.kirtanlabs.nammaapartments.ImagePicker.bitmapToByteArray;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 6/17/2018
  */
-public class AddFamilyMember extends BaseActivity implements View.OnClickListener {
+public class AddFamilyMember extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     /*----------------------------------------------
      *Private Members
@@ -77,7 +84,10 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private AlertDialog imageSelectionDialog;
     private boolean grantedAccess;
     private String mobileNumber;
+
     private byte[] profilePhotoByteArray;
+    private Uri uriContact;
+    private String contactID;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -149,6 +159,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonAdd.setOnClickListener(this);
         radioButtonFamilyMember.setOnClickListener(this);
         radioButtonFriend.setOnClickListener(this);
+
+        editFamilyMemberMobile.setOnFocusChangeListener(this);
+
     }
 
     /*-------------------------------------------------------------------------------
@@ -160,40 +173,34 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case READ_CONTACTS_PERMISSION_REQUEST_CODE:
-                    Cursor cursor;
-                    try {
-                        Uri uri = data.getData();
-                        if (uri != null) {
-                            cursor = getContentResolver().query(uri, null, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                                //int emailIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.);
-                                String phoneNo = cursor.getString(phoneIndex);
-                                String name = cursor.getString(nameIndex);
-                                String formattedPhoneNumber = phoneNo.replaceAll("\\D+", "");
-                                if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
-                                    formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
-                                }
-                                editFamilyMemberName.setText(name);
-                                editFamilyMemberMobile.setText(formattedPhoneNumber);
-                                cursor.close();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    uriContact = data.getData();
+                    editFamilyMemberName.setText(retrieveContactName());
+                    editFamilyMemberMobile.setText(retrieveContactNumber());
+                    Bitmap contactPhoto = retrieveContactPhoto();
+                    if (contactPhoto != null) {
+                        circleImageView.setImageBitmap(contactPhoto);
+                        profilePhotoByteArray = bitmapToByteArray(contactPhoto);
+                    } else {
+                        circleImageView.setImageResource(R.drawable.add_member);
                     }
+                    /*We need to check if mobile number selected from contact already exists
+                     * in firebase*/
+                    onFocusChange(editFamilyMemberMobile, false);
                     break;
+
                 case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
                     Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
                     circleImageView.setImageBitmap(bitmapProfilePic);
                     profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
+                    if (profilePhotoByteArray != null) {
+                        textErrorProfilePic.setVisibility(View.INVISIBLE);
+                    }
                     break;
 
                 case AFM_OTP_STATUS_REQUEST_CODE:
                     storeFamilyMembersDetails();
+                    break;
 
             }
         }
@@ -232,10 +239,15 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
             case R.id.buttonAdd:
                 if (isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail})
                         && editFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
-                    if (grantedAccess)
-                        openNotificationDialog();
-                    else {
-                        navigatingToOTPScreen();
+                    if (profilePhotoByteArray == null) {
+                        textErrorProfilePic.setVisibility(View.VISIBLE);
+                    } else {
+                        textErrorProfilePic.setVisibility(View.INVISIBLE);
+                        if (grantedAccess)
+                            openNotificationDialog();
+                        else {
+                            navigatingToOTPScreen();
+                        }
                     }
                 }
                 break;
@@ -253,9 +265,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private void createImageSelectionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] selectionOptions = {
-                getResources().getString(R.string.gallery),
-                getResources().getString(R.string.camera),
-                getResources().getString(R.string.cancel)
+                getString(R.string.gallery),
+                getString(R.string.camera),
+                getString(R.string.cancel)
         };
         builder.setItems(selectionOptions, (dialog, which) -> {
             switch (which) {
@@ -308,8 +320,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private void storeFamilyMembersDetails() {
         //displaying progress dialog while image is uploading
         showProgressDialog(this,
-                getResources().getString(R.string.adding_your_family_member),
-                getResources().getString(R.string.please_wait_a_moment));
+                getString(R.string.adding_your_family_member),
+                getString(R.string.please_wait_a_moment));
 
         //Map family member's mobile number with uid in users->all
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
@@ -317,10 +329,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String familyMemberUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-                //If family members mobile number already exists we don't create a new UID for them
-                if (!dataSnapshot.exists()) {
-                    familyMemberMobileNumberReference.setValue(familyMemberUID);
-                }
+                familyMemberMobileNumberReference.setValue(familyMemberUID);
 
                 //getting the storage reference
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
@@ -336,7 +345,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     String phoneNumber = editFamilyMemberMobile.getText().toString();
                     String email = editFamilyMemberEmail.getText().toString();
                     NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-                    UserPersonalDetails userPersonalDetails = new UserPersonalDetails(email, fullName, phoneNumber, taskSnapshot.getDownloadUrl().toString());
+                    UserPersonalDetails userPersonalDetails = new UserPersonalDetails(email, fullName, phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
                     UserFlatDetails userFlatDetails = currentNammaApartmentUser.getFlatDetails();
                     UserPrivileges userPrivileges = new UserPrivileges(false, grantedAccess, false);
 
@@ -348,9 +357,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     );
 
                     /*Storing new family member details in firebase under users->private->family member uid*/
-                            PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
+                    PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
 
-                            //dismissing the progress dialog
+                    //dismissing the progress dialog
                     hideProgressDialog();
 
                     /*Storing user UID under Flats*/
@@ -384,8 +393,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     Intent MySweetHomeIntent = new Intent(AddFamilyMember.this, MySweetHome.class);
                     MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    showSuccessDialog(getResources().getString(R.string.family_member_success_title),
-                            getResources().getString(R.string.family_member_success_message),
+                    showSuccessDialog(getString(R.string.family_member_success_title),
+                            getString(R.string.family_member_success_message),
                             MySweetHomeIntent);
                 }).addOnFailureListener(exception -> {
                     hideProgressDialog();
@@ -398,6 +407,126 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
 
             }
         });
+    }
+
+    /**
+     * We ensure User does not add a family member whose mobile number already exists
+     *
+     * @param v        of mobile number edit text
+     * @param hasFocus of mobile number edit text
+     */
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            if (editFamilyMemberMobile.getText().length() == PHONE_NUMBER_MAX_LENGTH) {
+                mobileNumber = editFamilyMemberMobile.getText().toString();
+                DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
+                familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            editFamilyMemberMobile.requestFocus();
+                            Drawable drawableWrap = DrawableCompat.wrap(
+                                    Objects.requireNonNull(ContextCompat.getDrawable(
+                                            AddFamilyMember.this,
+                                            android.R.drawable.stat_sys_warning)
+                                    )
+                            );
+                            drawableWrap.mutate();
+                            DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(AddFamilyMember.this, R.color.nmBlack));
+                            drawableWrap.setBounds(0, 0, drawableWrap.getIntrinsicWidth(), drawableWrap.getIntrinsicHeight());
+                            editFamilyMemberMobile.setError(getString(R.string.mobile_number_exists), drawableWrap);
+                            editFamilyMemberMobile.setSelection(editFamilyMemberMobile.length());
+                        } else {
+                            editFamilyMemberMobile.setError(null);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * If Photo is available for the contact then returns it else
+     * returns null
+     *
+     * @return Photo if available for the contact
+     */
+    private Bitmap retrieveContactPhoto() {
+        Bitmap photo = null;
+        try {
+            InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(
+                    getContentResolver(),
+                    ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactID)),
+                    true);
+            if (inputStream != null) {
+                photo = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return photo;
+    }
+
+    /**
+     * The contact number of person selected by the user from the contacts list
+     *
+     * @return contact number
+     */
+    private String retrieveContactNumber() {
+        String contactNumber = null;
+
+        // getting contacts ID
+        Cursor cursorID = getContentResolver().query(uriContact,
+                new String[]{ContactsContract.Contacts._ID},
+                null, null, null);
+        if (Objects.requireNonNull(cursorID).moveToFirst()) {
+            contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
+        }
+        cursorID.close();
+
+        // Using the contact ID now we will get contact phone number
+        Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
+                new String[]{contactID},
+                null);
+
+        if (Objects.requireNonNull(cursorPhone).moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+        cursorPhone.close();
+        String formattedPhoneNumber = Objects.requireNonNull(contactNumber).replaceAll("\\D+", "");
+        if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
+            formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
+        }
+        return formattedPhoneNumber;
+    }
+
+    /**
+     * The contact name of person selected by the user from the contacts list
+     *
+     * @return contact name
+     */
+    private String retrieveContactName() {
+        String contactName = null;
+        // querying contact data store
+        Cursor cursor = getContentResolver().query(uriContact, null, null, null, null);
+        if (Objects.requireNonNull(cursor).moveToFirst()) {
+            // DISPLAY_NAME = The display name for the contact.
+            // HAS_PHONE_NUMBER =   An indicator of whether this contact has at least one phone number.
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+        }
+        cursor.close();
+        return contactName;
     }
 
 }

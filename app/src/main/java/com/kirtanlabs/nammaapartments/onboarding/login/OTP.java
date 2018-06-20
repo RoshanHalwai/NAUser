@@ -128,6 +128,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(this);
         textResendOTPOrVerificationMessage.setOnClickListener(v -> resendOTP());
+        //TODO: Change SignIn.class since this screen can be used by multiple activities
         textChangeNumberOrTimer.setOnClickListener(v -> startActivity(new Intent(this, SignIn.class)));
 
         /* Since multiple activities make use of this class we get previous

@@ -31,7 +31,6 @@ public class NammaApartmentsGlobal extends Application {
         return nammaApartmentUser;
     }
 
-
     public DatabaseReference getUserDataReference() {
         UserFlatDetails userFlatDetails = nammaApartmentUser.getFlatDetails();
         return FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_USER_DATA).child(FIREBASE_CHILD_PRIVATE)
@@ -40,7 +39,7 @@ public class NammaApartmentsGlobal extends Application {
                 .child(userFlatDetails.getApartmentName())
                 .child(userFlatDetails.getFlatNumber());
     }
-
+    
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
