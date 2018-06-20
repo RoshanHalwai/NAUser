@@ -41,6 +41,8 @@
     <string name="owner">Owner</string>
     <string name="tenant">Tenant</string>
     <string name="verification_message">Our team will verify the details provided by you. We will notify you once the verification is completed.</string>
+    <string name="creating_your_account">Creating your Account</string>
+    <string name="please_wait_a_moment">Please wait a moment</string>
     <string name="next">Continue</string>
 
     <!--SignUp Activity -->
@@ -116,7 +118,9 @@
     <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="select_future_time">Please select future time.</string>
     <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your society.</string>
-    <string name="invitation_message">You have successfully invited your visitor.</string>
+    <string name="invitation_success_title">Invitation Message</string>
+    <string name="invitation_success_message">You have successfully invited your visitor.</string>
+    <string name="inviting_your_visitor">Inviting your visitor</string>
 
     <!--Visitors List Activity-->
     <string name="visitor">Visitor:</string>
@@ -142,7 +146,8 @@
     <string name="handed_things_to_my_daily_services">Handed Things To My Daily Services</string>
     <string name="raise_fire_alarm">Raise Fire Alarm</string>
     <string name="raise_theft_alarm">Raise Theft Alarm</string>
-    <string name="notification_message">Notification is sent to your Security Guard.</string>
+    <string name="notification_message">Arrival Notification has been sent to your Security Guard.</string>
+    <string name="notification_title">Security Guard Notification</string>
     <string name="please_fill_details">Please fill details here</string>
 
     <!--Expecting Cab Arrival & Expecting Package Arrival Activities-->
@@ -166,6 +171,7 @@
     <string name="description">Description:</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
+    <string name="handed_things_message">Handed Things Notification has been sent to your Security Guard.</string>
 
     <!--Daily Services Home-->
     <string name="remove">Remove</string>
@@ -178,6 +184,9 @@
     <string name="daily_service_cancel">Are you sure you want to remove this DailyService data?</string>
     <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
+    <string name="adding_your_daily_service">Adding your Daily Service</string>
+    <string name="daily_service_success_title">Daily Service Message</string>
+    <string name="daily_service_success_message">You have successfully added your Daily Service.</string>
 
     <!--Adding My Daily Services-->
     <string name="name">Name</string>
@@ -206,6 +215,9 @@
     <string name="notification_alert">Notification Alert</string>
     <string name="granted_access">Access:</string>
     <string name="family_member_unavailable_message">Please add your Family Members to approve visitors on your behalf.</string>
+    <string name="adding_your_family_member">Adding your Family Member</string>
+    <string name="family_member_success_title">Family Member Message</string>
+    <string name="family_member_success_message">You have successfully added your Family Member.</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>

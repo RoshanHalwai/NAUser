@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +12,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,7 +29,12 @@ import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
@@ -56,6 +64,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
     private AVLoadingIndicatorView progressIndicator;
+    public static String imageFilePath = "";
+    private ProgressDialog progressDialog;
 
     /* ------------------------------------------------------------- *
      * Abstract Methods
@@ -88,12 +98,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         backButton.setVisibility(View.VISIBLE);
     }
 
-    protected void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
+
 
     /* ------------------------------------------------------------- *
      * Overriding AppCompatActivity Methods
@@ -155,6 +167,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         infoButton.setVisibility(View.VISIBLE);
     }
 
+
+    protected void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     /**
      * We check if permissions are granted to Read Contacts if granted then we directly start Read Contacts Activity with Result
      * else we show Request permission dialog to allow users to give access.
@@ -178,6 +198,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         else {
+            File photoFile;
+            try {
+                photoFile = createImageFile();
+                imageFilePath = photoFile.getAbsolutePath();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST_CODE);
         }
     }
@@ -197,10 +227,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /* ------------------------------------------------------------- *
-     * Public Methods
-     * ------------------------------------------------------------- */
-
     /**
      * Displays Feature Unavailable layout along with a message passed by the activity
      *
@@ -213,6 +239,87 @@ public abstract class BaseActivity extends AppCompatActivity {
         textView.setTypeface(setLatoItalicFont(this));
         textView.setText(text);
     }
+
+    /**
+     * This method checks if all the editTexts are filled or not.
+     *
+     * @param fields consists of array of EditTexts.
+     * @return consists of boolean variable based on the context.
+     */
+    protected boolean isAllFieldsFilled(EditText[] fields) {
+        for (EditText currentField : fields) {
+            if (TextUtils.isEmpty(currentField.getText().toString())) {
+                currentField.requestFocus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This method checks if user is entering proper phone number or not.
+     *
+     * @param phone consists of string value of mobile number of that particular activity.
+     * @return returns a boolean variable based on the context.
+     */
+    protected boolean isValidPhone(String phone) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
+        return check;
+    }
+
+    /**
+     * This method gets invoked when user is trying to enter improper format of entering name.
+     *
+     * @param name contains that particular editText of name
+     * @throws NumberFormatException because if user tries to enter number in place of name.
+     */
+    protected boolean isValidPersonName(String name) throws NumberFormatException {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z ]+", name);
+        return check;
+    }
+
+    /**
+     * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
+     */
+    protected void showSuccessDialog(String title, String message, Intent intent) {
+        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setTitle(title);
+        alertNotifyGateDialog.setMessage(message);
+        if (intent == null) {
+            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
+        } else {
+            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> startActivity(intent));
+        }
+
+        new Dialog(this);
+        alertNotifyGateDialog.show();
+    }
+
+    protected void showProgressIndicator() {
+        progressIndicator = findViewById(R.id.animationWaitingForCustomers);
+        progressIndicator.smoothToShow();
+    }
+
+    protected void hideProgressIndicator() {
+        progressIndicator.smoothToHide();
+    }
+
+    protected void showProgressDialog(Context context, String title, String message) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    protected void hideProgressDialog() {
+        progressDialog.dismiss();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Public Methods
+     * ------------------------------------------------------------- */
 
     /**
      * We check if permissions are granted to place calls if granted then we directly start Dialer Activity
@@ -274,68 +381,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         int mMinute = calendarTime.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, onTimeSetListener, mHour, mMinute, true);
         timePickerDialog.show();
-    }
-
-    /**
-     * This method checks if all the editTexts are filled or not.
-     *
-     * @param fields consists of array of EditTexts.
-     * @return consists of boolean variable based on the context.
-     */
-    protected boolean isAllFieldsFilled(EditText[] fields) {
-        for (EditText currentField : fields) {
-            if (TextUtils.isEmpty(currentField.getText().toString())) {
-                currentField.requestFocus();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * This method checks if user is entering proper phone number or not.
-     *
-     * @param phone consists of string value of mobile number of that particular activity.
-     * @return returns a boolean variable based on the context.
-     */
-    protected boolean isValidPhone(String phone) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
-        return check;
-    }
-
-    /**
-     * This method gets invoked when user is trying to enter improper format of entering name.
-     *
-     * @param name contains that particular editText of name
-     * @throws NumberFormatException because if user tries to enter number in place of name.
-     */
-    protected boolean isValidPersonName(String name) throws NumberFormatException {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z ]+", name);
-        return check;
-    }
-
-    /**
-     * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
-     */
-    protected void createNotifyGateDialog() {
-        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
-        alertNotifyGateDialog.setMessage(R.string.notification_message);
-        alertNotifyGateDialog.setTitle("Notification Message");
-        alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
-
-        new Dialog(this);
-        alertNotifyGateDialog.show();
-    }
-
-    protected void showProgressIndicator() {
-        progressIndicator = findViewById(R.id.animationWaitingForCustomers);
-        progressIndicator.smoothToShow();
-    }
-
-    protected void hideProgressIndicator() {
-        progressIndicator.smoothToHide();
     }
 
 }

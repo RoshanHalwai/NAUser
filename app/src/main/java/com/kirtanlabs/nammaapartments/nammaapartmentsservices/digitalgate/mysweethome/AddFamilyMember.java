@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswe
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
@@ -35,7 +35,6 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPrivileges;
 
-import java.io.IOException;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,6 +54,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.ImagePicker.bitmapToByteArray;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -77,7 +77,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private AlertDialog imageSelectionDialog;
     private boolean grantedAccess;
     private String mobileNumber;
-    private Uri selectedImage;
+    private byte[] profilePhotoByteArray;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -186,31 +186,10 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     }
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
-                    selectedImage = data.getData();
-                    if (data.getExtras() != null) {
-                        Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
-                        circleImageView.setImageBitmap(bitmapProfilePic);
-                        imageSelectionDialog.cancel();
-                        textErrorProfilePic.setVisibility(View.GONE);
-                    } else {
-                        imageSelectionDialog.cancel();
-                    }
-                    break;
-
                 case GALLERY_PERMISSION_REQUEST_CODE:
-                    if (data != null && data.getData() != null) {
-                        selectedImage = data.getData();
-                        try {
-                            Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            circleImageView.setImageBitmap(bitmapProfilePic);
-                            imageSelectionDialog.cancel();
-                            textErrorProfilePic.setVisibility(View.GONE);
-                        } catch (IOException exception) {
-                            exception.getStackTrace();
-                        }
-                    } else {
-                        imageSelectionDialog.cancel();
-                    }
+                    Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
+                    circleImageView.setImageBitmap(bitmapProfilePic);
+                    profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
                     break;
 
                 case AFM_OTP_STATUS_REQUEST_CODE:
@@ -251,16 +230,12 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 buttonNo.setTextColor(Color.WHITE);
                 break;
             case R.id.buttonAdd:
-                if (selectedImage == null) {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                } else {
-                    if (isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail})
-                            && editFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
-                        if (grantedAccess)
-                            openNotificationDialog();
-                        else {
-                            navigatingToOTPScreen();
-                        }
+                if (isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail})
+                        && editFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    if (grantedAccess)
+                        openNotificationDialog();
+                    else {
+                        navigatingToOTPScreen();
                     }
                 }
                 break;
@@ -322,6 +297,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         mobileNumber = editFamilyMemberMobile.getText().toString();
         otpIntent.putExtra(MOBILE_NUMBER, mobileNumber);
         otpIntent.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+        //TODO: Change the Service Type here
         otpIntent.putExtra(SERVICE_TYPE, "Family Member");
         startActivityForResult(otpIntent, AFM_OTP_STATUS_REQUEST_CODE);
     }
@@ -331,10 +307,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
      */
     private void storeFamilyMembersDetails() {
         //displaying progress dialog while image is uploading
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Adding your Family Member");
-        progressDialog.setMessage("Please wait a moment");
-        progressDialog.show();
+        showProgressDialog(this,
+                getResources().getString(R.string.adding_your_family_member),
+                getResources().getString(R.string.please_wait_a_moment));
 
         //Map family member's mobile number with uid in users->all
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
@@ -347,74 +322,75 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     familyMemberMobileNumberReference.setValue(familyMemberUID);
                 }
 
-                //Store family member's UID under users data structure for future use
-                String fullName = editFamilyMemberName.getText().toString();
-                String phoneNumber = editFamilyMemberMobile.getText().toString();
-                String email = editFamilyMemberEmail.getText().toString();
-                NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-                UserPersonalDetails userPersonalDetails = new UserPersonalDetails(email, fullName, phoneNumber, selectedImage.toString());
-                UserFlatDetails userFlatDetails = currentNammaApartmentUser.getFlatDetails();
-                UserPrivileges userPrivileges = new UserPrivileges(false, grantedAccess, false);
-
-                NammaApartmentUser familyMember = new NammaApartmentUser(
-                        familyMemberUID,
-                        userPersonalDetails,
-                        userFlatDetails,
-                        userPrivileges
-                );
-
                 //getting the storage reference
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(familyMemberUID);
 
-                //adding the profile photo to storage reference and daily service data to real time database
-                storageReference.putFile(selectedImage)
-                        .addOnSuccessListener(taskSnapshot -> {
+                UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
 
-                            /*Storing new family member details in firebase under users->private->family member uid*/
+                //adding the profile photo to storage reference and daily service data to real time database
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    //Store family member's UID under users data structure for future use
+                    String fullName = editFamilyMemberName.getText().toString();
+                    String phoneNumber = editFamilyMemberMobile.getText().toString();
+                    String email = editFamilyMemberEmail.getText().toString();
+                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+                    UserPersonalDetails userPersonalDetails = new UserPersonalDetails(email, fullName, phoneNumber, taskSnapshot.getDownloadUrl().toString());
+                    UserFlatDetails userFlatDetails = currentNammaApartmentUser.getFlatDetails();
+                    UserPrivileges userPrivileges = new UserPrivileges(false, grantedAccess, false);
+
+                    NammaApartmentUser familyMember = new NammaApartmentUser(
+                            familyMemberUID,
+                            userPersonalDetails,
+                            userFlatDetails,
+                            userPrivileges
+                    );
+
+                    /*Storing new family member details in firebase under users->private->family member uid*/
                             PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
 
                             //dismissing the progress dialog
-                            progressDialog.dismiss();
+                    hideProgressDialog();
 
-                            /*Storing user UID under Flats*/
-                            DatabaseReference flatsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
-                            flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(familyMemberUID).setValue(true);
+                    /*Storing user UID under Flats*/
+                    DatabaseReference flatsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
+                    flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(familyMemberUID).setValue(true);
 
-                            /*If Relation is Family Member we share UID to user as well as family members and store the UID
-                             * under familyMembers child*/
-                            if (radioButtonFamilyMember.isChecked()) {
-                                DatabaseReference familyMemberReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID)
-                                        .child(Constants.FIREBASE_CHILD_FAMILY_MEMBERS);
-                                familyMemberReference.child(NammaApartmentsGlobal.userUID).setValue(true);
-                                DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                                        .child(Constants.FIREBASE_CHILD_FAMILY_MEMBERS);
-                                currentUserReference.child(familyMemberUID).setValue(true);
-                            }
+                    /*If Relation is Family Member we share UID to user as well as family members and store the UID
+                     * under familyMembers child*/
+                    if (radioButtonFamilyMember.isChecked()) {
+                        DatabaseReference familyMemberReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID)
+                                .child(Constants.FIREBASE_CHILD_FAMILY_MEMBERS);
+                        familyMemberReference.child(NammaApartmentsGlobal.userUID).setValue(true);
+                        DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                                .child(Constants.FIREBASE_CHILD_FAMILY_MEMBERS);
+                        currentUserReference.child(familyMemberUID).setValue(true);
+                    }
 
-                            /*If Relation is Friend we share UID to user as well as friend and store the UID
-                             * under friends child*/
-                            else {
-                                DatabaseReference friendsReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID).
-                                        child(Constants.FIREBASE_CHILD_FRIENDS);
-                                friendsReference.child(NammaApartmentsGlobal.userUID).setValue(true);
-                                DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
-                                        .child(Constants.FIREBASE_CHILD_FRIENDS);
-                                currentUserReference.child(familyMemberUID).setValue(true);
-                            }
+                    /*If Relation is Friend we share UID to user as well as friend and store the UID
+                     * under friends child*/
+                    else {
+                        DatabaseReference friendsReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID).
+                                child(Constants.FIREBASE_CHILD_FRIENDS);
+                        friendsReference.child(NammaApartmentsGlobal.userUID).setValue(true);
+                        DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                                .child(Constants.FIREBASE_CHILD_FRIENDS);
+                        currentUserReference.child(familyMemberUID).setValue(true);
+                    }
 
-                            /* Once we are done with storing data we need to call MySweetHome screen again
-                             * to show users that their family member have been added successfully*/
-                            Intent MySweetHomeIntent = new Intent(AddFamilyMember.this, MySweetHome.class);
-                            MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(MySweetHomeIntent);
-                        })
-                        .addOnFailureListener(exception -> {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                        });
+                    /* Once we are done with storing data we need to call MySweetHome screen again
+                     * to show users that their family member have been added successfully*/
+                    Intent MySweetHomeIntent = new Intent(AddFamilyMember.this, MySweetHome.class);
+                    MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    showSuccessDialog(getResources().getString(R.string.family_member_success_title),
+                            getResources().getString(R.string.family_member_success_message),
+                            MySweetHomeIntent);
+                }).addOnFailureListener(exception -> {
+                    hideProgressDialog();
+                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override

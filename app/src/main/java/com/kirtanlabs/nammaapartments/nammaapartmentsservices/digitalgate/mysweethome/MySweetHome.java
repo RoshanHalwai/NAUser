@@ -101,26 +101,27 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hideProgressIndicator();
-                for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
-                    if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
-                        DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
-                        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                NammaApartmentUser nammaApartmentFamilyMember = dataSnapshot.getValue(NammaApartmentUser.class);
-                                nammaApartmentFamilyMembersList.add(0, nammaApartmentFamilyMember);
-                                mySweetHomeAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-                if (nammaApartmentFamilyMembersList.isEmpty()) {
+                if (dataSnapshot.getChildrenCount() == 1) {
                     showFeatureUnavailableLayout(R.string.family_member_unavailable_message);
+                } else {
+                    for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
+                        if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
+                            DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
+                            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    NammaApartmentUser nammaApartmentFamilyMember = dataSnapshot.getValue(NammaApartmentUser.class);
+                                    nammaApartmentFamilyMembersList.add(0, nammaApartmentFamilyMember);
+                                    mySweetHomeAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
                 }
             }
 
