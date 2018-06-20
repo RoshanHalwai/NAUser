@@ -186,7 +186,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                     } else {
                         storeDigitalGateDetails(FIREBASE_CHILD_MYDELIVERIES);
                     }
-                    createNotifyGateDialog();
+                    showSuccessDialog(getResources().getString(R.string.notification_title),
+                            getResources().getString(R.string.notification_message), null);
                 } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
                 }

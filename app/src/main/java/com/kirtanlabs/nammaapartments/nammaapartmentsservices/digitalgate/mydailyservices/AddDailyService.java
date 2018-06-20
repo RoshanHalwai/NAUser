@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -27,13 +25,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -64,6 +63,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.ImagePicker.bitmapToByteArray;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -83,7 +83,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     private String service_type;
     private String mobileNumber;
     private boolean fieldsFilled;
-    private Uri selectedImage;
+    private byte[] profilePhotoByteArray;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -187,32 +187,12 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                         e.printStackTrace();
                     }
                     break;
-                case CAMERA_PERMISSION_REQUEST_CODE:
-                    selectedImage = data.getData();
-                    if (data.getExtras() != null) {
-                        Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
-                        circleImageView.setImageBitmap(bitmapProfilePic);
-                        imageSelectionDialog.cancel();
-                        textErrorProfilePic.setVisibility(View.GONE);
-                    } else {
-                        imageSelectionDialog.cancel();
-                    }
-                    break;
 
+                case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
-                    if (data != null && data.getData() != null) {
-                        selectedImage = data.getData();
-                        try {
-                            Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            circleImageView.setImageBitmap(bitmapProfilePic);
-                            imageSelectionDialog.cancel();
-                            textErrorProfilePic.setVisibility(View.GONE);
-                        } catch (IOException exception) {
-                            exception.getStackTrace();
-                        }
-                    } else {
-                        imageSelectionDialog.cancel();
-                    }
+                    Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
+                    circleImageView.setImageBitmap(bitmapProfilePic);
+                    profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
                     break;
 
                 case DS_OTP_STATUS_REQUEST_CODE:
@@ -263,17 +243,12 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 pickTime(this, this);
                 break;
             case R.id.buttonAdd:
-                if (selectedImage == null) {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                } else {
-                    Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
-                    service_type = getIntent().getStringExtra(SERVICE_TYPE);
-                    intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
-                    intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
-                    intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
-                    startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
-                }
-                break;
+                Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
+                service_type = getIntent().getStringExtra(SERVICE_TYPE);
+                intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
+                intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
+                intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
+                startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
         }
     }
 
@@ -443,13 +418,10 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
      * @param dailyServiceChild root of DailyService reference
      */
     private void storeDailyServiceDetails(String dailyServiceChild) {
-
-        //Displaying progress dialog while image is uploading
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Adding your Daily Service");
-        progressDialog.setMessage("Please wait a moment");
-        progressDialog.show();
-
+        //displaying progress dialog while image is uploading
+        showProgressDialog(this,
+                getResources().getString(R.string.adding_your_daily_service),
+                getResources().getString(R.string.please_wait_a_moment));
         //Map daily service to mobile number
         DatabaseReference dailyServiceMobileNumberReference = PRIVATE_DAILYSERVICES_REFERENCE.child(mobileNumber);
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -462,7 +434,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                     dailyServiceMobileNumberReference.setValue(dailyServiceUID);
                 }
 
-                //Store map UID with daily service type for access to Guard App
+                //Store UID with daily service type for access to Guard App
                 DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
                 dailyServiceTypeReference.child(dailyServiceUID).setValue(dailyServiceChild);
 
@@ -487,31 +459,32 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                         .child(dailyServiceChild)
                         .child(dailyServiceUID);
 
+                UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
+
                 //adding the profile photo to storage reference and daily service data to real time database
-                storageReference.putFile(selectedImage)
-                        .addOnSuccessListener(taskSnapshot -> {
-                            NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(dailyServiceUID, fullName,
-                                    phoneNumber, taskSnapshot.getDownloadUrl().toString(), timeOfVisit, false, rating);
-                            nammaApartmentDailyService.getOwnersUID().put(userUID, true);
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(dailyServiceUID, fullName,
+                            phoneNumber, taskSnapshot.getDownloadUrl().toString(), timeOfVisit, false, rating);
+                    nammaApartmentDailyService.getOwnersUID().put(userUID, true);
 
-                            //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
-                            dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
+                    //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
+                    dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
 
-                            //dismissing the progress dialog
-                            progressDialog.dismiss();
+                    //dismissing the progress dialog
+                    hideProgressDialog();
 
-                            /*Once we are done with storing data we need to call the Daily Services
-                             * Home screen again to show users that their Daily Service has been added successfully*/
-                            Intent DailyServiceHomeIntent = new Intent(AddDailyService.this, DailyServicesHome.class);
-                            DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(DailyServiceHomeIntent);
-                        })
-                        .addOnFailureListener(exception -> {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                        });
-
+                    /*Once we are done with storing data we need to call the Daily Services
+                     * Home screen again to show users that their Daily Service has been added successfully*/
+                    Intent DailyServiceHomeIntent = new Intent(AddDailyService.this, DailyServicesHome.class);
+                    DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    showSuccessDialog(getResources().getString(R.string.daily_service_success_title),
+                            getResources().getString(R.string.daily_service_success_message),
+                            DailyServiceHomeIntent);
+                }).addOnFailureListener(exception -> {
+                    hideProgressDialog();
+                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override

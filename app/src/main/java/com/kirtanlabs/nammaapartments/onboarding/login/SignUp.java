@@ -1,11 +1,10 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +12,11 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.flatdetails.MyFlatDetails;
 
-import java.io.IOException;
+import java.io.FileOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,9 +32,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     private CircleImageView circleImageNewUserProfileImage;
     private EditText editFullName;
     private EditText editEmailId;
-    private TextView textErrorProfilePic;
     private AlertDialog imageSelectionDialog;
-    private Uri selectedImage;
+    private String profilePhotoPath;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -60,7 +59,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
 
         /*Getting Id's for all the views*/
         circleImageNewUserProfileImage = findViewById(R.id.newUserProfileImage);
-        textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
+        TextView textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         TextView textFullName = findViewById(R.id.textFullName);
         TextView textEmailId = findViewById(R.id.textEmailId);
         TextView textTermsAndConditions = findViewById(R.id.textTermsAndConditions);
@@ -89,37 +88,18 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case CAMERA_PERMISSION_REQUEST_CODE:
-                    selectedImage = data.getData();
-                    if (data.getExtras() != null) {
-                        Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
-                        circleImageNewUserProfileImage.setImageBitmap(bitmapProfilePic);
-                        imageSelectionDialog.cancel();
-                        textErrorProfilePic.setVisibility(View.GONE);
-                    } else {
-                        imageSelectionDialog.cancel();
-                    }
-                    break;
-
-                case GALLERY_PERMISSION_REQUEST_CODE:
-                    if (data != null && data.getData() != null) {
-                        selectedImage = data.getData();
-                        try {
-                            Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            circleImageNewUserProfileImage.setImageBitmap(bitmapProfilePic);
-                            imageSelectionDialog.cancel();
-                            textErrorProfilePic.setVisibility(View.GONE);
-                        } catch (IOException exception) {
-                            exception.getStackTrace();
-                        }
-                    } else {
-                        imageSelectionDialog.cancel();
-                    }
-                    break;
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE || requestCode == GALLERY_PERMISSION_REQUEST_CODE) {
+            Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
+            circleImageNewUserProfileImage.setImageBitmap(bitmapProfilePic);
+            try {
+                profilePhotoPath = "ProfilePic.png";
+                FileOutputStream stream = this.openFileOutput(profilePhotoPath, Context.MODE_PRIVATE);
+                bitmapProfilePic.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                stream.close();
+                bitmapProfilePic.recycle();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
     }
 
@@ -130,16 +110,12 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonSignUp:
-                if (selectedImage == null) {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                } else {
-                    Intent intent = new Intent(this, MyFlatDetails.class);
-                    intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
-                    intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
-                    intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
-                    intent.putExtra(Constants.PROFILE_PHOTO, selectedImage.toString());
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(this, MyFlatDetails.class);
+                intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
+                intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
+                intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
+                intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath);
+                startActivity(intent);
                 break;
             case R.id.newUserProfileImage:
                 hideKeyboard();

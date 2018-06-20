@@ -3,7 +3,6 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invit
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,7 +10,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -28,13 +26,14 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 
-import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -54,6 +53,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.ImagePicker.bitmapToByteArray;
 
 public class InvitingVisitors extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -72,7 +72,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private ListView listView;
     private String selectedDate;
     private String mobileNumber;
-    private Uri selectedImage;
+    private byte[] profilePhotoByteArray;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -177,36 +177,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     }
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
-                    if (data.getExtras() != null) {
-                        selectedImage = data.getData();
-                        Bitmap bitmapProfilePic = (Bitmap) data.getExtras().get("data");
-                        circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
-                        onSuccessfulUpload();
-                        imageSelectingOptions.cancel();
-                        textErrorProfilePic.setVisibility(View.GONE);
-                    } else {
-                        onFailedUpload();
-                        imageSelectingOptions.cancel();
-                    }
-                    break;
-
                 case GALLERY_PERMISSION_REQUEST_CODE:
-                    if (data != null && data.getData() != null) {
-                        selectedImage = data.getData();
-                        try {
-                            Bitmap bitmapProfilePic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
-                            onSuccessfulUpload();
-                            imageSelectingOptions.cancel();
-                            textErrorProfilePic.setVisibility(View.GONE);
-                        } catch (IOException exception) {
-                            exception.getStackTrace();
-                        }
-                    } else {
-                        onFailedUpload();
-                        imageSelectingOptions.cancel();
-                    }
-                    break;
+                    Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
+                    circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
+                    profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
             }
         }
     }
@@ -228,11 +202,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonInvite:
-                if (selectedImage != null) {
-                    storeVisitorDetailsInFirebase();
-                } else {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                }
+                storeVisitorDetailsInFirebase();
                 break;
         }
 
@@ -313,21 +283,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             }
             imageSelectingOptions.cancel();
         });
-    }
-
-    /**
-     * This method will get invoked when user successfully uploaded image from gallery and camera.
-     */
-    private void onSuccessfulUpload() {
-        circleImageInvitingVisitors.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * This method will get invoked when user fails in uploading image from gallery and camera.
-     */
-    private void onFailedUpload() {
-        circleImageInvitingVisitors.setVisibility(View.INVISIBLE);
-        imageSelectingOptions.cancel();
     }
 
     /**
@@ -422,26 +377,13 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * Shows Invitation success dialog when user successfully fills all the details.
-     */
-    private void createInviteDialog() {
-        AlertDialog.Builder alertInvitationDialog = new AlertDialog.Builder(this);
-        alertInvitationDialog.setMessage(R.string.invitation_message);
-        alertInvitationDialog.setTitle("Invitation Message");
-        alertInvitationDialog.setPositiveButton("Ok", (dialog, which) ->
-                startActivity(new Intent(InvitingVisitors.this, VisitorsList.class)));
-        alertInvitationDialog.create().show();
-    }
-
-    /**
      * Stores Visitor's record in Firebase
      */
     private void storeVisitorDetailsInFirebase() {
         //displaying progress dialog while image is uploading
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Inviting your Visitor");
-        progressDialog.setMessage("Please wait a moment");
-        progressDialog.show();
+        showProgressDialog(this,
+                getResources().getString(R.string.inviting_your_visitor),
+                getResources().getString(R.string.please_wait_a_moment));
 
         //Map Mobile number with visitor's UID
         DatabaseReference preApprovedVisitorsMobileNumberReference = PREAPPROVED_VISITORS_MOBILE_REFERENCE;
@@ -466,26 +408,31 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
                 .child(nammaApartmentVisitor.getUid());
 
+        UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
+
         //adding the profile photo to storage reference and visitor data to real time database
-        storageReference.putFile(selectedImage)
-                .addOnSuccessListener(taskSnapshot -> {
-                    //creating the upload object to store uploaded image details
-                    nammaApartmentVisitor.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            //creating the upload object to store uploaded image details
+            nammaApartmentVisitor.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
-                    //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
-                    DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid());
-                    preApprovedVisitorData.setValue(nammaApartmentVisitor);
+            //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
+            DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid());
+            preApprovedVisitorData.setValue(nammaApartmentVisitor);
 
-                    //dismissing the progress dialog
-                    progressDialog.dismiss();
+            //dismissing the progress dialog
+            hideProgressDialog();
 
-                    //Notify users that they have successfully invited their visitor
-                    createInviteDialog();
-                })
-                .addOnFailureListener(exception -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                });
+            //Notify users that they have successfully invited their visitor
+            Intent VisitorsListIntent = new Intent(InvitingVisitors.this, VisitorsList.class);
+            VisitorsListIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            VisitorsListIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            showSuccessDialog(getResources().getString(R.string.invitation_success_title),
+                    getResources().getString(R.string.invitation_success_message),
+                    VisitorsListIntent);
+        }).addOnFailureListener(exception -> {
+            hideProgressDialog();
+            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+        });
     }
 
 }

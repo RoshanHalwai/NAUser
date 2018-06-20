@@ -158,7 +158,9 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
 
             case R.id.buttonNotifyGate:
                 if (isAllFieldsFilled(new EditText[]{editDescription})) {
-                    createNotifyGateDialog();
+                    showSuccessDialog(getResources().getString(R.string.notification_title),
+                            getResources().getString(R.string.notification_message),
+                            null);
                 } else {
                     editDescription.setError(getString(R.string.please_fill_details));
                 }
