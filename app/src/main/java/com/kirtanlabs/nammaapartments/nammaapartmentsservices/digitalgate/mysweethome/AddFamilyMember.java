@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.kirtanlabs.nammaapartments.Constants.AFM_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
@@ -68,14 +71,19 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
 
     private CircleImageView circleImageView;
     private TextView textErrorProfilePic;
+    private TextView textErrorRelation;
     private EditText editFamilyMemberName;
     private EditText editFamilyMemberMobile;
     private EditText editFamilyMemberEmail;
     private Button buttonYes;
     private Button buttonNo;
+    private RadioButton radioButtonFriend;
     private RadioButton radioButtonFamilyMember;
     private AlertDialog imageSelectionDialog;
     private boolean grantedAccess;
+    private boolean fieldsFilled;
+    private boolean familyMemberCheck;
+    private boolean friendCheck;
     private String mobileNumber;
     private Uri selectedImage;
 
@@ -108,6 +116,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         TextView textFamilyMemberEmail = findViewById(R.id.textFamilyMemberEmail);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         TextView textRelation = findViewById(R.id.textFamilyMemberRelation);
+        textErrorRelation = findViewById(R.id.textErrorRelation);
         TextView textOr = findViewById(R.id.textOr);
         TextView textGrantAccess = findViewById(R.id.textGrantAccess);
         TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
@@ -116,7 +125,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         editFamilyMemberMobile = findViewById(R.id.editFamilyMemberMobile);
         editFamilyMemberEmail = findViewById(R.id.editFamilyMemberEmail);
         radioButtonFamilyMember = findViewById(R.id.radioButtonFamilyMember);
-        RadioButton radioButtonFriend = findViewById(R.id.radioButtonFriend);
+        radioButtonFriend = findViewById(R.id.radioButtonFriend);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonYes = findViewById(R.id.buttonYes);
         buttonNo = findViewById(R.id.buttonNo);
@@ -133,6 +142,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         textGrantAccess.setTypeface(setLatoBoldFont(this));
         textDescriptionFamilyMember.setTypeface(setLatoBoldFont(this));
         textErrorProfilePic.setTypeface(setLatoRegularFont(this));
+        textErrorRelation.setTypeface(setLatoRegularFont(this));
         editFamilyMemberName.setTypeface(setLatoRegularFont(this));
         editFamilyMemberEmail.setTypeface(setLatoRegularFont(this));
         editFamilyMemberMobile.setTypeface(setLatoRegularFont(this));
@@ -149,6 +159,11 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonAdd.setOnClickListener(this);
         radioButtonFamilyMember.setOnClickListener(this);
         radioButtonFriend.setOnClickListener(this);
+
+        familyMemberCheck = radioButtonFamilyMember.isChecked();
+        friendCheck = radioButtonFriend.isChecked();
+        /*This method gets invoked when user is trying to modify the values on EditTexts.*/
+        setEventsForEditText();
     }
 
     /*-------------------------------------------------------------------------------
@@ -254,13 +269,37 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 if (selectedImage == null) {
                     textErrorProfilePic.setVisibility(View.VISIBLE);
                 } else {
-                    if (isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail})
-                            && editFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
+                    String familyMemberName = editFamilyMemberName.getText().toString().trim();
+                    mobileNumber = editFamilyMemberMobile.getText().toString().trim();
+                    String familyMemberEmail = editFamilyMemberEmail.getText().toString().trim();
+                    fieldsFilled = isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail});
+                    if (fieldsFilled && radioButtonFamilyMember.isChecked() || radioButtonFriend.isChecked() && !isValidPersonName(familyMemberName)
+                            && isValidPhone(mobileNumber) && !isValidEmail(familyMemberEmail)) {
                         if (grantedAccess)
                             openNotificationDialog();
                         else {
                             navigatingToOTPScreen();
                         }
+                    }
+                    if (!fieldsFilled) {
+                        if (familyMemberName.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                            editFamilyMemberName.setError(getString(R.string.name_validation));
+                        }
+                        if (mobileNumber.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                            editFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
+                        }
+                        if (familyMemberEmail.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                            editFamilyMemberEmail.setError(getString(R.string.email_validation));
+                        }
+                        if (!radioButtonFamilyMember.isChecked() && !radioButtonFriend.isChecked()) {
+                            textErrorRelation.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    if (fieldsFilled && !radioButtonFamilyMember.isChecked() && !radioButtonFriend.isChecked()) {
+                        textErrorRelation.setVisibility(View.VISIBLE);
+                    }
+                    if (fieldsFilled && familyMemberCheck || friendCheck) {
+                        textErrorRelation.setVisibility(View.GONE);
                     }
                 }
                 break;
@@ -424,4 +463,73 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         });
     }
 
+    /**
+     * We are handling events for editTexts name,mobile number and emailId editText.
+     */
+    private void setEventsForEditText() {
+        editFamilyMemberName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String familyMemberName = editFamilyMemberName.getText().toString().trim();
+                if (!familyMemberName.isEmpty()) {
+                    editFamilyMemberName.setError(null);
+                }
+                if (isValidPersonName(familyMemberName)) {
+                    editFamilyMemberName.setError(getString(R.string.accept_alphabets));
+                }
+            }
+        });
+        editFamilyMemberMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mobileNumber = editFamilyMemberMobile.getText().toString();
+                if (mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH && isValidPhone(mobileNumber)) {
+                    editFamilyMemberMobile.setError(null);
+                }
+                if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
+                    editFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
+                }
+            }
+        });
+        editFamilyMemberEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String familyMemberEmail = editFamilyMemberEmail.getText().toString().trim();
+                if (fieldsFilled && isValidEmail(familyMemberEmail)) {
+                    editFamilyMemberEmail.setError(getString(R.string.invalid_email));
+                }
+
+            }
+        });
+    }
 }

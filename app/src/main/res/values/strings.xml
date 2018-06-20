@@ -219,5 +219,8 @@
     <string name="accept_alphabets">Accept Alphabets Only.</string>
     <string name="enter_relation">Please Enter Relation</string>
     <string name="upload_image">Please Upload Image</string>
+    <string name="invalid_email">Invalid Email Address</string>
+    <string name="email_validation">Please Enter E-Mail Address</string>
+    <string name="relation_check">Please check at least one Relation</string>
 
 </resources>
