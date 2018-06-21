@@ -424,8 +424,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             //Notify users that they have successfully invited their visitor
             Intent VisitorsListIntent = new Intent(InvitingVisitors.this, VisitorsList.class);
-            VisitorsListIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            VisitorsListIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             showSuccessDialog(getResources().getString(R.string.invitation_success_title),
                     getResources().getString(R.string.invitation_success_message),
                     VisitorsListIntent);

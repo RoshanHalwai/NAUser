@@ -77,6 +77,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
+    public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
+    public static final String FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION = "handedThingsDescription";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -102,6 +104,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
 
     public static final int FIREBASE_CHILD_RATING = 3;
+
+    public static final String ENTERED = "Entered";
     public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
