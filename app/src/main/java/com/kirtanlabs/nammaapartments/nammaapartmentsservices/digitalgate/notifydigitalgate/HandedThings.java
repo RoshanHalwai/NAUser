@@ -78,6 +78,10 @@ public class HandedThings extends BaseActivity {
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * We retrieve visitors for current user and their family members and display it in the card view
+     */
+
     private void retrieveCurrentVisitorsFromFirebase() {
         //First retrieve the current user visitors
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
@@ -130,6 +134,9 @@ public class HandedThings extends BaseActivity {
         });
     }
 
+    /**
+     * We store the details of visitors for current user and their family members if any, in Firebase
+     */
     private void addFamilyMembersVisitors() {
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         for (Map.Entry<String, Boolean> familyMembersUID : currentNammaApartmentUser.getFamilyMembers().entrySet()) {

@@ -107,10 +107,6 @@ public class HandedThingsAdapter extends RecyclerView.Adapter<HandedThingsAdapte
 
     }
 
-    /*-------------------------------------------------------------------------------
-     *Private Methods
-     *-----------------------------------------------------------------------------*/
-
     class VisitorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
