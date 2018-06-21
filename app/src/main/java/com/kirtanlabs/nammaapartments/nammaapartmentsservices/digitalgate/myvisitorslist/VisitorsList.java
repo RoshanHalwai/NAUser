@@ -29,6 +29,8 @@ public class VisitorsList extends BaseActivity {
 
     private List<NammaApartmentVisitor> nammaApartmentVisitorList;
     private VisitorsListAdapter adapter;
+    private int index = 0;
+
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
@@ -119,7 +121,7 @@ public class VisitorsList extends BaseActivity {
                             @Override
                             public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
                                 NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
-                                nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                nammaApartmentVisitorList.add(index++, nammaApartmentVisitor);
                                 adapter.notifyDataSetChanged();
 
                                 //Check if current user has any familyMembers
@@ -160,35 +162,23 @@ public class VisitorsList extends BaseActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        DatabaseReference visitorsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                                .child(Constants.FIREBASE_CHILD_VISITORS);
-                        visitorsReference.child(dataSnapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
-                                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                                            .child(visitorsSnapshot.getKey());
-                                    preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
-                                            nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
-                                            adapter.notifyDataSetChanged();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
+                        for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
+                            DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
+                                    .child(visitorsSnapshot.getKey());
+                            preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
+                                    nammaApartmentVisitorList.add(index++, nammaApartmentVisitor);
+                                    adapter.notifyDataSetChanged();
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 }
 

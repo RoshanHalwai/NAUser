@@ -60,6 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
+
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
@@ -181,6 +182,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void showUserContacts() {
         readContactsIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        readContactsIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_REQUEST_CODE);
         else {
