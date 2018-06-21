@@ -283,7 +283,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
      */
-    protected void showSuccessDialog(String title, String message, Intent intent) {
+    public void showSuccessDialog(String title, String message, Intent intent) {
         AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
         alertNotifyGateDialog.setTitle(title);
         alertNotifyGateDialog.setMessage(message);

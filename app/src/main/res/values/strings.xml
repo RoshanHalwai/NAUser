@@ -171,7 +171,8 @@
     <string name="description">Description:</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
-    <string name="handed_things_message">Handed Things Notification has been sent to your Security Guard.</string>
+    <string name="handed_things_success_title">Handed Things Message.</string>
+    <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
 
     <!--Daily Services Home-->
     <string name="remove">Remove</string>
