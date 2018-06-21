@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by Ashish Jha on 6/8/2018
  */
 
-class NammaApartmentDailyService implements Serializable {
+public class NammaApartmentDailyService implements Serializable {
 
 
     /* ------------------------------------------------------------- *
@@ -25,6 +25,8 @@ class NammaApartmentDailyService implements Serializable {
     private int rating;
     private String uid;
     private final Map<String, Boolean> ownersUID = new HashMap<>();
+    private String dailyServiceHandedThingsDescription;
+    private String status;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -33,7 +35,8 @@ class NammaApartmentDailyService implements Serializable {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit,
+                               boolean providedThings, int rating, String status) {
         this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
@@ -41,6 +44,7 @@ class NammaApartmentDailyService implements Serializable {
         this.timeOfVisit = timeOfVisit;
         this.providedThings = providedThings;
         this.rating = rating;
+        this.status = status;
     }
 
     /* ------------------------------------------------------------- *
@@ -83,6 +87,14 @@ class NammaApartmentDailyService implements Serializable {
         return uid;
     }
 
+    public String getDailyServiceHandedThingsDescription() {
+        return dailyServiceHandedThingsDescription;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -95,4 +107,11 @@ class NammaApartmentDailyService implements Serializable {
         this.profilePhoto = profilePhoto;
     }
 
+    public void setDailyServiceHandedThingsDescription(String dailyServiceHandedThingsDescription) {
+        this.dailyServiceHandedThingsDescription = dailyServiceHandedThingsDescription;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
