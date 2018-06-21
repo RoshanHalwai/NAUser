@@ -228,6 +228,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     /* ------------------------------------------------------------- *
      * Visitor View Holder class
      * ------------------------------------------------------------- */
+
     class VisitorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *

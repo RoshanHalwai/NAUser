@@ -18,6 +18,7 @@ public class NammaApartmentVisitor {
     private String status;
     private String inviterUID;
     private String profilePhoto;
+    private String handedThingsDescription;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -63,6 +64,10 @@ public class NammaApartmentVisitor {
         return profilePhoto;
     }
 
+    public String getHandedThingsDescription() {
+        return handedThingsDescription;
+    }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -83,4 +88,7 @@ public class NammaApartmentVisitor {
         this.profilePhoto = profilePhoto;
     }
 
+    public void setHandedThingsDescription(String handedThingsDescription) {
+        this.handedThingsDescription = handedThingsDescription;
+    }
 }
