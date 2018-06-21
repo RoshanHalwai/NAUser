@@ -2,16 +2,11 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myswe
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -31,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ContactPicker;
 import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
@@ -40,8 +36,6 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPrivileges;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -86,8 +80,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private String mobileNumber;
 
     private byte[] profilePhotoByteArray;
-    private Uri uriContact;
-    private String contactID;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -173,16 +165,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case READ_CONTACTS_PERMISSION_REQUEST_CODE:
-                    uriContact = data.getData();
-                    editFamilyMemberName.setText(retrieveContactName());
-                    editFamilyMemberMobile.setText(retrieveContactNumber());
-                    Bitmap contactPhoto = retrieveContactPhoto();
-                    if (contactPhoto != null) {
-                        circleImageView.setImageBitmap(contactPhoto);
-                        profilePhotoByteArray = bitmapToByteArray(contactPhoto);
-                    } else {
-                        circleImageView.setImageResource(R.drawable.add_member);
-                    }
+                    ContactPicker contactPicker = new ContactPicker(AddFamilyMember.this, data.getData());
+                    editFamilyMemberName.setText(contactPicker.retrieveContactName());
+                    editFamilyMemberMobile.setText(contactPicker.retrieveContactNumber());
                     /*We need to check if mobile number selected from contact already exists
                      * in firebase*/
                     onFocusChange(editFamilyMemberMobile, false);
@@ -241,6 +226,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                         && editFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
                     if (profilePhotoByteArray == null) {
                         textErrorProfilePic.setVisibility(View.VISIBLE);
+                        textErrorProfilePic.requestFocus();
                     } else {
                         textErrorProfilePic.setVisibility(View.INVISIBLE);
                         if (grantedAccess)
@@ -449,84 +435,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 });
             }
         }
-    }
-
-    /**
-     * If Photo is available for the contact then returns it else
-     * returns null
-     *
-     * @return Photo if available for the contact
-     */
-    private Bitmap retrieveContactPhoto() {
-        Bitmap photo = null;
-        try {
-            InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(
-                    getContentResolver(),
-                    ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactID)),
-                    true);
-            if (inputStream != null) {
-                photo = BitmapFactory.decodeStream(inputStream);
-                inputStream.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return photo;
-    }
-
-    /**
-     * The contact number of person selected by the user from the contacts list
-     *
-     * @return contact number
-     */
-    private String retrieveContactNumber() {
-        String contactNumber = null;
-
-        // getting contacts ID
-        Cursor cursorID = getContentResolver().query(uriContact,
-                new String[]{ContactsContract.Contacts._ID},
-                null, null, null);
-        if (Objects.requireNonNull(cursorID).moveToFirst()) {
-            contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
-        }
-        cursorID.close();
-
-        // Using the contact ID now we will get contact phone number
-        Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
-                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
-                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
-                new String[]{contactID},
-                null);
-
-        if (Objects.requireNonNull(cursorPhone).moveToFirst()) {
-            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-        }
-        cursorPhone.close();
-        String formattedPhoneNumber = Objects.requireNonNull(contactNumber).replaceAll("\\D+", "");
-        if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
-            formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
-        }
-        return formattedPhoneNumber;
-    }
-
-    /**
-     * The contact name of person selected by the user from the contacts list
-     *
-     * @return contact name
-     */
-    private String retrieveContactName() {
-        String contactName = null;
-        // querying contact data store
-        Cursor cursor = getContentResolver().query(uriContact, null, null, null, null);
-        if (Objects.requireNonNull(cursor).moveToFirst()) {
-            // DISPLAY_NAME = The display name for the contact.
-            // HAS_PHONE_NUMBER =   An indicator of whether this contact has at least one phone number.
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-        }
-        cursor.close();
-        return contactName;
     }
 
 }
