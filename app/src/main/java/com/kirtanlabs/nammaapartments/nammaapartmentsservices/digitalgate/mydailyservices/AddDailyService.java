@@ -53,6 +53,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
+import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
@@ -464,7 +465,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 //adding the profile photo to storage reference and daily service data to real time database
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
                     NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(dailyServiceUID, fullName,
-                            phoneNumber, taskSnapshot.getDownloadUrl().toString(), timeOfVisit, false, rating);
+                            phoneNumber, taskSnapshot.getDownloadUrl().toString(), timeOfVisit, false, rating, NOT_ENTERED);
                     nammaApartmentDailyService.getOwnersUID().put(userUID, true);
 
                     //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
