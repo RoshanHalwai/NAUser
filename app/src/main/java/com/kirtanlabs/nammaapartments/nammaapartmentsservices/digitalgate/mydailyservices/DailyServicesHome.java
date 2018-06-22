@@ -36,6 +36,7 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     private AlertDialog dailyServicesListDialog;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;
+    private int index = 0;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -129,45 +130,58 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     private void retrieveDailyServicesDetailsFromFirebase() {
         DatabaseReference dailyServicesListReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
                 .child(FIREBASE_CHILD_DAILYSERVICES);
+
+        /*Start with checking if a flat has any daily services*/
         dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
                 hideProgressIndicator();
+                /*Flat has no daily services added*/
                 if (!myDailyServiceSnapshot.exists()) {
                     showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
-                } else {
+                }
+                /*Flat has some daily services added*/
+                else {
+                    /*Iterate over each daily service type*/
                     for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                         String dailyServiceType = dailyServicesSnapshot.getKey();
                         DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
+
+                        /*For each daily service type, check how many are added. Say a user can have two
+                         * cooks or maids*/
                         dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
-                                        for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
-                                            DatabaseReference dailyServiceDataReference = PUBLIC_DAILYSERVICES_REFERENCE
-                                                    .child(dailyServiceUIDSnapshot.getKey())
-                                                    .child(Objects.requireNonNull(childSnapshot.getKey()));
-                                            dailyServiceDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dailyServiceDataSnapshot) {
-                                                            NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                            Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
-                                                            nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
-                                                            dailyServicesHomeAdapter.notifyDataSetChanged();
-                                                        }
+                            @Override
+                            public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
 
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
+                                /*Iterate over each of them and add listener to each of them*/
+                                for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
+                                    DatabaseReference dailyServiceDataReference = PUBLIC_DAILYSERVICES_REFERENCE
+                                            .child(dailyServiceUIDSnapshot.getKey())
+                                            .child(childSnapshot.getKey());
 
-                                                        }
-                                                    });
+                                    /*Get data and add to the list for displaying in Daily Service home*/
+                                    dailyServiceDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dailyServiceDataSnapshot) {
+                                            NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
+                                            Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
+                                            nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
+                                            dailyServicesHomeAdapter.notifyDataSetChanged();
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 }
             }

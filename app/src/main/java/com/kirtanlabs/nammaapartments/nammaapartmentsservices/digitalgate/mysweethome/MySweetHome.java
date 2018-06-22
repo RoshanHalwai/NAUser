@@ -31,6 +31,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
      * ------------------------------------------------------------- */
     private List<NammaApartmentUser> nammaApartmentFamilyMembersList;
     private MySweetHomeAdapter mySweetHomeAdapter;
+    private int index = 0;
 
     /*---------------------------------------------------------
         Overriding Base Activity Objects
@@ -111,7 +112,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     NammaApartmentUser nammaApartmentFamilyMember = dataSnapshot.getValue(NammaApartmentUser.class);
-                                    nammaApartmentFamilyMembersList.add(0, nammaApartmentFamilyMember);
+                                    nammaApartmentFamilyMembersList.add(index++, nammaApartmentFamilyMember);
                                     mySweetHomeAdapter.notifyDataSetChanged();
                                 }
 

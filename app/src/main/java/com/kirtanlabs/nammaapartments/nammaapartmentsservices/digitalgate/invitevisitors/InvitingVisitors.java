@@ -5,11 +5,8 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -29,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ContactPicker;
 import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
@@ -152,35 +150,18 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case READ_CONTACTS_PERMISSION_REQUEST_CODE:
-                    Cursor cursor;
-                    try {
-                        Uri uri = data.getData();
-                        if (uri != null) {
-                            cursor = getContentResolver().query(uri, null, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                                String phoneNo = cursor.getString(phoneIndex);
-                                String name = cursor.getString(nameIndex);
-                                String formattedPhoneNumber = phoneNo.replaceAll("\\D+", "");
-                                if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
-                                    formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
-                                }
-                                editVisitorName.setText(name);
-                                editVisitorMobile.setText(formattedPhoneNumber);
-                                cursor.close();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    ContactPicker contactPicker = new ContactPicker(InvitingVisitors.this, data.getData());
+                    editVisitorName.setText(contactPicker.retrieveContactName());
+                    editVisitorMobile.setText(contactPicker.retrieveContactNumber());
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
                     Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
                     circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
                     profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
+                    if (profilePhotoByteArray != null) {
+                        textErrorProfilePic.setVisibility(View.INVISIBLE);
+                    }
             }
         }
     }
@@ -202,7 +183,12 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonInvite:
-                storeVisitorDetailsInFirebase();
+                if (profilePhotoByteArray == null) {
+                    textErrorProfilePic.setVisibility(View.VISIBLE);
+                    textErrorProfilePic.requestFocus();
+                } else {
+                    storeVisitorDetailsInFirebase();
+                }
                 break;
         }
 

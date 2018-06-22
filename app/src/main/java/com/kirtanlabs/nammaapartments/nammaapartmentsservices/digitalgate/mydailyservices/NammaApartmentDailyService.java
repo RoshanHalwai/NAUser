@@ -24,7 +24,7 @@ class NammaApartmentDailyService implements Serializable {
     private Boolean providedThings;
     private int rating;
     private String uid;
-    private final Map<String, Boolean> ownersUID = new HashMap<>();
+    private Map<String, Boolean> ownersUID;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -33,7 +33,7 @@ class NammaApartmentDailyService implements Serializable {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+    NammaApartmentDailyService(Map<String, Boolean> ownersUID, String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
         this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
@@ -41,6 +41,7 @@ class NammaApartmentDailyService implements Serializable {
         this.timeOfVisit = timeOfVisit;
         this.providedThings = providedThings;
         this.rating = rating;
+        this.ownersUID = ownersUID;
     }
 
     /* ------------------------------------------------------------- *
