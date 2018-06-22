@@ -282,6 +282,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * This method gets invoked when user is trying to enter improper format of entering email.
+     *
+     * @param email consists of string value of email of that particular activity.
+     * @return returns a boolean  variable based on that context.
+     */
+    protected boolean isValidEmail(String email) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", email);
+        return check;
+    }
+    /**
      * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
      */
     public void showSuccessDialog(String title, String message, Intent intent) {
@@ -383,5 +394,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, onTimeSetListener, mHour, mMinute, true);
         timePickerDialog.show();
     }
-
 }
