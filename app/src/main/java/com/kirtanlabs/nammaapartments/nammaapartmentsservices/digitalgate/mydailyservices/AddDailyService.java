@@ -3,11 +3,8 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydai
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -28,12 +25,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.ContactPicker;
 import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -163,30 +163,9 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case READ_CONTACTS_PERMISSION_REQUEST_CODE:
-                    Cursor cursor;
-                    try {
-                        Uri uri = data.getData();
-                        if (uri != null) {
-                            cursor = getContentResolver().query(uri, null, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                                //int emailIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.);
-                                String phoneNo = cursor.getString(phoneIndex);
-                                String name = cursor.getString(nameIndex);
-                                String formattedPhoneNumber = phoneNo.replaceAll("\\D+", "");
-                                if (formattedPhoneNumber.startsWith("91") && formattedPhoneNumber.length() > 10) {
-                                    formattedPhoneNumber = formattedPhoneNumber.substring(2, 12);
-                                }
-                                editDailyServiceName.setText(name);
-                                editDailyServiceMobile.setText(formattedPhoneNumber);
-                                cursor.close();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    ContactPicker contactPicker = new ContactPicker(AddDailyService.this, data.getData());
+                    editDailyServiceName.setText(contactPicker.retrieveContactName());
+                    editDailyServiceMobile.setText(contactPicker.retrieveContactNumber());
                     break;
 
                 case CAMERA_PERMISSION_REQUEST_CODE:
@@ -194,6 +173,9 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                     Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
                     circleImageView.setImageBitmap(bitmapProfilePic);
                     profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
+                    if (profilePhotoByteArray != null) {
+                        textErrorProfilePic.setVisibility(View.INVISIBLE);
+                    }
                     break;
 
                 case DS_OTP_STATUS_REQUEST_CODE:
@@ -244,12 +226,17 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 pickTime(this, this);
                 break;
             case R.id.buttonAdd:
-                Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
-                service_type = getIntent().getStringExtra(SERVICE_TYPE);
-                intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
-                intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
-                intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
-                startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
+                if (profilePhotoByteArray == null) {
+                    textErrorProfilePic.setVisibility(View.VISIBLE);
+                    textErrorProfilePic.requestFocus();
+                } else {
+                    Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
+                    service_type = getIntent().getStringExtra(SERVICE_TYPE);
+                    intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
+                    intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
+                    intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
+                    startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
+                }
         }
     }
 
@@ -463,10 +450,13 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
 
                 //adding the profile photo to storage reference and daily service data to real time database
+                Map<String, Boolean> ownersUID = new HashMap<>();
+                ownersUID.put(userUID, Boolean.TRUE);
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(dailyServiceUID, fullName,
-                            phoneNumber, taskSnapshot.getDownloadUrl().toString(), timeOfVisit, false, rating, NOT_ENTERED);
-                    nammaApartmentDailyService.getOwnersUID().put(userUID, true);
+                    NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
+                            ownersUID,
+                            dailyServiceUID, fullName,
+                            phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, false, rating);
 
                     //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
                     dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
