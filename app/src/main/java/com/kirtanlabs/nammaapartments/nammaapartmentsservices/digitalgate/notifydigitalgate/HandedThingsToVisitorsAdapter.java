@@ -33,7 +33,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class HandedThingsAdapter extends RecyclerView.Adapter<HandedThingsAdapter.VisitorViewHolder> implements View.OnClickListener {
+public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedThingsToVisitorsAdapter.VisitorViewHolder> implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -47,7 +47,7 @@ public class HandedThingsAdapter extends RecyclerView.Adapter<HandedThingsAdapte
      * Constructor
      * ------------------------------------------------------------- */
 
-    HandedThingsAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
+    HandedThingsToVisitorsAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
         this.nammaApartmentVisitorList = nammaApartmentVisitorList;
@@ -59,15 +59,15 @@ public class HandedThingsAdapter extends RecyclerView.Adapter<HandedThingsAdapte
 
     @NonNull
     @Override
-    public HandedThingsAdapter.VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HandedThingsToVisitorsAdapter.VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_handed_things, parent, false);
-        return new HandedThingsAdapter.VisitorViewHolder(view);
+        View view = inflater.inflate(R.layout.layout_handed_things_visitor, parent, false);
+        return new HandedThingsToVisitorsAdapter.VisitorViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HandedThingsAdapter.VisitorViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HandedThingsToVisitorsAdapter.VisitorViewHolder holder, int position) {
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
 

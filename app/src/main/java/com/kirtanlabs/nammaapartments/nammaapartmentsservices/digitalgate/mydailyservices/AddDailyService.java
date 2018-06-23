@@ -53,6 +53,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
+import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
@@ -454,6 +455,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
                     NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
                             ownersUID,
+                            NOT_ENTERED,
                             dailyServiceUID, fullName,
                             phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, false, rating);
 

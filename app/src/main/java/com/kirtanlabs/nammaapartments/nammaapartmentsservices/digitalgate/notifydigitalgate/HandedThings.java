@@ -13,14 +13,18 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 
 public class HandedThings extends BaseActivity {
 
@@ -29,7 +33,10 @@ public class HandedThings extends BaseActivity {
      * ------------------------------------------------------------- */
 
     private List<NammaApartmentVisitor> nammaApartmentVisitorList;
-    private HandedThingsAdapter adapter;
+    private HandedThingsToVisitorsAdapter adapterVisitors;
+    private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
+    private HandedThingsToDailyServiceAdapter adapterDailyService;
+    private int handed_things_to;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -44,7 +51,12 @@ public class HandedThings extends BaseActivity {
     protected int getActivityTitle() {
         /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
          * based on the user click on NotifyGate Home screen*/
-        return getIntent().getIntExtra(HANDED_THINGS_TO, 0);
+        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
+            handed_things_to = R.string.handed_things_to_my_guest;
+        } else {
+            handed_things_to = R.string.handed_things_to_my_daily_services;
+        }
+        return handed_things_to;
     }
 
     @Override
@@ -65,13 +77,22 @@ public class HandedThings extends BaseActivity {
 
         //Creating recycler view adapter
         nammaApartmentVisitorList = new ArrayList<>();
-        adapter = new HandedThingsAdapter(nammaApartmentVisitorList, this);
+        adapterVisitors = new HandedThingsToVisitorsAdapter(nammaApartmentVisitorList, this);
 
-        //Setting adapter to recycler view
-        recyclerView.setAdapter(adapter);
+        nammaApartmentDailyServiceList = new ArrayList<>();
+        adapterDailyService = new HandedThingsToDailyServiceAdapter(nammaApartmentDailyServiceList, this);
 
         /*Retrieve those visitor details who status is Entered*/
-        retrieveCurrentVisitorsFromFirebase();
+        if (handed_things_to == R.string.handed_things_to_my_guest) {
+            //To retrieve user visitor list from firebase based on the their status.
+            recyclerView.setAdapter(adapterVisitors);
+            retrieveCurrentVisitorsFromFirebase();
+        } else {
+            //To retrieve user daily Services list from firebase based on the their status.
+            recyclerView.setAdapter(adapterDailyService);
+            retrieveDailyServiceFromFirebase();
+        }
+
     }
 
     /* ------------------------------------------------------------- *
@@ -103,9 +124,9 @@ public class HandedThings extends BaseActivity {
                             @Override
                             public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
                                 NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
-                                if (nammaApartmentVisitor.getStatus().equals("Entered")) {
+                                if (nammaApartmentVisitor.getStatus().equals(ENTERED)) {
                                     nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
-                                    adapter.notifyDataSetChanged();
+                                    adapterVisitors.notifyDataSetChanged();
                                 }
 
                                 //Check if current user has any familyMembers
@@ -160,7 +181,7 @@ public class HandedThings extends BaseActivity {
                                             NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
                                             if (nammaApartmentVisitor.getStatus().equals(ENTERED)) {
                                                 nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
-                                                adapter.notifyDataSetChanged();
+                                                adapterVisitors.notifyDataSetChanged();
                                             }
                                         }
 
@@ -186,6 +207,66 @@ public class HandedThings extends BaseActivity {
                 }
             });
         }
+    }
+    /**
+     * We retrieve Daily Service for current user and their family members and display it in the card view
+     */
+    private void retrieveDailyServiceFromFirebase() {
+        //First retrieve the current user daily service
+        DatabaseReference dailyServicesListReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                .child(FIREBASE_CHILD_DAILYSERVICES);
+        dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
+                if (!myDailyServiceSnapshot.exists()) {
+                    hideProgressIndicator();
+                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
+                }
+                if (myDailyServiceSnapshot.exists()) {
+                    for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
+                        String dailyServiceType = dailyServicesSnapshot.getKey();
+                        DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
+                        dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
+                                for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
+                                    DatabaseReference dailyServiceDataReference = PUBLIC_DAILYSERVICES_REFERENCE
+                                            .child(dailyServiceUIDSnapshot.getKey())
+                                            .child(Objects.requireNonNull(childSnapshot.getKey()));
+                                    dailyServiceDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dailyServiceDataSnapshot) {
+                                            NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
+                                            if (nammaApartmentDailyService.getStatus().equals(ENTERED)) {
+                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
+                                                nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
+                                                adapterDailyService.notifyDataSetChanged();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+                hideProgressIndicator();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
