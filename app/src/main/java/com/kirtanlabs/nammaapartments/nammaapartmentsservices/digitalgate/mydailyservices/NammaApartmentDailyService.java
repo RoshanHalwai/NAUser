@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -87,6 +86,18 @@ class NammaApartmentDailyService implements Serializable {
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setTimeOfVisit(String timeOfVisit) {
+        this.timeOfVisit = timeOfVisit;
+    }
 
     public void setDailyServiceType(String dailyServiceType) {
         this.dailyServiceType = dailyServiceType;
