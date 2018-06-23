@@ -30,8 +30,17 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GRANTEDACCESS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PHONENUMBER;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVILEGES;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMEOFVISIT;
 import static com.kirtanlabs.nammaapartments.Constants.GRANTED_ACCESS_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -57,6 +66,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private String inTime;
     private String service_type;
     private String granted_access_type;
+    private String updatedDailyServiceMobileNumber;
+    private String updatedFamilyMemberMobileNumber;
     private boolean nameTextChanged = false;
     private boolean mobileTextChanged = false;
     private boolean timeTextChanged = false;
@@ -187,8 +198,10 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                 if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     if (screenTitle == R.string.edit_my_daily_service_details) {
                         if (mobileTextChanged) {
+                            updateDailyServiceDetails();
                             navigatingToOTPScreen();
                         } else {
+                            updateDailyServiceDetails();
                             Intent myDailyServiceIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, DailyServicesHome.class);
                             myDailyServiceIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                             myDailyServiceIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
@@ -196,10 +209,13 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                         }
                     } else {
                         if (grantedAccess) {
+                            updateFamilyMemberDetails();
                             openNotificationDialog();
                         } else if (mobileTextChanged) {
+                            updateFamilyMemberDetails();
                             navigatingToOTPScreen();
                         } else {
+                            updateFamilyMemberDetails();
                             navigatingToMySweetHomeScreen();
                         }
                     }
@@ -392,9 +408,11 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         if (screenTitle == R.string.edit_my_daily_service_details) {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
             intentNotification.putExtra(SERVICE_TYPE, service_type);
+            intentNotification.putExtra(MOBILE_NUMBER, updatedDailyServiceMobileNumber);
         } else {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
             intentNotification.putExtra(SERVICE_TYPE, "Family Member");
+            intentNotification.putExtra(MOBILE_NUMBER, updatedFamilyMemberMobileNumber);
         }
         startActivity(intentNotification);
     }
@@ -408,4 +426,69 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         mySweetHomeIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mySweetHomeIntent);
     }
+
+    /**
+     * This method gets invoked when user tries to edit their Daily Service name,mobile number and
+     * date and time.
+     */
+    private void updateDailyServiceDetails() {
+        NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
+        String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+        String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
+        if (nameTextChanged) {
+            String updatedDailyServiceName = editMemberAndServiceName.getText().toString();
+            nammaApartmentDailyService.setFullName(updatedDailyServiceName);
+            PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+                    .child(nammaApartmentDailyService.getUID())
+                    .child(FIREBASE_CHILD_FULLNAME)
+                    .setValue(updatedDailyServiceName);
+        }
+        if (mobileTextChanged) {
+            updatedDailyServiceMobileNumber = editMobileNumber.getText().toString();
+            nammaApartmentDailyService.setPhoneNumber(updatedDailyServiceMobileNumber);
+            PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+                    .child(nammaApartmentDailyService.getUID())
+                    .child(FIREBASE_CHILD_PHONENUMBER)
+                    .setValue(updatedDailyServiceMobileNumber);
+        }
+        if (timeTextChanged) {
+            String updatedDailyServiceTime = editPickInTime.getText().toString();
+            nammaApartmentDailyService.setTimeOfVisit(updatedDailyServiceTime);
+            PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+                    .child(nammaApartmentDailyService.getUID())
+                    .child(FIREBASE_CHILD_TIMEOFVISIT)
+                    .setValue(updatedDailyServiceTime);
+        }
+    }
+
+    /**
+     * This method gets invoked when user tries to edit their Family Member name,mobile number and
+     * grant access value.
+     */
+    private void updateFamilyMemberDetails() {
+        NammaApartmentUser nammaApartmentUser = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+        if (nameTextChanged) {
+            String updatedFamilyMemberName = editMemberAndServiceName.getText().toString();
+            nammaApartmentUser.getPersonalDetails().setFullName(updatedFamilyMemberName);
+            PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    .child(FIREBASE_CHILD_PERSONALDETAILS)
+                    .child(FIREBASE_CHILD_FULLNAME)
+                    .setValue(updatedFamilyMemberName);
+        }
+        if (mobileTextChanged) {
+            updatedFamilyMemberMobileNumber = editMobileNumber.getText().toString();
+            nammaApartmentUser.getPersonalDetails().setPhoneNumber(updatedFamilyMemberMobileNumber);
+            PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    .child(FIREBASE_CHILD_PERSONALDETAILS)
+                    .child(FIREBASE_CHILD_PHONENUMBER)
+                    .setValue(updatedFamilyMemberMobileNumber);
+        }
+        if (grantedAccess) {
+            PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    .child(FIREBASE_CHILD_PRIVILEGES)
+                    .child(FIREBASE_CHILD_GRANTEDACCESS)
+                    .setValue(grantedAccess);
+        }
+    }
+
 }
