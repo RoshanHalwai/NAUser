@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,13 +76,11 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         editFullName.setTypeface(Constants.setLatoRegularFont(this));
         editEmailId.setTypeface(Constants.setLatoRegularFont(this));
         buttonSignUp.setTypeface(Constants.setLatoLightFont(this));
-
         /*Setting event for  button*/
         circleImageNewUserProfileImage.setOnClickListener(this);
         circleImageNewUserProfileImage.setOnFocusChangeListener(this);
         buttonSignUp.setOnClickListener(this);
     }
-
     /*-------------------------------------------------------------------------------
      *Overriding onActivityResult
      *-----------------------------------------------------------------------------*/
@@ -110,12 +109,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonSignUp:
-                Intent intent = new Intent(this, MyFlatDetails.class);
-                intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
-                intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
-                intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
-                intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath);
-                startActivity(intent);
+                //This method gets invoked to check all the validation fields such as editTexts name and email.
+                validateFields();
                 break;
             case R.id.newUserProfileImage:
                 hideKeyboard();
@@ -127,6 +122,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (v == circleImageNewUserProfileImage && hasFocus) {
+            hideKeyboard();
             onClick(v);
         }
     }
@@ -161,4 +157,41 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         imageSelectionDialog = builder.create();
     }
 
+    /**
+     * This method gets invoked to check all the validation fields such as editTexts name and email.
+     */
+    private void validateFields() {
+        String newUserName = editFullName.getText().toString().trim();
+        String newUserEmail = editEmailId.getText().toString().trim();
+        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editFullName, editEmailId});
+        //This condition checks if any field is empty and then display proper error messages according
+        //to the requirement.
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(newUserName)) {
+                editFullName.setError(getString(R.string.name_validation));
+            }
+            if (TextUtils.isEmpty(newUserEmail)) {
+                editEmailId.setError(getString(R.string.email_validation));
+            }
+        }
+        //This condition checks if any of the fields are filled and validates email and mobile number.
+        if (fieldsFilled) {
+            if (isValidEmail(newUserEmail)) {
+                editEmailId.setError(getString(R.string.invalid_email));
+            }
+            if (isValidPersonName(newUserName)) {
+                editFullName.setError(getString(R.string.accept_alphabets));
+            }
+        }
+        //This condition checks if name and email are properly validated and then
+        // navigate to proper screen according to its requirement.
+        if (!isValidEmail(newUserEmail) && !isValidPersonName(newUserName)) {
+            Intent intent = new Intent(this, MyFlatDetails.class);
+            intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
+            intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
+            intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
+            intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath);
+            startActivity(intent);
+        }
+    }
 }

@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,11 +70,13 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
 
     private CircleImageView circleImageView;
     private TextView textErrorProfilePic;
+    private TextView textErrorRelation;
     private EditText editFamilyMemberName;
     private EditText editFamilyMemberMobile;
     private EditText editFamilyMemberEmail;
     private Button buttonYes;
     private Button buttonNo;
+    private RadioButton radioButtonFriend;
     private RadioButton radioButtonFamilyMember;
     private AlertDialog imageSelectionDialog;
     private boolean grantedAccess;
@@ -110,6 +113,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         TextView textFamilyMemberEmail = findViewById(R.id.textFamilyMemberEmail);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         TextView textRelation = findViewById(R.id.textFamilyMemberRelation);
+        textErrorRelation = findViewById(R.id.textErrorRelation);
         TextView textOr = findViewById(R.id.textOr);
         TextView textGrantAccess = findViewById(R.id.textGrantAccess);
         TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
@@ -118,7 +122,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         editFamilyMemberMobile = findViewById(R.id.editFamilyMemberMobile);
         editFamilyMemberEmail = findViewById(R.id.editFamilyMemberEmail);
         radioButtonFamilyMember = findViewById(R.id.radioButtonFamilyMember);
-        RadioButton radioButtonFriend = findViewById(R.id.radioButtonFriend);
+        radioButtonFriend = findViewById(R.id.radioButtonFriend);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         buttonYes = findViewById(R.id.buttonYes);
         buttonNo = findViewById(R.id.buttonNo);
@@ -135,6 +139,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         textGrantAccess.setTypeface(setLatoBoldFont(this));
         textDescriptionFamilyMember.setTypeface(setLatoBoldFont(this));
         textErrorProfilePic.setTypeface(setLatoRegularFont(this));
+        textErrorRelation.setTypeface(setLatoRegularFont(this));
         editFamilyMemberName.setTypeface(setLatoRegularFont(this));
         editFamilyMemberEmail.setTypeface(setLatoRegularFont(this));
         editFamilyMemberMobile.setTypeface(setLatoRegularFont(this));
@@ -204,8 +209,12 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 showUserContacts();
                 break;
             case R.id.radioButtonFamilyMember:
+                //This line hides the relation error message if it was shown on if any of the fields are not filled.
+                textErrorRelation.setVisibility(View.GONE);
                 break;
             case R.id.radioButtonFriend:
+                //This line hides the relation error message if it was shown on if any of the fields are not filled.
+                textErrorRelation.setVisibility(View.GONE);
                 break;
             case R.id.buttonYes:
                 grantedAccess = true;
@@ -222,20 +231,14 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 buttonNo.setTextColor(Color.WHITE);
                 break;
             case R.id.buttonAdd:
-                if (isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail})
-                        && editFamilyMemberMobile.length() == PHONE_NUMBER_MAX_LENGTH) {
                     if (profilePhotoByteArray == null) {
                         textErrorProfilePic.setVisibility(View.VISIBLE);
                         textErrorProfilePic.requestFocus();
                     } else {
                         textErrorProfilePic.setVisibility(View.INVISIBLE);
-                        if (grantedAccess)
-                            openNotificationDialog();
-                        else {
-                            navigatingToOTPScreen();
-                        }
                     }
-                }
+                // This method gets invoked to check all the validation fields such as editTexts and radioButtons.
+                validateFields();
                 break;
         }
     }
@@ -433,6 +436,56 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
 
                     }
                 });
+            }
+        }
+    }
+
+    /**
+     * This method gets invoked to check all the validation fields such as editTexts and radioButtons.
+     */
+    private void validateFields() {
+        String familyMemberName = editFamilyMemberName.getText().toString().trim();
+        mobileNumber = editFamilyMemberMobile.getText().toString().trim();
+        String familyMemberEmail = editFamilyMemberEmail.getText().toString().trim();
+        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail});
+        //This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(familyMemberName)) {
+                editFamilyMemberName.setError(getString(R.string.name_validation));
+            }
+            if (TextUtils.isEmpty(mobileNumber)) {
+                editFamilyMemberMobile.setError(getString(R.string.mobile_number_validation));
+            }
+            if (TextUtils.isEmpty(familyMemberEmail)) {
+                editFamilyMemberEmail.setError(getString(R.string.email_validation));
+            }
+            if (!radioButtonFamilyMember.isChecked() && !radioButtonFriend.isChecked()) {
+                textErrorRelation.setVisibility(View.VISIBLE);
+            }
+        }
+        //This condition checks for if user has filled all the fields and also validates name,email and mobile number
+        //and displays proper error messages.
+        if (fieldsFilled) {
+            if (!radioButtonFamilyMember.isChecked() && !radioButtonFriend.isChecked()) {
+                textErrorRelation.setVisibility(View.VISIBLE);
+            }
+            if (isValidEmail(familyMemberEmail)) {
+                editFamilyMemberEmail.setError(getString(R.string.invalid_email));
+            }
+            if (isValidPersonName(familyMemberName)) {
+                editFamilyMemberName.setError(getString(R.string.accept_alphabets));
+            }
+            if (!isValidPhone(mobileNumber)) {
+                editFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
+            }
+        }
+        //This condition checks if name,mobile number and email are properly validated and then
+        // navigate to proper screen according to its requirement.
+        if (!isValidPersonName(familyMemberName) && isValidPhone(mobileNumber) && !isValidEmail(familyMemberEmail)) {
+            if (grantedAccess)
+                openNotificationDialog();
+            else {
+                navigatingToOTPScreen();
             }
         }
     }
