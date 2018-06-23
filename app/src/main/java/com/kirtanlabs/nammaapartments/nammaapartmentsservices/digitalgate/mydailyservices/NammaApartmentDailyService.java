@@ -35,7 +35,7 @@ public class NammaApartmentDailyService implements Serializable {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(Map<String, Boolean> ownersUID, String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+    NammaApartmentDailyService(Map<String, Boolean> ownersUID, String status, String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
         this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
@@ -111,7 +111,4 @@ public class NammaApartmentDailyService implements Serializable {
         this.dailyServiceHandedThingsDescription = dailyServiceHandedThingsDescription;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

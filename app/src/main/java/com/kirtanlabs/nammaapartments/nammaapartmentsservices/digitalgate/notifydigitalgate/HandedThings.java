@@ -82,16 +82,14 @@ public class HandedThings extends BaseActivity {
         nammaApartmentDailyServiceList = new ArrayList<>();
         adapterDailyService = new HandedThingsToDailyServiceAdapter(nammaApartmentDailyServiceList, this);
 
-        //Setting adapter to recycler view
-        recyclerView.setAdapter(adapterVisitors);
-        recyclerView.setAdapter(adapterDailyService);
-
         /*Retrieve those visitor details who status is Entered*/
         if (handed_things_to == R.string.handed_things_to_my_guest) {
-            //To retrieve user visitor list from firebase based on the visitor status.
+            //To retrieve user visitor list from firebase based on the their status.
+            recyclerView.setAdapter(adapterVisitors);
             retrieveCurrentVisitorsFromFirebase();
         } else {
-            //To retrieve user daily Services list from firebase based on the visitor status.
+            //To retrieve user daily Services list from firebase based on the their status.
+            recyclerView.setAdapter(adapterDailyService);
             retrieveDailyServiceFromFirebase();
         }
 
@@ -126,7 +124,7 @@ public class HandedThings extends BaseActivity {
                             @Override
                             public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
                                 NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
-                                if (nammaApartmentVisitor.getStatus().equals("Entered")) {
+                                if (nammaApartmentVisitor.getStatus().equals(ENTERED)) {
                                     nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
                                     adapterVisitors.notifyDataSetChanged();
                                 }

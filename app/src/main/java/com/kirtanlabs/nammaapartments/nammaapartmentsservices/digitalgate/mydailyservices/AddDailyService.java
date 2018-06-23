@@ -455,6 +455,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
                     NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
                             ownersUID,
+                            NOT_ENTERED,
                             dailyServiceUID, fullName,
                             phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, false, rating);
 

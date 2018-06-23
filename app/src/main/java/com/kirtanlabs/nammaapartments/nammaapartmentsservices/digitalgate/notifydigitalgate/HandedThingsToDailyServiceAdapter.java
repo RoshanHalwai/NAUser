@@ -20,14 +20,11 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
-import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION;
-import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
@@ -70,29 +67,13 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
     public void onBindViewHolder(@NonNull HandedThingsToDailyServiceAdapter.DailyServiceViewHolder holder, int position) {
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
-
-        //Since we need owner's name we get the details by owner UID
-        DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(String.valueOf(nammaApartmentDailyService.getOwnersUID()));
-        userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
-                holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getfullName());
-                holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
-                holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-                holder.textDailyServiceNoOfFlatsValue.setText(nammaApartmentDailyService.getOwnersUID().size());
-                holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
-                        .into(holder.profileImage);
-                String stringStatus = mCtx.getResources().getString(R.string.status) + ":" + NOT_ENTERED;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
+        holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getfullName());
+        holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
+        holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
+        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getOwnersUID().size()));
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
+                .into(holder.profileImage);
     }
 
     @Override
@@ -115,17 +96,15 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
          * ------------------------------------------------------------- */
 
         private final TextView textDailyServiceName;
-        private final TextView textDailyServiceNameValue;
         private final TextView textDailyServiceType;
-        private final TextView textDailyServiceTypeValue;
         private final TextView textDailyServiceRating;
-        private final TextView textDailyServiceRatingValue;
-        private final TextView textDailyServiceNoOfFlats;
-        private final TextView textDailyServiceNoOfFlatsValue;
         private final TextView textInvitationTime;
+        private final TextView textDailyServiceNoOfFlats;
+        private final TextView textDailyServiceNameValue;
+        private final TextView textDailyServiceTypeValue;
+        private final TextView textDailyServiceRatingValue;
         private final TextView textInvitationTimeValue;
-        private final TextView textInvitedBy;
-        private final TextView textInvitedByValue;
+        private final TextView textDailyServiceNoOfFlatsValue;
         private final TextView textGivenThings;
         private final TextView textDescription;
         private final EditText editDescription;
@@ -147,13 +126,11 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
             textDailyServiceRating = itemView.findViewById(R.id.textRating);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
             textDailyServiceNoOfFlats = itemView.findViewById(R.id.textDailyServiceNoOfFlats);
-            textInvitedBy = itemView.findViewById(R.id.textInvitedBy);
             textDailyServiceNameValue = itemView.findViewById(R.id.textDailyServiceNameValue);
             textDailyServiceTypeValue = itemView.findViewById(R.id.textDailyServiceTypeValue);
             textDailyServiceRatingValue = itemView.findViewById(R.id.textRatingValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
             textDailyServiceNoOfFlatsValue = itemView.findViewById(R.id.textNoOfFlatValue);
-            textInvitedByValue = itemView.findViewById(R.id.textInvitedByValue);
             textGivenThings = itemView.findViewById(R.id.textGivenThings);
             textDescription = itemView.findViewById(R.id.textDescription);
             editDescription = itemView.findViewById(R.id.editDescription);
@@ -168,7 +145,6 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
             textDailyServiceRating.setTypeface(setLatoRegularFont(mCtx));
             textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
             textDailyServiceNoOfFlats.setTypeface(setLatoRegularFont(mCtx));
-            textInvitedBy.setTypeface(setLatoRegularFont(mCtx));
             textGivenThings.setTypeface(setLatoBoldFont(mCtx));
             textDescription.setTypeface(setLatoBoldFont(mCtx));
             editDescription.setTypeface(setLatoRegularFont(mCtx));
@@ -180,7 +156,6 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
             textDailyServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
             textDailyServiceNoOfFlatsValue.setTypeface(setLatoBoldFont(mCtx));
-            textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
 
             buttonYes.setOnClickListener(this);
             buttonNo.setOnClickListener(this);
