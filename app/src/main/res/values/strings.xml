@@ -34,13 +34,15 @@
     <!--Flat Details Screen-->
     <string name="my_flat_details">My Flat Details</string>
     <string name="city">CITY</string>
-    <string name="society">SOCIETY</string>
-    <string name="apartment">APARTMENT</string>
+    <string name="societyName">SOCIETY</string>
+    <string name="apartmentName">APARTMENT</string>
     <string name="flat">FLAT</string>
     <string name="resident_type">RESIDENT TYPE</string>
     <string name="owner">Owner</string>
     <string name="tenant">Tenant</string>
     <string name="verification_message">Our team will verify the details provided by you. We will notify you once the verification is completed.</string>
+    <string name="creating_your_account">Creating your Account</string>
+    <string name="please_wait_a_moment">Please wait a moment</string>
     <string name="next">Continue</string>
 
     <!--SignUp Activity -->
@@ -48,7 +50,7 @@
     <string name="_91">+91</string>
     <string name="phone_number">Mobile Number</string>
     <string name="email_id">Email-Id</string>
-    <string name="signup">Sign Up</string>
+    <string name="sign_up">Sign Up</string>
     <string name="i_agree_to_terms_and_conditions">By clicking on SignUp I agree to NammaApartments Privacy Policy and Terms &amp; Conditions</string>
     <string name="i_already_have_an_account">I already have an Account</string>
 
@@ -99,6 +101,7 @@
     <string name="invite_visitors">Invite Visitors</string>
     <string name="my_visitors_list">My Visitors List</string>
     <string name="my_daily_services">My Daily Services</string>
+    <string name="my_family_members">My Family Members</string>
     <string name="notify_digital_gate">Notify Digital Gate</string>
     <string name="my_sweet_home">My Sweet Home</string>
     <string name="emergency">Emergency</string>
@@ -115,14 +118,16 @@
     <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="select_future_time">Please select future time.</string>
     <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your society.</string>
-    <string name="invitation_message">You have successfully invited your visitor.</string>
+    <string name="invitation_success_title">Invitation Message</string>
+    <string name="invitation_success_message">You have successfully invited your visitor.</string>
+    <string name="inviting_your_visitor">Inviting your visitor</string>
 
     <!--Visitors List Activity-->
     <string name="visitor">Visitor:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
     <string name="time">In Time:</string>
-    <string name="invited_by">Invited By:</string>
+    <string name="invited_by">Inviter:</string>
     <string name="call">Call</string>
     <string name="message">Message</string>
     <string name="reschedule">Reschedule</string>
@@ -130,6 +135,7 @@
     <string name="visitor_cancel">Are you sure you want to remove this data?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since there has been no visitors at your flat.</string>
 
 
     <!--Digi Gate NammaApartmentService Activity-->
@@ -140,7 +146,8 @@
     <string name="handed_things_to_my_daily_services">Handed Things To My Daily Services</string>
     <string name="raise_fire_alarm">Raise Fire Alarm</string>
     <string name="raise_theft_alarm">Raise Theft Alarm</string>
-    <string name="notification_message">Notification is sent to your Security Guard.</string>
+    <string name="notification_message">Arrival Notification has been sent to your Security Guard.</string>
+    <string name="notification_title">Security Guard Notification</string>
     <string name="please_fill_details">Please fill details here</string>
 
     <!--Expecting Cab Arrival & Expecting Package Arrival Activities-->
@@ -162,11 +169,17 @@
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
     <string name="description">Description:</string>
-    <string name="feature_unavailable_message">Sorry you cannot use this feature since currently you do not have any visitors at your resident.</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
+    <string name="handed_things_success_title">Handed Things Message.</string>
+    <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
+    <string name="daily_service_name">Name</string>
 
-    <!--My Daily Services-->
+    <!--Handed Things To Daily Service Activity-->
+    <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since there has been no daily service at your flat.</string>
+    <string name="status">status</string>
+
+    <!--Daily Services Home-->
     <string name="remove">Remove</string>
     <string name="flats">Flats:</string>
     <string name="rating">Rating:</string>
@@ -175,9 +188,13 @@
     <string name="newspaper_paper_man">NewsPaper man</string>
     <string name="laundry_man">Laundry man</string>
     <string name="daily_service_cancel">Are you sure you want to remove this DailyService data?</string>
+    <string name="add_my_daily_service">Add My Daily Service</string>
+    <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
+    <string name="adding_your_daily_service">Adding your Daily Service</string>
+    <string name="daily_service_success_title">Daily Service Message</string>
+    <string name="daily_service_success_message">You have successfully added your Daily Service.</string>
 
     <!--Adding My Daily Services-->
-    <string name="add_my_service">Add My Service</string>
     <string name="name">Name</string>
     <string name="mobile">Mobile</string>
     <string name="pick_time">Time</string>
@@ -196,11 +213,17 @@
     <string name="add_family_members_details_screen">Add Family Members Details Screen</string>
     <string name="grant_access">Grant Access</string>
     <string name="relation">Relation</string>
+    <string name="family_member">Family Member</string>
+    <string name="friend">Friend</string>
     <string name="otp_message_family_member">We will send an OTP to your family member for Authentication.</string>
     <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
     <string name="notification_alert">Notification Alert</string>
-    <string name="granted_access">Granted Access:</string>
+    <string name="granted_access">Access:</string>
+    <string name="family_member_unavailable_message">Please add your Family Members to approve visitors on your behalf.</string>
+    <string name="adding_your_family_member">Adding your Family Member</string>
+    <string name="family_member_success_title">Family Member Message</string>
+    <string name="family_member_success_message">You have successfully added your Family Member.</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
@@ -213,5 +236,10 @@
     <string name="name_validation">Please Enter Name</string>
     <string name="accept_alphabets">Accept Alphabets Only.</string>
     <string name="enter_relation">Please Enter Relation</string>
+    <string name="upload_image">Please Upload Image</string>
+    <string name="mobile_number_exists">Mobile Number already exists</string>
+    <string name="invalid_email">Invalid Email Address</string>
+    <string name="email_validation">Please Enter E-Mail Address</string>
+    <string name="relation_check">Please check at least one Relation</string>
 
 </resources>

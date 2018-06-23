@@ -19,7 +19,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
-        android:text="@string/feature_unavailable_message"
+        android:text="@string/visitors_unavailable_message"
         android:textColor="@color/nmBlack"
         android:textSize="18sp" />
 

@@ -5,7 +5,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invit
  * Created by Ashish Jha on 6/7/2018
  */
 
-class NammaApartmentVisitor {
+public class NammaApartmentVisitor {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -17,6 +17,8 @@ class NammaApartmentVisitor {
     private String dateAndTimeOfVisit;
     private String status;
     private String inviterUID;
+    private String profilePhoto;
+    private String handedThingsDescription;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -25,7 +27,7 @@ class NammaApartmentVisitor {
     public NammaApartmentVisitor() {
     }
 
-    public NammaApartmentVisitor(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
+    NammaApartmentVisitor(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
@@ -54,11 +56,39 @@ class NammaApartmentVisitor {
         return dateAndTimeOfVisit;
     }
 
+    public void setDateAndTimeOfVisit(String dateAndTimeOfVisit) {
+        this.dateAndTimeOfVisit = dateAndTimeOfVisit;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public String getHandedThingsDescription() {
+        return handedThingsDescription;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public String getInviterUID() {
+        return inviterUID;
+    }
+
     public String getStatus() {
         return status;
     }
 
-    public String getInviterUID() {
-        return inviterUID;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public void setHandedThingsDescription(String handedThingsDescription) {
+        this.handedThingsDescription = handedThingsDescription;
     }
 }

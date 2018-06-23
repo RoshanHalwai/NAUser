@@ -1,38 +1,42 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
-public class HandedThings extends BaseActivity implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
+import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
+
+public class HandedThings extends BaseActivity {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
-    private int handed_Things_To;
-    private TextView textVisitorAndServiceName;
-    private TextView textInvitationDateAndRating;
-    private TextView textInvitedByAndApartmentNo;
-    private TextView textVisitorNameAndServiceNameValue;
-    private TextView textVisitorAndServiceTypeValue;
-    private TextView textInvitationDateAndRatingValue;
-    private TextView textInvitedByAndApartmentNoValue;
-    private TextView textDescription;
-    private EditText editDescription;
-    private Button buttonYes;
-    private Button buttonNo;
-    private Button buttonNotifyGate;
+    private List<NammaApartmentVisitor> nammaApartmentVisitorList;
+    private HandedThingsToVisitorsAdapter adapterVisitors;
+    private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
+    private HandedThingsToDailyServiceAdapter adapterDailyService;
+    private int handed_things_to;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -47,12 +51,12 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     protected int getActivityTitle() {
         /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
          * based on the user click on NotifyGate Home screen*/
-        if (getIntent().getIntExtra(Constants.HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
-            handed_Things_To = R.string.handed_things_to_my_guest;
+        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
+            handed_things_to = R.string.handed_things_to_my_guest;
         } else {
-            handed_Things_To = R.string.handed_things_to_my_daily_services;
+            handed_things_to = R.string.handed_things_to_my_daily_services;
         }
-        return handed_Things_To;
+        return handed_things_to;
     }
 
     @Override
@@ -62,128 +66,209 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
         /*We need Info Button in this screen*/
         showInfoButton();
 
-        //TODO: Write business logic to check if there are any visitors at resident house.
-        /* If there are no visitors at resident house then we show
-         * feature unavailable layout and pass some sensible message*/
-        /*if (visitorCount == 0) {
-            showFeatureUnavailableLayout(R.string.feature_unavailable_message);
-        }*/
+        /*We need Progress Indicator in this screen*/
+        showProgressIndicator();
 
-        /* We show current visitors list at resident house, so resident has
-         * the ability to give things to their visitors and notify gate about it*/
-        CardView cardViewVisitors = findViewById(R.id.cardViewVisitors);
-        cardViewVisitors.setVisibility(View.VISIBLE);
 
-        /*Initialising all the views*/
-        textVisitorAndServiceName = findViewById(R.id.textVisitorAndServiceName);
-        TextView textVisitorAndServiceType = findViewById(R.id.textVisitorAndServiceType);
-        textInvitationDateAndRating = findViewById(R.id.textInvitationDate);
-        TextView textInvitationTime = findViewById(R.id.textInvitationTime);
-        textInvitedByAndApartmentNo = findViewById(R.id.textInvitedByAndApartmentNo);
-        textVisitorNameAndServiceNameValue = findViewById(R.id.textVisitorAndServiceNameValue);
-        textVisitorAndServiceTypeValue = findViewById(R.id.textVisitorAndServiceTypeValue);
-        textInvitationDateAndRatingValue = findViewById(R.id.textInvitationDateValue);
-        TextView textInvitationTimeValue = findViewById(R.id.textInvitationTimeValue);
-        textInvitedByAndApartmentNoValue = findViewById(R.id.textInvitedByAndApartmentNoValue);
-        TextView textGivenThings = findViewById(R.id.textGivenThings);
-        textDescription = findViewById(R.id.textDescription);
-        editDescription = findViewById(R.id.editDescription);
-        buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
-        buttonYes = findViewById(R.id.buttonYes);
-        buttonNo = findViewById(R.id.buttonNo);
+        /*Getting Id of recycler view*/
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /*Setting fonts to the views*/
-        textVisitorAndServiceName.setTypeface(Constants.setLatoRegularFont(this));
-        textVisitorAndServiceType.setTypeface(Constants.setLatoRegularFont(this));
-        textInvitationDateAndRating.setTypeface(Constants.setLatoRegularFont(this));
-        textInvitationTime.setTypeface(Constants.setLatoRegularFont(this));
-        textInvitedByAndApartmentNo.setTypeface(Constants.setLatoRegularFont(this));
+        //Creating recycler view adapter
+        nammaApartmentVisitorList = new ArrayList<>();
+        adapterVisitors = new HandedThingsToVisitorsAdapter(nammaApartmentVisitorList, this);
 
-        textVisitorNameAndServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
-        textVisitorAndServiceTypeValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationDateAndRatingValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(this));
-        textInvitedByAndApartmentNoValue.setTypeface(Constants.setLatoBoldFont(this));
+        nammaApartmentDailyServiceList = new ArrayList<>();
+        adapterDailyService = new HandedThingsToDailyServiceAdapter(nammaApartmentDailyServiceList, this);
 
-        textGivenThings.setTypeface(Constants.setLatoBoldFont(this));
-        textDescription.setTypeface(Constants.setLatoBoldFont(this));
-        editDescription.setTypeface(Constants.setLatoRegularFont(this));
-        buttonYes.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNo.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
+        //Setting adapter to recycler view
+        recyclerView.setAdapter(adapterVisitors);
+        recyclerView.setAdapter(adapterDailyService);
 
-        /*Setting events for views*/
-        buttonYes.setOnClickListener(this);
-        buttonNo.setOnClickListener(this);
-        buttonNotifyGate.setOnClickListener(this);
-
-        /*Since we are using same layout for handed things to my guest and handed things to my daily services we need to
-         * change some Titles in layout*/
-        changeTitles();
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
-     * ------------------------------------------------------------- */
-
-    @Override
-    public void onClick(View v) {
-        InputMethodManager inputMethodManager;
-        switch (v.getId()) {
-            case R.id.buttonYes:
-                textDescription.setVisibility(View.VISIBLE);
-                editDescription.setVisibility(View.VISIBLE);
-                buttonNotifyGate.setVisibility(View.VISIBLE);
-                editDescription.requestFocus();
-                inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager != null) {
-                    inputMethodManager.showSoftInput(editDescription, InputMethodManager.SHOW_IMPLICIT);
-                }
-                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
-                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
-                buttonYes.setTextColor(Color.WHITE);
-                buttonNo.setTextColor(Color.BLACK);
-                break;
-            case R.id.buttonNo:
-                textDescription.setVisibility(View.GONE);
-                editDescription.setVisibility(View.GONE);
-                buttonNotifyGate.setVisibility(View.GONE);
-                inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager != null) {
-                    inputMethodManager.hideSoftInputFromWindow(editDescription.getWindowToken(), 0);
-
-                }
-                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
-                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
-                buttonYes.setTextColor(Color.BLACK);
-                buttonNo.setTextColor(Color.WHITE);
-                break;
-
-            case R.id.buttonNotifyGate:
-                if (isAllFieldsFilled(new EditText[]{editDescription})) {
-                    createNotifyGateDialog();
-                } else {
-                    editDescription.setError(getString(R.string.please_fill_details));
-                }
-                break;
+        /*Retrieve those visitor details who status is Entered*/
+        if (handed_things_to == R.string.handed_things_to_my_guest) {
+            //To retrieve user visitor list from firebase based on the visitor status.
+            retrieveCurrentVisitorsFromFirebase();
+        } else {
+            //To retrieve user daily Services list from firebase based on the visitor status.
+            retrieveDailyServiceFromFirebase();
         }
+
     }
 
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
 
-    private void changeTitles() {
-        if (handed_Things_To == R.string.handed_things_to_my_daily_services) {
-            String stringServiceName = getResources().getString(R.string.name) + ":";
-            textVisitorAndServiceName.setText(stringServiceName);
-            textVisitorNameAndServiceNameValue.setText("Ramesh");
-            textVisitorAndServiceTypeValue.setText(R.string.cook);
-            textInvitationDateAndRating.setText(R.string.rating);
-            textInvitationDateAndRatingValue.setText("4.2");
-            textInvitedByAndApartmentNo.setText(R.string.flats);
-            textInvitedByAndApartmentNoValue.setText("3");
+    /**
+     * We retrieve visitors for current user and their family members and display it in the card view
+     */
+
+    private void retrieveCurrentVisitorsFromFirebase() {
+        //First retrieve the current user visitors
+        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference();
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
+
+        myVisitorsReference.child(NammaApartmentsGlobal.userUID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                hideProgressIndicator();
+                if (!dataSnapshot.exists() && currentNammaApartmentUser.getFamilyMembers() == null) {
+                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                } else if (dataSnapshot.exists()) {
+                    for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
+                        DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
+                                .child(visitorsSnapshot.getKey());
+                        preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
+                                NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
+                                if (nammaApartmentVisitor.getStatus().equals("Entered")) {
+                                    nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                    adapterVisitors.notifyDataSetChanged();
+                                }
+
+                                //Check if current user has any familyMembers
+                                if (nammaApartmentVisitorList.size() == dataSnapshot.getChildrenCount() &&
+                                        currentNammaApartmentUser.getFamilyMembers() != null) {
+                                    //Take each of their Visitors and add it to Visitors List
+                                    addFamilyMembersVisitors();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                } else {
+                    addFamilyMembersVisitors();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * We store the details of visitors for current user and their family members if any, in Firebase
+     */
+    private void addFamilyMembersVisitors() {
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        for (Map.Entry<String, Boolean> familyMembersUID : currentNammaApartmentUser.getFamilyMembers().entrySet()) {
+            DatabaseReference visitorsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                    .child(Constants.FIREBASE_CHILD_VISITORS);
+            visitorsReference.child(familyMembersUID.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        DatabaseReference visitorsReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                                .child(Constants.FIREBASE_CHILD_VISITORS);
+                        visitorsReference.child(dataSnapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
+                                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
+                                            .child(visitorsSnapshot.getKey());
+                                    preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
+                                            if (nammaApartmentVisitor.getStatus().equals(ENTERED)) {
+                                                nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                                adapterVisitors.notifyDataSetChanged();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
+    }
+    /**
+     * We retrieve Daily Service for current user and their family members and display it in the card view
+     */
+    private void retrieveDailyServiceFromFirebase() {
+        //First retrieve the current user daily service
+        DatabaseReference dailyServicesListReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                .child(FIREBASE_CHILD_DAILYSERVICES);
+        dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
+                if (!myDailyServiceSnapshot.exists()) {
+                    hideProgressIndicator();
+                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
+                }
+                if (myDailyServiceSnapshot.exists()) {
+                    for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
+                        String dailyServiceType = dailyServicesSnapshot.getKey();
+                        DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
+                        dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
+                                for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
+                                    DatabaseReference dailyServiceDataReference = PUBLIC_DAILYSERVICES_REFERENCE
+                                            .child(dailyServiceUIDSnapshot.getKey())
+                                            .child(Objects.requireNonNull(childSnapshot.getKey()));
+                                    dailyServiceDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dailyServiceDataSnapshot) {
+                                            NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
+                                            if (nammaApartmentDailyService.getStatus().equals(ENTERED)) {
+                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
+                                                nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
+                                                adapterDailyService.notifyDataSetChanged();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+                hideProgressIndicator();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

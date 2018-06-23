@@ -13,14 +13,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCABS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDELIVERIES;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 
 /**
@@ -46,6 +61,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     private String selectedDate;
     private String packageVendorName;
     private boolean isValidForSelected;
+    private Button selectedButton;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -60,7 +76,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     protected int getActivityTitle() {
         /*We use a common class for Expecting Cab Arrival and Package Arrival, we set the title
          * based on the user click on NotifyGate Home screen*/
-        if (getIntent().getIntExtra(Constants.ARRIVAL_TYPE, 0) == R.string.expecting_cab_arrival) {
+        if (getIntent().getIntExtra(ARRIVAL_TYPE, 0) == R.string.expecting_cab_arrival) {
             arrivalType = R.string.expecting_cab_arrival;
         } else {
             arrivalType = R.string.expecting_package_arrival;
@@ -92,20 +108,20 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         Button buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
 
         /*Setting font for all the views*/
-        textCabOrVendorTitle.setTypeface(Constants.setLatoBoldFont(this));
-        textDateTime.setTypeface(Constants.setLatoBoldFont(this));
-        textValidFor.setTypeface(Constants.setLatoBoldFont(this));
-        editPickDateTime.setTypeface(Constants.setLatoRegularFont(this));
-        editCabOrVendorValue.setTypeface(Constants.setLatoRegularFont(this));
-        button1hr.setTypeface(Constants.setLatoRegularFont(this));
-        button2hr.setTypeface(Constants.setLatoRegularFont(this));
-        button4hr.setTypeface(Constants.setLatoRegularFont(this));
-        button6hr.setTypeface(Constants.setLatoRegularFont(this));
-        button8hr.setTypeface(Constants.setLatoRegularFont(this));
-        button12hr.setTypeface(Constants.setLatoRegularFont(this));
-        button16hr.setTypeface(Constants.setLatoRegularFont(this));
-        button24hr.setTypeface(Constants.setLatoRegularFont(this));
-        buttonNotifyGate.setTypeface(Constants.setLatoLightFont(this));
+        textCabOrVendorTitle.setTypeface(setLatoBoldFont(this));
+        textDateTime.setTypeface(setLatoBoldFont(this));
+        textValidFor.setTypeface(setLatoBoldFont(this));
+        editPickDateTime.setTypeface(setLatoRegularFont(this));
+        editCabOrVendorValue.setTypeface(setLatoRegularFont(this));
+        button1hr.setTypeface(setLatoRegularFont(this));
+        button2hr.setTypeface(setLatoRegularFont(this));
+        button4hr.setTypeface(setLatoRegularFont(this));
+        button6hr.setTypeface(setLatoRegularFont(this));
+        button8hr.setTypeface(setLatoRegularFont(this));
+        button12hr.setTypeface(setLatoRegularFont(this));
+        button16hr.setTypeface(setLatoRegularFont(this));
+        button24hr.setTypeface(setLatoRegularFont(this));
+        buttonNotifyGate.setTypeface(setLatoLightFont(this));
 
         /*Since we are using same layout for Expecting cab and package arrival we need to
          * set text for textCabOrVendorTitle to either Package Vendor Name or Cab Number*/
@@ -164,7 +180,14 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.buttonNotifyGate:
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
-                    createNotifyGateDialog();
+                    if (arrivalType == R.string.expecting_cab_arrival) {
+                        storeDigitalGateDetails(FIREBASE_CHILD_MYCABS);
+
+                    } else {
+                        storeDigitalGateDetails(FIREBASE_CHILD_MYDELIVERIES);
+                    }
+                    showSuccessDialog(getResources().getString(R.string.notification_title),
+                            getResources().getString(R.string.notification_message), null);
                 } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
                 }
@@ -204,6 +227,40 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * Store the details of Arriving Cabs and Delivery details to Firebase
+     */
+    private void storeDigitalGateDetails(String digitalGateChild) {
+
+        //Get the details from user
+        NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        String cabDeliveryReference = editCabOrVendorValue.getText().toString();
+        String dateTimeOfVisit = editPickDateTime.getText().toString();
+        String validFor = selectedButton.getText().toString();
+        String userUID = nammaApartmentUser.getUID();
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID);
+
+        //Store cabs/deliveries uid and value under users->private
+        DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(cabDeliveryReference);
+        String digitalGateUID = digitalGateUIDReference.push().getKey();
+        DatabaseReference digitalGateReference = PRIVATE_USERS_REFERENCE.child(userUID);
+        digitalGateReference.child(digitalGateChild).child(digitalGateUID).setValue(true);
+
+        //Store the details of cab/delivery in cabs/deliveries->public->uid
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            DatabaseReference cabNumberReference = PRIVATE_CABS_REFERENCE.child(FIREBASE_CHILD_ALL);
+            cabNumberReference.child(cabDeliveryReference).setValue(digitalGateUID);
+            DatabaseReference cabDetailsReference = PUBLIC_CABS_REFERENCE.child(digitalGateUID);
+            cabDetailsReference.setValue(nammaApartmentArrival);
+        } else {
+            DatabaseReference deliveryReference = PRIVATE_DELIVERY_REFERENCE.child(FIREBASE_CHILD_ALL);
+            deliveryReference.child(nammaApartmentUser.getPersonalDetails().getPhoneNumber()).setValue(digitalGateUID);
+            DatabaseReference deliveryDetailsReference = PUBLIC_DELIVERIES_REFERENCE.child(digitalGateUID);
+            deliveryDetailsReference.setValue(nammaApartmentArrival);
+        }
+    }
+
+
     private int getCarOrPackageArrivalTitle() {
         if (arrivalType == R.string.expecting_cab_arrival) {
             return R.string.cab_number;
@@ -218,6 +275,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
+                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);

@@ -12,9 +12,12 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
+        android:name=".NammaApartmentsGlobal"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -25,10 +28,6 @@
 
         <!-- Ignore these activities for now -->
         <activity android:name=".MainActivity" />
-        <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
-        <activity
-            android:name=".onboarding.login.SignUp"
-            android:windowSoftInputMode="adjustResize" />
 
         <!-- Notification Services -->
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
@@ -62,6 +61,12 @@
             android:name=".onboarding.login.OTP"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- SignUp and MyFlatDetails Screens -->
+        <activity
+            android:name=".onboarding.login.SignUp"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".onboarding.flatdetails.MyFlatDetails" />
+
         <!-- Namma Apartments NammaApartmentsHome Screen -->
         <activity android:name=".nammaapartmentshome.NammaApartmentsHome" />
 
@@ -77,10 +82,21 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThings" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome" />
-        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyServiceAndFamilyMembers" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.AddDailyService" />
+        <activity android:name=".nammaapartmentsservices.digitalgate.mysweethome.AddFamilyMember" />
         <activity android:name=".nammaapartmentsservices.digitalgate.emergency.RaiseAlarm" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome" />
         <activity android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,24 +12,29 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHomeAdapter;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHomeAdapter;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsListAdapter;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
@@ -37,6 +43,7 @@ import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -53,13 +60,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-    private View cancelDialog;
-    private AlertDialog dialog;
+
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
-
-    private int screenTitle;
+    private AVLoadingIndicatorView progressIndicator;
+    public static String imageFilePath = "";
+    private ProgressDialog progressDialog;
 
     /* ------------------------------------------------------------- *
      * Abstract Methods
@@ -79,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         activityTitle.setText(resourceId);
     }
 
-    private void setBackButtonListener() {
+    protected void setBackButtonListener() {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
     }
@@ -91,6 +98,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void showBackButton() {
         backButton.setVisibility(View.VISIBLE);
     }
+
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+
 
     /* ------------------------------------------------------------- *
      * Overriding AppCompatActivity Methods
@@ -152,12 +168,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         infoButton.setVisibility(View.VISIBLE);
     }
 
+
+    protected void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     /**
      * We check if permissions are granted to Read Contacts if granted then we directly start Read Contacts Activity with Result
      * else we show Request permission dialog to allow users to give access.
      */
     protected void showUserContacts() {
-        readContactsIntent = new Intent(Intent.ACTION_PICK);
+        readContactsIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         readContactsIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_REQUEST_CODE);
@@ -172,6 +196,16 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void launchCamera() {
         cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile;
+        try {
+            photoFile = createImageFile();
+            imageFilePath = photoFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         else {
@@ -194,21 +228,110 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /* ------------------------------------------------------------- *
-     * Public Methods
-     * ------------------------------------------------------------- */
-
     /**
      * Displays Feature Unavailable layout along with a message passed by the activity
      *
      * @param text feature unavailable message
      */
-    public void showFeatureUnavailableLayout(int text) {
+    protected void showFeatureUnavailableLayout(int text) {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
         featureUnavailableLayout.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.textFeatureUnavailable);
+        textView.setTypeface(setLatoItalicFont(this));
         textView.setText(text);
     }
+
+    /**
+     * This method checks if all the editTexts are filled or not.
+     *
+     * @param fields consists of array of EditTexts.
+     * @return consists of boolean variable based on the context.
+     */
+    protected boolean isAllFieldsFilled(EditText[] fields) {
+        for (EditText currentField : fields) {
+            if (TextUtils.isEmpty(currentField.getText().toString())) {
+                currentField.requestFocus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This method checks if user is entering proper phone number or not.
+     *
+     * @param phone consists of string value of mobile number of that particular activity.
+     * @return returns a boolean variable based on the context.
+     */
+    protected boolean isValidPhone(String phone) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
+        return check;
+    }
+
+    /**
+     * This method gets invoked when user is trying to enter improper format of entering name.
+     *
+     * @param name contains that particular editText of name
+     * @throws NumberFormatException because if user tries to enter number in place of name.
+     */
+    protected boolean isValidPersonName(String name) throws NumberFormatException {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z ]+", name);
+        return check;
+    }
+
+    /**
+     * This method gets invoked when user is trying to enter improper format of entering email.
+     *
+     * @param email consists of string value of email of that particular activity.
+     * @return returns a boolean  variable based on that context.
+     */
+    protected boolean isValidEmail(String email) {
+        boolean check;
+        check = !Pattern.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", email);
+        return check;
+    }
+    /**
+     * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
+     */
+    public void showSuccessDialog(String title, String message, Intent intent) {
+        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setTitle(title);
+        alertNotifyGateDialog.setMessage(message);
+        if (intent == null) {
+            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
+        } else {
+            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> startActivity(intent));
+        }
+
+        new Dialog(this);
+        alertNotifyGateDialog.show();
+    }
+
+    protected void showProgressIndicator() {
+        progressIndicator = findViewById(R.id.animationWaitingForCustomers);
+        progressIndicator.smoothToShow();
+    }
+
+    protected void hideProgressIndicator() {
+        progressIndicator.smoothToHide();
+    }
+
+    protected void showProgressDialog(Context context, String title, String message) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    protected void hideProgressDialog() {
+        progressDialog.dismiss();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Public Methods
+     * ------------------------------------------------------------- */
 
     /**
      * We check if permissions are granted to place calls if granted then we directly start Dialer Activity
@@ -270,119 +393,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         int mMinute = calendarTime.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, onTimeSetListener, mHour, mMinute, true);
         timePickerDialog.show();
-    }
-
-    /**
-     * This method is invoked when user clicks on cancel or remove icon.
-     */
-    public void openCancelDialog(int screenTitle) {
-        this.screenTitle = screenTitle;
-        cancelDialog = View.inflate(this, R.layout.layout_dialog_cancel, null);
-
-        /*Getting Id's for all the views*/
-        TextView textCancelDescription = cancelDialog.findViewById(R.id.textCancelDescription);
-
-        /*Setting Fonts for all the views*/
-        textCancelDescription.setTypeface(Constants.setLatoRegularFont(this));
-
-        /*This method is used to create cancel dialog */
-        createCancelDialog();
-    }
-
-    /**
-     * This method checks if all the editTexts are filled or not.
-     *
-     * @param fields consists of array of EditTexts.
-     * @return consists of boolean variable based on the context.
-     */
-    public boolean isAllFieldsFilled(EditText[] fields) {
-        for (EditText currentField : fields) {
-            if (TextUtils.isEmpty(currentField.getText().toString())) {
-                currentField.requestFocus();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * This method checks if user is entering proper phone number or not.
-     *
-     * @param phone consists of string value of mobile number of that particular activity.
-     * @return returns a boolean variable based on the context.
-     */
-    public boolean isValidPhone(String phone) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
-        return check;
-    }
-
-    /**
-     * This method gets invoked when user is trying to enter improper format of entering name.
-     *
-     * @param name contains that particular editText of name
-     * @throws NumberFormatException because if user tries to enter number in place of name.
-     */
-    public boolean isValidPersonName(String name) throws NumberFormatException {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z ]+", name);
-        return check;
-    }
-
-    /**
-     * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
-     */
-    public void createNotifyGateDialog() {
-        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
-        alertNotifyGateDialog.setMessage(R.string.notification_message);
-        alertNotifyGateDialog.setTitle("Notification Message");
-        alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
-
-        new Dialog(this);
-        alertNotifyGateDialog.show();
-    }
-
-    /**
-     * This method is invoked to create a cancel dialog.
-     */
-    private void createCancelDialog() {
-        AlertDialog.Builder alertCancelDialog = new AlertDialog.Builder(this);
-        alertCancelDialog.setTitle("Delete");
-        alertCancelDialog.setPositiveButton("Yes", (dialog, which) -> deleteListData());
-        alertCancelDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        alertCancelDialog.setView(cancelDialog);
-        dialog = alertCancelDialog.create();
-
-        new Dialog(this);
-        dialog.show();
-    }
-
-    /**
-     * This method is invoked to delete visitor or daily services or family member data.
-     */
-    private void deleteListData() {
-        /*Decrementing the count variable on deletion of one visitor or daily service or family member data.*/
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        switch (screenTitle) {
-            case R.string.my_visitors_list:
-                VisitorsListAdapter adapterVisitorsList = new VisitorsListAdapter(this);
-                recyclerView.setAdapter(adapterVisitorsList);
-                --VisitorsListAdapter.count;
-                adapterVisitorsList.notifyDataSetChanged();
-                break;
-            case R.string.my_daily_services:
-                DailyServicesHomeAdapter adapterDailyServices = new DailyServicesHomeAdapter(this);
-                recyclerView.setAdapter(adapterDailyServices);
-                --DailyServicesHomeAdapter.count;
-                adapterDailyServices.notifyDataSetChanged();
-                break;
-            case R.string.my_sweet_home:
-                MySweetHomeAdapter adapterMySweetHome = new MySweetHomeAdapter(this);
-                recyclerView.setAdapter(adapterMySweetHome);
-                --MySweetHomeAdapter.count;
-                adapterMySweetHome.notifyDataSetChanged();
-                break;
-        }
-        dialog.cancel();
     }
 }

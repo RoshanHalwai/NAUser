@@ -31,15 +31,23 @@
                     android:layout_weight="1"
                     android:gravity="center">
 
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/animationWaitingForCustomers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        app:indicatorColor="@color/nmBlack"
+                        app:indicatorName="BallSpinFadeLoaderIndicator" />
+
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/dailyServiceOrFamilyMemberProfilePic"
+                        android:id="@+id/visitorOrDailyServiceProfilePic"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
-                        android:src="@drawable/namma_apartments"
                         app:civ_border_color="@android:color/white"
                         app:civ_border_width="1dp" />
 
@@ -50,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.15"
                     android:orientation="vertical">
 
                     <TextView
@@ -105,23 +113,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.85"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textVisitorOrServiceNameValue"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:padding="2dp"
-                        android:text="Roshan Halwai"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textVisitorOrServiceTypeValue"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="Guest"
@@ -130,30 +137,25 @@
 
                     <TextView
                         android:id="@+id/textInvitationDateOrServiceRatingValue"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="31st Jan 2017"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textInvitationTimeValue"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="14:30"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textInvitedByOrNumberOfFlatsValue"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
                         android:padding="2dp"
-                        android:text="Rohit Mishra"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
@@ -183,7 +185,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/call_visitors_list"
+                    android:drawableTop="@drawable/call_new"
                     android:gravity="center"
                     android:text="@string/call"
                     android:textColor="@color/nmBlack" />
@@ -193,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/message_visitors_list"
+                    android:drawableTop="@drawable/message_new"
                     android:gravity="center"
                     android:text="@string/message"
                     android:textColor="@color/nmBlack" />
@@ -203,7 +205,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/calender_visitors_list"
+                    android:drawableTop="@drawable/reschedule_new"
                     android:gravity="center"
                     android:text="@string/reschedule"
                     android:textColor="@color/nmBlack" />
@@ -213,11 +215,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/cancel_visitors_list"
+                    android:drawableTop="@drawable/remove_new"
                     android:gravity="center"
                     android:text="@string/cancel"
-                    android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:textColor="@color/nmBlack" />
 
             </LinearLayout>
 

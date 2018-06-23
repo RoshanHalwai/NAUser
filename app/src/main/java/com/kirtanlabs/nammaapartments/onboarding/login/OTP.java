@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,14 +19,11 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -56,6 +54,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Members for Phone Authentication
      * ------------------------------------------------------------- */
+
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
     private String phoneVerificationId;
@@ -129,6 +128,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(this);
         textResendOTPOrVerificationMessage.setOnClickListener(v -> resendOTP());
+        //TODO: Change SignIn.class since this screen can be used by multiple activities
         textChangeNumberOrTimer.setOnClickListener(v -> startActivity(new Intent(this, SignIn.class)));
 
         /* Since multiple activities make use of this class we get previous
@@ -153,30 +153,11 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                     editSixthOTPDigit
             });
             if (allFieldsFilled) {
-                switch (previousScreenTitle) {
-                    case R.string.login:
-                        String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
-                                editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
-                                editSixthOTPDigit.getText().toString();
-                        signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
-                        break;
-
-                    case R.string.add_my_service:
-                        Intent intentDailyServiceHome = new Intent(OTP.this, DailyServicesHome.class);
-                        intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intentDailyServiceHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentDailyServiceHome);
-                        finish();
-                        break;
-
-                    case R.string.add_family_members_details_screen:
-                        Intent intentMySweetHome = new Intent(OTP.this, MySweetHome.class);
-                        intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intentMySweetHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentMySweetHome);
-                        finish();
-                        break;
-                }
+                hideKeyboard();
+                String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
+                        editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
+                        editSixthOTPDigit.getText().toString();
+                signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
             }
         }
     }
@@ -188,7 +169,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private void sendOTP() {
         setUpVerificationCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.COUNTRY_CODE_IN + userMobileNumber,
                 Constants.OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
@@ -199,6 +180,8 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                //Hiding the Keyboard in case the Auto-Verification is completed
+                hideKeyboard();
                 textResendOTPOrVerificationMessage.setText(R.string.auto_verification_completed);
                 textResendOTPOrVerificationMessage.setEnabled(false);
                 textChangeNumberOrTimer.setVisibility(View.INVISIBLE);
@@ -224,6 +207,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                 phoneVerificationId = s;
                 resendToken = forceResendingToken;
             }
+
         };
     }
 
@@ -234,33 +218,33 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         fbAuth.signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(this, (task) -> {
                     if (task.isSuccessful()) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        userPrivateInfo = database.getReference(Constants.FIREBASE_CHILD_USERS).child(Constants.FIREBASE_CHILD_ALL).child(userMobileNumber);
-                        userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                /* Check if User mobile number is found in database */
-                                if (dataSnapshot.exists()) {
-                                    startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                        if (previousScreenTitle == R.string.login) {
+                            userPrivateInfo = Constants.ALL_USERS_REFERENCE.child(userMobileNumber);
+                            userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    /* Check if User mobile number is found in database */
+                                    if (dataSnapshot.exists()) {
+                                        startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                                    }
+                                    /* User record was not found in firebase hence we navigate them to Sign Up page*/
+                                    else {
+                                        Intent intent = new Intent(OTP.this, SignUp.class);
+                                        intent.putExtra(Constants.MOBILE_NUMBER, userMobileNumber);
+                                        startActivity(intent);
+                                    }
+                                    finish();
                                 }
-                                /* User record was not found in firebase hence we navigate them to Sign Up page*/
-                                else {
-                                    //TODO: We should store the user record only after the user is done with the sign up process
-                                    //TODO: Remove this and place it in FlatDetails.class
-                                    database.getReference(Constants.FIREBASE_CHILD_USERS)
-                                            .child(Constants.FIREBASE_CHILD_ALL)
-                                            .child(userMobileNumber)
-                                            .setValue(fbAuth.getCurrentUser().getUid());
-                                    startActivity(new Intent(OTP.this, SignUp.class));
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
                                 }
-                                finish();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                            });
+                        } else {
+                            setResult(Activity.RESULT_OK, new Intent());
+                            finish();
+                        }
                     } else {
                         textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
                     }
@@ -272,7 +256,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
      */
     private void resendOTP() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE + userMobileNumber,
+                Constants.COUNTRY_CODE_IN + userMobileNumber,
                 Constants.OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
@@ -438,7 +422,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
             case R.string.login:
                 textPhoneVerification.setText(R.string.enter_verification_code);
                 break;
-            case R.string.add_my_service:
+            case R.string.add_my_daily_service:
                 String service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
                 String description = getResources().getString(R.string.enter_verification_code);
                 description = description.replace("account", service_type + " account");

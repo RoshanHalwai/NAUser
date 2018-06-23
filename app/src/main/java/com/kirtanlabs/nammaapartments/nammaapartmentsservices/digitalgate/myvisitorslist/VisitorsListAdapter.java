@@ -8,23 +8,39 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -36,15 +52,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
      * Private Members
      * ------------------------------------------------------------- */
 
-    /* ------------------------------------------------------------- *
-     * Public Members
-     * ------------------------------------------------------------- */
-    public static int count = 5;
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private View rescheduleDialog;
     private AlertDialog dialog;
-
+    private final List<NammaApartmentVisitor> nammaApartmentVisitorList;
     private EditText editPickDate;
     private EditText editPickTime;
 
@@ -52,9 +64,10 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
      * Constructor
      * ------------------------------------------------------------- */
 
-    public VisitorsListAdapter(Context mCtx) {
+    VisitorsListAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
+        this.nammaApartmentVisitorList = nammaApartmentVisitorList;
     }
 
     /* ------------------------------------------------------------- *
@@ -72,38 +85,35 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
-        holder.textVisitorName.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textVisitorType.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitationTime.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
+        //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
+        NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
 
-        holder.textVisitorNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textVisitorTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitationTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-        holder.textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+        //Since we need inviters name we get the details by inviter UID
+        DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
+        userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+                String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+                holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
+                holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
+                holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+                holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
+                        .into(holder.visitorOrDailyServiceProfilePic);
+            }
 
-        holder.textCall.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textMessage.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
-        holder.textCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        holder.textCall.setOnClickListener(this);
-        holder.textMessage.setOnClickListener(this);
-        holder.textReschedule.setOnClickListener(this);
-        holder.textCancel.setOnClickListener(v -> {
-            Animation animation = AnimationUtils.loadAnimation(mCtx, android.R.anim.slide_out_right);
-            holder.itemList.startAnimation(animation);
-            --count;
-            notifyItemRemoved(0);
+            }
         });
     }
 
     @Override
     public int getItemCount() {
-        //TODO: To change the get item count here
-        return count;
+        return nammaApartmentVisitorList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -112,29 +122,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.textCall:
-                //TODO: Change Mobile Number here
-                baseActivity.makePhoneCall("9885665744");
-                break;
-            case R.id.textMessage:
-                //TODO: Change Mobile Number here
-                baseActivity.sendTextMessage("9885665744");
-                break;
-            case R.id.textRescheduleOrEdit:
-                openRescheduleDialog();
-                break;
-            case R.id.textCancel:
-                //baseActivity.openCancelDialog(R.string.my_visitors_list);
-                break;
             case R.id.editPickDate:
                 baseActivity.pickDate(mCtx, this);
                 break;
             case R.id.editPickTime:
                 baseActivity.pickTime(mCtx, this);
-                break;
-            case R.id.buttonReschedule:
-                //TODO: On click of Reschedule button the rescheduled date and time should go to firebase.
-                dialog.cancel();
                 break;
             case R.id.buttonCancel:
                 dialog.cancel();
@@ -169,7 +161,7 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
     /**
      * This method is invoked when user clicks on reschedule icon.
      */
-    private void openRescheduleDialog() {
+    private void openRescheduleDialog(String existingDate, String existingTime, int position) {
         rescheduleDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
 
         /*Getting Id's for all the views*/
@@ -181,10 +173,14 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         TextView buttonCancel = rescheduleDialog.findViewById(R.id.buttonCancel);
 
         /*Setting Fonts for all the views*/
-        textPickDate.setTypeface(Constants.setLatoRegularFont(mCtx));
-        textPickTime.setTypeface(Constants.setLatoRegularFont(mCtx));
-        buttonReschedule.setTypeface(Constants.setLatoRegularFont(mCtx));
-        buttonCancel.setTypeface(Constants.setLatoRegularFont(mCtx));
+        textPickDate.setTypeface(setLatoRegularFont(mCtx));
+        textPickTime.setTypeface(setLatoRegularFont(mCtx));
+        buttonReschedule.setTypeface(setLatoRegularFont(mCtx));
+        buttonCancel.setTypeface(setLatoRegularFont(mCtx));
+
+        /*Setting existing values*/
+        editPickDate.setText(existingDate);
+        editPickTime.setText(existingTime);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit fields*/
         editPickDate.setInputType(InputType.TYPE_NULL);
@@ -197,7 +193,10 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         editPickDate.setOnClickListener(this);
         editPickTime.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
-        buttonReschedule.setOnClickListener(this);
+        buttonReschedule.setOnClickListener(v -> {
+            updateVisitorDataInFirebase(position);
+            dialog.cancel();
+        });
     }
 
     /**
@@ -212,10 +211,25 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         dialog.show();
     }
 
+    /**
+     * Based on the position the date and time is updated in both UI and Firebase
+     *
+     * @param position of card view for which date and time has been manipulated
+     */
+    private void updateVisitorDataInFirebase(int position) {
+        NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+        String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
+        nammaApartmentVisitor.setDateAndTimeOfVisit(updatedDateAndTime);
+        notifyItemChanged(position);
+        PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid())
+                .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
+    }
+
     /* ------------------------------------------------------------- *
      * Visitor View Holder class
      * ------------------------------------------------------------- */
-    class VisitorViewHolder extends RecyclerView.ViewHolder {
+
+    class VisitorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
          * Private Members
@@ -231,13 +245,11 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
         private final TextView textInvitationTimeValue;
         private final TextView textInvitedByOrNumberOfFlats;
         private final TextView textInvitedByOrNumberOfFlatsValue;
-
         private final TextView textCall;
         private final TextView textMessage;
         private final TextView textReschedule;
         private final TextView textCancel;
-
-        public final LinearLayout itemList;
+        private final de.hdodenhof.circleimageview.CircleImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -250,19 +262,70 @@ public class VisitorsListAdapter extends RecyclerView.Adapter<VisitorsListAdapte
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
             textInvitedByOrNumberOfFlats = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
-
             textVisitorNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
             textVisitorTypeValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
             textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
             textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
-
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
             textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
-            itemList = itemView.findViewById(R.id.itemList);
+            //Setting Fonts for all the views on cardview
+            textVisitorName.setTypeface(setLatoRegularFont(mCtx));
+            textVisitorType.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationDateOrServiceRating.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
+            textInvitedByOrNumberOfFlats.setTypeface(setLatoRegularFont(mCtx));
+            textVisitorNameValue.setTypeface(setLatoBoldFont(mCtx));
+            textVisitorTypeValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationDateOrServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitedByOrNumberOfFlatsValue.setTypeface(setLatoBoldFont(mCtx));
+
+            textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textReschedule.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+            textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+
+            //Setting events for items in card view
+            textCall.setOnClickListener(this);
+            textMessage.setOnClickListener(this);
+            textReschedule.setOnClickListener(this);
+            textCancel.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getLayoutPosition();
+            NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+            switch (v.getId()) {
+                case R.id.textCall:
+                    baseActivity.makePhoneCall(nammaApartmentVisitor.getMobileNumber());
+                    break;
+                case R.id.textMessage:
+                    baseActivity.sendTextMessage(nammaApartmentVisitor.getMobileNumber());
+                    break;
+                case R.id.textRescheduleOrEdit:
+                    openRescheduleDialog(textInvitationDateOrServiceRatingValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
+                    break;
+                case R.id.textCancel:
+                    String inviterUID = nammaApartmentVisitor.getInviterUID();
+                    String visitorUID = nammaApartmentVisitor.getUid();
+                    if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+                        nammaApartmentVisitorList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
+                        ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
+                                .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
+                    } else {
+                        //TODO: Show Dialog box indicating that they cannot delete this visitor since they haven't invited them
+                        Log.d("NammaApartment TAG", "User cannot delete this record since they haven't invited them");
+                    }
+                    break;
+            }
         }
     }
 

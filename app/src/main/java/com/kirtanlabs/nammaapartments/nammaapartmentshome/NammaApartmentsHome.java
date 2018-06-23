@@ -7,8 +7,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
+
+import java.util.Objects;
 
 public class NammaApartmentsHome extends BaseActivity {
 
@@ -33,6 +43,24 @@ public class NammaApartmentsHome extends BaseActivity {
         /*Since this is Namma Apartments Home Screen we wouldn't want the users to go back to OTP screen,
           hence hiding the back button from the Title Bar*/
         hideBackButton();
+
+        /*At this point new user and existing user would have their records in firebase and hence we store
+         * the values to NammaApartmentsGlobal*/
+        DatabaseReference userReference = Constants.PRIVATE_USERS_REFERENCE
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(nammaApartmentUser);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         ViewPager mViewPager = findViewById(R.id.container);
