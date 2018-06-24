@@ -77,6 +77,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
+    public static final String FIREBASE_CHILD_FULLNAME = "fullName";
+    public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
     public static final String FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION = "handedThingsDescription";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
@@ -98,7 +100,11 @@ public class Constants {
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
+    public static final String FIREBASE_CHILD_PHONENUMBER = "phoneNumber";
+    public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
+    public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
     public static final String FIREBASE_CHILD_SOCIETIES = "societies";
+    public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_USER_DATA = "userData";
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
