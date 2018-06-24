@@ -21,7 +21,9 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
 
+import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
+import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
@@ -61,6 +63,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     public void onBindViewHolder(@NonNull MySweetHomeHolder holder, int position) {
         String stringMemberName = mCtx.getResources().getString(R.string.name) + ":";
         String stringMemberRelation = mCtx.getResources().getString(R.string.relation) + ":";
+        String stringMemberRelationValue = FAMILY_MEMBER;
 
         holder.textMemberName.setText(stringMemberName);
         holder.textMemberRelation.setText(stringMemberRelation);
@@ -69,8 +72,16 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         //Creating an instance of NammaApartmentFamilyMembers class and retrieving the values from Firebase.
         NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
         holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getPersonalDetails().getFullName());
-        //TODO: Change text here
-        holder.textMemberRelationValue.setText("Family Member");
+
+        //Checking how two UIDs/people are related with each other (Family Member/Friend)
+        if (nammaApartmentFamilyMembers.getFriends() != null) {
+            if (nammaApartmentFamilyMembers.getFriends().containsKey(NammaApartmentsGlobal.userUID)) {
+                stringMemberRelationValue = FRIEND;
+            }
+        }
+
+        //Setting the value of Relation to display in the My Sweet Home screen
+        holder.textMemberRelationValue.setText(stringMemberRelationValue);
         boolean grantedAccess = nammaApartmentFamilyMembers.getPrivileges().isGrantedAccess();
         String grantedAccessValue = String.valueOf(grantedAccess);
         String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);

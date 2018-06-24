@@ -140,6 +140,13 @@ public class Constants {
     public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
     public static final DatabaseReference PREAPPROVED_VISITORS_MOBILE_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
 
+
+    /* ------------------------------------------------------------- *
+     * Family member/Friend Relation retrieval
+     * ------------------------------------------------------------- */
+    public static final String FAMILY_MEMBER =  "Family Member";
+    public static final String FRIEND = "Friend";
+
     /* ------------------------------------------------------------- *
      * Mapping Daily Services
      * ------------------------------------------------------------- */
