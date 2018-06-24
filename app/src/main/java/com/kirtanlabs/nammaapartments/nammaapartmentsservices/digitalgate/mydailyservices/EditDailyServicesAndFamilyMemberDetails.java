@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
@@ -30,8 +31,17 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GRANTEDACCESS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PHONENUMBER;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVILEGES;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMEOFVISIT;
 import static com.kirtanlabs.nammaapartments.Constants.GRANTED_ACCESS_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -57,6 +67,8 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private String inTime;
     private String service_type;
     private String granted_access_type;
+    private String updatedDailyServiceMobileNumber;
+    private String updatedFamilyMemberMobileNumber;
     private boolean nameTextChanged = false;
     private boolean mobileTextChanged = false;
     private boolean timeTextChanged = false;
@@ -186,6 +198,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             case R.id.buttonUpdate:
                 if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     if (screenTitle == R.string.edit_my_daily_service_details) {
+                        updateDailyServiceDetails();
                         if (mobileTextChanged) {
                             navigatingToOTPScreen();
                         } else {
@@ -195,6 +208,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                             startActivity(myDailyServiceIntent);
                         }
                     } else {
+                        updateFamilyMemberDetails();
                         if (grantedAccess) {
                             openNotificationDialog();
                         } else if (mobileTextChanged) {
@@ -254,6 +268,20 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             NammaApartmentUser nammaApartmentFamilyMembers = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
             name = nammaApartmentFamilyMembers.getPersonalDetails().getFullName();
             mobile = nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber();
+            grantedAccess = nammaApartmentFamilyMembers.getPrivileges().isGrantedAccess();
+            //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
+            if (grantedAccess) {
+                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonYes.setTextColor(Color.WHITE);
+                buttonNo.setTextColor(Color.BLACK);
+            } else {
+                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonYes.setTextColor(Color.BLACK);
+                buttonNo.setTextColor(Color.WHITE);
+                grantedAccess = false;
+            }
             editMemberAndServiceName.setText(name);
             editMemberAndServiceName.setSelection(name.length());
             editMobileNumber.setText(mobile);
@@ -392,9 +420,12 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         if (screenTitle == R.string.edit_my_daily_service_details) {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
             intentNotification.putExtra(SERVICE_TYPE, service_type);
+            intentNotification.putExtra(MOBILE_NUMBER, updatedDailyServiceMobileNumber);
         } else {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+            //TODO: Change the Service Type here
             intentNotification.putExtra(SERVICE_TYPE, "Family Member");
+            intentNotification.putExtra(MOBILE_NUMBER, updatedFamilyMemberMobileNumber);
         }
         startActivity(intentNotification);
     }
@@ -408,4 +439,71 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         mySweetHomeIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mySweetHomeIntent);
     }
+
+    /**
+     * This method gets invoked when user tries to edit their Daily Service name,mobile number and
+     * date and time.
+     */
+    private void updateDailyServiceDetails() {
+        NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
+        String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+        String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
+        //On Updation of DailyService Details we have to check for these 3 cases.
+        if (nameTextChanged) {
+            String updatedDailyServiceName = editMemberAndServiceName.getText().toString();
+            nammaApartmentDailyService.setFullName(updatedDailyServiceName);
+            DatabaseReference updatedDailyServiceNameReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+                    .child(nammaApartmentDailyService.getUID())
+                    .child(FIREBASE_CHILD_FULLNAME);
+            updatedDailyServiceNameReference.setValue(updatedDailyServiceName);
+        }
+        if (mobileTextChanged) {
+            updatedDailyServiceMobileNumber = editMobileNumber.getText().toString();
+            nammaApartmentDailyService.setPhoneNumber(updatedDailyServiceMobileNumber);
+            DatabaseReference updatedDailyServiceMobileNumberReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+                    .child(nammaApartmentDailyService.getUID())
+                    .child(FIREBASE_CHILD_PHONENUMBER);
+            updatedDailyServiceMobileNumberReference.setValue(updatedDailyServiceMobileNumber);
+        }
+        if (timeTextChanged) {
+            String updatedDailyServiceTime = editPickInTime.getText().toString();
+            nammaApartmentDailyService.setTimeOfVisit(updatedDailyServiceTime);
+            DatabaseReference updatedDailyServiceTimeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+                    .child(nammaApartmentDailyService.getUID())
+                    .child(FIREBASE_CHILD_TIMEOFVISIT);
+            updatedDailyServiceTimeReference.setValue(updatedDailyServiceTime);
+        }
+    }
+
+    /**
+     * This method gets invoked when user tries to edit their Family Member name,mobile number and
+     * grant access value.
+     */
+    private void updateFamilyMemberDetails() {
+        NammaApartmentUser nammaApartmentUser = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+        //On Updation Family Member Details we have to check for these 3 cases.
+        if (nameTextChanged) {
+            String updatedFamilyMemberName = editMemberAndServiceName.getText().toString();
+            nammaApartmentUser.getPersonalDetails().setFullName(updatedFamilyMemberName);
+            DatabaseReference updatedFamilyMemberNameReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    .child(FIREBASE_CHILD_PERSONALDETAILS)
+                    .child(FIREBASE_CHILD_FULLNAME);
+            updatedFamilyMemberNameReference.setValue(updatedFamilyMemberName);
+        }
+        if (mobileTextChanged) {
+            updatedFamilyMemberMobileNumber = editMobileNumber.getText().toString();
+            nammaApartmentUser.getPersonalDetails().setPhoneNumber(updatedFamilyMemberMobileNumber);
+            DatabaseReference updatedFamilyMemberMobileReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    .child(FIREBASE_CHILD_PERSONALDETAILS)
+                    .child(FIREBASE_CHILD_PHONENUMBER);
+            updatedFamilyMemberMobileReference.setValue(updatedFamilyMemberMobileNumber);
+        }
+        if (grantedAccess) {
+            DatabaseReference updatedGrantedAccessReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    .child(FIREBASE_CHILD_PRIVILEGES)
+                    .child(FIREBASE_CHILD_GRANTEDACCESS);
+            updatedGrantedAccessReference.setValue(grantedAccess);
+        }
+    }
+
 }
