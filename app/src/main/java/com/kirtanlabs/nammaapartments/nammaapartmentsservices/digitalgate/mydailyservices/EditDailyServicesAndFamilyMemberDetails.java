@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
@@ -197,25 +198,22 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             case R.id.buttonUpdate:
                 if (isAllFieldsFilled(new EditText[]{editMemberAndServiceName, editMobileNumber}) && editMobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     if (screenTitle == R.string.edit_my_daily_service_details) {
+                        updateDailyServiceDetails();
                         if (mobileTextChanged) {
-                            updateDailyServiceDetails();
                             navigatingToOTPScreen();
                         } else {
-                            updateDailyServiceDetails();
                             Intent myDailyServiceIntent = new Intent(EditDailyServicesAndFamilyMemberDetails.this, DailyServicesHome.class);
                             myDailyServiceIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                             myDailyServiceIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(myDailyServiceIntent);
                         }
                     } else {
+                        updateFamilyMemberDetails();
                         if (grantedAccess) {
-                            updateFamilyMemberDetails();
                             openNotificationDialog();
                         } else if (mobileTextChanged) {
-                            updateFamilyMemberDetails();
                             navigatingToOTPScreen();
                         } else {
-                            updateFamilyMemberDetails();
                             navigatingToMySweetHomeScreen();
                         }
                     }
@@ -270,6 +268,20 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             NammaApartmentUser nammaApartmentFamilyMembers = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
             name = nammaApartmentFamilyMembers.getPersonalDetails().getFullName();
             mobile = nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber();
+            grantedAccess = nammaApartmentFamilyMembers.getPrivileges().isGrantedAccess();
+            //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
+            if (grantedAccess) {
+                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonYes.setTextColor(Color.WHITE);
+                buttonNo.setTextColor(Color.BLACK);
+            } else {
+                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonYes.setTextColor(Color.BLACK);
+                buttonNo.setTextColor(Color.WHITE);
+                grantedAccess = false;
+            }
             editMemberAndServiceName.setText(name);
             editMemberAndServiceName.setSelection(name.length());
             editMobileNumber.setText(mobile);
@@ -411,6 +423,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             intentNotification.putExtra(MOBILE_NUMBER, updatedDailyServiceMobileNumber);
         } else {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
+            //TODO: Change the Service Type here
             intentNotification.putExtra(SERVICE_TYPE, "Family Member");
             intentNotification.putExtra(MOBILE_NUMBER, updatedFamilyMemberMobileNumber);
         }
@@ -435,29 +448,30 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
         String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
         String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
+        //On Updation of DailyService Details we have to check for these 3 cases.
         if (nameTextChanged) {
             String updatedDailyServiceName = editMemberAndServiceName.getText().toString();
             nammaApartmentDailyService.setFullName(updatedDailyServiceName);
-            PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+            DatabaseReference updatedDailyServiceNameReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
                     .child(nammaApartmentDailyService.getUID())
-                    .child(FIREBASE_CHILD_FULLNAME)
-                    .setValue(updatedDailyServiceName);
+                    .child(FIREBASE_CHILD_FULLNAME);
+            updatedDailyServiceNameReference.setValue(updatedDailyServiceName);
         }
         if (mobileTextChanged) {
             updatedDailyServiceMobileNumber = editMobileNumber.getText().toString();
             nammaApartmentDailyService.setPhoneNumber(updatedDailyServiceMobileNumber);
-            PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+            DatabaseReference updatedDailyServiceMobileNumberReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
                     .child(nammaApartmentDailyService.getUID())
-                    .child(FIREBASE_CHILD_PHONENUMBER)
-                    .setValue(updatedDailyServiceMobileNumber);
+                    .child(FIREBASE_CHILD_PHONENUMBER);
+            updatedDailyServiceMobileNumberReference.setValue(updatedDailyServiceMobileNumber);
         }
         if (timeTextChanged) {
             String updatedDailyServiceTime = editPickInTime.getText().toString();
             nammaApartmentDailyService.setTimeOfVisit(updatedDailyServiceTime);
-            PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
+            DatabaseReference updatedDailyServiceTimeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
                     .child(nammaApartmentDailyService.getUID())
-                    .child(FIREBASE_CHILD_TIMEOFVISIT)
-                    .setValue(updatedDailyServiceTime);
+                    .child(FIREBASE_CHILD_TIMEOFVISIT);
+            updatedDailyServiceTimeReference.setValue(updatedDailyServiceTime);
         }
     }
 
@@ -467,27 +481,28 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
      */
     private void updateFamilyMemberDetails() {
         NammaApartmentUser nammaApartmentUser = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+        //On Updation Family Member Details we have to check for these 3 cases.
         if (nameTextChanged) {
             String updatedFamilyMemberName = editMemberAndServiceName.getText().toString();
             nammaApartmentUser.getPersonalDetails().setFullName(updatedFamilyMemberName);
-            PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+            DatabaseReference updatedFamilyMemberNameReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
                     .child(FIREBASE_CHILD_PERSONALDETAILS)
-                    .child(FIREBASE_CHILD_FULLNAME)
-                    .setValue(updatedFamilyMemberName);
+                    .child(FIREBASE_CHILD_FULLNAME);
+            updatedFamilyMemberNameReference.setValue(updatedFamilyMemberName);
         }
         if (mobileTextChanged) {
             updatedFamilyMemberMobileNumber = editMobileNumber.getText().toString();
             nammaApartmentUser.getPersonalDetails().setPhoneNumber(updatedFamilyMemberMobileNumber);
-            PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+            DatabaseReference updatedFamilyMemberMobileReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
                     .child(FIREBASE_CHILD_PERSONALDETAILS)
-                    .child(FIREBASE_CHILD_PHONENUMBER)
-                    .setValue(updatedFamilyMemberMobileNumber);
+                    .child(FIREBASE_CHILD_PHONENUMBER);
+            updatedFamilyMemberMobileReference.setValue(updatedFamilyMemberMobileNumber);
         }
         if (grantedAccess) {
-            PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+            DatabaseReference updatedGrantedAccessReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
                     .child(FIREBASE_CHILD_PRIVILEGES)
-                    .child(FIREBASE_CHILD_GRANTEDACCESS)
-                    .setValue(grantedAccess);
+                    .child(FIREBASE_CHILD_GRANTEDACCESS);
+            updatedGrantedAccessReference.setValue(grantedAccess);
         }
     }
 
