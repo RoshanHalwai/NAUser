@@ -20,7 +20,6 @@ public class NammaApartmentDailyService implements Serializable {
     private String phoneNumber;
     private String profilePhoto;
     private String timeOfVisit;
-    private Boolean providedThings;
     private int rating;
     private String uid;
     private String dailyServiceHandedThingsDescription;
@@ -34,13 +33,12 @@ public class NammaApartmentDailyService implements Serializable {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(Map<String, Boolean> ownersUID, String status, String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, boolean providedThings, int rating) {
+    NammaApartmentDailyService(Map<String, Boolean> ownersUID, String status, String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, int rating) {
         this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
         this.timeOfVisit = timeOfVisit;
-        this.providedThings = providedThings;
         this.rating = rating;
         this.status = status;
         this.ownersUID = ownersUID;
@@ -64,10 +62,6 @@ public class NammaApartmentDailyService implements Serializable {
 
     public String getTimeOfVisit() {
         return timeOfVisit;
-    }
-
-    public Boolean getProvidedThings() {
-        return providedThings;
     }
 
     public int getRating() {
