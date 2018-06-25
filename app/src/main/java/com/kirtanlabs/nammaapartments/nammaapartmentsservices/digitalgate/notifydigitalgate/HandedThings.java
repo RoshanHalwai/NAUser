@@ -37,6 +37,7 @@ public class HandedThings extends BaseActivity {
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
     private int handed_things_to;
+    private int index = 0, childCount = 0;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -100,9 +101,8 @@ public class HandedThings extends BaseActivity {
      * ------------------------------------------------------------- */
 
     /**
-     * We retrieve visitors for current user and their family members and display it in the card view
+     * We show only those visitor details whose status is "Entered"
      */
-
     private void retrieveCurrentVisitorsFromFirebase() {
         //First retrieve the current user visitors
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
@@ -123,17 +123,26 @@ public class HandedThings extends BaseActivity {
                         preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
+                                /*We increment the children count, since after onDataChange we would want
+                                to check if there any visitors of the user's family member*/
+                                childCount++;
                                 NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorData.getValue(NammaApartmentVisitor.class);
                                 if (nammaApartmentVisitor.getStatus().equals(ENTERED)) {
-                                    nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                    nammaApartmentVisitorList.add(index++, nammaApartmentVisitor);
                                     adapterVisitors.notifyDataSetChanged();
                                 }
 
                                 //Check if current user has any familyMembers
-                                if (nammaApartmentVisitorList.size() == dataSnapshot.getChildrenCount() &&
+                                if (childCount == dataSnapshot.getChildrenCount() &&
                                         currentNammaApartmentUser.getFamilyMembers() != null) {
                                     //Take each of their Visitors and add it to Visitors List
                                     addFamilyMembersVisitors();
+                                }
+                                /*We reached a point where there are no visitors whose status is "Entered"
+                                hence we show feature unavailable message*/
+                                else if (childCount == dataSnapshot.getChildrenCount() &&
+                                        nammaApartmentVisitorList.isEmpty()) {
+                                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
                                 }
                             }
 
@@ -156,7 +165,7 @@ public class HandedThings extends BaseActivity {
     }
 
     /**
-     * We store the details of visitors for current user and their family members if any, in Firebase
+     * We now check if there are any users family member visitors whose status is "Entered"
      */
     private void addFamilyMembersVisitors() {
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
@@ -180,7 +189,7 @@ public class HandedThings extends BaseActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             NammaApartmentVisitor nammaApartmentVisitor = dataSnapshot.getValue(NammaApartmentVisitor.class);
                                             if (nammaApartmentVisitor.getStatus().equals(ENTERED)) {
-                                                nammaApartmentVisitorList.add(0, nammaApartmentVisitor);
+                                                nammaApartmentVisitorList.add(index++, nammaApartmentVisitor);
                                                 adapterVisitors.notifyDataSetChanged();
                                             }
                                         }
@@ -209,7 +218,7 @@ public class HandedThings extends BaseActivity {
         }
     }
     /**
-     * We retrieve Daily Service for current user and their family members and display it in the card view
+     * We show only those daily service details whose status is Entered
      */
     private void retrieveDailyServiceFromFirebase() {
         //First retrieve the current user daily service
@@ -221,8 +230,7 @@ public class HandedThings extends BaseActivity {
                 if (!myDailyServiceSnapshot.exists()) {
                     hideProgressIndicator();
                     showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
-                }
-                if (myDailyServiceSnapshot.exists()) {
+                } else {
                     for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                         String dailyServiceType = dailyServicesSnapshot.getKey();
                         DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
@@ -239,8 +247,13 @@ public class HandedThings extends BaseActivity {
                                             NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
                                             if (nammaApartmentDailyService.getStatus().equals(ENTERED)) {
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
-                                                nammaApartmentDailyServiceList.add(0, nammaApartmentDailyService);
+                                                nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
+                                                hideFeatureUnavailableLayout();
                                                 adapterDailyService.notifyDataSetChanged();
+                                            }
+
+                                            if (nammaApartmentDailyServiceList.isEmpty()) {
+                                                showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
                                             }
                                         }
 

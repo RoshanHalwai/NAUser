@@ -135,7 +135,7 @@
     <string name="visitor_cancel">Are you sure you want to remove this data?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since there has been no visitors at your flat.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no visitors at your flat.</string>
 
 
     <!--Digi Gate NammaApartmentService Activity-->
@@ -176,7 +176,7 @@
     <string name="daily_service_name">Name</string>
 
     <!--Handed Things To Daily Service Activity-->
-    <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since there has been no daily service at your flat.</string>
+    <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
     <string name="status">status</string>
 
     <!--Daily Services Home-->
