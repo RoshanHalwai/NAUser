@@ -241,6 +241,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         textView.setText(text);
     }
 
+    protected void hideFeatureUnavailableLayout() {
+        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
+        featureUnavailableLayout.setVisibility(View.INVISIBLE);
+    }
+
     /**
      * This method checks if all the editTexts are filled or not.
      *
@@ -292,11 +297,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         check = !Pattern.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", email);
         return check;
     }
+
     /**
-     * This method is invoked to create an NotifyGate dialog when user successfully fills all the details.
+     * Shows message box with title, message and action to be peformed when user
+     * clicks on Ok button
+     * @param title - Title of the message
+     * @param message - Body of the message
+     * @param intent - If null then on click of Ok, the dialog will disappear
+     *               else intent activity will be called
      */
     public void showSuccessDialog(String title, String message, Intent intent) {
         AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setCancelable(false);
         alertNotifyGateDialog.setTitle(title);
         alertNotifyGateDialog.setMessage(message);
         if (intent == null) {
@@ -320,6 +332,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void showProgressDialog(Context context, String title, String message) {
         progressDialog = new ProgressDialog(context);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
         progressDialog.show();

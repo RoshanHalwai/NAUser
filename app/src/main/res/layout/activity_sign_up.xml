@@ -53,7 +53,7 @@
             android:layout_marginRight="20dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:selectAllOnFocus="false"
             android:textColor="@color/nmBlack"
             android:textSize="@dimen/edit_text_default_size"
