@@ -457,7 +457,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                             ownersUID,
                             NOT_ENTERED,
                             dailyServiceUID, fullName,
-                            phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, false, rating);
+                            phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, rating);
 
                     //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
                     dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);

@@ -12,12 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 
@@ -25,7 +21,7 @@ import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -191,9 +187,14 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                 case R.id.buttonNotifyGate:
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentDailyService.setDailyServiceHandedThingsDescription(handedThingsDescription);
-                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                            .child(String.valueOf(nammaApartmentDailyService.getOwnersUID()));
-                    preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS).child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION).setValue(handedThingsDescription);
+                    String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+                    String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
+                    DatabaseReference DailyServicesReference = PUBLIC_DAILYSERVICES_REFERENCE
+                            .child(dailyServiceTypeValue)
+                            .child(nammaApartmentDailyService.getUID());
+                    DailyServicesReference.child(FIREBASE_CHILD_HANDED_THINGS)
+                            .child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION)
+                            .setValue(handedThingsDescription);
                     baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),
                             null);
