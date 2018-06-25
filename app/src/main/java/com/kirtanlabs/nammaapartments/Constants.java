@@ -66,8 +66,8 @@ public class Constants {
     private static final String FIREBASE_CHILD_CITIES = "cities";
     private static final String FIREBASE_CHILD_CLIENTS = "clients";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
-    private static final String FIREBASE_CHILD_CABS = "cabs";
-    private static final String FIREBASE_CHILD_DELIVERIES = "deliveries";
+    public static final String FIREBASE_CHILD_CABS = "cabs";
+    public static final String FIREBASE_CHILD_DELIVERIES = "deliveries";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
     public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";
     public static final String FIREBASE_CHILD_DAILYSERVICE_TYPE = "dailyServiceType";
