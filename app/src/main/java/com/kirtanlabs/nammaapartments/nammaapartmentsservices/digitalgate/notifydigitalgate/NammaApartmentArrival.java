@@ -18,6 +18,7 @@ class NammaApartmentArrival {
     private String dateAndTimeOfArrival;
     private String validFor;
     private String uid;
+    private String status;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -26,11 +27,12 @@ class NammaApartmentArrival {
     public NammaApartmentArrival() {
     }
 
-    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String uid) {
+    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String uid, String status) {
         this.reference = reference;
         this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;
         this.uid = uid;
+        this.status = status;
     }
 
     /* ------------------------------------------------------------- *
@@ -51,5 +53,17 @@ class NammaApartmentArrival {
 
     public String getUid() {
         return uid;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

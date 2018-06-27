@@ -26,11 +26,11 @@ import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYCABS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MYDELIVERIES;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
+import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -181,10 +181,10 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             case R.id.buttonNotifyGate:
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
                     if (arrivalType == R.string.expecting_cab_arrival) {
-                        storeDigitalGateDetails(FIREBASE_CHILD_MYCABS);
+                        storeDigitalGateDetails(FIREBASE_CHILD_CABS);
 
                     } else {
-                        storeDigitalGateDetails(FIREBASE_CHILD_MYDELIVERIES);
+                        storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
                     }
                     showSuccessDialog(getResources().getString(R.string.notification_title),
                             getResources().getString(R.string.notification_message), null);
@@ -238,13 +238,16 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
         String userUID = nammaApartmentUser.getUID();
-        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID);
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID, NOT_ENTERED);
 
-        //Store cabs/deliveries uid and value under users->private
+        //Store cabs/deliveries uid and value under userdata->private->currentUserFlat
         DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(cabDeliveryReference);
         String digitalGateUID = digitalGateUIDReference.push().getKey();
-        DatabaseReference digitalGateReference = PRIVATE_USERS_REFERENCE.child(userUID);
-        digitalGateReference.child(digitalGateChild).child(digitalGateUID).setValue(true);
+        DatabaseReference digitalGateReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(digitalGateChild)
+                .child(NammaApartmentsGlobal.userUID);
+        digitalGateReference.child(digitalGateUID).setValue(true);
 
         //Store the details of cab/delivery in cabs/deliveries->public->uid
         if (arrivalType == R.string.expecting_cab_arrival) {

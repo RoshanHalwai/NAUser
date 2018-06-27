@@ -69,6 +69,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
     private EditText editSociety;
     private EditText editApartment;
     private EditText editFlat;
+    private EditText inputSearch;
     private RadioButton radioButtonOwner;
     private RadioButton radioButtonTenant;
 
@@ -153,15 +154,19 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.editCity:
+                inputSearch.setHint("Search City");
                 searchItemInList(R.id.editCity);
                 break;
             case R.id.editSociety:
+                inputSearch.setHint("Search Society");
                 searchItemInList(R.id.editSociety);
                 break;
             case R.id.editApartment:
+                inputSearch.setHint("Search Apartment");
                 searchItemInList(R.id.editApartment);
                 break;
             case R.id.editFlat:
+                inputSearch.setHint("Search Flat");
                 searchItemInList(R.id.editFlat);
                 break;
             case R.id.radioButtonOwner:
@@ -188,7 +193,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         dialog = new Dialog(MyFlatDetails.this);
         dialog.setContentView(R.layout.cities_listview);
 
-        EditText inputSearch = dialog.findViewById(R.id.inputSearch);
+        inputSearch = dialog.findViewById(R.id.inputSearch);
         listView = dialog.findViewById(R.id.list);
         inputSearch.setTypeface(Constants.setLatoItalicFont(MyFlatDetails.this));
 

@@ -10,7 +10,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Search City"
         android:inputType="textVisiblePassword" />
 
     <ListView
