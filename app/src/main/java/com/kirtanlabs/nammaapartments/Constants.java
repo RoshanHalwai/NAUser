@@ -96,6 +96,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
     public static final String FIREBASE_CHILD_MYCABS = "myCabs";
     public static final String FIREBASE_CHILD_MYDELIVERIES = "myDeliveries ";
+    public static final String FIREBASE_CHILD_OWNERSUID = "ownersUID";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
