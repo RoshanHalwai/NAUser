@@ -90,6 +90,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
      *----------------------------------------------------*/
+
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_add_daily_service;
@@ -452,8 +453,12 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                         }
                     });
                 } else {
-                    //Store UID with daily service type for access to Guard App
                     dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+                    //We map daily service mobile number with their UID to avoid other users to add same daily service again
+                    dailyServiceMobileNumberReference.setValue(dailyServiceUID);
+
+                    //Store UID with daily service type for access to Guard App
                     DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
                     dailyServiceTypeReference.child(dailyServiceUID).setValue(dailyServiceChild);
 
