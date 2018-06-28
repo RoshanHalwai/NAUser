@@ -123,6 +123,12 @@
     <string name="inviting_your_visitor">Inviting your visitor</string>
 
     <!--Visitors List Activity-->
+    <string name="guests">Guests</string>
+    <string name="package_arrivals">Package Arrivals</string>
+    <string name="cab_arrivals">Cab Arrivals</string>
+
+    <!--Guests List Activity-->
+    <string name="my_guests">My Guests</string>
     <string name="visitor">Visitor:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>

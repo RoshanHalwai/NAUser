@@ -87,7 +87,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList"
+            android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.guests.GuestsList"
             android:screenOrientation="portrait" />
         <activity
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome"
@@ -116,6 +116,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.cabs.CabsList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.packages.PackagesList"
             android:screenOrientation="portrait" />
 
         <provider
