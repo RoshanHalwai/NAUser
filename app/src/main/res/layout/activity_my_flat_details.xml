@@ -164,7 +164,7 @@
             android:layout_marginStart="@dimen/button_left_margin"
             android:layout_marginTop="10dp"
             android:background="@color/nmBlack"
-            android:text="@string/next"
+            android:text="@string/create_account"
             android:textColor="@color/nmLightYellow"
             android:textSize="@dimen/button_default_size" />
 

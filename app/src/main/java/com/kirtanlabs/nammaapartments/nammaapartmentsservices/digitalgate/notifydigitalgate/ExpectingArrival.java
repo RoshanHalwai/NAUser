@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -176,6 +177,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 selectButton(R.id.button24Hr);
                 break;
             case R.id.editPickDateTime:
+                editPickDateTime.setInputType(InputType.TYPE_NULL);
                 pickDate(this, this);
                 break;
             case R.id.buttonNotifyGate:
@@ -198,6 +200,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
+            editPickDateTime.setInputType(InputType.TYPE_NULL);
             pickDate(this, this);
         }
     }
