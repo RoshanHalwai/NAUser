@@ -303,7 +303,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/textDescriptionFamilyMember"
+                    android:id="@+id/textOtpDescriptionFamilyMemberOrFriend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layoutYesNo"
@@ -311,7 +311,7 @@
                     android:gravity="center"
                     android:text="@string/otp_message_family_member"
                     android:textColor="@color/nmBlack"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:textSize="@dimen/text_view_default_size" />
             </RelativeLayout>
 
