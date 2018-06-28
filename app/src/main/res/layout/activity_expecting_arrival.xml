@@ -63,7 +63,8 @@
                     android:cursorVisible="false"
                     android:drawableEnd="@drawable/calendar_date"
                     android:drawableRight="@drawable/calendar_date"
-                    android:focusableInTouchMode="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:textSize="@dimen/edit_text_default_size"
                     tools:ignore="LabelFor,TextFields" />
 

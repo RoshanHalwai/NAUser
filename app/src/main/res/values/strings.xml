@@ -168,7 +168,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
-    <string name="description">Description:</string>
+    <string name="description">Description:(Optional)</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
     <string name="handed_things_success_title">Handed Things Message.</string>
