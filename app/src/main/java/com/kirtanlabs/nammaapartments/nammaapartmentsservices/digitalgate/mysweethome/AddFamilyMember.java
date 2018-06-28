@@ -148,6 +148,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonYes.setTypeface(setLatoRegularFont(this));
         buttonNo.setTypeface(setLatoRegularFont(this));
         buttonAdd.setTypeface(setLatoLightFont(this));
+        radioButtonFamilyMember.setTypeface(setLatoRegularFont(this));
+        radioButtonFriend.setTypeface(setLatoRegularFont(this));
 
         /*Setting event for all button clicks */
         circleImageView.setOnClickListener(this);
@@ -212,6 +214,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
             case R.id.radioButtonFamilyMember:
                 //This line hides the relation error message if it was shown on if any of the fields are not filled.
                 textErrorRelation.setVisibility(View.GONE);
+                textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_family_member));
                 textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                 break;
             case R.id.radioButtonFriend:
