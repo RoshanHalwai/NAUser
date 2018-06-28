@@ -222,6 +222,7 @@
     <string name="family_member">Family Member</string>
     <string name="friend">Friend</string>
     <string name="otp_message_family_member">We will send an OTP to your family member for Authentication.</string>
+    <string name="otp_message_friend">We will send an OTP to your friend for Authentication.</string>
     <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
     <string name="notification_alert">Notification Alert</string>
