@@ -43,7 +43,7 @@
     <string name="verification_message">Our team will verify the details provided by you. We will notify you once the verification is completed.</string>
     <string name="creating_your_account">Creating your Account</string>
     <string name="please_wait_a_moment">Please wait a moment</string>
-    <string name="next">Continue</string>
+    <string name="create_account">Create Account</string>
 
     <!--SignUp Activity -->
     <string name="full_name">Full Name</string>
