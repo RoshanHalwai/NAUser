@@ -168,7 +168,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         infoButton.setVisibility(View.VISIBLE);
     }
 
-
     protected void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
