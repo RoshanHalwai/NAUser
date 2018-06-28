@@ -218,6 +218,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * We check if permissions are granted to Pick Image from Gallery if already granted then or if API Level is lower than 15 we directly
      * start Gallery Activity with Result, else we show Request permission dialog to allow users to give access.
      */
+    //TODO:Change this method that it should work for Android API Level-27
     protected void pickImageFromGallery() {
         galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
