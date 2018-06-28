@@ -141,7 +141,6 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (v == circleImageNewUserProfileImage && hasFocus) {
-            hideKeyboard();
             onClick(v);
         }
     }

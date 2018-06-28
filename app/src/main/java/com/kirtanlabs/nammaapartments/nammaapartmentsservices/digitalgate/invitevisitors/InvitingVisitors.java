@@ -30,7 +30,7 @@ import com.kirtanlabs.nammaapartments.ContactPicker;
 import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.guests.GuestsList;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -47,6 +47,7 @@ import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_MOBILE_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
@@ -409,10 +410,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             hideProgressDialog();
 
             //Notify users that they have successfully invited their visitor
-            Intent VisitorsListIntent = new Intent(InvitingVisitors.this, VisitorsList.class);
+            Intent guestsListIntent = new Intent(InvitingVisitors.this, GuestsList.class);
+            guestsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
             showSuccessDialog(getResources().getString(R.string.invitation_success_title),
                     getResources().getString(R.string.invitation_success_message),
-                    VisitorsListIntent);
+                    guestsListIntent);
         }).addOnFailureListener(exception -> {
             hideProgressDialog();
             Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
