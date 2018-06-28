@@ -150,7 +150,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textDescription"
+        android:id="@+id/textOtpDescriptionFamilyMemberOrFriend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

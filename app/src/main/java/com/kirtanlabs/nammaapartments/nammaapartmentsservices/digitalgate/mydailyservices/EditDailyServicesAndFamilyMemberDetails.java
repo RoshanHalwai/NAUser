@@ -30,6 +30,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GRANTEDACCESS;
@@ -37,6 +38,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDE
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PHONENUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMEOFVISIT;
+import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
 import static com.kirtanlabs.nammaapartments.Constants.GRANTED_ACCESS_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
@@ -56,7 +58,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
      * Private Members
      * ------------------------------------------------------------- */
 
-    private TextView textDescription;
+    private TextView textOtpDescriptionFamilyMemberOrFriend;
     private EditText editMemberAndServiceName, editMobileNumber, editPickInTime;
     private Button buttonUpdate;
     private Button buttonYes;
@@ -108,7 +110,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         TextView textInTime = findViewById(R.id.textInTime);
         TextView textGrantAccess = findViewById(R.id.textGrantAccess);
-        textDescription = findViewById(R.id.textDescription);
+        textOtpDescriptionFamilyMemberOrFriend = findViewById(R.id.textOtpDescriptionFamilyMemberOrFriend);
         editMemberAndServiceName = findViewById(R.id.editMemberAndServiceName);
         editMobileNumber = findViewById(R.id.editMobileNumber);
         editPickInTime = findViewById(R.id.editPickInTime);
@@ -125,7 +127,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         textCountryCode.setTypeface(setLatoItalicFont(this));
         textInTime.setTypeface(setLatoBoldFont(this));
         textGrantAccess.setTypeface(setLatoBoldFont(this));
-        textDescription.setTypeface(setLatoBoldFont(this));
+        textOtpDescriptionFamilyMemberOrFriend.setTypeface(setLatoBoldFont(this));
         editMemberAndServiceName.setTypeface(setLatoRegularFont(this));
         editMobileNumber.setTypeface(setLatoRegularFont(this));
         editPickInTime.setTypeface(setLatoRegularFont(this));
@@ -262,13 +264,13 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
                 service_type = nammaApartmentDailyService.getDailyServiceType();
                 editPickInTime.setText(inTime);
                 String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
-                textDescription.setText(description);
+                textOtpDescriptionFamilyMemberOrFriend.setText(description);
             }
         } else {
-            NammaApartmentUser nammaApartmentFamilyMembers = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
-            name = nammaApartmentFamilyMembers.getPersonalDetails().getFullName();
-            mobile = nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber();
-            grantedAccess = nammaApartmentFamilyMembers.getPrivileges().isGrantedAccess();
+            NammaApartmentUser nammaApartmentUser = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+            name = nammaApartmentUser.getPersonalDetails().getFullName();
+            mobile = nammaApartmentUser.getPersonalDetails().getPhoneNumber();
+            grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
             //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
             if (grantedAccess) {
                 buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
@@ -287,7 +289,11 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             editMobileNumber.setText(mobile);
             if (screenTitle == R.string.edit_my_family_member_details) {
                 granted_access_type = getIntent().getStringExtra(GRANTED_ACCESS_TYPE);
-                textDescription.setText(getResources().getString(R.string.otp_message_family_member));
+                if (nammaApartmentUser.getFamilyMembers() != null) {
+                    textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_family_member));
+                } else {
+                    textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_friend));
+                }
             }
         }
     }
@@ -334,7 +340,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String mobileNumber = editMobileNumber.getText().toString().trim();
                 if (isValidPhone(mobileNumber)) {
-                    textDescription.setVisibility(View.VISIBLE);
+                    textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                     buttonUpdate.setVisibility(View.VISIBLE);
                     mobileTextChanged = true;
                 } else if ((mobileNumber.length() == EDIT_TEXT_EMPTY_LENGTH) || mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
@@ -382,13 +388,13 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         if (nameTextChanged || mobileTextChanged || timeTextChanged || grantedAccess) {
             buttonUpdate.setVisibility(View.VISIBLE);
             if (mobileTextChanged) {
-                textDescription.setVisibility(View.VISIBLE);
+                textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
             } else {
-                textDescription.setVisibility(View.INVISIBLE);
+                textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.INVISIBLE);
             }
         } else {
             buttonUpdate.setVisibility(View.INVISIBLE);
-            textDescription.setVisibility(View.INVISIBLE);
+            textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -423,8 +429,12 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             intentNotification.putExtra(MOBILE_NUMBER, updatedDailyServiceMobileNumber);
         } else {
             intentNotification.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
-            //TODO: Change the Service Type here
-            intentNotification.putExtra(SERVICE_TYPE, "Family Member");
+            NammaApartmentUser nammaApartmentUser = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
+            if (nammaApartmentUser.getFamilyMembers() != null) {
+                intentNotification.putExtra(SERVICE_TYPE, FAMILY_MEMBER);
+            } else {
+                intentNotification.putExtra(SERVICE_TYPE, FRIEND);
+            }
             intentNotification.putExtra(MOBILE_NUMBER, updatedFamilyMemberMobileNumber);
         }
         startActivity(intentNotification);

@@ -194,6 +194,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * We check if permissions are granted to take photos using camera if already granted then we directly start Camera Activity with Result
      * else we show Request permission dialog to allow users to give access.
      */
+    //TODO:Change this method that it should work for Android API Level-27
     protected void launchCamera() {
         cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile;
