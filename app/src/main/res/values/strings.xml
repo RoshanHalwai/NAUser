@@ -43,7 +43,7 @@
     <string name="verification_message">Our team will verify the details provided by you. We will notify you once the verification is completed.</string>
     <string name="creating_your_account">Creating your Account</string>
     <string name="please_wait_a_moment">Please wait a moment</string>
-    <string name="next">Continue</string>
+    <string name="create_account">Create Account</string>
 
     <!--SignUp Activity -->
     <string name="full_name">Full Name</string>
@@ -174,7 +174,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
-    <string name="description">Description:</string>
+    <string name="description">Description:(Optional)</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
     <string name="handed_things_success_title">Handed Things Message.</string>
