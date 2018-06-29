@@ -21,7 +21,7 @@ public class VisitorsList extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.my_visitors_list;
+        return R.string.my_guests_list;
     }
 
     @Override
