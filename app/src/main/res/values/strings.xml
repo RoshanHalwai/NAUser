@@ -146,8 +146,10 @@
 
     <!--Cabs List And PackagesList Activity-->
     <string name="cabs_number">Cab Number:</string>
+    <string name="package_name">Vendor:</string>
     <string name="cab_package_type">Guest</string>
     <string name="cabs_unavailable_message">Sorry you cannot use this feature since you have not booked any cab.</string>
+    <string name="deliveries_unavailable_message">Sorry you cannot use this feature since you have not ordered any delivery.</string>
 
     <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>

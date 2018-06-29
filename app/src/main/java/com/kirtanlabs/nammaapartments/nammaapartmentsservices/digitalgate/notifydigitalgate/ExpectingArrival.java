@@ -19,6 +19,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.cabs.CabsList;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.packages.PackagesList;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
@@ -216,6 +217,10 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                                 getResources().getString(R.string.notification_message), cabsListIntent);
                     } else {
                         storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
+                        Intent packagesListIntent = new Intent(ExpectingArrival.this, PackagesList.class);
+                        packagesListIntent.putExtra(SCREEN_TITLE, getClass().toString());
+                        showSuccessDialog(getResources().getString(R.string.notification_title),
+                                getResources().getString(R.string.notification_message), packagesListIntent);
                     }
                 } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
