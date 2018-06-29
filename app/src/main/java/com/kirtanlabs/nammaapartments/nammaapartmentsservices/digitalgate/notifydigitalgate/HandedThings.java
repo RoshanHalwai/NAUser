@@ -53,9 +53,9 @@ public class HandedThings extends BaseActivity {
         /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
          * based on the user click on NotifyGate Home screen*/
         if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
-            handed_things_to = R.string.handed_things_to_my_guest;
+            handed_things_to = R.string.my_guests;
         } else {
-            handed_things_to = R.string.handed_things_to_my_daily_services;
+            handed_things_to = R.string.my_daily_services;
         }
         return handed_things_to;
     }
