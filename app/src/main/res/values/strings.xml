@@ -180,7 +180,6 @@
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
-    <string name="my_guests">My Guests</string>
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
