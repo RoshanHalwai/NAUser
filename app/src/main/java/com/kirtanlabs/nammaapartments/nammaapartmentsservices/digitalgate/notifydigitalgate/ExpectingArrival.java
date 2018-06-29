@@ -142,6 +142,31 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnFocusChangeListener(this);
         editPickDateTime.setOnClickListener(this);
         buttonNotifyGate.setOnClickListener(this);
+
+        editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable et) {
+                String s = et.toString();
+                /*We check if the text user has entered is lowercase if it is in lowercase then we change it
+                to upper case*/
+                if (!s.equals(s.toUpperCase())) {
+                    s = s.toUpperCase();
+                    editCabOrVendorValue.setText(s);
+                    editCabOrVendorValue.setSelection(editCabOrVendorValue.getText().length());
+                }
+            }
+        });
     }
 
     /* ------------------------------------------------------------- *
@@ -182,7 +207,6 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
                     if (arrivalType == R.string.expecting_cab_arrival) {
                         storeDigitalGateDetails(FIREBASE_CHILD_CABS);
-
                     } else {
                         storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
                     }
@@ -198,7 +222,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            pickDate(this, this);
+            onClick(editPickDateTime);
         }
     }
 

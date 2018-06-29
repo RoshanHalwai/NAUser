@@ -43,7 +43,7 @@
     <string name="verification_message">Our team will verify the details provided by you. We will notify you once the verification is completed.</string>
     <string name="creating_your_account">Creating your Account</string>
     <string name="please_wait_a_moment">Please wait a moment</string>
-    <string name="next">Continue</string>
+    <string name="create_account">Create Account</string>
 
     <!--SignUp Activity -->
     <string name="full_name">Full Name</string>
@@ -123,6 +123,12 @@
     <string name="inviting_your_visitor">Inviting your visitor</string>
 
     <!--Visitors List Activity-->
+    <string name="guests">Guests</string>
+    <string name="package_arrivals">Package Arrivals</string>
+    <string name="cab_arrivals">Cab Arrivals</string>
+
+    <!--Guests List Activity-->
+    <string name="my_guests">My Guests</string>
     <string name="visitor">Visitor:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
@@ -168,12 +174,13 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="given_things">Given Things:</string>
-    <string name="description">Description:</string>
+    <string name="description">Description:(Optional)</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
+    <string name="my_guests">My Guests</string>
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
@@ -216,6 +223,7 @@
     <string name="family_member">Family Member</string>
     <string name="friend">Friend</string>
     <string name="otp_message_family_member">We will send an OTP to your family member for Authentication.</string>
+    <string name="otp_message_friend">We will send an OTP to your friend for Authentication.</string>
     <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
     <string name="notification_alert">Notification Alert</string>
