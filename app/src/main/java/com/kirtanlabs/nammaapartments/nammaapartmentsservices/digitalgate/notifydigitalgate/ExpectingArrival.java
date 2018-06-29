@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -147,30 +148,36 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnClickListener(this);
         buttonNotifyGate.setOnClickListener(this);
 
-        editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
+        /* We want to ensure each character of cab number be in Capital Letters */
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable et) {
-                String s = et.toString();
-                /*We check if the text user has entered is lowercase if it is in lowercase then we change it
-                to upper case*/
-                if (!s.equals(s.toUpperCase())) {
-                    s = s.toUpperCase();
-                    editCabOrVendorValue.setText(s);
-                    editCabOrVendorValue.setSelection(editCabOrVendorValue.getText().length());
                 }
-            }
-        });
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable et) {
+                    String s = et.toString();
+                    /*We check if the text user has entered is lowercase if it is in lowercase then we change it
+                    to upper case*/
+                    if (!s.equals(s.toUpperCase())) {
+                        s = s.toUpperCase();
+                        editCabOrVendorValue.setText(s);
+                        editCabOrVendorValue.setSelection(editCabOrVendorValue.getText().length());
+                    }
+                }
+            });
+        } else {
+            /*We are in Expecting Package Arrival Screen hence ensuring the Input Type here is Cap Each Word*/
+            editCabOrVendorValue.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        }
     }
 
     /* ------------------------------------------------------------- *

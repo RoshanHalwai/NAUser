@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
@@ -71,27 +72,39 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
 
-        //Since we need inviters name we get the details by inviter UID
-        DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
-        userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
-                String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-                holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
-                holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
-                holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-                holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
-                        .into(holder.profileImage);
-            }
+        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
+        holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
+        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
+                .into(holder.profileImage);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
+        firebase since we now know that the inviter is current user.*/
+        if (nammaApartmentVisitor.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+            holder.textInvitedByValue.setText(
+                    ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                            .getNammaApartmentUser()
+                            .getPersonalDetails()
+                            .getFullName());
+        } else {
+            /*Visitor has been invited by some other family member; We check in firebase and get the name
+             * of that family member*/
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
+            userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                    holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override

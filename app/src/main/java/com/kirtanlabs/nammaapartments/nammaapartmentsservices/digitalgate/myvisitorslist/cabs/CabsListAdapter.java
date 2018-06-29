@@ -57,26 +57,38 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
     public void onBindViewHolder(@NonNull CabsListAdapter.CabsViewHolder holder, int position) {
         //Creating an instance of NammaApartmentArrival class and retrieving the values from Firebase
         NammaApartmentArrival nammaApartmentArrival = nammaApartmentArrivalList.get(position);
-        //Since we need invitors name we get the details by uid
-        DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID);
-        userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                holder.textCabOrVendorValue.setText(nammaApartmentArrival.getReference());
-                String dateAndTime = nammaApartmentArrival.getDateAndTimeOfArrival();
-                String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-                holder.textCabOrVendorDateValue.setText(separatedDateAndTime[0]);
-                holder.textCabOrVendorTimeValue.setText(separatedDateAndTime[1]);
-                holder.textInviterValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-            }
+        holder.textCabValue.setText(nammaApartmentArrival.getReference());
+        holder.textCabStatusValue.setText(nammaApartmentArrival.getStatus());
+        String dateAndTime = nammaApartmentArrival.getDateAndTimeOfArrival();
+        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+        holder.textCabDateValue.setText(separatedDateAndTime[0]);
+        holder.textCabTimeValue.setText(separatedDateAndTime[1]);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
+        firebase since we now know that the inviter is current user.*/
+        if (nammaApartmentArrival.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+            holder.textInviterValue.setText(
+                    ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                            .getNammaApartmentUser()
+                            .getPersonalDetails()
+                            .getFullName());
+        } else {
+            /*Cab has been invited by some other family member; We check in firebase and get the name
+             * of that family member*/
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID);
+            userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                    holder.textInviterValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
+                }
+            });
+        }
     }
 
     @Override
@@ -92,15 +104,15 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
         /* ------------------------------------------------------------- *
          * Private Members
          * ------------------------------------------------------------- */
-        private final TextView textCabOrVendorTitle;
-        private final TextView textCabOrVendorServiceType;
-        private final TextView textCabOrVendorDate;
-        private final TextView textCabOrVendorTime;
+        private final TextView textCabTitle;
+        private final TextView textCabStatus;
+        private final TextView textCabDate;
+        private final TextView textCabTime;
         private final TextView textInviter;
-        private final TextView textCabOrVendorValue;
-        private final TextView textCabOrVendorTypeValue;
-        private final TextView textCabOrVendorDateValue;
-        private final TextView textCabOrVendorTimeValue;
+        private final TextView textCabValue;
+        private final TextView textCabStatusValue;
+        private final TextView textCabDateValue;
+        private final TextView textCabTimeValue;
         private final TextView textInviterValue;
 
         /* ------------------------------------------------------------- *
@@ -110,27 +122,27 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
             super(itemView);
 
             //Getting Id's for all the views on cardview
-            textCabOrVendorTitle = itemView.findViewById(R.id.textCabOrVendorTitle);
-            textCabOrVendorServiceType = itemView.findViewById(R.id.textCabOrVendorServiceType);
-            textCabOrVendorDate = itemView.findViewById(R.id.textCabOrVendorDate);
-            textCabOrVendorTime = itemView.findViewById(R.id.textCabOrVendorTime);
+            textCabTitle = itemView.findViewById(R.id.textCabOrVendorTitle);
+            textCabStatus = itemView.findViewById(R.id.textCabOrVendorServiceStatus);
+            textCabDate = itemView.findViewById(R.id.textCabOrVendorDate);
+            textCabTime = itemView.findViewById(R.id.textCabOrVendorTime);
             textInviter = itemView.findViewById(R.id.textInviter);
-            textCabOrVendorValue = itemView.findViewById(R.id.textCabOrVendorValue);
-            textCabOrVendorTypeValue = itemView.findViewById(R.id.textCabOrVendorTypeValue);
-            textCabOrVendorDateValue = itemView.findViewById(R.id.textCabOrVendorDateValue);
-            textCabOrVendorTimeValue = itemView.findViewById(R.id.textCabOrVendorTimeValue);
+            textCabValue = itemView.findViewById(R.id.textCabOrVendorValue);
+            textCabStatusValue = itemView.findViewById(R.id.textCabOrVendorStatusValue);
+            textCabDateValue = itemView.findViewById(R.id.textCabOrVendorDateValue);
+            textCabTimeValue = itemView.findViewById(R.id.textCabOrVendorTimeValue);
             textInviterValue = itemView.findViewById(R.id.textInviterValue);
 
             //Setting Fonts for all the views on cardview
-            textCabOrVendorTitle.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textCabOrVendorServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textCabOrVendorDate.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textCabOrVendorTime.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textCabTitle.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textCabStatus.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textCabDate.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textCabTime.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInviter.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textCabOrVendorValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textCabOrVendorTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textCabOrVendorDateValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textCabOrVendorTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textCabValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textCabStatusValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textCabDateValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textCabTimeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInviterValue.setTypeface(Constants.setLatoBoldFont(mCtx));
         }
     }

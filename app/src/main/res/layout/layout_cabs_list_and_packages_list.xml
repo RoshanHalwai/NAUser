@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1.2"
                     android:orientation="vertical">
 
                     <TextView
@@ -65,11 +65,11 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textCabOrVendorServiceType"
+                        android:id="@+id/textCabOrVendorServiceStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/type"
+                        android:text="@string/status"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
@@ -107,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1.0"
+                    android:layout_weight="0.8"
                     android:orientation="vertical">
 
                     <TextView
@@ -121,11 +121,10 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textCabOrVendorTypeValue"
+                        android:id="@+id/textCabOrVendorStatusValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/cab_package_type"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
