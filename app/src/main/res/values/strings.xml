@@ -126,6 +126,7 @@
     <string name="guests">Guests</string>
     <string name="package_arrivals">Package Arrivals</string>
     <string name="cab_arrivals">Cab Arrivals</string>
+    <string name="my_guests_list">My Guests List</string>
 
     <!--Guests List Activity-->
     <string name="my_guests">My Guests</string>
@@ -143,6 +144,10 @@
     <string name="time_pick">Pick Time</string>
     <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no visitors at your flat.</string>
 
+    <!--Cabs List And PackagesList Activity-->
+    <string name="cabs_number">Cab Number:</string>
+    <string name="cab_package_type">Guest</string>
+    <string name="cabs_unavailable_message">Sorry you cannot use this feature since you have not booked any cab.</string>
 
     <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
@@ -180,7 +185,6 @@
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
-    <string name="my_guests">My Guests</string>
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>

@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.cabs.CabsList;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
@@ -33,6 +35,7 @@ import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -207,11 +210,13 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
                     if (arrivalType == R.string.expecting_cab_arrival) {
                         storeDigitalGateDetails(FIREBASE_CHILD_CABS);
+                        Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
+                        cabsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
+                        showSuccessDialog(getResources().getString(R.string.notification_title),
+                                getResources().getString(R.string.notification_message), cabsListIntent);
                     } else {
                         storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
                     }
-                    showSuccessDialog(getResources().getString(R.string.notification_title),
-                            getResources().getString(R.string.notification_message), null);
                 } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
                 }

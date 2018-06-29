@@ -5,7 +5,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
  * Created by Ashish Jha on 6/16/2018
  */
 
-class NammaApartmentArrival {
+public class NammaApartmentArrival {
 
     /* ------------------------------------------------------------- *
      * Private Members
