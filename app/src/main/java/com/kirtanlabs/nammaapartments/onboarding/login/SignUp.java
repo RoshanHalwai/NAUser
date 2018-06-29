@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 
 public class SignUp extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
@@ -31,6 +32,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
      * ------------------------------------------------------------- */
 
     private CircleImageView circleImageNewUserProfileImage;
+    private TextView textErrorProfilePic;
     private EditText editFullName;
     private EditText editEmailId;
     private AlertDialog imageSelectionDialog;
@@ -60,7 +62,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
 
         /*Getting Id's for all the views*/
         circleImageNewUserProfileImage = findViewById(R.id.newUserProfileImage);
-        TextView textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
+        textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         TextView textFullName = findViewById(R.id.textFullName);
         TextView textEmailId = findViewById(R.id.textEmailId);
         TextView textTermsAndConditions = findViewById(R.id.textTermsAndConditions);
@@ -87,17 +89,28 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE || requestCode == GALLERY_PERMISSION_REQUEST_CODE) {
-            Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
-            circleImageNewUserProfileImage.setImageBitmap(bitmapProfilePic);
-            try {
-                profilePhotoPath = "ProfilePic.png";
-                FileOutputStream stream = this.openFileOutput(profilePhotoPath, Context.MODE_PRIVATE);
-                bitmapProfilePic.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                stream.close();
-                bitmapProfilePic.recycle();
-            } catch (Exception e) {
-                e.printStackTrace();
+        //This condition checks for the resultCode value since if any photo got selected/captured
+        //either from camera and gallery its value will be equal to -1 and vice-versa its value is 0.
+        //So here if we checks if user has not selected any photo from gallery or he did'nt captured
+        //any photo its resultCode value will be equal to zero and we are displaying circular image view.
+        if (resultCode == EDIT_TEXT_EMPTY_LENGTH) {
+            circleImageNewUserProfileImage.setVisibility(View.VISIBLE);
+        } else {
+            if (requestCode == CAMERA_PERMISSION_REQUEST_CODE || requestCode == GALLERY_PERMISSION_REQUEST_CODE) {
+                Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
+                circleImageNewUserProfileImage.setImageBitmap(bitmapProfilePic);
+                try {
+                    profilePhotoPath = "ProfilePic.png";
+                    FileOutputStream stream = this.openFileOutput(profilePhotoPath, Context.MODE_PRIVATE);
+                    if (profilePhotoPath != null) {
+                        textErrorProfilePic.setVisibility(View.INVISIBLE);
+                    }
+                    bitmapProfilePic.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    stream.close();
+                    bitmapProfilePic.recycle();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -109,6 +122,12 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonSignUp:
+                //This condition checks for the string value if its null it will show appropriate
+                // error message.
+                if (profilePhotoPath == null) {
+                    textErrorProfilePic.setVisibility(View.VISIBLE);
+                    break;
+                }
                 //This method gets invoked to check all the validation fields such as editTexts name and email.
                 validateFields();
                 break;
@@ -122,7 +141,6 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (v == circleImageNewUserProfileImage && hasFocus) {
-            hideKeyboard();
             onClick(v);
         }
     }

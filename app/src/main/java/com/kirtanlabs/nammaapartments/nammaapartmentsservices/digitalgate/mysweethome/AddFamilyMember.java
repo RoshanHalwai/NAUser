@@ -71,6 +71,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private CircleImageView circleImageView;
     private TextView textErrorProfilePic;
     private TextView textErrorRelation;
+    private TextView textOtpDescriptionFamilyMemberOrFriend;
     private EditText editFamilyMemberName;
     private EditText editFamilyMemberMobile;
     private EditText editFamilyMemberEmail;
@@ -116,7 +117,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         textErrorRelation = findViewById(R.id.textErrorRelation);
         TextView textOr = findViewById(R.id.textOr);
         TextView textGrantAccess = findViewById(R.id.textGrantAccess);
-        TextView textDescriptionFamilyMember = findViewById(R.id.textDescriptionFamilyMember);
+        textOtpDescriptionFamilyMemberOrFriend = findViewById(R.id.textOtpDescriptionFamilyMemberOrFriend);
         textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         editFamilyMemberName = findViewById(R.id.editFamilyMemberName);
         editFamilyMemberMobile = findViewById(R.id.editFamilyMemberMobile);
@@ -137,7 +138,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         textRelation.setTypeface(setLatoBoldFont(this));
         textOr.setTypeface(setLatoBoldFont(this));
         textGrantAccess.setTypeface(setLatoBoldFont(this));
-        textDescriptionFamilyMember.setTypeface(setLatoBoldFont(this));
+        textOtpDescriptionFamilyMemberOrFriend.setTypeface(setLatoBoldFont(this));
         textErrorProfilePic.setTypeface(setLatoRegularFont(this));
         textErrorRelation.setTypeface(setLatoRegularFont(this));
         editFamilyMemberName.setTypeface(setLatoRegularFont(this));
@@ -147,6 +148,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonYes.setTypeface(setLatoRegularFont(this));
         buttonNo.setTypeface(setLatoRegularFont(this));
         buttonAdd.setTypeface(setLatoLightFont(this));
+        radioButtonFamilyMember.setTypeface(setLatoRegularFont(this));
+        radioButtonFriend.setTypeface(setLatoRegularFont(this));
 
         /*Setting event for all button clicks */
         circleImageView.setOnClickListener(this);
@@ -211,10 +214,14 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
             case R.id.radioButtonFamilyMember:
                 //This line hides the relation error message if it was shown on if any of the fields are not filled.
                 textErrorRelation.setVisibility(View.GONE);
+                textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_family_member));
+                textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                 break;
             case R.id.radioButtonFriend:
                 //This line hides the relation error message if it was shown on if any of the fields are not filled.
                 textErrorRelation.setVisibility(View.GONE);
+                textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_friend));
+                textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                 break;
             case R.id.buttonYes:
                 grantedAccess = true;
@@ -296,10 +303,12 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private void navigatingToOTPScreen() {
         Intent otpIntent = new Intent(AddFamilyMember.this, OTP.class);
         mobileNumber = editFamilyMemberMobile.getText().toString();
+        String relationType = radioButtonFamilyMember.isChecked()
+                ? radioButtonFamilyMember.getText().toString()
+                : radioButtonFriend.getText().toString();
         otpIntent.putExtra(MOBILE_NUMBER, mobileNumber);
         otpIntent.putExtra(SCREEN_TITLE, R.string.add_family_members_details_screen);
-        //TODO: Change the Service Type here
-        otpIntent.putExtra(SERVICE_TYPE, "Family Member");
+        otpIntent.putExtra(SERVICE_TYPE, relationType);
         startActivityForResult(otpIntent, AFM_OTP_STATUS_REQUEST_CODE);
     }
 

@@ -207,7 +207,6 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
                     if (arrivalType == R.string.expecting_cab_arrival) {
                         storeDigitalGateDetails(FIREBASE_CHILD_CABS);
-
                     } else {
                         storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
                     }
@@ -223,7 +222,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            pickDate(this, this);
+            onClick(editPickDateTime);
         }
     }
 
