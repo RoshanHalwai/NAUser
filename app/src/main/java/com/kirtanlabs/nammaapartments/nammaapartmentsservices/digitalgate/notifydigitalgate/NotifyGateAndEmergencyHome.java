@@ -52,7 +52,7 @@ public class NotifyGateAndEmergencyHome extends BaseActivity {
             /*Adding some values to our list*/
             notificationServicesList.add(new NammaApartmentService(R.drawable.taxi, getString(R.string.expecting_cab_arrival)));
             notificationServicesList.add(new NammaApartmentService(R.drawable.delivery_man, getString(R.string.expecting_package_arrival)));
-            notificationServicesList.add(new NammaApartmentService(R.drawable.team, getString(R.string.expecting_visitor)));
+            notificationServicesList.add(new NammaApartmentService(R.drawable.team, getString(R.string.expecting_guest)));
             notificationServicesList.add(new NammaApartmentService(R.drawable.gift, getString(R.string.handed_things_to_my_guest)));
             notificationServicesList.add(new NammaApartmentService(R.drawable.delivery, getString(R.string.handed_things_to_my_daily_services)));
 

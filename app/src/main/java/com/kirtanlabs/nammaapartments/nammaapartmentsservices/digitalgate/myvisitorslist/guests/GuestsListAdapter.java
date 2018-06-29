@@ -88,27 +88,40 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
         //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
         NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
 
-        //Since we need inviters name we get the details by inviter UID
-        DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
-        userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
-                String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-                holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
-                holder.textInvitationDateOrServiceRatingValue.setText(separatedDateAndTime[0]);
-                holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-                holder.textInvitedByOrNumberOfFlatsValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
-                        .into(holder.visitorOrDailyServiceProfilePic);
-            }
+        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
+        holder.textVisitorStatusValue.setText(nammaApartmentVisitor.getStatus());
+        holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
+        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
+                .into(holder.visitorOrDailyServiceProfilePic);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
+        firebase since we now know that the inviter is current user.*/
+        if (nammaApartmentVisitor.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+            holder.textInvitedByValue.setText(
+                    ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                            .getNammaApartmentUser()
+                            .getPersonalDetails()
+                            .getFullName());
+        } else {
+            /*Visitor has been invited by some other family member; We check in firebase and get the name
+             * of that family member*/
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
+            userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                    holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -237,14 +250,14 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
 
         private final TextView textVisitorName;
         private final TextView textVisitorNameValue;
-        private final TextView textVisitorType;
-        private final TextView textVisitorTypeValue;
-        private final TextView textInvitationDateOrServiceRating;
-        private final TextView textInvitationDateOrServiceRatingValue;
+        private final TextView textVisitorStatus;
+        private final TextView textVisitorStatusValue;
+        private final TextView textInvitationDate;
+        private final TextView textInvitationDateValue;
         private final TextView textInvitationTime;
         private final TextView textInvitationTimeValue;
-        private final TextView textInvitedByOrNumberOfFlats;
-        private final TextView textInvitedByOrNumberOfFlatsValue;
+        private final TextView textInvitedBy;
+        private final TextView textInvitedByValue;
         private final TextView textCall;
         private final TextView textMessage;
         private final TextView textReschedule;
@@ -258,15 +271,15 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
         VisitorViewHolder(View itemView) {
             super(itemView);
             textVisitorName = itemView.findViewById(R.id.textVisitorOrServiceName);
-            textVisitorType = itemView.findViewById(R.id.textVisitorOrServiceType);
-            textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
+            textVisitorStatus = itemView.findViewById(R.id.textVisitorOrServiceType);
+            textInvitationDate = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
-            textInvitedByOrNumberOfFlats = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
+            textInvitedBy = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
             textVisitorNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
-            textVisitorTypeValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
-            textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
+            textVisitorStatusValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
+            textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
-            textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
+            textInvitedByValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
             textReschedule = itemView.findViewById(R.id.textRescheduleOrEdit);
@@ -275,20 +288,23 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
 
             //Setting Fonts for all the views on cardview
             textVisitorName.setTypeface(setLatoRegularFont(mCtx));
-            textVisitorType.setTypeface(setLatoRegularFont(mCtx));
-            textInvitationDateOrServiceRating.setTypeface(setLatoRegularFont(mCtx));
+            textVisitorStatus.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
             textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
-            textInvitedByOrNumberOfFlats.setTypeface(setLatoRegularFont(mCtx));
+            textInvitedBy.setTypeface(setLatoRegularFont(mCtx));
             textVisitorNameValue.setTypeface(setLatoBoldFont(mCtx));
-            textVisitorTypeValue.setTypeface(setLatoBoldFont(mCtx));
-            textInvitationDateOrServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
+            textVisitorStatusValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationDateValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
-            textInvitedByOrNumberOfFlatsValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
 
             textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textReschedule.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+
+            /*Since this is Guests list we would want to show Status instead of Type*/
+            textVisitorStatus.setText(mCtx.getString(R.string.status));
 
             //Setting events for items in card view
             textCall.setOnClickListener(this);
@@ -309,7 +325,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
                     baseActivity.sendTextMessage(nammaApartmentVisitor.getMobileNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    openRescheduleDialog(textInvitationDateOrServiceRatingValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
+                    openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
                     String inviterUID = nammaApartmentVisitor.getInviterUID();
