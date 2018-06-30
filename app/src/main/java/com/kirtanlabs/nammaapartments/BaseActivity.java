@@ -61,11 +61,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Private Members
      * ------------------------------------------------------------- */
 
+    public static String imageFilePath = "";
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
     private AVLoadingIndicatorView progressIndicator;
-    public static String imageFilePath = "";
     private ProgressDialog progressDialog;
 
     /* ------------------------------------------------------------- *
@@ -302,10 +302,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Shows message box with title, message and action to be peformed when user
      * clicks on Ok button
-     * @param title - Title of the message
+     *
+     * @param title   - Title of the message
      * @param message - Body of the message
-     * @param intent - If null then on click of Ok, the dialog will disappear
-     *               else intent activity will be called
+     * @param intent  - If null then on click of Ok, the dialog will disappear
+     *                else intent activity will be called
      */
     public void showSuccessDialog(String title, String message, Intent intent) {
         AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
@@ -392,6 +393,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener, myYear, myMonth, myDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+        datePickerDialog.setCanceledOnTouchOutside(false);
     }
 
     /**
@@ -406,6 +408,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         int mHour = calendarTime.get(Calendar.HOUR_OF_DAY);
         int mMinute = calendarTime.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, onTimeSetListener, mHour, mMinute, true);
+        timePickerDialog.setCanceledOnTouchOutside(false);
         timePickerDialog.show();
     }
 }
