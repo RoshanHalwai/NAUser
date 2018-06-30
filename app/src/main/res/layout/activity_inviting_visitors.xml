@@ -198,19 +198,6 @@
                     tools:ignore="LabelFor,TextFields" />
 
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/textDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:text="@string/send_otp_message"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size"
-                android:visibility="gone" />
-
             <Button
                 android:id="@+id/buttonInvite"
                 android:layout_width="match_parent"
