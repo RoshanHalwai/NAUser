@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -24,7 +23,7 @@ public class NammaApartmentDailyService implements Serializable {
     private String uid;
     private String dailyServiceHandedThingsDescription;
     private String status;
-    private Map<String, Boolean> ownersUID;
+    private long numberOfFlats;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -33,20 +32,22 @@ public class NammaApartmentDailyService implements Serializable {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(Map<String, Boolean> ownersUID, String status, String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, int rating) {
+    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, int rating) {
         this.uid = uid;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
         this.timeOfVisit = timeOfVisit;
         this.rating = rating;
-        this.status = status;
-        this.ownersUID = ownersUID;
     }
 
     /* ------------------------------------------------------------- *
      * Getters
      * ------------------------------------------------------------- */
+
+    public long getNumberOfFlats() {
+        return numberOfFlats;
+    }
 
     public String getfullName() {
         return fullName;
@@ -70,10 +71,6 @@ public class NammaApartmentDailyService implements Serializable {
 
     public String getDailyServiceType() {
         return dailyServiceType;
-    }
-
-    public Map<String, Boolean> getOwnersUID() {
-        return ownersUID;
     }
 
     public String getUID() {
@@ -116,4 +113,7 @@ public class NammaApartmentDailyService implements Serializable {
         this.dailyServiceHandedThingsDescription = dailyServiceHandedThingsDescription;
     }
 
+    public void setNumberOfFlats(long numberOfFlats) {
+        this.numberOfFlats = numberOfFlats;
+    }
 }

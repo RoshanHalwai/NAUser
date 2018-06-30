@@ -27,7 +27,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
@@ -46,7 +46,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/5/2018
  */
-public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.VisitorViewHolder> implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.GuestViewHolder> implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -54,9 +54,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
+    private final List<NammaApartmentGuest> nammaApartmentGuestList;
     private View rescheduleDialog;
     private AlertDialog dialog;
-    private final List<NammaApartmentVisitor> nammaApartmentVisitorList;
     private EditText editPickDate;
     private EditText editPickTime;
 
@@ -64,10 +64,10 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
      * Constructor
      * ------------------------------------------------------------- */
 
-    GuestsListAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
+    GuestsListAdapter(List<NammaApartmentGuest> nammaApartmentGuestList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
-        this.nammaApartmentVisitorList = nammaApartmentVisitorList;
+        this.nammaApartmentGuestList = nammaApartmentGuestList;
     }
 
     /* ------------------------------------------------------------- *
@@ -76,39 +76,39 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
 
     @NonNull
     @Override
-    public VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GuestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_visitors_and_my_daily_services_list, parent, false);
-        return new VisitorViewHolder(view);
+        return new GuestViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VisitorViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
-        NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+    public void onBindViewHolder(@NonNull GuestViewHolder holder, int position) {
+        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
 
-        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+        String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
         String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
-        holder.textVisitorStatusValue.setText(nammaApartmentVisitor.getStatus());
+        holder.textGuestNameValue.setText(nammaApartmentGuest.getFullName());
+        holder.textGuestStatusValue.setText(nammaApartmentGuest.getStatus());
         holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
         firebase since we now know that the inviter is current user.*/
-        if (nammaApartmentVisitor.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+        if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
             holder.textInvitedByValue.setText(
                     ((NammaApartmentsGlobal) mCtx.getApplicationContext())
                             .getNammaApartmentUser()
                             .getPersonalDetails()
                             .getFullName());
         } else {
-            /*Visitor has been invited by some other family member; We check in firebase and get the name
+            /*Guest has been invited by some other family member; We check in firebase and get the name
              * of that family member*/
-            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
             userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -126,7 +126,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return nammaApartmentVisitorList.size();
+        return nammaApartmentGuestList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -207,7 +207,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
         editPickTime.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
         buttonReschedule.setOnClickListener(v -> {
-            updateVisitorDataInFirebase(position);
+            updateGuestDataInFirebase(position);
             dialog.cancel();
         });
     }
@@ -229,29 +229,29 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
      *
      * @param position of card view for which date and time has been manipulated
      */
-    private void updateVisitorDataInFirebase(int position) {
-        NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+    private void updateGuestDataInFirebase(int position) {
+        NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
         String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
-        nammaApartmentVisitor.setDateAndTimeOfVisit(updatedDateAndTime);
+        nammaApartmentGuest.setDateAndTimeOfVisit(updatedDateAndTime);
         notifyItemChanged(position);
-        PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid())
+        PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid())
                 .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
     }
 
     /* ------------------------------------------------------------- *
-     * Visitor View Holder class
+     * Guest View Holder class
      * ------------------------------------------------------------- */
 
-    class VisitorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class GuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
          * Private Members
          * ------------------------------------------------------------- */
 
-        private final TextView textVisitorName;
-        private final TextView textVisitorNameValue;
-        private final TextView textVisitorStatus;
-        private final TextView textVisitorStatusValue;
+        private final TextView textGuestName;
+        private final TextView textGuestNameValue;
+        private final TextView textGuestStatus;
+        private final TextView textGuestStatusValue;
         private final TextView textInvitationDate;
         private final TextView textInvitationDateValue;
         private final TextView textInvitationTime;
@@ -268,15 +268,15 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
          * Constructor
          * ------------------------------------------------------------- */
 
-        VisitorViewHolder(View itemView) {
+        GuestViewHolder(View itemView) {
             super(itemView);
-            textVisitorName = itemView.findViewById(R.id.textVisitorOrServiceName);
-            textVisitorStatus = itemView.findViewById(R.id.textVisitorOrServiceType);
+            textGuestName = itemView.findViewById(R.id.textVisitorOrServiceName);
+            textGuestStatus = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDate = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
             textInvitedBy = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
-            textVisitorNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
-            textVisitorStatusValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
+            textGuestNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
+            textGuestStatusValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
             textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
             textInvitedByValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
@@ -287,13 +287,13 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
             visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             //Setting Fonts for all the views on cardview
-            textVisitorName.setTypeface(setLatoRegularFont(mCtx));
-            textVisitorStatus.setTypeface(setLatoRegularFont(mCtx));
+            textGuestName.setTypeface(setLatoRegularFont(mCtx));
+            textGuestStatus.setTypeface(setLatoRegularFont(mCtx));
             textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
             textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
             textInvitedBy.setTypeface(setLatoRegularFont(mCtx));
-            textVisitorNameValue.setTypeface(setLatoBoldFont(mCtx));
-            textVisitorStatusValue.setTypeface(setLatoBoldFont(mCtx));
+            textGuestNameValue.setTypeface(setLatoBoldFont(mCtx));
+            textGuestStatusValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationDateValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
@@ -304,7 +304,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
             textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
 
             /*Since this is Guests list we would want to show Status instead of Type*/
-            textVisitorStatus.setText(mCtx.getString(R.string.status));
+            textGuestStatus.setText(mCtx.getString(R.string.status));
 
             //Setting events for items in card view
             textCall.setOnClickListener(this);
@@ -316,24 +316,24 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Vi
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-            NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+            NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
             switch (v.getId()) {
                 case R.id.textCall:
-                    baseActivity.makePhoneCall(nammaApartmentVisitor.getMobileNumber());
+                    baseActivity.makePhoneCall(nammaApartmentGuest.getMobileNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage(nammaApartmentVisitor.getMobileNumber());
+                    baseActivity.sendTextMessage(nammaApartmentGuest.getMobileNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
                     openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
-                    String inviterUID = nammaApartmentVisitor.getInviterUID();
-                    String visitorUID = nammaApartmentVisitor.getUid();
+                    String inviterUID = nammaApartmentGuest.getInviterUID();
+                    String visitorUID = nammaApartmentGuest.getUid();
                     if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
-                        nammaApartmentVisitorList.remove(position);
+                        nammaApartmentGuestList.remove(position);
                         notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, nammaApartmentVisitorList.size());
+                        notifyItemRangeChanged(position, nammaApartmentGuestList.size());
                         ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
                                 .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
                     } else {
