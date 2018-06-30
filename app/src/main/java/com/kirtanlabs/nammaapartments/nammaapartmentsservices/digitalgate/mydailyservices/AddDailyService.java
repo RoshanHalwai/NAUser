@@ -355,9 +355,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
             public void afterTextChanged(Editable s) {
                 mobileNumber = editDailyServiceMobile.getText().toString().trim();
                 String pickTime = editPickTime.getText().toString().trim();
-                if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
-                    editDailyServiceMobile.setError(getString(R.string.number_10digit_validation));
-                }
                 if (isValidPhone(mobileNumber) && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     editDailyServiceMobile.setError(null);
                     if (pickTime.length() > EDIT_TEXT_EMPTY_LENGTH) {

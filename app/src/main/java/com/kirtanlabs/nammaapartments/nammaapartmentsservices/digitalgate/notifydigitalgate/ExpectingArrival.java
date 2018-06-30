@@ -6,12 +6,12 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,6 +28,7 @@ import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.CAB_NUMBER_FIELD_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
@@ -61,12 +62,13 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button12Hr,
             R.id.button16Hr,
             R.id.button24Hr};
-    private EditText editPickDateTime, editCabOrVendorValue;
+    private EditText editPickDateTime, editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editVendorValue;
     private int arrivalType;
     private String selectedDate;
     private String packageVendorName;
     private boolean isValidForSelected;
     private Button selectedButton;
+    private LinearLayout cabNumberLayout;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -97,10 +99,15 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         showInfoButton();
 
         /*Getting Id's for all the views*/
+        cabNumberLayout = findViewById(R.id.cabNumberLayout);
         TextView textCabOrVendorTitle = findViewById(R.id.textCabOrVendorTitle);
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
-        editCabOrVendorValue = findViewById(R.id.editCabOrVendorValue);
+        editCabStateCode = findViewById(R.id.editCabStateCode);
+        editCabRtoNumber = findViewById(R.id.editCabRtoNumber);
+        editCabSerialNumberOne = findViewById(R.id.editCabSerialNumberOne);
+        editCabSerialNumberTwo = findViewById(R.id.editCabSerialNumberTwo);
+        editVendorValue = findViewById(R.id.editVendorValue);
         editPickDateTime = findViewById(R.id.editPickDateTime);
         Button button1hr = findViewById(R.id.button1Hr);
         Button button2hr = findViewById(R.id.button2Hr);
@@ -116,8 +123,12 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         textCabOrVendorTitle.setTypeface(setLatoBoldFont(this));
         textDateTime.setTypeface(setLatoBoldFont(this));
         textValidFor.setTypeface(setLatoBoldFont(this));
+        editCabStateCode.setTypeface(setLatoRegularFont(this));
+        editCabRtoNumber.setTypeface(setLatoRegularFont(this));
+        editCabSerialNumberOne.setTypeface(setLatoRegularFont(this));
+        editCabSerialNumberTwo.setTypeface(setLatoRegularFont(this));
+        editVendorValue.setTypeface(setLatoRegularFont(this));
         editPickDateTime.setTypeface(setLatoRegularFont(this));
-        editCabOrVendorValue.setTypeface(setLatoRegularFont(this));
         button1hr.setTypeface(setLatoRegularFont(this));
         button2hr.setTypeface(setLatoRegularFont(this));
         button4hr.setTypeface(setLatoRegularFont(this));
@@ -131,6 +142,10 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         /*Since we are using same layout for Expecting cab and package arrival we need to
          * set text for textCabOrVendorTitle to either Package Vendor Name or Cab Number*/
         textCabOrVendorTitle.setText(getCarOrPackageArrivalTitle());
+
+        /*Since we are using same layout for Expecting cab and package arrival we need to
+         * show and hide the appropriate editTexts according to screen.*/
+        showAppropriateEditText();
 
         /*This method gets invoked when user is trying to modify the values on EditTexts.*/
         setEventsForEditText();
@@ -148,36 +163,6 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnClickListener(this);
         buttonNotifyGate.setOnClickListener(this);
 
-        /* We want to ensure each character of cab number be in Capital Letters */
-        if (arrivalType == R.string.expecting_cab_arrival) {
-            editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                              int arg3) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable et) {
-                    String s = et.toString();
-                    /*We check if the text user has entered is lowercase if it is in lowercase then we change it
-                    to upper case*/
-                    if (!s.equals(s.toUpperCase())) {
-                        s = s.toUpperCase();
-                        editCabOrVendorValue.setText(s);
-                        editCabOrVendorValue.setSelection(editCabOrVendorValue.getText().length());
-                    }
-                }
-            });
-        } else {
-            /*We are in Expecting Package Arrival Screen hence ensuring the Input Type here is Cap Each Word*/
-            editCabOrVendorValue.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        }
     }
 
     /* ------------------------------------------------------------- *
@@ -215,7 +200,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonNotifyGate:
-                if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
+                if (isAllFieldsFilled(new EditText[]{editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editPickDateTime}) && isValidForSelected) {
                     if (arrivalType == R.string.expecting_cab_arrival) {
                         storeDigitalGateDetails(FIREBASE_CHILD_CABS);
                         Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
@@ -229,8 +214,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                         showSuccessDialog(getResources().getString(R.string.notification_title),
                                 getResources().getString(R.string.notification_message), packagesListIntent);
                     }
-                } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                    editCabOrVendorValue.setError(getString(R.string.please_fill_details));
+                } else if (editVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                    editVendorValue.setError(getString(R.string.please_fill_details));
                 }
                 break;
         }
@@ -275,7 +260,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
 
         //Get the details from user
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-        String cabDeliveryReference = editCabOrVendorValue.getText().toString();
+        String cabDeliveryReference = editCabStateCode.getText().toString().trim() + editCabRtoNumber.getText().toString().trim()
+                + editCabSerialNumberOne.getText().toString().trim() + editCabSerialNumberTwo.getText().toString().trim();
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
         String userUID = nammaApartmentUser.getUID();
@@ -312,6 +298,17 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         return R.string.package_vendor;
     }
 
+    /**
+     * This method gets invoked according to the screen title in displaying appropriate editTexts.
+     */
+    private void showAppropriateEditText() {
+        if (arrivalType == R.string.expecting_package_arrival) {
+            editVendorValue.setVisibility(View.VISIBLE);
+            editVendorValue.requestFocus();
+        } else {
+            cabNumberLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
     /*Method for ValidFor 8 Button clicks*/
     private void selectButton(int id) {
@@ -327,11 +324,99 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         }
     }
 
-    /**
-     * We are handling events for editText Cab or Vendor Name.
-     */
     private void setEventsForEditText() {
-        editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
+        editCabStateCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
+                    editCabRtoNumber.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable et) {
+                String s = et.toString();
+                    /*We check if the text user has entered is lowercase if it is in lowercase then we change it
+                    to upper case*/
+                if (!s.equals(s.toUpperCase())) {
+                    s = s.toUpperCase();
+                    editCabStateCode.setText(s);
+                    editCabStateCode.setSelection(editCabStateCode.getText().length());
+                }
+            }
+        });
+
+        editCabRtoNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                    editCabStateCode.requestFocus();
+                } else if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
+                    editCabSerialNumberOne.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable et) {
+            }
+        });
+
+        editCabSerialNumberOne.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                    editCabRtoNumber.requestFocus();
+                } else if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
+                    editCabSerialNumberTwo.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable et) {
+                String s = et.toString();
+                    /*We check if the text user has entered is lowercase if it is in lowercase then we change it
+                    to upper case*/
+                if (!s.equals(s.toUpperCase())) {
+                    s = s.toUpperCase();
+                    editCabSerialNumberOne.setText(s);
+                    editCabSerialNumberOne.setSelection(editCabSerialNumberOne.getText().length());
+                }
+            }
+        });
+
+        editCabSerialNumberTwo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
+                    editCabSerialNumberOne.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable et) {
+            }
+        });
+        editVendorValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -343,16 +428,18 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                if (arrivalType == R.string.expecting_cab_arrival) {
-                    if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                        editCabOrVendorValue.setError(getString(R.string.please_fill_details));
-                    }
-                } else {
-                    packageVendorName = editCabOrVendorValue.getText().toString().trim();
-                    if (packageVendorName.length() == EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(packageVendorName)) {
-                        editCabOrVendorValue.setError(getString(R.string.accept_alphabets));
-                    }
+            public void afterTextChanged(Editable et) {
+                String s = et.toString();
+                    /*We check if the text user has entered is lowercase if it is in lowercase then we change it
+                    to upper case*/
+                if (!s.equals(s.toUpperCase())) {
+                    s = s.toUpperCase();
+                    editVendorValue.setText(s);
+                    editVendorValue.setSelection(editVendorValue.getText().length());
+                }
+                packageVendorName = editVendorValue.getText().toString().trim();
+                if (isValidPersonName(packageVendorName)) {
+                    editVendorValue.setError(getString(R.string.accept_alphabets));
                 }
             }
         });

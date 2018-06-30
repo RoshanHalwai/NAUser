@@ -149,8 +149,8 @@
     <string name="cabs_number">Cab No:</string>
     <string name="package_name">Vendor:</string>
     <string name="cab_package_type">Guest</string>
-    <string name="cabs_unavailable_message">Sorry you cannot use this feature since currently there are no cab arrivals at your flat.</string>
-    <string name="deliveries_unavailable_message">Sorry you cannot use this feature since currently there are no package arrivals at your flat.</string>
+    <string name="cabs_unavailable_message">Sorry you cannot use this feature since currently there are no cab arrivals scheduled for your flat.</string>
+    <string name="deliveries_unavailable_message">Sorry you cannot use this feature since currently there are no package arrivals scheduled for your flat.</string>
 
     <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
@@ -177,7 +177,10 @@
     <string name="_16_hrs">16 hrs</string>
     <string name="_24_hrs">24 hrs</string>
     <string name="notify_gate">Notify Gate</string>
-
+    <string name="cab_state_code_hint">KA</string>
+    <string name="cab_rto_number_hint">01</string>
+    <string name="cab_serial_number_one_hint">AB</string>
+    <string name="cab_serial_number_two_hint">1234</string>
     <!--Handed Things To Guest Activity-->
     <string name="yes">Yes</string>
     <string name="no">No</string>
