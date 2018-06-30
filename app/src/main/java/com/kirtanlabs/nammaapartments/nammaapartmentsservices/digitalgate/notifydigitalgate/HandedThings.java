@@ -84,7 +84,7 @@ public class HandedThings extends BaseActivity {
         adapterDailyService = new HandedThingsToDailyServiceAdapter(nammaApartmentDailyServiceList, this);
 
         /*Retrieve those visitor details who status is Entered*/
-        if (handed_things_to == R.string.handed_things_to_my_guest) {
+        if (handed_things_to == R.string.my_guests) {
             //To retrieve user visitor list from firebase based on the their status.
             recyclerView.setAdapter(adapterVisitors);
             retrieveCurrentVisitorsFromFirebase();

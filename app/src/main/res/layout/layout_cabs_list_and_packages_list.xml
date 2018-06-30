@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,33 +22,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:weightSum="3">
+                android:weightSum="3"
+                tools:ignore="UselessParent">
 
                 <RelativeLayout
-                    android:id="@+id/layoutVisitorProfile"
+                    android:id="@+id/layoutCabAndPackageProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center">
 
-                    <com.wang.avi.AVLoadingIndicatorView
-                        android:id="@+id/animationWaitingForCustomers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        app:indicatorColor="@color/nmBlack"
-                        app:indicatorName="BallSpinFadeLoaderIndicator" />
-
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/visitorOrDailyServiceProfilePic"
+                        android:id="@+id/cabOrVendorProfilePic"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
+                        android:src="@drawable/taxi"
                         app:civ_border_color="@android:color/white"
                         app:civ_border_width="1dp" />
 
@@ -58,29 +52,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1.15"
+                    android:layout_weight="1.2"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textVisitorOrServiceName"
+                        android:id="@+id/textCabOrVendorTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/visitor"
+                        android:text="@string/cabs_number"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textVisitorOrServiceType"
+                        android:id="@+id/textCabOrVendorServiceStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/type"
+                        android:text="@string/status"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitationDateOrServiceRating"
+                        android:id="@+id/textCabOrVendorDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -89,7 +83,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitationTime"
+                        android:id="@+id/textCabOrVendorTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -98,7 +92,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitedByOrNumberOfFlats"
+                        android:id="@+id/textInviter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -113,11 +107,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="0.85"
+                    android:layout_weight="0.8"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textVisitorOrServiceNameValue"
+                        android:id="@+id/textCabOrVendorValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -127,7 +121,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textVisitorOrServiceTypeValue"
+                        android:id="@+id/textCabOrVendorStatusValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -135,7 +129,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitationDateOrServiceRatingValue"
+                        android:id="@+id/textCabOrVendorDateValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -143,7 +137,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitationTimeValue"
+                        android:id="@+id/textCabOrVendorTimeValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -151,7 +145,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textInvitedByOrNumberOfFlatsValue"
+                        android:id="@+id/textInviterValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -159,65 +153,6 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/row1"
-                android:background="@android:color/black" />
-
-            <LinearLayout
-                android:id="@+id/layoutIcons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/line"
-                android:layout_marginTop="10dp"
-                android:weightSum="4">
-
-                <TextView
-                    android:id="@+id/textCall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/call_new"
-                    android:gravity="center"
-                    android:text="@string/call"
-                    android:textColor="@color/nmBlack" />
-
-                <TextView
-                    android:id="@+id/textMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/message_new"
-                    android:gravity="center"
-                    android:text="@string/message"
-                    android:textColor="@color/nmBlack" />
-
-                <TextView
-                    android:id="@+id/textRescheduleOrEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/reschedule_new"
-                    android:gravity="center"
-                    android:text="@string/reschedule"
-                    android:textColor="@color/nmBlack" />
-
-                <TextView
-                    android:id="@+id/textCancel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/remove_new"
-                    android:gravity="center"
-                    android:text="@string/cancel"
-                    android:textColor="@color/nmBlack" />
 
             </LinearLayout>
 

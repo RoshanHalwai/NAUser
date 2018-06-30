@@ -126,10 +126,12 @@
     <string name="guests">Guests</string>
     <string name="package_arrivals">Package Arrivals</string>
     <string name="cab_arrivals">Cab Arrivals</string>
+    <string name="my_guests_list">My Guests List</string>
 
     <!--Guests List Activity-->
     <string name="my_guests">My Guests</string>
     <string name="visitor">Visitor:</string>
+    <string name="status">Status:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
     <string name="time">In Time:</string>
@@ -141,13 +143,19 @@
     <string name="visitor_cancel">Are you sure you want to remove this data?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no visitors at your flat.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
 
+    <!--Cabs List And PackagesList Activity-->
+    <string name="cabs_number">Cab No:</string>
+    <string name="package_name">Vendor:</string>
+    <string name="cab_package_type">Guest</string>
+    <string name="cabs_unavailable_message">Sorry you cannot use this feature since currently there are no cab arrivals at your flat.</string>
+    <string name="deliveries_unavailable_message">Sorry you cannot use this feature since currently there are no package arrivals at your flat.</string>
 
     <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
     <string name="expecting_package_arrival">Expecting Package Arrival</string>
-    <string name="expecting_visitor">Expecting Visitor</string>
+    <string name="expecting_guest">Expecting Guest</string>
     <string name="handed_things_to_my_guest">Handed Things To My Guest</string>
     <string name="handed_things_to_my_daily_services">Handed Things To My Daily Services</string>
     <string name="raise_fire_alarm">Raise Fire Alarm</string>
@@ -173,18 +181,18 @@
     <!--Handed Things To Guest Activity-->
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="given_things">Given Things:</string>
-    <string name="description">Description:(Optional)</string>
+    <string name="given_things">Handed Things</string>
+    <string name="guest_description_hint">Ex: Laptop</string>
+    <string name="description">Description (Optional)</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
     <string name="title_activity_daily_services">DailyServices</string>
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
-    <string name="my_guests">My Guests</string>
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
-    <string name="status">status</string>
+    <string name="daily_service_description_hint">Ex: Clothes</string>
 
     <!--Daily Services Home-->
     <string name="remove">Remove</string>

@@ -213,8 +213,7 @@
                     android:id="@+id/textDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_margin="10dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:text="@string/description"
@@ -231,6 +230,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:inputType="textCapWords"
+                    android:hint="@string/daily_service_description_hint"
                     android:textColor="@color/nmBlack"
                     android:textSize="@dimen/edit_text_default_size"
                     android:visibility="gone" />

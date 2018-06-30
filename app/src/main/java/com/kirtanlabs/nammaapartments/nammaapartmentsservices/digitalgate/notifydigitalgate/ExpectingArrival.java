@@ -3,8 +3,10 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notif
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.cabs.CabsList;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.packages.PackagesList;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
@@ -33,6 +37,7 @@ import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -143,30 +148,36 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnClickListener(this);
         buttonNotifyGate.setOnClickListener(this);
 
-        editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
+        /* We want to ensure each character of cab number be in Capital Letters */
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            editCabOrVendorValue.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable et) {
-                String s = et.toString();
-                /*We check if the text user has entered is lowercase if it is in lowercase then we change it
-                to upper case*/
-                if (!s.equals(s.toUpperCase())) {
-                    s = s.toUpperCase();
-                    editCabOrVendorValue.setText(s);
-                    editCabOrVendorValue.setSelection(editCabOrVendorValue.getText().length());
                 }
-            }
-        });
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable et) {
+                    String s = et.toString();
+                    /*We check if the text user has entered is lowercase if it is in lowercase then we change it
+                    to upper case*/
+                    if (!s.equals(s.toUpperCase())) {
+                        s = s.toUpperCase();
+                        editCabOrVendorValue.setText(s);
+                        editCabOrVendorValue.setSelection(editCabOrVendorValue.getText().length());
+                    }
+                }
+            });
+        } else {
+            /*We are in Expecting Package Arrival Screen hence ensuring the Input Type here is Cap Each Word*/
+            editCabOrVendorValue.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        }
     }
 
     /* ------------------------------------------------------------- *
@@ -207,11 +218,17 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 if (isAllFieldsFilled(new EditText[]{editCabOrVendorValue, editPickDateTime}) && isValidForSelected) {
                     if (arrivalType == R.string.expecting_cab_arrival) {
                         storeDigitalGateDetails(FIREBASE_CHILD_CABS);
+                        Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
+                        cabsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
+                        showSuccessDialog(getResources().getString(R.string.notification_title),
+                                getResources().getString(R.string.notification_message), cabsListIntent);
                     } else {
                         storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
+                        Intent packagesListIntent = new Intent(ExpectingArrival.this, PackagesList.class);
+                        packagesListIntent.putExtra(SCREEN_TITLE, getClass().toString());
+                        showSuccessDialog(getResources().getString(R.string.notification_title),
+                                getResources().getString(R.string.notification_message), packagesListIntent);
                     }
-                    showSuccessDialog(getResources().getString(R.string.notification_title),
-                            getResources().getString(R.string.notification_message), null);
                 } else if (editCabOrVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabOrVendorValue.setError(getString(R.string.please_fill_details));
                 }
