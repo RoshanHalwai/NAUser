@@ -11,11 +11,9 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,14 +31,13 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.guests.GuestsList;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_MIN_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
@@ -64,11 +61,9 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private EditText editPickDateTime;
     private EditText editVisitorName;
     private EditText editVisitorMobile;
-    private TextView textDescription;
     private TextView textErrorProfilePic;
     private Button buttonInvite;
-    private AlertDialog imageSelectingOptions;
-    private ListView listView;
+    private AlertDialog imageSelectionDialog;
     private String selectedDate;
     private String mobileNumber;
     private byte[] profilePhotoByteArray;
@@ -95,7 +90,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         showInfoButton();
 
         /*Custom DialogBox with list of all image services*/
-        setupCustomDialog();
+        createImageSelectionDialog();
 
         /*Getting Id's for all the views*/
         circleImageInvitingVisitors = findViewById(R.id.invitingVisitorsProfilePic);
@@ -106,7 +101,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         TextView textDateTime = findViewById(R.id.textDateTime);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         editPickDateTime = findViewById(R.id.editPickDateTime);
-        textDescription = findViewById(R.id.textDescription);
         editVisitorName = findViewById(R.id.editVisitorName);
         editVisitorMobile = findViewById(R.id.editMobileNumber);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
@@ -123,7 +117,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         textDateTime.setTypeface(setLatoBoldFont(this));
         textCountryCode.setTypeface(setLatoItalicFont(this));
         editPickDateTime.setTypeface(setLatoRegularFont(this));
-        textDescription.setTypeface(setLatoBoldFont(this));
         editVisitorName.setTypeface(setLatoRegularFont(this));
         editVisitorMobile.setTypeface(setLatoRegularFont(this));
         buttonSelectFromContact.setTypeface(setLatoLightFont(this));
@@ -136,8 +129,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnFocusChangeListener(this);
         buttonInvite.setOnClickListener(this);
 
-        /*This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.*/
-        setupViewsForProfilePhoto();
         /*This method gets invoked when user is trying to modify the values on EditTexts.*/
         setEventsForEditText();
     }
@@ -175,7 +166,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.invitingVisitorsProfilePic:
-                imageSelectingOptions.show();
+                imageSelectionDialog.show();
                 break;
             case R.id.buttonSelectFromContact:
                 showUserContacts();
@@ -229,47 +220,28 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
     /**
      * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
-     * imageSelectingOptions is displayed when user clicks on profile image which is on top of the screen.
+     * imageSelectionDialog is displayed when user clicks on profile image which is on top of the screen.
      */
-    private void setupCustomDialog() {
-        AlertDialog.Builder addImageDialog = new AlertDialog.Builder(this);
-        View listAddImageServices = View.inflate(this, R.layout.list_add_image_services, null);
-        addImageDialog.setView(listAddImageServices);
-        imageSelectingOptions = addImageDialog.create();
-        listView = listAddImageServices.findViewById(R.id.listAddImageService);
-    }
-
-    /**
-     * This method gets invoked when user is trying to capture their profile photo either by clicking on camera and gallery.
-     */
-    private void setupViewsForProfilePhoto() {
-        /*Creating an array list of selecting images from camera and gallery*/
-        ArrayList<String> pickImageList = new ArrayList<>();
-
-        /*Adding pick images services to the list*/
-        pickImageList.add(getString(R.string.camera));
-        pickImageList.add(getString(R.string.gallery));
-        pickImageList.add(getString(R.string.cancel));
-
-        /*Creating the Adapter*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(InvitingVisitors.this, android.R.layout.simple_list_item_1, pickImageList);
-
-        /*Attaching adapter to the listView*/
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-        /*Setting event for listview items*/
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            switch (position) {
+    private void createImageSelectionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String[] selectionOptions = {
+                getString(R.string.gallery),
+                getString(R.string.camera),
+                getString(R.string.cancel)
+        };
+        builder.setItems(selectionOptions, (dialog, which) -> {
+            switch (which) {
                 case 0:
-                    launchCamera();
-                    break;
-                case 1:
                     pickImageFromGallery();
                     break;
+                case 1:
+                    launchCamera();
+                    break;
+                case 2:
+                    imageSelectionDialog.cancel();
             }
-            imageSelectingOptions.cancel();
         });
+        imageSelectionDialog = builder.create();
     }
 
     /**
@@ -292,12 +264,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 String visitorsName = editVisitorName.getText().toString().trim();
                 String phoneNumber = editVisitorMobile.getText().toString().trim();
                 String dateTime = editPickDateTime.getText().toString().trim();
-                if (visitorsName.length() == Constants.EDIT_TEXT_MIN_LENGTH || isValidPersonName(visitorsName)) {
+                if (visitorsName.length() == EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(visitorsName)) {
                     editVisitorName.setError(getString(R.string.accept_alphabets));
                 }
-                if (visitorsName.length() > EDIT_TEXT_MIN_LENGTH) {
-                    if (dateTime.length() > EDIT_TEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                        textDescription.setVisibility(View.VISIBLE);
+                if (visitorsName.length() > EDIT_TEXT_EMPTY_LENGTH) {
+                    if (dateTime.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                         buttonInvite.setVisibility(View.VISIBLE);
                     }
                 }
@@ -311,21 +282,16 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textDescription.setVisibility(View.GONE);
                 buttonInvite.setVisibility(View.GONE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 mobileNumber = editVisitorMobile.getText().toString().trim();
-                if (mobileNumber.length() < PHONE_NUMBER_MAX_LENGTH) {
-                    editVisitorMobile.setError(getString(R.string.number_10digit_validation));
-                }
                 if (isValidPhone(mobileNumber) && mobileNumber.length() >= PHONE_NUMBER_MAX_LENGTH) {
                     //editVisitorMobile.setError(null);
                     String dateTime = editPickDateTime.getText().toString().trim();
-                    if (dateTime.length() > EDIT_TEXT_MIN_LENGTH) {
-                        textDescription.setVisibility(View.VISIBLE);
+                    if (dateTime.length() > EDIT_TEXT_EMPTY_LENGTH) {
                         buttonInvite.setVisibility(View.VISIBLE);
                     }
                 }
@@ -347,15 +313,14 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 String visitorName = editVisitorName.getText().toString().trim();
                 String phoneNumber = editVisitorMobile.getText().toString().trim();
                 boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editVisitorName, editVisitorMobile, editPickDateTime});
-                if (fieldsFilled && visitorName.length() > EDIT_TEXT_MIN_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                    textDescription.setVisibility(View.VISIBLE);
+                if (fieldsFilled && visitorName.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
                     buttonInvite.setVisibility(View.VISIBLE);
                 }
                 if ((!fieldsFilled)) {
-                    if (visitorName.length() == EDIT_TEXT_MIN_LENGTH) {
+                    if (visitorName.length() == EDIT_TEXT_EMPTY_LENGTH) {
                         editVisitorName.setError(getString(R.string.name_validation));
                     }
-                    if (phoneNumber.length() == EDIT_TEXT_MIN_LENGTH) {
+                    if (phoneNumber.length() == EDIT_TEXT_EMPTY_LENGTH) {
                         editVisitorMobile.setError(getString(R.string.mobile_number_validation));
                     }
                 }
