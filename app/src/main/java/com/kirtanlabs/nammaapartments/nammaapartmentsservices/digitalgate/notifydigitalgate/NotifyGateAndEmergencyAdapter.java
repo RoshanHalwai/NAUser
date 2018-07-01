@@ -14,6 +14,8 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentService;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.emergency.RaiseAlarm;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.arrivals.ExpectingArrival;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.HandedThings;
 
 import java.util.List;
 

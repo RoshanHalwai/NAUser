@@ -181,6 +181,7 @@
     <string name="cab_rto_number_hint">01</string>
     <string name="cab_serial_number_one_hint">AB</string>
     <string name="cab_serial_number_two_hint">1234</string>
+
     <!--Handed Things To Guest Activity-->
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -260,5 +261,6 @@
     <string name="invalid_email">Invalid Email Address</string>
     <string name="email_validation">Please Enter E-Mail Address</string>
     <string name="relation_check">Please check at least one Relation</string>
+    <string name="things">Things:</string>
 
 </resources>

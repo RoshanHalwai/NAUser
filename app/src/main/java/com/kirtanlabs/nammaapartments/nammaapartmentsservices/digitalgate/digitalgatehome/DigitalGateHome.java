@@ -14,6 +14,7 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydail
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 
 public class DigitalGateHome extends BaseActivity implements AdapterView.OnItemClickListener {
 
@@ -72,7 +73,7 @@ public class DigitalGateHome extends BaseActivity implements AdapterView.OnItemC
                 startActivity(new Intent(DigitalGateHome.this, MySweetHome.class));
                 break;
             case 5:
-                Intent intentEmergency = new Intent(DigitalGateHome.this, NotifyGateAndEmergencyHome.class);
+                Intent intentEmergency = new Intent(DigitalGateHome.this, HandedThingsHistory.class);
                 intentEmergency.putExtra(Constants.SERVICE_TYPE, R.string.emergency);
                 startActivity(intentEmergency);
                 break;

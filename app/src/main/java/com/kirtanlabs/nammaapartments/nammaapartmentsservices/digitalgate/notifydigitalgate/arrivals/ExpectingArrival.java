@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.arrivals;
 
 
 import android.app.DatePickerDialog;
