@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
@@ -464,6 +465,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             nammaApartmentDailyService.setFullName(updatedDailyServiceName);
             DatabaseReference updatedDailyServiceNameReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
                     .child(nammaApartmentDailyService.getUID())
+                    .child(NammaApartmentsGlobal.userUID)
                     .child(FIREBASE_CHILD_FULLNAME);
             updatedDailyServiceNameReference.setValue(updatedDailyServiceName);
         }
@@ -472,6 +474,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             nammaApartmentDailyService.setPhoneNumber(updatedDailyServiceMobileNumber);
             DatabaseReference updatedDailyServiceMobileNumberReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
                     .child(nammaApartmentDailyService.getUID())
+                    .child(NammaApartmentsGlobal.userUID)
                     .child(FIREBASE_CHILD_PHONENUMBER);
             updatedDailyServiceMobileNumberReference.setValue(updatedDailyServiceMobileNumber);
         }
@@ -480,6 +483,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
             nammaApartmentDailyService.setTimeOfVisit(updatedDailyServiceTime);
             DatabaseReference updatedDailyServiceTimeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceTypeValue)
                     .child(nammaApartmentDailyService.getUID())
+                    .child(NammaApartmentsGlobal.userUID)
                     .child(FIREBASE_CHILD_TIMEOFVISIT);
             updatedDailyServiceTimeReference.setValue(updatedDailyServiceTime);
         }
