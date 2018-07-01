@@ -21,7 +21,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentVisitor;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
@@ -42,16 +42,16 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private final List<NammaApartmentVisitor> nammaApartmentVisitorList;
+    private final List<NammaApartmentGuest> nammaApartmentGuestList;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    HandedThingsToVisitorsAdapter(List<NammaApartmentVisitor> nammaApartmentVisitorList, Context mCtx) {
+    HandedThingsToVisitorsAdapter(List<NammaApartmentGuest> nammaApartmentGuestList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
-        this.nammaApartmentVisitorList = nammaApartmentVisitorList;
+        this.nammaApartmentGuestList = nammaApartmentGuestList;
     }
 
     /* ------------------------------------------------------------- *
@@ -69,20 +69,20 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
 
     @Override
     public void onBindViewHolder(@NonNull HandedThingsToVisitorsAdapter.VisitorViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
-        NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
 
-        String dateAndTime = nammaApartmentVisitor.getDateAndTimeOfVisit();
+        String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
         String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
-        holder.textVisitorNameValue.setText(nammaApartmentVisitor.getFullName());
+        holder.textVisitorNameValue.setText(nammaApartmentGuest.getFullName());
         holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentVisitor.getProfilePhoto())
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.profileImage);
 
         /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
         firebase since we now know that the inviter is current user.*/
-        if (nammaApartmentVisitor.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+        if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
             holder.textInvitedByValue.setText(
                     ((NammaApartmentsGlobal) mCtx.getApplicationContext())
                             .getNammaApartmentUser()
@@ -91,7 +91,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
         } else {
             /*Visitor has been invited by some other family member; We check in firebase and get the name
              * of that family member*/
-            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentVisitor.getInviterUID());
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
             userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,7 +109,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
 
     @Override
     public int getItemCount() {
-        return nammaApartmentVisitorList.size();
+        return nammaApartmentGuestList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -196,7 +196,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-            NammaApartmentVisitor nammaApartmentVisitor = nammaApartmentVisitorList.get(position);
+            NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
             switch (v.getId()) {
                 case R.id.buttonYes:
                     textDescription.setVisibility(View.VISIBLE);
@@ -221,9 +221,9 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
 
                 case R.id.buttonNotifyGate:
                     String handedThingsDescription = editDescription.getText().toString();
-                    nammaApartmentVisitor.setHandedThingsDescription(handedThingsDescription);
+                    nammaApartmentGuest.setHandedThingsDescription(handedThingsDescription);
                     DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                            .child(nammaApartmentVisitor.getUid());
+                            .child(nammaApartmentGuest.getUid());
                     preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS).child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION).setValue(handedThingsDescription);
                     baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),

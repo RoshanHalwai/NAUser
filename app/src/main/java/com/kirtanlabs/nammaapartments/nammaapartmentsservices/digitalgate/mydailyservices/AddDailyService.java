@@ -31,9 +31,7 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,7 +49,6 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DRIVERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_OWNERSUID;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
@@ -416,96 +413,61 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String dailyServiceUID;
 
-                /*If daily service mobile number already exists we ensure that we add the current User's UID under
-                daily service Owner UID, so guard can access it from his App*/
-                if (dataSnapshot.exists()) {
-                    dailyServiceUID = Objects.requireNonNull(dataSnapshot.getValue()).toString();
-                    DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
-                    dailyServiceTypeReference.child(dailyServiceUID).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //Store daily service UID under userData -> dailyServices for future use
-                            DatabaseReference userDataDailyServiceReference = ((NammaApartmentsGlobal) getApplicationContext())
-                                    .getUserDataReference()
-                                    .child(FIREBASE_CHILD_DAILYSERVICES)
-                                    .child(dailyServiceChild);
-                            userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
+                dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-                            //Adding current userUID under DailyService Owner UID to indicate this daily service works in multiple flats
-                            String dailyServiceType = Objects.requireNonNull(dataSnapshot.getValue()).toString();
-                            DatabaseReference dailyServiceReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceType);
-                            dailyServiceReference.child(dailyServiceUID).child(FIREBASE_CHILD_OWNERSUID).child(NammaApartmentsGlobal.userUID).setValue(true);
+                //We map daily service mobile number with their UID to avoid other users to add same daily service again
+                dailyServiceMobileNumberReference.setValue(dailyServiceUID);
 
-                            //dismissing the progress dialog
-                            hideProgressDialog();
+                //Store UID with daily service type for access to Guard App
+                DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
+                dailyServiceTypeReference.child(dailyServiceUID).setValue(dailyServiceChild);
 
-                            /*Once we are done with adding User's UID under daily service owner UID, we navigate users to
-                            Daily service home to indicate their daily service has been added successfully*/
-                            showDailyServiceHome();
-                        }
+                //Store daily service details in Firebase
+                DatabaseReference dailyServicePublicReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceChild);
+                String fullName = editDailyServiceName.getText().toString();
+                String phoneNumber = editDailyServiceMobile.getText().toString();
+                String timeOfVisit = editPickTime.getText().toString();
+                int rating = Constants.FIREBASE_CHILD_RATING;
+                String userUID = NammaApartmentsGlobal.userUID;
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                //Store daily service UID under userData -> dailyServices for future use
+                DatabaseReference userDataDailyServiceReference = ((NammaApartmentsGlobal) getApplicationContext())
+                        .getUserDataReference()
+                        .child(FIREBASE_CHILD_DAILYSERVICES)
+                        .child(dailyServiceChild);
+                userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
 
-                        }
-                    });
-                } else {
-                    dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                //getting the storage reference
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
+                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                        .child(dailyServiceChild)
+                        .child(dailyServiceUID);
 
-                    //We map daily service mobile number with their UID to avoid other users to add same daily service again
-                    dailyServiceMobileNumberReference.setValue(dailyServiceUID);
+                UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
 
-                    //Store UID with daily service type for access to Guard App
-                    DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
-                    dailyServiceTypeReference.child(dailyServiceUID).setValue(dailyServiceChild);
+                //adding the profile photo to storage reference and daily service data to real time database
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
+                            dailyServiceUID, fullName,
+                            phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, rating);
 
-                    //Store daily service details in Firebase
-                    DatabaseReference dailyServicePublicReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceChild);
-                    String fullName = editDailyServiceName.getText().toString();
-                    String phoneNumber = editDailyServiceMobile.getText().toString();
-                    String timeOfVisit = editPickTime.getText().toString();
-                    int rating = Constants.FIREBASE_CHILD_RATING;
-                    String userUID = NammaApartmentsGlobal.userUID;
+                    //adding daily service data under Daily Service UID -> User UID
+                    dailyServicePublicReference.child(dailyServiceUID).child(userUID).setValue(nammaApartmentDailyService);
 
-                    //Store daily service UID under userData -> dailyServices for future use
-                    DatabaseReference userDataDailyServiceReference = ((NammaApartmentsGlobal) getApplicationContext())
-                            .getUserDataReference()
-                            .child(FIREBASE_CHILD_DAILYSERVICES)
-                            .child(dailyServiceChild);
-                    userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
+                        /* We add status directly under dailyService UID since Guard may change the status of the daily service
+                        and we would want all the users to know about it*/
+                    dailyServicePublicReference.child(dailyServiceUID).child("status").setValue(NOT_ENTERED);
 
-                    //getting the storage reference
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
-                            .child(Constants.FIREBASE_CHILD_PRIVATE)
-                            .child(dailyServiceChild)
-                            .child(dailyServiceUID);
+                    //dismissing the progress dialog
+                    hideProgressDialog();
 
-                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
-
-                    //adding the profile photo to storage reference and daily service data to real time database
-                    Map<String, Boolean> ownersUID = new HashMap<>();
-                    ownersUID.put(userUID, Boolean.TRUE);
-                    uploadTask.addOnSuccessListener(taskSnapshot -> {
-                        NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
-                                ownersUID,
-                                NOT_ENTERED,
-                                dailyServiceUID, fullName,
-                                phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, rating);
-
-                        //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
-                        dailyServicePublicReference.child(dailyServiceUID).setValue(nammaApartmentDailyService);
-
-                        //dismissing the progress dialog
-                        hideProgressDialog();
-
-                        /*Once we are done with storing data we need to call the Daily Services
-                         * Home screen again to show users that their Daily Service has been added successfully*/
-                        showDailyServiceHome();
-                    }).addOnFailureListener(exception -> {
-                        hideProgressDialog();
-                        Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-                }
+                    /*Once we are done with storing data we need to call the Daily Services
+                     * Home screen again to show users that their Daily Service has been added successfully*/
+                    showDailyServiceHome();
+                }).addOnFailureListener(exception -> {
+                    hideProgressDialog();
+                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override

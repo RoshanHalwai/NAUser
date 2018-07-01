@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -200,22 +201,24 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonNotifyGate:
-                if (isAllFieldsFilled(new EditText[]{editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editPickDateTime}) && isValidForSelected) {
-                    if (arrivalType == R.string.expecting_cab_arrival) {
+                if (arrivalType == R.string.expecting_cab_arrival) {
+                    if (isAllFieldsFilled(new EditText[]{editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editPickDateTime}) && isValidForSelected) {
                         storeDigitalGateDetails(FIREBASE_CHILD_CABS);
                         Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
                         cabsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
                         showSuccessDialog(getResources().getString(R.string.notification_title),
                                 getResources().getString(R.string.notification_message), cabsListIntent);
-                    } else {
+                    }
+                } else {
+                    if (isAllFieldsFilled(new EditText[]{editVendorValue, editPickDateTime}) && isValidForSelected) {
                         storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
                         Intent packagesListIntent = new Intent(ExpectingArrival.this, PackagesList.class);
                         packagesListIntent.putExtra(SCREEN_TITLE, getClass().toString());
                         showSuccessDialog(getResources().getString(R.string.notification_title),
                                 getResources().getString(R.string.notification_message), packagesListIntent);
+                    } else {
+                        editVendorValue.setError(getString(R.string.please_fill_details));
                     }
-                } else if (editVendorValue.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                    editVendorValue.setError(getString(R.string.please_fill_details));
                 }
                 break;
         }
@@ -260,15 +263,20 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
 
         //Get the details from user
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-        String cabDeliveryReference = editCabStateCode.getText().toString().trim() + editCabRtoNumber.getText().toString().trim()
-                + editCabSerialNumberOne.getText().toString().trim() + editCabSerialNumberTwo.getText().toString().trim();
+        String reference;
+        if (TextUtils.isEmpty(editVendorValue.getText())) {
+            reference = editCabStateCode.getText().toString().trim() + editCabRtoNumber.getText().toString().trim()
+                    + editCabSerialNumberOne.getText().toString().trim() + editCabSerialNumberTwo.getText().toString().trim();
+        } else {
+            reference = editVendorValue.getText().toString();
+        }
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
         String userUID = nammaApartmentUser.getUID();
-        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(cabDeliveryReference, dateTimeOfVisit, validFor, userUID, NOT_ENTERED);
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(reference, dateTimeOfVisit, validFor, userUID, NOT_ENTERED);
 
         //Store cabs/deliveries uid and value under userdata->private->currentUserFlat
-        DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(cabDeliveryReference);
+        DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(reference);
         String digitalGateUID = digitalGateUIDReference.push().getKey();
         DatabaseReference digitalGateReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference()
@@ -279,7 +287,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         //Store the details of cab/delivery in cabs/deliveries->public->uid
         if (arrivalType == R.string.expecting_cab_arrival) {
             DatabaseReference cabNumberReference = PRIVATE_CABS_REFERENCE.child(FIREBASE_CHILD_ALL);
-            cabNumberReference.child(cabDeliveryReference).setValue(digitalGateUID);
+            cabNumberReference.child(reference).setValue(digitalGateUID);
             DatabaseReference cabDetailsReference = PUBLIC_CABS_REFERENCE.child(digitalGateUID);
             cabDetailsReference.setValue(nammaApartmentArrival);
         } else {
@@ -289,7 +297,6 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             deliveryDetailsReference.setValue(nammaApartmentArrival);
         }
     }
-
 
     private int getCarOrPackageArrivalTitle() {
         if (arrivalType == R.string.expecting_cab_arrival) {

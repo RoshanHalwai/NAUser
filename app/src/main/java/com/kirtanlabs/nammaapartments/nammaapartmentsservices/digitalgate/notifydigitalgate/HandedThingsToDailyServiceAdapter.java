@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 
@@ -61,13 +62,13 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
 
     @Override
     public void onBindViewHolder(@NonNull HandedThingsToDailyServiceAdapter.DailyServiceViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentVisitor class and retrieving the values from Firebase
+        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getfullName());
         holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getOwnersUID().size()));
+        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNumberOfFlats()));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.profileImage);
     }
@@ -191,7 +192,9 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                     String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
                     DatabaseReference DailyServicesReference = PUBLIC_DAILYSERVICES_REFERENCE
                             .child(dailyServiceTypeValue)
-                            .child(nammaApartmentDailyService.getUID());
+                            .child(nammaApartmentDailyService.getUID())
+                            .child(NammaApartmentsGlobal.userUID);
+                    ;
                     DailyServicesReference.child(FIREBASE_CHILD_HANDED_THINGS)
                             .child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION)
                             .setValue(handedThingsDescription);

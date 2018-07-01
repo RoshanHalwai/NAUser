@@ -351,25 +351,25 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         String visitorName = editVisitorName.getText().toString();
         String visitorMobile = editVisitorMobile.getText().toString();
         String visitorDateTime = editPickDateTime.getText().toString();
-        NammaApartmentVisitor nammaApartmentVisitor = new NammaApartmentVisitor(visitorUID,
+        NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(visitorUID,
                 visitorName, visitorMobile, visitorDateTime, Constants.NOT_ENTERED, NammaApartmentsGlobal.userUID);
 
         //getting the storage reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
-                .child(nammaApartmentVisitor.getUid());
+                .child(nammaApartmentGuest.getUid());
 
         UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
 
         //adding the profile photo to storage reference and visitor data to real time database
         uploadTask.addOnSuccessListener(taskSnapshot -> {
             //creating the upload object to store uploaded image details
-            nammaApartmentVisitor.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
+            nammaApartmentGuest.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
             //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
-            DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentVisitor.getUid());
-            preApprovedVisitorData.setValue(nammaApartmentVisitor);
+            DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());
+            preApprovedVisitorData.setValue(nammaApartmentGuest);
 
             //dismissing the progress dialog
             hideProgressDialog();

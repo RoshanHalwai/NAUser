@@ -5,7 +5,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invit
  * Created by Ashish Jha on 6/7/2018
  */
 
-public class NammaApartmentVisitor {
+public class NammaApartmentGuest {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -24,10 +24,10 @@ public class NammaApartmentVisitor {
      * Constructors
      * ------------------------------------------------------------- */
 
-    public NammaApartmentVisitor() {
+    public NammaApartmentGuest() {
     }
 
-    NammaApartmentVisitor(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
+    NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
