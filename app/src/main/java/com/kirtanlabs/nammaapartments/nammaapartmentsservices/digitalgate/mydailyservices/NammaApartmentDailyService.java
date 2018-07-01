@@ -18,6 +18,7 @@ public class NammaApartmentDailyService implements Serializable {
     private String fullName;
     private String phoneNumber;
     private String profilePhoto;
+    private String dateOfVisit;
     private String timeOfVisit;
     private int rating;
     private String uid;
@@ -85,6 +86,10 @@ public class NammaApartmentDailyService implements Serializable {
         return status;
     }
 
+    public String getDateOfVisit() {
+        return dateOfVisit;
+    }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -115,5 +120,9 @@ public class NammaApartmentDailyService implements Serializable {
 
     public void setNumberOfFlats(long numberOfFlats) {
         this.numberOfFlats = numberOfFlats;
+    }
+
+    public void setDateOfVisit(String dateOfVisit) {
+        this.dateOfVisit = dateOfVisit;
     }
 }

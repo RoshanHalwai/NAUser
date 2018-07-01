@@ -99,7 +99,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         backButton.setVisibility(View.VISIBLE);
     }
 
-
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "IMG_" + timeStamp + "_";

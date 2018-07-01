@@ -1,8 +1,11 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,6 +17,7 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVI
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class HandedThings extends BaseActivity {
 
@@ -71,7 +76,6 @@ public class HandedThings extends BaseActivity {
         /*We need Progress Indicator in this screen*/
         showProgressIndicator();
 
-
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -94,6 +98,16 @@ public class HandedThings extends BaseActivity {
             recyclerView.setAdapter(adapterDailyService);
             checkAndRetrieveCurrentDailyServices();
         }
+
+        /*Since we have History button here, we would want to perform navigate users to Handed Things history
+         * and display data based on the screen title*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+        historyButton.setOnClickListener(v -> {
+            Intent handedThingsHistoryIntent = new Intent(HandedThings.this, HandedThingsHistory.class);
+            handedThingsHistoryIntent.putExtra(SCREEN_TITLE, handed_things_to);
+            startActivity(handedThingsHistoryIntent);
+        });
 
     }
 

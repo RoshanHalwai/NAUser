@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -222,14 +222,17 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
                     break;
 
                 case R.id.buttonNotifyGate:
+                    Intent handedThingsHistoryIntent = new Intent(mCtx, HandedThingsHistory.class);
+                    handedThingsHistoryIntent.putExtra(SCREEN_TITLE, R.string.my_guests);
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentGuest.setHandedThingsDescription(handedThingsDescription);
                     DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
                             .child(nammaApartmentGuest.getUid());
-                    preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS).child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION).setValue(handedThingsDescription);
+                    preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)
+                            .setValue(handedThingsDescription);
                     baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),
-                            new Intent(mCtx, HandedThingsHistory.class));
+                            handedThingsHistoryIntent);
                     break;
             }
         }

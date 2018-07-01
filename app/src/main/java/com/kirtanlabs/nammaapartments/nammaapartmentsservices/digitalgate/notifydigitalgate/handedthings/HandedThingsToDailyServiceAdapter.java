@@ -20,11 +20,14 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -188,21 +191,28 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                     break;
 
                 case R.id.buttonNotifyGate:
+                    Intent handedThingsHistoryIntent = new Intent(mCtx, HandedThingsHistory.class);
+                    handedThingsHistoryIntent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentDailyService.setDailyServiceHandedThingsDescription(handedThingsDescription);
                     String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
                     String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
+
+                    /*We need to keep track of when users are handing things to their visitors hence
+                     * we map Date with Things, since date is unique*/
+                    Date todayDate = new Date();
+                    SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    String todayDateString = sm.format(todayDate);
                     DatabaseReference DailyServicesReference = PUBLIC_DAILYSERVICES_REFERENCE
                             .child(dailyServiceTypeValue)
                             .child(nammaApartmentDailyService.getUID())
                             .child(NammaApartmentsGlobal.userUID);
-                    ;
                     DailyServicesReference.child(FIREBASE_CHILD_HANDED_THINGS)
-                            .child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION)
+                            .child(todayDateString)
                             .setValue(handedThingsDescription);
                     baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),
-                            new Intent(mCtx, HandedThingsHistory.class));
+                            handedThingsHistoryIntent);
                     break;
             }
         }
