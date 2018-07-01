@@ -1,9 +1,10 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +13,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<HandedThingsToDailyServiceAdapter.DailyServiceViewHolder> implements View.OnClickListener {
+public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdapter.VisitorViewHolder> implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -35,16 +42,16 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private final List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
+    private final List<NammaApartmentGuest> nammaApartmentGuestList;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    HandedThingsToDailyServiceAdapter(List<NammaApartmentDailyService> nammaApartmentDailyServiceList, Context mCtx) {
+    GuestsHistoryAdapter(List<NammaApartmentGuest> nammaApartmentGuestList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
-        this.nammaApartmentDailyServiceList = nammaApartmentDailyServiceList;
+        this.nammaApartmentGuestList = nammaApartmentGuestList;
     }
 
     /* ------------------------------------------------------------- *
@@ -53,29 +60,57 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
 
     @NonNull
     @Override
-    public HandedThingsToDailyServiceAdapter.DailyServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GuestsHistoryAdapter.VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_handed_things_to_daily_services, parent, false);
-        return new HandedThingsToDailyServiceAdapter.DailyServiceViewHolder(view);
+        View view = inflater.inflate(R.layout.layout_guests_history, parent, false);
+        return new GuestsHistoryAdapter.VisitorViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HandedThingsToDailyServiceAdapter.DailyServiceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GuestsHistoryAdapter.VisitorViewHolder holder, int position) {
         //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
-        NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
-        holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
-        holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getfullName());
-        holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
-        holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNumberOfFlats()));
-        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
+        NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
+
+        String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
+        String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
+        holder.textVisitorNameValue.setText(nammaApartmentGuest.getFullName());
+        holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
+        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+        holder.textHandedThingsValue.setText(nammaApartmentGuest.getHandedThingsDescription());
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.profileImage);
+
+        /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
+        firebase since we now know that the inviter is current user.*/
+        if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+            holder.textInvitedByValue.setText(
+                    ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                            .getNammaApartmentUser()
+                            .getPersonalDetails()
+                            .getFullName());
+        } else {
+            /*Visitor has been invited by some other family member; We check in firebase and get the name
+             * of that family member*/
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
+            userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                    holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return nammaApartmentDailyServiceList.size();
+        return nammaApartmentGuestList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -86,22 +121,22 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
 
     }
 
-    class DailyServiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class VisitorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
          * Private Members
          * ------------------------------------------------------------- */
 
-        private final TextView textDailyServiceName;
-        private final TextView textDailyServiceType;
-        private final TextView textDailyServiceRating;
+        private final TextView textVisitorName;
+        private final TextView textVisitorNameValue;
+        private final TextView textHandedThings;
+        private final TextView textHandedThingsValue;
+        private final TextView textInvitationDate;
+        private final TextView textInvitationDateValue;
         private final TextView textInvitationTime;
-        private final TextView textDailyServiceNoOfFlats;
-        private final TextView textDailyServiceNameValue;
-        private final TextView textDailyServiceTypeValue;
-        private final TextView textDailyServiceRatingValue;
         private final TextView textInvitationTimeValue;
-        private final TextView textDailyServiceNoOfFlatsValue;
+        private final TextView textInvitedBy;
+        private final TextView textInvitedByValue;
         private final TextView textGivenThings;
         private final TextView textDescription;
         private final EditText editDescription;
@@ -116,18 +151,18 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
          * Constructor
          * ------------------------------------------------------------- */
 
-        DailyServiceViewHolder(View itemView) {
+        VisitorViewHolder(View itemView) {
             super(itemView);
-            textDailyServiceName = itemView.findViewById(R.id.textDailyServiceName);
-            textDailyServiceType = itemView.findViewById(R.id.textDailyServiceType);
-            textDailyServiceRating = itemView.findViewById(R.id.textRating);
+            textVisitorName = itemView.findViewById(R.id.textVisitorName);
+            textHandedThings = itemView.findViewById(R.id.textHandedThings);
+            textInvitationDate = itemView.findViewById(R.id.textInvitationDate);
             textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
-            textDailyServiceNoOfFlats = itemView.findViewById(R.id.textDailyServiceNoOfFlats);
-            textDailyServiceNameValue = itemView.findViewById(R.id.textDailyServiceNameValue);
-            textDailyServiceTypeValue = itemView.findViewById(R.id.textDailyServiceTypeValue);
-            textDailyServiceRatingValue = itemView.findViewById(R.id.textRatingValue);
+            textInvitedBy = itemView.findViewById(R.id.textInvitedBy);
+            textVisitorNameValue = itemView.findViewById(R.id.textVisitorNameValue);
+            textHandedThingsValue = itemView.findViewById(R.id.textHandedThingsValue);
+            textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateValue);
             textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
-            textDailyServiceNoOfFlatsValue = itemView.findViewById(R.id.textNoOfFlatValue);
+            textInvitedByValue = itemView.findViewById(R.id.textInvitedByValue);
             textGivenThings = itemView.findViewById(R.id.textGivenThings);
             textDescription = itemView.findViewById(R.id.textDescription);
             editDescription = itemView.findViewById(R.id.editDescription);
@@ -137,22 +172,22 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
             profileImage = itemView.findViewById(R.id.profileImage);
 
             //Setting Fonts for all the views on cardview
-            textDailyServiceName.setTypeface(setLatoRegularFont(mCtx));
-            textDailyServiceType.setTypeface(setLatoRegularFont(mCtx));
-            textDailyServiceRating.setTypeface(setLatoRegularFont(mCtx));
+            textVisitorName.setTypeface(setLatoRegularFont(mCtx));
+            textHandedThings.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
             textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
-            textDailyServiceNoOfFlats.setTypeface(setLatoRegularFont(mCtx));
+            textInvitedBy.setTypeface(setLatoRegularFont(mCtx));
             textGivenThings.setTypeface(setLatoBoldFont(mCtx));
             textDescription.setTypeface(setLatoBoldFont(mCtx));
             editDescription.setTypeface(setLatoRegularFont(mCtx));
             buttonYes.setTypeface(setLatoRegularFont(mCtx));
             buttonNo.setTypeface(setLatoRegularFont(mCtx));
             buttonNotifyGate.setTypeface(setLatoLightFont(mCtx));
-            textDailyServiceNameValue.setTypeface(setLatoBoldFont(mCtx));
-            textDailyServiceTypeValue.setTypeface(setLatoBoldFont(mCtx));
-            textDailyServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
+            textVisitorNameValue.setTypeface(setLatoBoldFont(mCtx));
+            textHandedThingsValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationDateValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
-            textDailyServiceNoOfFlatsValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
 
             buttonYes.setOnClickListener(this);
             buttonNo.setOnClickListener(this);
@@ -162,7 +197,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-            NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
+            NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
             switch (v.getId()) {
                 case R.id.buttonYes:
                     textDescription.setVisibility(View.VISIBLE);
@@ -187,17 +222,10 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
 
                 case R.id.buttonNotifyGate:
                     String handedThingsDescription = editDescription.getText().toString();
-                    nammaApartmentDailyService.setDailyServiceHandedThingsDescription(handedThingsDescription);
-                    String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-                    String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
-                    DatabaseReference DailyServicesReference = PUBLIC_DAILYSERVICES_REFERENCE
-                            .child(dailyServiceTypeValue)
-                            .child(nammaApartmentDailyService.getUID())
-                            .child(NammaApartmentsGlobal.userUID);
-                    ;
-                    DailyServicesReference.child(FIREBASE_CHILD_HANDED_THINGS)
-                            .child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION)
-                            .setValue(handedThingsDescription);
+                    nammaApartmentGuest.setHandedThingsDescription(handedThingsDescription);
+                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
+                            .child(nammaApartmentGuest.getUid());
+                    preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS).child(FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION).setValue(handedThingsDescription);
                     baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),
                             null);

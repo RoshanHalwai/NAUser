@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
