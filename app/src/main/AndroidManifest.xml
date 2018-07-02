@@ -93,11 +93,11 @@
             android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.ExpectingArrival"
+            android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.arrivals.ExpectingArrival"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.HandedThings"
+            android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.HandedThings"
             android:screenOrientation="portrait" />
         <activity
             android:name=".nammaapartmentsservices.digitalgate.mydailyservices.DailyServicesHome"
@@ -117,7 +117,6 @@
         <activity
             android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList"
             android:screenOrientation="portrait" />
@@ -138,6 +137,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory"></activity>
     </application>
 
 </manifest>
