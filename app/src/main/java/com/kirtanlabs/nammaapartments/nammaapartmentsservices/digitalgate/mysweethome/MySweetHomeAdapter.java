@@ -1,8 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -28,7 +27,6 @@ import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
-import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
 
@@ -109,30 +107,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     @Override
     public int getItemCount() {
         return nammaApartmentFamilyMembersList.size();
-    }
-
-    /* ------------------------------------------------------------- *
-     * Private Methods
-     * ------------------------------------------------------------- */
-
-    /**
-     * This method gets invoked when non admin family member tries to edit or remove admin details.
-     *
-     * @param message contains the string in dialog box.
-     */
-    private void openNotificationDialog(String message) {
-        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(mCtx);
-        View notificationDialog = View.inflate(mCtx, R.layout.layout_feature_unavailable, null);
-        TextView textFeatureUnavailable = notificationDialog.findViewById(R.id.textFeatureUnavailable);
-        textFeatureUnavailable.setTypeface(setLatoItalicFont(mCtx));
-        textFeatureUnavailable.setText(message);
-        alertNotificationDialog.setView(notificationDialog);
-
-        // Setting Custom Dialog Buttons
-        alertNotificationDialog.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
-
-        new Dialog(mCtx);
-        alertNotificationDialog.show();
     }
 
     /* ------------------------------------------------------------- *
@@ -223,7 +197,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
             //Here first we are getting current user admin value based on the NammaApartment class.
             NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
-            boolean currentUserAccessValue = currentNammaApartmentUser.getPrivileges().isAdmin();
+            boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
             switch (v.getId()) {
                 case R.id.textCall:
                     baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
@@ -234,30 +208,35 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                 case R.id.textRescheduleOrEdit:
                     //Here we are checking if the value is true i.e he is admin and can edit other
                     //non admin family members.
-                    if (currentUserAccessValue) {
+                    if (isAdmin) {
                         Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
                         EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
                         EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
                         mCtx.startActivity(EditIntentFamilyMembers);
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
-                        openNotificationDialog(mCtx.getResources().getString(R.string.non_admin_edit_message));
+                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
+                                mCtx.getResources().getString(R.string.non_admin_edit_message)
+                                , null);
                     }
                     break;
                 case R.id.textCancel:
                     //Here we are checking if the value is true i.e he is admin and can remove other
                     //non admin family members.
-                    if (currentUserAccessValue) {
+                    if (isAdmin) {
                         nammaApartmentFamilyMembersList.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
                         String familyMemberUid = nammaApartmentFamilyMembers.getUID();
-                        PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
-                                .child(familyMemberUid)
-                                .removeValue();
+                        DatabaseReference adminDataReference = PRIVATE_FLATS_REFERENCE
+                                .child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
+                                .child(familyMemberUid);
+                        adminDataReference.removeValue();
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
-                        openNotificationDialog(mCtx.getResources().getString(R.string.non_admin_remove_message));
+                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
+                                mCtx.getResources().getString(R.string.non_admin_remove_message)
+                                , null);
                     }
                     break;
             }
