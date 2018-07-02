@@ -48,6 +48,7 @@ public class Constants {
     public static final int EDIT_TEXT_EMPTY_LENGTH = 0;
     public static final int CAB_NUMBER_FIELD_LENGTH = 2;
     public static final String COUNTRY_CODE_IN = "+91";
+    public static final String CAB_NUMBER_HYPHEN_STORAGE = "-";
 
     /* ------------------------------------------------------------- *
      * Login/OTP Constants
