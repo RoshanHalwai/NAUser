@@ -64,7 +64,7 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
         holder.textCabDateValue.setText(separatedDateAndTime[0]);
         holder.textCabTimeValue.setText(separatedDateAndTime[1]);
 
-        /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
+        /*We check if the invitors UID is equal to current UID if it is then we don't have to check in
         firebase since we now know that the inviter is current user.*/
         if (nammaApartmentArrival.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
             holder.textInviterValue.setText(
@@ -75,7 +75,7 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
         } else {
             /*Cab has been invited by some other family member; We check in firebase and get the name
              * of that family member*/
-            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID);
+            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentArrival.getInviterUID());
             userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
