@@ -16,9 +16,11 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.arrivals.NammaApartmentArrival;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -76,7 +78,7 @@ public class CabsList extends BaseActivity {
         recyclerView.setAdapter(cabsListAdapter);
 
         //To retrieve user cabs list from firebase
-        retrieveCabsDetailsFromFirebase();
+        checkAndRetrieveCabDetails();
     }
 
 
@@ -106,19 +108,56 @@ public class CabsList extends BaseActivity {
      * ------------------------------------------------------------- */
 
     /**
-     * This method gets invoked to retrieve all user cabs details from firebase.
+     * Check if the flat has any cabs booked. If it does not have any cabs booked we show cabs unavailable message
+     * Else, we display the cabs of the current user and their family members
      */
-    private void retrieveCabsDetailsFromFirebase() {
+    private void checkAndRetrieveCabDetails() {
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference();
         DatabaseReference myCabsReference = userDataReference.child(Constants.FIREBASE_CHILD_CABS);
-        myCabsReference.child(NammaApartmentsGlobal.userUID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        /*We first check if this flat has any cabs*/
+        myCabsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    hideProgressIndicator();
+                    showFeatureUnavailableLayout(R.string.cabs_unavailable_message);
+                } else {
+                    //Retrieve user cabs list from firebase
+                    retrieveCabsDetailsFromFirebase(NammaApartmentsGlobal.userUID);
+
+                    //Retrieve user family member cabs list from firebase
+                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+                    Map<String, Boolean> familyMembers = currentNammaApartmentUser.getFamilyMembers();
+                    if (familyMembers != null && !familyMembers.isEmpty()) {
+                        for (String userUID : familyMembers.keySet()) {
+                            retrieveCabsDetailsFromFirebase(userUID);
+                        }
+                    }
+                    //TODO: Ensure user friends cabs are not added in Cabs List
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * We retrieve cabs for current user and their family members if any.
+     */
+    private void retrieveCabsDetailsFromFirebase(String userUid) {
+        //First retrieve the current user cabs
+        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference();
+        DatabaseReference myCabsReference = userDataReference.child(Constants.FIREBASE_CHILD_CABS);
+        myCabsReference.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hideProgressIndicator();
-                if (!dataSnapshot.exists()) {
-                    showFeatureUnavailableLayout(R.string.cabs_unavailable_message);
-                } else {
                     for (DataSnapshot cabsSnapshot : dataSnapshot.getChildren()) {
                         DatabaseReference cabsDataReference = PUBLIC_CABS_REFERENCE
                                 .child(cabsSnapshot.getKey());
@@ -137,7 +176,6 @@ public class CabsList extends BaseActivity {
                         });
                     }
                 }
-            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
