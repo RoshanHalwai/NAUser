@@ -112,11 +112,13 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     }
 
     /* ------------------------------------------------------------- *
-     * My Sweet Home Holder class
+     * Private Methods
      * ------------------------------------------------------------- */
 
     /**
-     * This method gets invoked when non admin family member tries to edit admin details.
+     * This method gets invoked when non admin family member tries to edit or remove admin details.
+     *
+     * @param message contains the string in dialog box.
      */
     private void openNotificationDialog(String message) {
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(mCtx);
@@ -132,6 +134,10 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         new Dialog(mCtx);
         alertNotificationDialog.show();
     }
+
+    /* ------------------------------------------------------------- *
+     * My Sweet Home Holder class
+     * ------------------------------------------------------------- */
 
     class MySweetHomeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -215,9 +221,9 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         public void onClick(View v) {
             int position = getLayoutPosition();
             NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
-            NammaApartmentUser currentNammaApartmentsUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext())
-                    .getNammaApartmentUser();
-            boolean currentUserAccessValue = currentNammaApartmentsUser.getPrivileges().isAdmin();
+            //Here first we are getting current user admin value based on the NammaApartment class.
+            NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
+            boolean currentUserAccessValue = currentNammaApartmentUser.getPrivileges().isAdmin();
             switch (v.getId()) {
                 case R.id.textCall:
                     baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
@@ -226,27 +232,31 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
+                    //Here we are checking if the value is true i.e he is admin and can edit other
+                    //non admin family members.
                     if (currentUserAccessValue) {
                         Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
                         EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
                         EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
                         mCtx.startActivity(EditIntentFamilyMembers);
-                        break;
                     } else {
+                        //Here we are showing users a dialog box since they are not admin of that particular flat.
                         openNotificationDialog(mCtx.getResources().getString(R.string.non_admin_edit_message));
                     }
                     break;
                 case R.id.textCancel:
+                    //Here we are checking if the value is true i.e he is admin and can remove other
+                    //non admin family members.
                     if (currentUserAccessValue) {
                         nammaApartmentFamilyMembersList.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
                         String familyMemberUid = nammaApartmentFamilyMembers.getUID();
-                        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
                         PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
                                 .child(familyMemberUid)
                                 .removeValue();
                     } else {
+                        //Here we are showing users a dialog box since they are not admin of that particular flat.
                         openNotificationDialog(mCtx.getResources().getString(R.string.non_admin_remove_message));
                     }
                     break;
