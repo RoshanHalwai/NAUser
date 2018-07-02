@@ -244,6 +244,8 @@
     <string name="adding_your_family_member">Adding your Family Member</string>
     <string name="family_member_success_title">Family Member Message</string>
     <string name="family_member_success_message">You have successfully added your Family Member.</string>
+    <string name="non_admin_add_family_members_title">Add Family Members Message</string>
+    <string name="non_admin_add_family_members_message">Sorry you cannot add family members to this flat since you are not the admin for this flat.</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
