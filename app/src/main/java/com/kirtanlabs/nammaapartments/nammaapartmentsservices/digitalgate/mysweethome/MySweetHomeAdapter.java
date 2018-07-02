@@ -1,6 +1,8 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -26,6 +28,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
 
@@ -112,6 +115,24 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
      * My Sweet Home Holder class
      * ------------------------------------------------------------- */
 
+    /**
+     * This method gets invoked when non admin family member tries to edit admin details.
+     */
+    private void openNotificationDialog(String message) {
+        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(mCtx);
+        View notificationDialog = View.inflate(mCtx, R.layout.layout_feature_unavailable, null);
+        TextView textFeatureUnavailable = notificationDialog.findViewById(R.id.textFeatureUnavailable);
+        textFeatureUnavailable.setTypeface(setLatoItalicFont(mCtx));
+        textFeatureUnavailable.setText(message);
+        alertNotificationDialog.setView(notificationDialog);
+
+        // Setting Custom Dialog Buttons
+        alertNotificationDialog.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+
+        new Dialog(mCtx);
+        alertNotificationDialog.show();
+    }
+
     class MySweetHomeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
@@ -194,6 +215,9 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         public void onClick(View v) {
             int position = getLayoutPosition();
             NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
+            NammaApartmentUser currentNammaApartmentsUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                    .getNammaApartmentUser();
+            boolean currentUserAccessValue = currentNammaApartmentsUser.getPrivileges().isAdmin();
             switch (v.getId()) {
                 case R.id.textCall:
                     baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
@@ -202,20 +226,29 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
-                    EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
-                    EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
-                    mCtx.startActivity(EditIntentFamilyMembers);
+                    if (currentUserAccessValue) {
+                        Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
+                        EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
+                        EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
+                        mCtx.startActivity(EditIntentFamilyMembers);
+                        break;
+                    } else {
+                        openNotificationDialog(mCtx.getResources().getString(R.string.non_admin_edit_message));
+                    }
                     break;
                 case R.id.textCancel:
-                    nammaApartmentFamilyMembersList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
-                    String familyMemberUid = nammaApartmentFamilyMembers.getUID();
-                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
-                    PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
-                            .child(familyMemberUid)
-                            .removeValue();
+                    if (currentUserAccessValue) {
+                        nammaApartmentFamilyMembersList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
+                        String familyMemberUid = nammaApartmentFamilyMembers.getUID();
+                        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
+                        PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
+                                .child(familyMemberUid)
+                                .removeValue();
+                    } else {
+                        openNotificationDialog(mCtx.getResources().getString(R.string.non_admin_remove_message));
+                    }
                     break;
             }
         }
