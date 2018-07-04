@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -25,7 +24,6 @@ import java.util.List;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
@@ -221,23 +219,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     }
                     break;
                 case R.id.textCancel:
-                    //Here we are checking if the value is true i.e he is admin and can remove other
-                    //non admin family members.
-                    if (isAdmin) {
-                        nammaApartmentFamilyMembersList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
-                        String familyMemberUid = nammaApartmentFamilyMembers.getUID();
-                        DatabaseReference adminDataReference = PRIVATE_FLATS_REFERENCE
-                                .child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
-                                .child(familyMemberUid);
-                        adminDataReference.removeValue();
-                    } else {
-                        //Here we are showing users a dialog box since they are not admin of that particular flat.
-                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
-                                mCtx.getResources().getString(R.string.non_admin_remove_message)
-                                , null);
-                    }
+                    //TODO:To rethink about the remove functionality in MySweetHome .
                     break;
             }
         }
