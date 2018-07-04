@@ -43,7 +43,10 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
@@ -388,50 +391,88 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         flatsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                byte[] byteArray = null;
-                String filename = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
-                try {
-                    FileInputStream is = getApplicationContext().openFileInput(filename);
-                    byteArray = fileToByteArray(is);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (dataSnapshot.exists()) {
+                    DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(FIREBASE_ADMIN);
+                    adminUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //Getting UID of Admin of the flat from usersData
+                            String adminUID = dataSnapshot.getValue().toString();
+                            DatabaseReference adminNameReference = PRIVATE_USERS_REFERENCE.child(adminUID);
+                            adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //Getting full name of Admin of the flat from User's Private data
+                                    String adminName = dataSnapshot.child(FIREBASE_CHILD_PERSONALDETAILS).child(FIREBASE_CHILD_FULLNAME).getValue().toString();
+                                    String multipleAdminText = getResources().getString(R.string.multiple_admin_restricted);
+                                    multipleAdminText = multipleAdminText.replace("admin", adminName);
+
+                                    //This dialog box pops up when a new user who is trying to sign up, already has a registered Admin
+                                    //in that particular flat, because of which, the user is being restricted to sign up
+                                    showSuccessDialog(getString(R.string.title_multiple_admin), multipleAdminText, null);
+                                    hideProgressDialog();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                } else {
+                    byte[] byteArray = null;
+                    String filename = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
+                    try {
+                        FileInputStream is = getApplicationContext().openFileInput(filename);
+                        byteArray = fileToByteArray(is);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //getting the storage reference
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
+                            .child(Constants.FIREBASE_CHILD_PRIVATE)
+                            .child(userUID);
+
+                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray));
+
+                    //adding the profile photo to storage reference and user data to real time database
+                    uploadTask.addOnSuccessListener(taskSnapshot -> {
+                        /*Create an instance of NammaApartmentUser class*/
+                        UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, taskSnapshot.getDownloadUrl().toString());
+                        UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
+                        UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
+                        NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
+
+                        /*Mapping Mobile Number to UID in firebase under users->all*/
+                        ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+                                .setValue(userUID);
+
+                        /*Storing user details in firebase under users->private->uid*/
+                        PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+
+                        /*Adding user UID under Flats->FlatNumber*/
+                        flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
+
+                        flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(FIREBASE_ADMIN).setValue(userUID);
+
+                        //dismissing the progress dialog
+                        hideProgressDialog();
+
+                        startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
+                        finish();
+                    }).addOnFailureListener(exception -> {
+                        hideProgressDialog();
+                        Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                    });
+
                 }
-
-                //getting the storage reference
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child(userUID);
-
-                UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray));
-
-                //adding the profile photo to storage reference and user data to real time database
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    /*Create an instance of NammaApartmentUser class*/
-                    UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, taskSnapshot.getDownloadUrl().toString());
-                    UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
-                    UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
-                    NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
-
-                    /*Mapping Mobile Number to UID in firebase under users->all*/
-                    ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
-                            .setValue(userUID);
-
-                    /*Storing user details in firebase under users->private->uid*/
-                    PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
-
-                    /*Adding user UID under Flats->FlatNumber*/
-                    flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
-
-                    //dismissing the progress dialog
-                    hideProgressDialog();
-
-                    startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
-                    finish();
-                }).addOnFailureListener(exception -> {
-                    hideProgressDialog();
-                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                });
-
             }
 
             @Override

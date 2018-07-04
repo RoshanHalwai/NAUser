@@ -61,6 +61,7 @@ public class Constants {
      * ------------------------------------------------------------- */
 
     public static final String FIREBASE_CHILD_ALL = "all";
+    public static final String FIREBASE_ADMIN = "admin";
     public static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
