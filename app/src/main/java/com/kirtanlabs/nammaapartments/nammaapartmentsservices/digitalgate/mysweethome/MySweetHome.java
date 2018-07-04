@@ -86,9 +86,17 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonAddFamilyMembers:
-                Intent intent = new Intent(MySweetHome.this, AddFamilyMember.class);
-                intent.putExtra(Constants.SCREEN_TITLE, R.string.my_sweet_home);
-                startActivity(intent);
+                NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+                boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
+                if (isAdmin) {
+                    Intent intent = new Intent(MySweetHome.this, AddFamilyMember.class);
+                    intent.putExtra(Constants.SCREEN_TITLE, R.string.my_sweet_home);
+                    startActivity(intent);
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.non_admin_add_family_members_title)
+                            , getResources().getString(R.string.non_admin_add_family_members_message)
+                            , null);
+                }
         }
     }
 
