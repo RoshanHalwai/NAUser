@@ -204,7 +204,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    //Here we are checking if the value is true i.e he is admin and can edit other
+                    //Here we are checking if the value is true i.e if the user is admin and can edit other
                     //non admin family members.
                     if (isAdmin) {
                         Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
