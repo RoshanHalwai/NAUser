@@ -1,8 +1,9 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,15 +17,12 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER;
-import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
-import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
 
@@ -107,6 +105,22 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         return nammaApartmentFamilyMembersList.size();
     }
 
+
+    /**
+     * This method gets invoked when user tries to add family member and also giving access.
+     */
+    private void openAccessDialog(int adposition) {
+        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(mCtx);
+        View notificationDialog = View.inflate(mCtx, R.layout.layout_dialog_grant_access_yes, null);
+        alertNotificationDialog.setView(notificationDialog);
+
+        // Setting Custom Dialog Buttons
+        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> dialog.cancel());
+        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
+
+        new Dialog(mCtx);
+        alertNotificationDialog.show();
+    }
     /* ------------------------------------------------------------- *
      * My Sweet Home Holder class
      * ------------------------------------------------------------- */
@@ -207,10 +221,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     //Here we are checking if the value is true i.e he is admin and can edit other
                     //non admin family members.
                     if (isAdmin) {
-                        Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
-                        EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
-                        EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
-                        mCtx.startActivity(EditIntentFamilyMembers);
+                        openAccessDialog(position);
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
                         baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
