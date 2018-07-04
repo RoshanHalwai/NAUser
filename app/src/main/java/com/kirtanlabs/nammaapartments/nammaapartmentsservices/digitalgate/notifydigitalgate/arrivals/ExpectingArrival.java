@@ -30,6 +30,7 @@ import java.util.Locale;
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.CAB_NUMBER_FIELD_LENGTH;
+import static com.kirtanlabs.nammaapartments.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
@@ -265,8 +266,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         String reference;
         if (TextUtils.isEmpty(editVendorValue.getText())) {
-            reference = editCabStateCode.getText().toString().trim() + editCabRtoNumber.getText().toString().trim()
-                    + editCabSerialNumberOne.getText().toString().trim() + editCabSerialNumberTwo.getText().toString().trim();
+            reference = editCabStateCode.getText().toString().trim() + HYPHEN + editCabRtoNumber.getText().toString().trim() + HYPHEN
+                    + editCabSerialNumberOne.getText().toString().trim() + HYPHEN + editCabSerialNumberTwo.getText().toString().trim();
         } else {
             reference = editVendorValue.getText().toString();
         }
