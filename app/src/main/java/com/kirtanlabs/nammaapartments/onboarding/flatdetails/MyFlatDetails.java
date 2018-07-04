@@ -405,7 +405,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                                     //Getting full name of Admin of the flat from User's Private data
                                     String adminName = dataSnapshot.child(FIREBASE_CHILD_PERSONALDETAILS).child(FIREBASE_CHILD_FULLNAME).getValue().toString();
                                     String multipleAdminText = getResources().getString(R.string.multiple_admin_restricted);
-                                    multipleAdminText = multipleAdminText.replace("admin", adminName);
+                                    multipleAdminText = multipleAdminText.replace(FIREBASE_ADMIN, adminName);
 
                                     //This dialog box pops up when a new user who is trying to sign up, already has a registered Admin
                                     //in that particular flat, because of which, the user is being restricted to sign up
