@@ -24,7 +24,6 @@ import java.util.List;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER;
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_FLATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
@@ -194,6 +193,9 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         public void onClick(View v) {
             int position = getLayoutPosition();
             NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
+            //Here first we are getting current user admin value based on the NammaApartment class.
+            NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
+            boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
             switch (v.getId()) {
                 case R.id.textCall:
                     baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
@@ -202,20 +204,22 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
-                    EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
-                    EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
-                    mCtx.startActivity(EditIntentFamilyMembers);
+                    //Here we are checking if the value is true i.e if the user is admin and can edit other
+                    //non admin family members.
+                    if (isAdmin) {
+                        Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
+                        EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
+                        EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
+                        mCtx.startActivity(EditIntentFamilyMembers);
+                    } else {
+                        //Here we are showing users a dialog box since they are not admin of that particular flat.
+                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
+                                mCtx.getResources().getString(R.string.non_admin_edit_message)
+                                , null);
+                    }
                     break;
                 case R.id.textCancel:
-                    nammaApartmentFamilyMembersList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, nammaApartmentFamilyMembersList.size());
-                    String familyMemberUid = nammaApartmentFamilyMembers.getUID();
-                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
-                    PRIVATE_FLATS_REFERENCE.child(currentNammaApartmentUser.getFlatDetails().getFlatNumber())
-                            .child(familyMemberUid)
-                            .removeValue();
+                    //TODO:To rethink about the remove functionality in MySweetHome .
                     break;
             }
         }
