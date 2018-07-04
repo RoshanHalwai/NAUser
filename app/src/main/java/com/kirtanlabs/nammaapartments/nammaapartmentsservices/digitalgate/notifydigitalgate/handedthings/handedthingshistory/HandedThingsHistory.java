@@ -1,10 +1,8 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,7 +12,6 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
@@ -31,9 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
@@ -72,11 +66,6 @@ public class HandedThingsHistory extends BaseActivity {
         /*We need Progress Indicator in this screen*/
         showProgressIndicator();
 
-        /*Setting listener for back button here to make sure user is not navigated back to
-         *My Guests/My Daily Services screen. Instead user is navigated to Digi Gate Home*/
-        ImageView backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(view -> onBackPressed());
-
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -96,25 +85,6 @@ public class HandedThingsHistory extends BaseActivity {
             checkAndRetrieveDailyServices();
         }
 
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding Back button
-     * ------------------------------------------------------------- */
-
-    /*We override this method to enable users to navigate to Digi Gate Home
-     *activity when the back button is pressed in Handed Things History screen
-     */
-    @Override
-    public void onBackPressed() {
-        if (getIntent().getIntExtra(SCREEN_TITLE, 0) != EDIT_TEXT_EMPTY_LENGTH) {
-            Intent notifyGateIntent = new Intent(this, DigitalGateHome.class);
-            notifyGateIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            notifyGateIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(notifyGateIntent);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     /* ------------------------------------------------------------- *
