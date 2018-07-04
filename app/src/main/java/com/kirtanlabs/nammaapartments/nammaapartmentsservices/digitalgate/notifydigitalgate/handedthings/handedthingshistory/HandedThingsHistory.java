@@ -66,6 +66,7 @@ public class HandedThingsHistory extends BaseActivity {
         /*We need Progress Indicator in this screen*/
         showProgressIndicator();
 
+
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
