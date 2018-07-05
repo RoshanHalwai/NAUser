@@ -230,6 +230,20 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
                             .child(nammaApartmentGuest.getUid());
                     preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)
                             .setValue(handedThingsDescription);
+
+                    /*We make sure the Card View is reset to its normal form once user gets navigated
+                     * to Handed Things to Guests History screen*/
+                    textDescription.setVisibility(View.GONE);
+                    editDescription.setVisibility(View.GONE);
+                    buttonNotifyGate.setVisibility(View.GONE);
+                    buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                    buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                    buttonYes.setTextColor(Color.BLACK);
+                    buttonNo.setTextColor(Color.WHITE);
+
+                    /*Clear text of Description field so that the user doesn't get to see the old
+                     * entry while creating a new one*/
+                    editDescription.setText("");
                     baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),
                             handedThingsHistoryIntent);
