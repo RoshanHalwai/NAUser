@@ -1,48 +1,58 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER;
-import static com.kirtanlabs.nammaapartments.Constants.FAMILY_MEMBER_OBJECT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GRANTEDACCESS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.Constants.FRIEND;
-import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> {
+public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.MySweetHomeHolder> implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private final List<NammaApartmentUser> nammaApartmentFamilyMembersList;
+    private final List<NammaApartmentUser> nammaApartmentUserList;
+    private boolean grantedAccess;
+    private Button buttonYes, buttonNo;
+    private View accessDialog;
+    private Dialog dialog;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    MySweetHomeAdapter(List<NammaApartmentUser> nammaApartmentFamilyMembers, Context mCtx) {
+    MySweetHomeAdapter(List<NammaApartmentUser> nammaApartmentUserList, Context mCtx) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
-        this.nammaApartmentFamilyMembersList = nammaApartmentFamilyMembers;
+        this.nammaApartmentUserList = nammaApartmentUserList;
     }
 
     /* ------------------------------------------------------------- *
@@ -69,23 +79,23 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         holder.textGrantedAccess.setText(R.string.granted_access);
 
         //Creating an instance of NammaApartmentFamilyMembers class and retrieving the values from Firebase.
-        NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
-        holder.textMemberNameValue.setText(nammaApartmentFamilyMembers.getPersonalDetails().getFullName());
+        NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
+        holder.textMemberNameValue.setText(nammaApartmentUser.getPersonalDetails().getFullName());
 
         //Checking how two UIDs/people are related with each other (Family Member/Friend)
-        if (nammaApartmentFamilyMembers.getFriends() != null) {
-            if (nammaApartmentFamilyMembers.getFriends().containsKey(NammaApartmentsGlobal.userUID)) {
+        if (nammaApartmentUser.getFriends() != null) {
+            if (nammaApartmentUser.getFriends().containsKey(NammaApartmentsGlobal.userUID)) {
                 stringMemberRelationValue = FRIEND;
             }
         }
 
         //Setting the value of Relation to display in the My Sweet Home screen
         holder.textMemberRelationValue.setText(stringMemberRelationValue);
-        boolean grantedAccess = nammaApartmentFamilyMembers.getPrivileges().isGrantedAccess();
+        grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
         String grantedAccessValue = String.valueOf(grantedAccess);
         String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);
         holder.textGrantedAccessValue.setText(accessValue);
-        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentFamilyMembers.getPersonalDetails().getProfilePhoto())
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentUser.getPersonalDetails().getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);
@@ -104,7 +114,114 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
     @Override
     public int getItemCount() {
-        return nammaApartmentFamilyMembersList.size();
+        return nammaApartmentUserList.size();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listeners
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonYes:
+                grantedAccess = true;
+                buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonYes.setTextColor(Color.WHITE);
+                buttonNo.setTextColor(Color.BLACK);
+                break;
+            case R.id.buttonNo:
+                grantedAccess = false;
+                buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+                buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+                buttonYes.setTextColor(Color.BLACK);
+                buttonNo.setTextColor(Color.WHITE);
+                break;
+            case R.id.buttonCancel:
+                dialog.cancel();
+                break;
+        }
+    }
+    /*-------------------------------------------------------------------------------
+     *Private Methods
+     *-----------------------------------------------------------------------------*/
+
+    /**
+     * This method creates Access Dialog in which user can change access of other family members/friends.
+     * @param nammaApartmentUser instance of NammaApartment User class in which it contains values in cardview.
+     * @param position of cardview for which granted access to be manipulated.
+     */
+    private void openAccessDialog(NammaApartmentUser nammaApartmentUser, int position) {
+        accessDialog = View.inflate(mCtx, R.layout.layout_granted_access, null);
+
+        /*Getting Id's for all the views*/
+        TextView textGrantAccess = accessDialog.findViewById(R.id.textGrantAccess);
+        buttonYes = accessDialog.findViewById(R.id.buttonYes);
+        buttonNo = accessDialog.findViewById(R.id.buttonNo);
+        TextView buttonChangeAccess = accessDialog.findViewById(R.id.buttonChangeAccess);
+        TextView buttonCancel = accessDialog.findViewById(R.id.buttonCancel);
+
+        /*Setting Fonts for all the views*/
+        textGrantAccess.setTypeface(setLatoBoldFont(mCtx));
+        buttonYes.setTypeface(setLatoRegularFont(mCtx));
+        buttonNo.setTypeface(setLatoRegularFont(mCtx));
+        buttonChangeAccess.setTypeface(setLatoRegularFont(mCtx));
+        buttonCancel.setTypeface(setLatoRegularFont(mCtx));
+
+        grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
+        //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
+        if (grantedAccess) {
+            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonYes.setTextColor(Color.WHITE);
+            buttonNo.setTextColor(Color.BLACK);
+        } else {
+            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonYes.setTextColor(Color.BLACK);
+            buttonNo.setTextColor(Color.WHITE);
+        }
+
+        /*Setting OnClick Listeners to the views*/
+        buttonYes.setOnClickListener(this);
+        buttonNo.setOnClickListener(this);
+        buttonCancel.setOnClickListener(this);
+        buttonChangeAccess.setOnClickListener(v -> {
+            updateFamilyMemberDetails(position);
+            dialog.cancel();
+        });
+
+        /*This method is used to create access dialog */
+        createAccessDialog();
+
+    }
+
+    /**
+     * This method is invoked to create a access dialog.
+     */
+    private void createAccessDialog() {
+        AlertDialog.Builder alertAccessDialog = new AlertDialog.Builder(mCtx);
+        alertAccessDialog.setView(accessDialog);
+        dialog = alertAccessDialog.create();
+
+        new Dialog(mCtx);
+        dialog.show();
+    }
+
+    /**
+     * Based on the position access will be updated in both UI and Firebase
+     *
+     * @param position of card view for which granted access has been manipulated
+     */
+    private void updateFamilyMemberDetails(int position) {
+        NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
+        boolean updatedAccessValue = grantedAccess;
+        nammaApartmentUser.getPrivileges().setGrantedAccess(updatedAccessValue);
+        notifyItemChanged(position);
+        DatabaseReference updatedGrantedAccessReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                .child(FIREBASE_CHILD_PRIVILEGES)
+                .child(FIREBASE_CHILD_GRANTEDACCESS);
+        updatedGrantedAccessReference.setValue(updatedAccessValue);
     }
 
     /* ------------------------------------------------------------- *
@@ -192,25 +309,23 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-            NammaApartmentUser nammaApartmentFamilyMembers = nammaApartmentFamilyMembersList.get(position);
+            NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
             //Here first we are getting current user admin value based on the NammaApartment class.
             NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
             boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
             switch (v.getId()) {
                 case R.id.textCall:
-                    baseActivity.makePhoneCall(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
+                    baseActivity.makePhoneCall(nammaApartmentUser.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage(nammaApartmentFamilyMembers.getPersonalDetails().getPhoneNumber());
+                    baseActivity.sendTextMessage(nammaApartmentUser.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
                     //Here we are checking if the value is true i.e if the user is admin and can edit other
                     //non admin family members.
                     if (isAdmin) {
-                        Intent EditIntentFamilyMembers = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
-                        EditIntentFamilyMembers.putExtra(SCREEN_TITLE, R.string.my_sweet_home);
-                        EditIntentFamilyMembers.putExtra(FAMILY_MEMBER_OBJECT, nammaApartmentFamilyMembers);
-                        mCtx.startActivity(EditIntentFamilyMembers);
+                        //Create an Access Dialog in which user can change access of other family members.
+                        openAccessDialog(nammaApartmentUser, position);
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
                         baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
