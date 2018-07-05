@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layoutYesNo"
@@ -45,4 +46,37 @@
             android:textColor="@android:color/white"
             android:textSize="16sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/buttonCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:gravity="end"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/buttonChangeAccess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:text="@string/change_access"
+            android:textAllCaps="false"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
 </LinearLayout>

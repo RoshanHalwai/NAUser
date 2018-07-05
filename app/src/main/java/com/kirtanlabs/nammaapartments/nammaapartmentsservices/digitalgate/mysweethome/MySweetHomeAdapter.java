@@ -41,8 +41,9 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     private final BaseActivity baseActivity;
     private final List<NammaApartmentUser> nammaApartmentUserList;
     private boolean grantedAccess;
-    private Button buttonYes;
-    private Button buttonNo;
+    private Button buttonYes, buttonNo;
+    private View accessDialog;
+    private Dialog dialog;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -116,68 +117,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         return nammaApartmentUserList.size();
     }
 
-
-    /*-------------------------------------------------------------------------------
-     *Private Methods
-     *-----------------------------------------------------------------------------*/
-
-    /**
-     * This method creates Access Dialog in which user can change access of other family members/friends.
-     * @param nammaApartmentUser instance of NammaApartment User class in which it contains values in cardview.
-     * @param position of cardview for which granted access to be manipulated.
-     */
-    private void openAccessDialog(NammaApartmentUser nammaApartmentUser, int position) {
-        AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(mCtx);
-        alertNotificationDialog.setTitle(mCtx.getResources().getString(R.string.admin_edit_message));
-        alertNotificationDialog.setCancelable(false);
-        View accessDialog = View.inflate(mCtx, R.layout.layout_granted_access, null);
-        /*Getting Id's for all the views*/
-        TextView textGrantAccess = accessDialog.findViewById(R.id.textGrantAccess);
-        buttonYes = accessDialog.findViewById(R.id.buttonYes);
-        buttonNo = accessDialog.findViewById(R.id.buttonNo);
-        /*Setting Fonts for all the views*/
-        textGrantAccess.setTypeface(setLatoBoldFont(mCtx));
-        buttonYes.setTypeface(setLatoRegularFont(mCtx));
-        buttonNo.setTypeface(setLatoRegularFont(mCtx));
-        grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
-        //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
-        if (grantedAccess) {
-            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
-            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
-            buttonYes.setTextColor(Color.WHITE);
-            buttonNo.setTextColor(Color.BLACK);
-        } else {
-            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
-            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
-            buttonYes.setTextColor(Color.BLACK);
-            buttonNo.setTextColor(Color.WHITE);
-        }
-        alertNotificationDialog.setView(accessDialog);
-        /*Setting OnClick Listeners to the views*/
-        buttonYes.setOnClickListener(this);
-        buttonNo.setOnClickListener(this);
-        // Setting Custom Dialog Buttons
-        alertNotificationDialog.setPositiveButton("Change Access", (dialog, which) -> updateFamilyMemberDetails(position));
-        alertNotificationDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
-        new Dialog(mCtx);
-        alertNotificationDialog.show();
-    }
-
-    /**
-     * Based on the position access will be updated in both UI and Firebase
-     *
-     * @param position of card view for which granted access has been manipulated
-     */
-    private void updateFamilyMemberDetails(int position) {
-        NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
-        DatabaseReference updatedGrantedAccessReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
-                .child(FIREBASE_CHILD_PRIVILEGES)
-                .child(FIREBASE_CHILD_GRANTEDACCESS);
-        updatedGrantedAccessReference.setValue(grantedAccess);
-        notifyItemChanged(position);
-    }
-
     /* ------------------------------------------------------------- *
      * Overriding OnClick Listeners
      * ------------------------------------------------------------- */
@@ -198,9 +137,93 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                 buttonYes.setTextColor(Color.BLACK);
                 buttonNo.setTextColor(Color.WHITE);
                 break;
-
+            case R.id.buttonCancel:
+                dialog.cancel();
+                break;
         }
     }
+    /*-------------------------------------------------------------------------------
+     *Private Methods
+     *-----------------------------------------------------------------------------*/
+
+    /**
+     * This method creates Access Dialog in which user can change access of other family members/friends.
+     * @param nammaApartmentUser instance of NammaApartment User class in which it contains values in cardview.
+     * @param position of cardview for which granted access to be manipulated.
+     */
+    private void openAccessDialog(NammaApartmentUser nammaApartmentUser, int position) {
+        accessDialog = View.inflate(mCtx, R.layout.layout_granted_access, null);
+
+        /*Getting Id's for all the views*/
+        TextView textGrantAccess = accessDialog.findViewById(R.id.textGrantAccess);
+        buttonYes = accessDialog.findViewById(R.id.buttonYes);
+        buttonNo = accessDialog.findViewById(R.id.buttonNo);
+        TextView buttonChangeAccess = accessDialog.findViewById(R.id.buttonChangeAccess);
+        TextView buttonCancel = accessDialog.findViewById(R.id.buttonCancel);
+
+        /*Setting Fonts for all the views*/
+        textGrantAccess.setTypeface(setLatoBoldFont(mCtx));
+        buttonYes.setTypeface(setLatoRegularFont(mCtx));
+        buttonNo.setTypeface(setLatoRegularFont(mCtx));
+        buttonChangeAccess.setTypeface(setLatoRegularFont(mCtx));
+        buttonCancel.setTypeface(setLatoRegularFont(mCtx));
+
+        grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
+        //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
+        if (grantedAccess) {
+            buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonYes.setTextColor(Color.WHITE);
+            buttonNo.setTextColor(Color.BLACK);
+        } else {
+            buttonYes.setBackgroundResource(R.drawable.button_guest_not_selected);
+            buttonNo.setBackgroundResource(R.drawable.button_guest_selected);
+            buttonYes.setTextColor(Color.BLACK);
+            buttonNo.setTextColor(Color.WHITE);
+        }
+
+        /*Setting OnClick Listeners to the views*/
+        buttonYes.setOnClickListener(this);
+        buttonNo.setOnClickListener(this);
+        buttonCancel.setOnClickListener(this);
+        buttonChangeAccess.setOnClickListener(v -> {
+            updateFamilyMemberDetails(position);
+            dialog.cancel();
+        });
+
+        /*This method is used to create access dialog */
+        createAccessDialog();
+
+    }
+
+    /**
+     * This method is invoked to create a access dialog.
+     */
+    private void createAccessDialog() {
+        AlertDialog.Builder alertAccessDialog = new AlertDialog.Builder(mCtx);
+        alertAccessDialog.setView(accessDialog);
+        dialog = alertAccessDialog.create();
+
+        new Dialog(mCtx);
+        dialog.show();
+    }
+
+    /**
+     * Based on the position access will be updated in both UI and Firebase
+     *
+     * @param position of card view for which granted access has been manipulated
+     */
+    private void updateFamilyMemberDetails(int position) {
+        NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
+        boolean updatedAccessValue = grantedAccess;
+        nammaApartmentUser.getPrivileges().setGrantedAccess(updatedAccessValue);
+        notifyItemChanged(position);
+        DatabaseReference updatedGrantedAccessReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                .child(FIREBASE_CHILD_PRIVILEGES)
+                .child(FIREBASE_CHILD_GRANTEDACCESS);
+        updatedGrantedAccessReference.setValue(updatedAccessValue);
+    }
+
     /* ------------------------------------------------------------- *
      * My Sweet Home Holder class
      * ------------------------------------------------------------- */
@@ -298,9 +321,10 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     baseActivity.sendTextMessage(nammaApartmentUser.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    //Here we are checking if the value is true i.e he is admin and can edit other
+                    //Here we are checking if the value is true i.e if the user is admin and can edit other
                     //non admin family members.
                     if (isAdmin) {
+                        //Create an Access Dialog in which user can change access of other family members.
                         openAccessDialog(nammaApartmentUser, position);
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
