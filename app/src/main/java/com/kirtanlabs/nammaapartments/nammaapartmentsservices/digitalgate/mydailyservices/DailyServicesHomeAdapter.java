@@ -40,7 +40,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private View timeDialog;
     private EditText editPickTime;
     private Dialog dialog;
 
@@ -151,7 +150,8 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      * @param position     of card view for which time has to be manipulated.
      */
     private void openTimeDialog(String existingTime, int position) {
-        timeDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
+        AlertDialog.Builder alertTimeDialog = new AlertDialog.Builder(mCtx);
+        View timeDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
 
         /*Getting Id's for all the views*/
         TextView textPickTime = timeDialog.findViewById(R.id.textPickTime);
@@ -174,8 +174,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         /*We don't want the keyboard to be displayed when user clicks on the time edit field*/
         editPickTime.setInputType(InputType.TYPE_NULL);
 
-        /*This method is used to create time dialog */
-        createTimeDialog();
+        alertTimeDialog.setView(timeDialog);
+        dialog = alertTimeDialog.create();
+        new Dialog(mCtx);
+        dialog.show();
 
         /*Setting OnClick Listeners to the views*/
         editPickTime.setOnClickListener(this);
@@ -206,19 +208,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                 .child(FIREBASE_CHILD_TIMEOFVISIT);
         updatedTimeReference.setValue(updatedTime);
     }
-
-    /**
-     * This method is invoked to create a time dialog.
-     */
-    private void createTimeDialog() {
-        AlertDialog.Builder alertTimeDialog = new AlertDialog.Builder(mCtx);
-        alertTimeDialog.setView(timeDialog);
-        dialog = alertTimeDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
-    }
-
     /* ------------------------------------------------------------- *
      * Daily Service Holder class
      * ------------------------------------------------------------- */
