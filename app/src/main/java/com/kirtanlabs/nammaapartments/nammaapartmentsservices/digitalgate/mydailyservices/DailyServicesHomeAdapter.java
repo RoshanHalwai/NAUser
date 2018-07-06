@@ -1,21 +1,15 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
@@ -25,14 +19,12 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
-import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.Constants.DAILY_SERVICE_OBJECT;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMEOFVISIT;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
-public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -40,9 +32,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
-    private View timeDialog;
-    private EditText editPickTime;
-    private Dialog dialog;
 
     /* ------------------------------------------------------------- *
      * Public Members
@@ -116,107 +105,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     @Override
     public int getItemCount() {
         return nammaApartmentDailyServiceList.size();
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
-     * ------------------------------------------------------------- */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.editPickTime:
-                baseActivity.pickTime(mCtx, this);
-                break;
-            case R.id.buttonCancel:
-                dialog.cancel();
-                break;
-        }
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnTimeSet Listener
-     * ------------------------------------------------------------- */
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (view.isShown()) {
-            String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-            editPickTime.setText(selectedTime);
-        }
-    }
-
-    /**
-     * This method gets invoked to open time dialog so that user can update time of dailyService.
-     *
-     * @param existingTime contains string value of the existing time value in cardView.
-     * @param position     of card view for which time has to be manipulated.
-     */
-    private void openTimeDialog(String existingTime, int position) {
-        timeDialog = View.inflate(mCtx, R.layout.layout_dialog_reschedule, null);
-
-        /*Getting Id's for all the views*/
-        TextView textPickTime = timeDialog.findViewById(R.id.textPickTime);
-        editPickTime = timeDialog.findViewById(R.id.editPickTime);
-        TextView buttonReschedule = timeDialog.findViewById(R.id.buttonReschedule);
-        TextView buttonCancel = timeDialog.findViewById(R.id.buttonCancel);
-        RelativeLayout relativeLayoutDate = timeDialog.findViewById(R.id.relativeLayoutDate);
-
-        /*Setting Fonts for all the views*/
-        textPickTime.setTypeface(setLatoRegularFont(mCtx));
-        buttonReschedule.setTypeface(setLatoRegularFont(mCtx));
-        buttonCancel.setTypeface(setLatoRegularFont(mCtx));
-
-        /*Hiding the appropriate views according to the appropriate dialog box*/
-        relativeLayoutDate.setVisibility(View.GONE);
-
-        /*Setting existing values*/
-        editPickTime.setText(existingTime);
-
-        /*We don't want the keyboard to be displayed when user clicks on the time edit field*/
-        editPickTime.setInputType(InputType.TYPE_NULL);
-
-        /*This method is used to create time dialog */
-        createTimeDialog();
-
-        /*Setting OnClick Listeners to the views*/
-        editPickTime.setOnClickListener(this);
-        buttonCancel.setOnClickListener(this);
-        buttonReschedule.setOnClickListener(v -> {
-            updateDailyServiceDetails(position);
-            dialog.cancel();
-        });
-
-    }
-
-    /**
-     * Based on the position the time should be updated in both UI and Firebase
-     *
-     * @param position of card view for which time has to be manipulated
-     */
-    private void updateDailyServiceDetails(int position) {
-        NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
-        String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-        String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
-        String updatedTime = editPickTime.getText().toString();
-        nammaApartmentDailyService.setTimeOfVisit(updatedTime);
-        notifyItemChanged(position);
-        DatabaseReference updatedTimeReference = PUBLIC_DAILYSERVICES_REFERENCE
-                .child(dailyServiceTypeValue)
-                .child(nammaApartmentDailyService.getUID())
-                .child(NammaApartmentsGlobal.userUID)
-                .child(FIREBASE_CHILD_TIMEOFVISIT);
-        updatedTimeReference.setValue(updatedTime);
-    }
-
-    /**
-     * This method is invoked to create a time dialog.
-     */
-    private void createTimeDialog() {
-        AlertDialog.Builder alertTimeDialog = new AlertDialog.Builder(mCtx);
-        alertTimeDialog.setView(timeDialog);
-        dialog = alertTimeDialog.create();
-
-        new Dialog(mCtx);
-        dialog.show();
     }
 
     /* ------------------------------------------------------------- *
@@ -310,8 +198,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    //Create a Time Dialog in which user can change time of their daily services.
-                    openTimeDialog(textInvitationTimeValue.getText().toString(), position);
+                    Intent EditIntent = new Intent(mCtx, EditDailyServicesAndFamilyMemberDetails.class);
+                    EditIntent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
+                    EditIntent.putExtra(DAILY_SERVICE_OBJECT, nammaApartmentDailyService);
+                    mCtx.startActivity(EditIntent);
                     break;
                 case R.id.textCancel:
                     nammaApartmentDailyServiceList.remove(position);
