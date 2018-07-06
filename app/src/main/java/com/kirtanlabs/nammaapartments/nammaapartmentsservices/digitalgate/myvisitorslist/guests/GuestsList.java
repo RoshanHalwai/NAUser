@@ -127,6 +127,12 @@ public class GuestsList extends BaseActivity {
                             retrieveGuestDetailsFromFirebase(userUID);
                         }
                     }
+                    Map<String, Boolean> friends = currentNammaApartmentUser.getFriends();
+                    if (friends != null && !friends.isEmpty()) {
+                        for (String userUid : friends.keySet()) {
+                            showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                        }
+                    }
                     //TODO: Ensure user friends visitors are not added in Guests List
                 }
             }
