@@ -214,6 +214,7 @@
     <string name="adding_your_daily_service">Adding your Daily Service</string>
     <string name="daily_service_success_title">Daily Service Message</string>
     <string name="daily_service_success_message">You have successfully added your Daily Service.</string>
+    <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
 
     <!--Adding My Daily Services-->
     <string name="name">Name</string>
