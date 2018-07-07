@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -324,9 +325,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
             case R.id.editFlat:
                 findViewById(R.id.textResidentType).setVisibility(View.INVISIBLE);
                 findViewById(R.id.radioResidentType).setVisibility(View.INVISIBLE);
-            case R.id.radioResidentType:
-                findViewById(R.id.textVerificationMessage).setVisibility(View.INVISIBLE);
-                findViewById(R.id.buttonContinue).setVisibility(View.INVISIBLE);
+                RadioGroup radioGroup = findViewById(R.id.radioResidentType);
+                radioGroup.clearCheck();
         }
     }
 
