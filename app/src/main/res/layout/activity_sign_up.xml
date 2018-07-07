@@ -8,107 +8,114 @@
 
     <include layout="@layout/activity_base" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/newUserProfileImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/add_member" />
-
-        <TextView
-            android:id="@+id/textErrorProfilePic"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/upload_image"
-            android:textColor="@android:color/holo_red_dark"
-            android:visibility="gone" />
-        <TextView
-            android:id="@+id/textFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/full_name"
-            android:textAllCaps="true"
-            android:textColor="@color/nmBlack"
-            android:textSize="@dimen/text_view_default_size" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:inputType="textCapWords"
-            android:selectAllOnFocus="false"
-            android:textColor="@color/nmBlack"
-            android:textSize="@dimen/edit_text_default_size"
-            tools:ignore="LabelFor">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/newUserProfileImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/add_member" />
 
-            <requestFocus />
-        </EditText>
+            <TextView
+                android:id="@+id/textErrorProfilePic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/upload_image"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/textEmailId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/email_id"
-            android:textAllCaps="true"
-            android:textColor="@color/nmBlack"
-            android:textSize="@dimen/text_view_default_size" />
+            <TextView
+                android:id="@+id/textFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/full_name"
+                android:textAllCaps="true"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
 
-        <EditText
-            android:id="@+id/editEmailId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/nmBlack"
-            android:textSize="20sp"
-            tools:ignore="LabelFor" />
+            <EditText
+                android:id="@+id/editFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:inputType="textCapWords"
+                android:selectAllOnFocus="false"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor">
 
-        <Button
-            android:id="@+id/buttonSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@color/nmBlack"
-            android:text="@string/sign_up"
-            android:textAllCaps="true"
-            android:textColor="@color/nmLightYellow"
-            android:textSize="@dimen/button_default_size" />
+                <requestFocus />
+            </EditText>
 
-        <TextView
-            android:id="@+id/textTermsAndConditions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:gravity="center_horizontal"
-            android:text="@string/i_agree_to_terms_and_conditions"
-            android:textColor="@color/nmBlack"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/textEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/email_id"
+                android:textAllCaps="true"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/editEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/nmBlack"
+                android:textSize="20sp"
+                tools:ignore="LabelFor" />
+
+            <Button
+                android:id="@+id/buttonSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/nmBlack"
+                android:text="@string/sign_up"
+                android:textAllCaps="true"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size" />
+
+            <TextView
+                android:id="@+id/textTermsAndConditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_horizontal"
+                android:text="@string/i_agree_to_terms_and_conditions"
+                android:textColor="@color/nmBlack"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
