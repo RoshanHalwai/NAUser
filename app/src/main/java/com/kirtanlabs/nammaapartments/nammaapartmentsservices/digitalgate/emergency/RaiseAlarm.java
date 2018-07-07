@@ -2,13 +2,18 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.emerg
 
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+
+import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_EMERGENCIES;
+import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_EMERGENCY_REFERENCE;
 
 public class RaiseAlarm extends BaseActivity {
 
@@ -49,7 +54,28 @@ public class RaiseAlarm extends BaseActivity {
         textAlertRaised.setTypeface(Constants.setLatoBoldFont(this));
 
         /*Setting event for image button*/
-        buttonCreateAlert.setOnClickListener(v -> textAlertRaised.setVisibility(View.VISIBLE));
+        buttonCreateAlert.setOnClickListener(v -> storeEmergencyDetails());
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method gets invoked when user is trying to raise any alarm for any emergency type.
+     */
+    private void storeEmergencyDetails() {
+        //Store emergency  uid and value under userdata->private->currentUserFlat
+        DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(FIREBASE_CHILD_EMERGENCIES);
+        String digitalGateUID = digitalGateUIDReference.push().getKey();
+        DatabaseReference digitalGateReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(FIREBASE_CHILD_EMERGENCIES);
+        digitalGateReference.child(digitalGateUID).setValue(true);
+
+        //Store the details of emergency in emergencies->public->uid
+        DatabaseReference emergencyReference = PUBLIC_EMERGENCY_REFERENCE.child(digitalGateUID);
+
     }
 
 }
