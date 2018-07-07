@@ -1,8 +1,10 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
@@ -30,6 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .setCustomBigContentView(remoteViews)
+                .setSound(RingtoneManager.getDefaultUri(Notification.DEFAULT_SOUND))
                 .setPriority(PRIORITY_MAX);
 
         int mNotificationID = (int) System.currentTimeMillis();
