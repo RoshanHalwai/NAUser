@@ -392,11 +392,10 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(FIREBASE_ADMIN);
+                    DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_ADMIN);
                     adminUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            //Getting UID of Admin of the flat from usersData
                             String adminUID = dataSnapshot.getValue().toString();
                             DatabaseReference adminNameReference = PRIVATE_USERS_REFERENCE.child(adminUID);
                             adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -425,7 +424,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
                         }
                     });
-                } else {
+                }
+                else {
                     byte[] byteArray = null;
                     String filename = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
                     try {
@@ -460,7 +460,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         /*Adding user UID under Flats->FlatNumber*/
                         flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
 
-                        flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(FIREBASE_ADMIN).setValue(userUID);
+                        /*Mapping Admin with user UID under Flats->FlatNumber*/
+                        flatsReference.child(FIREBASE_ADMIN).setValue(userUID);
 
                         //dismissing the progress dialog
                         hideProgressDialog();
