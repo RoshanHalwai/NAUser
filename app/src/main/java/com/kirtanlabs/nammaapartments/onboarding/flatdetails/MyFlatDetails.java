@@ -327,6 +327,9 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 findViewById(R.id.radioResidentType).setVisibility(View.INVISIBLE);
                 RadioGroup radioGroup = findViewById(R.id.radioResidentType);
                 radioGroup.clearCheck();
+            case R.id.radioResidentType:
+                findViewById(R.id.textVerificationMessage).setVisibility(View.INVISIBLE);
+                findViewById(R.id.buttonContinue).setVisibility(View.INVISIBLE);
         }
     }
 
