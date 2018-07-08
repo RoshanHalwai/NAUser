@@ -30,6 +30,9 @@
         <activity android:name=".MainActivity" />
 
         <!-- Notification Services -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -40,6 +43,13 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".nammaapartmentsservices.digitalgate.Button_listener">
+            <intent-filter>
+                <action android:name="accept_button_clicked" />
+                <action android:name="reject_button_clicked" />
+            </intent-filter>
+        </receiver>
 
         <!-- Splash Screens -->
         <activity
