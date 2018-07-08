@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textEmergencyMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawableTop="@drawable/danger_red"
+        android:gravity="center"
+        android:text="@string/emergency_dialog_message"
+        android:textColor="@color/nmBlack"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/buttonCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.2"
+            android:gravity="end"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/buttonOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.8"
+            android:text="@string/dialog_button_ok"
+            android:textAllCaps="false"
+            android:textColor="@color/nmBlack"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
