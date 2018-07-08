@@ -59,7 +59,7 @@ public class NammaApartmentsHome extends BaseActivity {
                 NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
                 ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(nammaApartmentUser);
 
-                /*Storing user token_id in firebase so Guard and send notification*/
+                /*Storing user token_id in firebase so Guard can send notification*/
                 String token_id = FirebaseInstanceId.getInstance().getToken();
                 PRIVATE_USERS_REFERENCE.child(userUID).child("tokenId").setValue(token_id);
             }

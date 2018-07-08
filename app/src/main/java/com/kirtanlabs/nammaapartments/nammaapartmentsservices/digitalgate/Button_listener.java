@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,8 +29,13 @@ public class Button_listener extends BroadcastReceiver {
             String action = intent.getAction();
             String notificationUID = intent.getExtras().getString("Notification_UID");
             int notificationId = intent.getExtras().getInt("Notification_Id");
+
+            /*Clear the notification once button is pressed*/
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.cancel(notificationId);
+
+            /*Get current user UID from Messaging Service*/
+            currentUserID = intent.getExtras().getString("User_UID");
 
             if (action.equals("accept_button_clicked")) {
                 replyNotification(notificationUID, "Accepted");
@@ -47,8 +51,6 @@ public class Button_listener extends BroadcastReceiver {
     }
 
     private void replyNotification(final String notificationUID, final String status) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        currentUserID = auth.getCurrentUser().getUid();
         DatabaseReference databaseReference = Constants.PRIVATE_USERS_REFERENCE.child(currentUserID);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
