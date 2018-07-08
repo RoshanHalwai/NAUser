@@ -260,13 +260,13 @@ public class HandedThingsHistory extends BaseActivity {
                                                 DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
                                                 //We display only those daily service details who has handed things has one of its child
                                                 if (dailyServiceDataSnapshot.hasChild(FIREBASE_CHILD_HANDED_THINGS)) {
-                                                    NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                    Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
                                                     DatabaseReference handedThingsReference = reference.child(userUID).child(FIREBASE_CHILD_HANDED_THINGS);
                                                     handedThingsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             for (DataSnapshot dates : dataSnapshot.getChildren()) {
+                                                                NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
+                                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
                                                                 nammaApartmentDailyService.setDailyServiceHandedThingsDescription(dates.getValue().toString());
                                                                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                                                                 try {
