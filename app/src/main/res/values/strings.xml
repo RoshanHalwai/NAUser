@@ -30,6 +30,7 @@
     <string name="resend_otp">Resend OTP</string>
     <string name="waiting_for_otp">Waiting for OTP. . .</string>
     <string name="change_mobile_number">Change Mobile Number</string>
+    <string name="wrong_otp_entered">Wrong OTP has been entered</string>
 
     <!--Flat Details Screen-->
     <string name="my_flat_details">My Flat Details</string>

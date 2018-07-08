@@ -1,7 +1,10 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -246,7 +249,19 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                             finish();
                         }
                     } else {
-                        textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
+                        //Check if network is available or not
+                        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                        boolean isConnected = activeNetwork != null &&
+                                activeNetwork.isConnectedOrConnecting();
+                        if (!isConnected) {
+                            //Show this message if user is having no network connection
+                            textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
+                        } else {
+                            //Show this message if user has entered wrong OTP
+                            textResendOTPOrVerificationMessage.setText(R.string.wrong_otp_entered);
+                        }
                     }
                 });
     }
