@@ -28,6 +28,7 @@ import java.util.Objects;
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
@@ -41,7 +42,6 @@ public class HandedThings extends BaseActivity {
     private HandedThingsToVisitorsAdapter adapterVisitors;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
-    private int handed_things_to;
     private int index = 0;
 
 
@@ -56,8 +56,7 @@ public class HandedThings extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        handed_things_to = R.string.given_things;
-        return handed_things_to;
+        return R.string.given_things;
     }
 
     @Override
@@ -83,7 +82,7 @@ public class HandedThings extends BaseActivity {
         adapterDailyService = new HandedThingsToDailyServiceAdapter(nammaApartmentDailyServiceList, this);
 
         /*Retrieve those visitor details who status is Entered*/
-        if (handed_things_to == R.string.my_guests) {
+        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.my_guests) {
             //Retrieve user visitor list from firebase only when their status is "Entered"
             recyclerView.setAdapter(adapterVisitors);
             checkAndRetrieveCurrentVisitorsFromFirebase();
@@ -99,7 +98,7 @@ public class HandedThings extends BaseActivity {
         historyButton.setVisibility(View.VISIBLE);
         historyButton.setOnClickListener(v -> {
             Intent handedThingsHistoryIntent = new Intent(HandedThings.this, HandedThingsHistory.class);
-            handedThingsHistoryIntent.putExtra(SCREEN_TITLE, handed_things_to);
+            handedThingsHistoryIntent.putExtra(SCREEN_TITLE, getIntent().getIntExtra(HANDED_THINGS_TO, 0));
             startActivity(handedThingsHistoryIntent);
         });
 
