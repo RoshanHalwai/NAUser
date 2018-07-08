@@ -104,9 +104,10 @@
     <string name="my_visitors_list">My Visitors List</string>
     <string name="my_daily_services">My Daily Services</string>
     <string name="my_family_members">My Family Members</string>
-    <string name="notify_digital_gate">Notify Digital Gate</string>
+    <string name="notify_digital_gate">Notify Digi Gate</string>
     <string name="my_sweet_home">My Sweet Home</string>
     <string name="emergency">Emergency</string>
+
 
     <!--Inviting Visitors Activity-->
     <string name="visitor_name">Visitor Name</string>
@@ -131,7 +132,7 @@
     <string name="my_guests_list">My Guests List</string>
 
     <!--Guests List Activity-->
-    <string name="my_guests">My Guests</string>
+    <string name="my_guests">Guests</string>
     <string name="visitor">Visitor:</string>
     <string name="status">Status:</string>
     <string name="type">Type:</string>
@@ -195,10 +196,13 @@
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
+    <string name="history">History</string>
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
     <string name="daily_service_description_hint">Ex: Clothes</string>
+
+
 
     <!--Daily Services Home-->
     <string name="remove">Remove</string>
@@ -258,6 +262,7 @@
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
     <string name="edit_my_family_member_details">Edit My Family Member Details</string>
     <string name="update">Update</string>
+
 
     <!--Validations-->
     <string name="number_10digit_validation">Please Enter a valid 10 digit mobile number</string>

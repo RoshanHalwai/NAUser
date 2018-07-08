@@ -45,6 +45,7 @@ public class HandedThings extends BaseActivity {
     private int handed_things_to;
     private int index = 0;
 
+
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
      * ------------------------------------------------------------- */
@@ -58,10 +59,9 @@ public class HandedThings extends BaseActivity {
     protected int getActivityTitle() {
         /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
          * based on the user click on NotifyGate Home screen*/
-        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest) {
-            handed_things_to = R.string.my_guests;
-        } else {
-            handed_things_to = R.string.my_daily_services;
+        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest
+                || getIntent().getIntExtra(HANDED_THINGS_TO, 0)==R.string.handed_things_to_my_daily_services) {
+            handed_things_to = R.string.given_things;
         }
         return handed_things_to;
     }
