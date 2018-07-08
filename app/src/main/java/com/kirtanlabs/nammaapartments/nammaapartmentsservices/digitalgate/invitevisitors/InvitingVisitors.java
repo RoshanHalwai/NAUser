@@ -7,9 +7,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -37,10 +36,8 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_MOBILE_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -62,7 +59,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private EditText editVisitorName;
     private EditText editVisitorMobile;
     private TextView textErrorProfilePic;
-    private Button buttonInvite;
+    private TextView textErrorDateTime;
     private AlertDialog imageSelectionDialog;
     private String selectedDate;
     private String mobileNumber;
@@ -99,12 +96,13 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
         TextView textOr = findViewById(R.id.textOr);
         TextView textDateTime = findViewById(R.id.textDateTime);
+        textErrorDateTime = findViewById(R.id.textErrorDateTime);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         editPickDateTime = findViewById(R.id.editPickDateTime);
         editVisitorName = findViewById(R.id.editVisitorName);
         editVisitorMobile = findViewById(R.id.editMobileNumber);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
-        buttonInvite = findViewById(R.id.buttonInvite);
+        Button buttonInvite = findViewById(R.id.buttonInvite);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDateTime.setInputType(InputType.TYPE_NULL);
@@ -115,6 +113,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         textVisitorMobile.setTypeface(setLatoBoldFont(this));
         textOr.setTypeface(setLatoBoldFont(this));
         textDateTime.setTypeface(setLatoBoldFont(this));
+        textErrorDateTime.setTypeface(setLatoBoldFont(this));
         textCountryCode.setTypeface(setLatoItalicFont(this));
         editPickDateTime.setTypeface(setLatoRegularFont(this));
         editVisitorName.setTypeface(setLatoRegularFont(this));
@@ -129,8 +128,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnFocusChangeListener(this);
         buttonInvite.setOnClickListener(this);
 
-        /*This method gets invoked when user is trying to modify the values on EditTexts.*/
-        setEventsForEditText();
     }
 
     /* ------------------------------------------------------------- *
@@ -179,7 +176,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     textErrorProfilePic.setVisibility(View.VISIBLE);
                     textErrorProfilePic.requestFocus();
                 } else {
-                    storeVisitorDetailsInFirebase();
+                    // This method gets invoked to check all the editText fields for validations.
+                    validateFields();
                 }
                 break;
         }
@@ -211,6 +209,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
+            textErrorDateTime.setVisibility(View.GONE);
         }
     }
 
@@ -244,88 +243,48 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         imageSelectionDialog = builder.create();
     }
 
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
     /**
-     * We are handling events for editTexts name,mobile number and date and time picker editText.
+     * This method gets invoked to check all the validation fields such as editTexts name,mobile number
+     * and date and time editTexts.
      */
-    private void setEventsForEditText() {
-        editVisitorName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+    private void validateFields() {
+        String visitorsName = editVisitorName.getText().toString().trim();
+        mobileNumber = editVisitorMobile.getText().toString().trim();
+        String dateTime = editPickDateTime.getText().toString().trim();
+        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editVisitorName, editVisitorMobile, editPickDateTime});
+        //This condition checks if all fields are not filled and if user presses invite button it will then display proper error messages.
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(visitorsName)) {
+                editVisitorName.setError(getString(R.string.name_validation));
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            if (TextUtils.isEmpty(mobileNumber)) {
+                editVisitorMobile.setError(getString(R.string.mobile_number_validation));
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String visitorsName = editVisitorName.getText().toString().trim();
-                String phoneNumber = editVisitorMobile.getText().toString().trim();
-                String dateTime = editPickDateTime.getText().toString().trim();
-                if (visitorsName.length() == EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(visitorsName)) {
-                    editVisitorName.setError(getString(R.string.accept_alphabets));
-                }
-                if (visitorsName.length() > EDIT_TEXT_EMPTY_LENGTH) {
-                    if (dateTime.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                        buttonInvite.setVisibility(View.VISIBLE);
-                    }
-                }
+            if (TextUtils.isEmpty(dateTime)) {
+                textErrorDateTime.setVisibility(View.VISIBLE);
             }
-        });
-        editVisitorMobile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+        }
+        //This condition checks for if user has filled all the fields and also validates name,mobile number
+        //and date and time fields and displays appropriate error messages.
+        if (fieldsFilled) {
+            if (isValidPersonName(visitorsName)) {
+                editVisitorName.setError(getString(R.string.accept_alphabets));
+                editVisitorName.requestFocus();
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                buttonInvite.setVisibility(View.GONE);
+            if (!isValidPhone(mobileNumber)) {
+                editVisitorMobile.setError(getString(R.string.number_10digit_validation));
+                editVisitorMobile.requestFocus();
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mobileNumber = editVisitorMobile.getText().toString().trim();
-                if (isValidPhone(mobileNumber) && mobileNumber.length() >= PHONE_NUMBER_MAX_LENGTH) {
-                    //editVisitorMobile.setError(null);
-                    String dateTime = editPickDateTime.getText().toString().trim();
-                    if (dateTime.length() > EDIT_TEXT_EMPTY_LENGTH) {
-                        buttonInvite.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
-        editPickDateTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String visitorName = editVisitorName.getText().toString().trim();
-                String phoneNumber = editVisitorMobile.getText().toString().trim();
-                boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editVisitorName, editVisitorMobile, editPickDateTime});
-                if (fieldsFilled && visitorName.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                    buttonInvite.setVisibility(View.VISIBLE);
-                }
-                if ((!fieldsFilled)) {
-                    if (visitorName.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                        editVisitorName.setError(getString(R.string.name_validation));
-                    }
-                    if (phoneNumber.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                        editVisitorMobile.setError(getString(R.string.mobile_number_validation));
-                    }
-                }
-            }
-        });
+        }
+        //This condition checks if name,mobile number and email are properly validated and then
+        // navigate to proper screen according to its requirement.
+        if (!isValidPersonName(visitorsName) && isValidPhone(mobileNumber) && !TextUtils.isEmpty(dateTime)) {
+            storeVisitorDetailsInFirebase();
+        }
     }
 
     /**
@@ -385,5 +344,4 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
         });
     }
-
 }

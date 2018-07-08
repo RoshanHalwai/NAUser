@@ -5,9 +5,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +37,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.DS_OTP_STATUS_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CARBIKECLEANERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CHILDDAYCARES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_COOKS;
@@ -52,7 +50,6 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
-import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -75,13 +72,12 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     private CircleImageView circleImageView;
     private TextView textDescriptionDailyService;
     private TextView textErrorProfilePic;
+    private TextView textErrorTime;
     private EditText editPickTime;
     private EditText editDailyServiceName;
     private EditText editDailyServiceMobile;
-    private Button buttonAdd;
     private String service_type;
     private String mobileNumber;
-    private boolean fieldsFilled;
     private byte[] profilePhotoByteArray;
 
     /*----------------------------------------------------
@@ -114,13 +110,14 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         TextView textOr = findViewById(R.id.textOr);
         TextView textTime = findViewById(R.id.textTime);
+        textErrorTime = findViewById(R.id.textErrorTime);
         textDescriptionDailyService = findViewById(R.id.textDescriptionDailyService);
         textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         editDailyServiceName = findViewById(R.id.editDailyServiceName);
         editDailyServiceMobile = findViewById(R.id.editDailyServiceMobile);
         editPickTime = findViewById(R.id.editPickTime);
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
-        buttonAdd = findViewById(R.id.buttonAdd);
+        Button buttonAdd = findViewById(R.id.buttonAdd);
         circleImageView = findViewById(R.id.dailyServiceProfilePic);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick time edit field*/
@@ -132,6 +129,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         textCountryCode.setTypeface(setLatoItalicFont(this));
         textOr.setTypeface(setLatoBoldFont(this));
         textTime.setTypeface(setLatoBoldFont(this));
+        textErrorTime.setTypeface(setLatoRegularFont(this));
         textDescriptionDailyService.setTypeface(setLatoBoldFont(this));
         textErrorProfilePic.setTypeface(setLatoRegularFont(this));
         editDailyServiceName.setTypeface(setLatoRegularFont(this));
@@ -148,9 +146,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         editPickTime.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         editPickTime.setOnFocusChangeListener(this);
-
-        /*This method gets invoked when user is trying to modify the values on EditTexts.*/
-        setEventsForEditText();
     }
 
     /*-------------------------------------------------------------------------------
@@ -229,12 +224,8 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                     textErrorProfilePic.setVisibility(View.VISIBLE);
                     textErrorProfilePic.requestFocus();
                 } else {
-                    Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
-                    service_type = getIntent().getStringExtra(SERVICE_TYPE);
-                    intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
-                    intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
-                    intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
-                    startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
+                    // This method gets invoked to check all the editText fields for validations.
+                    validateFields();
                 }
         }
     }
@@ -255,6 +246,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         if (view.isShown()) {
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             editPickTime.setText(selectedTime);
+            textErrorTime.setVisibility(View.GONE);
         }
     }
 
@@ -301,100 +293,50 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     }
 
     /**
-     * We are handling events for editTexts name,mobile number and date and time picker editText.
+     * This method gets invoked to check all the validation fields such as editTexts name,mobile number
+     * and time editTexts.
      */
-    private void setEventsForEditText() {
-        editDailyServiceName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+    private void validateFields() {
+        String dailyServiceName = editDailyServiceName.getText().toString().trim();
+        mobileNumber = editDailyServiceMobile.getText().toString().trim();
+        String pickTime = editPickTime.getText().toString().trim();
+        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceName, editDailyServiceMobile, editPickTime});
+        //This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(dailyServiceName)) {
+                editDailyServiceName.setError(getString(R.string.name_validation));
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
-                    textDescriptionDailyService.setVisibility(View.GONE);
-                    buttonAdd.setVisibility(View.GONE);
-                }
+            if (TextUtils.isEmpty(mobileNumber)) {
+                editDailyServiceMobile.setError(getString(R.string.mobile_number_validation));
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String dailyServiceName = editDailyServiceName.getText().toString().trim();
-                String pickTime = editPickTime.getText().toString().trim();
-                String phoneNumber = editDailyServiceMobile.getText().toString().trim();
-                if (dailyServiceName.length() == EDIT_TEXT_EMPTY_LENGTH || isValidPersonName(dailyServiceName)) {
-                    editDailyServiceName.setError(getString(R.string.accept_alphabets));
-                }
-                if (dailyServiceName.length() > EDIT_TEXT_EMPTY_LENGTH && !isValidPersonName(dailyServiceName)) {
-                    editDailyServiceName.setError(null);
-                    if (pickTime.length() > EDIT_TEXT_EMPTY_LENGTH && phoneNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                        textDescriptionDailyService.setVisibility(View.VISIBLE);
-                        buttonAdd.setVisibility(View.VISIBLE);
-                    }
-
-                }
+            if (TextUtils.isEmpty(pickTime)) {
+                textErrorTime.setVisibility(View.VISIBLE);
             }
-        });
-
-        editDailyServiceMobile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+        }
+        //This condition checks for if user has filled all the fields and also validates name,mobile number
+        //and time editText fields and displays appropriate error messages.
+        if (fieldsFilled) {
+            if (isValidPersonName(dailyServiceName)) {
+                editDailyServiceName.setError(getString(R.string.accept_alphabets));
+                editDailyServiceName.requestFocus();
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
-                    textDescriptionDailyService.setVisibility(View.GONE);
-                    buttonAdd.setVisibility(View.GONE);
-                }
+            if (!isValidPhone(mobileNumber)) {
+                editDailyServiceMobile.setError(getString(R.string.number_10digit_validation));
+                editDailyServiceMobile.requestFocus();
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mobileNumber = editDailyServiceMobile.getText().toString().trim();
-                String pickTime = editPickTime.getText().toString().trim();
-                if (isValidPhone(mobileNumber) && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                    editDailyServiceMobile.setError(null);
-                    if (pickTime.length() > EDIT_TEXT_EMPTY_LENGTH) {
-                        textDescriptionDailyService.setVisibility(View.VISIBLE);
-                        buttonAdd.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
-        editPickTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String dailyServiceName = editDailyServiceName.getText().toString().trim();
-                mobileNumber = editDailyServiceMobile.getText().toString().trim();
-                fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceName, editDailyServiceMobile, editPickTime});
-                if (fieldsFilled && dailyServiceName.length() > EDIT_TEXT_EMPTY_LENGTH && mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
-                    textDescriptionDailyService.setVisibility(View.VISIBLE);
-                    buttonAdd.setVisibility(View.VISIBLE);
-                }
-                if (!fieldsFilled) {
-                    if (dailyServiceName.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                        editDailyServiceName.setError(getString(R.string.name_validation));
-                    }
-                    if (mobileNumber.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                        editDailyServiceMobile.setError(getString(R.string.mobile_number_validation));
-                    }
-                }
-            }
-        });
+        }
+        //This condition checks if name,mobile number and time are properly validated and then
+        // navigate to proper screen according to its requirement.
+        if (!isValidPersonName(dailyServiceName) && isValidPhone(mobileNumber) && !TextUtils.isEmpty(pickTime)) {
+            Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
+            service_type = getIntent().getStringExtra(SERVICE_TYPE);
+            intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
+            intentButtonAdd.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
+            intentButtonAdd.putExtra(SERVICE_TYPE, service_type);
+            startActivityForResult(intentButtonAdd, DS_OTP_STATUS_REQUEST_CODE);
+        }
     }
+
 
     /**
      * Store daily service details to firebase and map them to the users daily service for future use
