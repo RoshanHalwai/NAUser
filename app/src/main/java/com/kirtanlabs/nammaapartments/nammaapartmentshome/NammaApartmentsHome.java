@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
@@ -19,6 +20,9 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
 public class NammaApartmentsHome extends BaseActivity {
 
@@ -54,6 +58,10 @@ public class NammaApartmentsHome extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
                 ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(nammaApartmentUser);
+
+                /*Storing user token_id in firebase so Guard and send notification*/
+                String token_id = FirebaseInstanceId.getInstance().getToken();
+                PRIVATE_USERS_REFERENCE.child(userUID).child("tokenId").setValue(token_id);
             }
 
             @Override

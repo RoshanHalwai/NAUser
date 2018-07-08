@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -327,6 +328,9 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 findViewById(R.id.radioResidentType).setVisibility(View.INVISIBLE);
                 RadioGroup radioGroup = findViewById(R.id.radioResidentType);
                 radioGroup.clearCheck();
+            case R.id.radioResidentType:
+                findViewById(R.id.textVerificationMessage).setVisibility(View.INVISIBLE);
+                findViewById(R.id.buttonContinue).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -424,8 +428,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
                         }
                     });
-                }
-                else {
+                } else {
                     byte[] byteArray = null;
                     String filename = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
                     try {
@@ -435,12 +438,17 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         e.printStackTrace();
                     }
 
-                    //getting the storage reference
+                    //Getting the storage reference
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
                             .child(Constants.FIREBASE_CHILD_PRIVATE)
                             .child(userUID);
 
-                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray));
+                    //Create file metadata including the content type
+                    StorageMetadata metadata = new StorageMetadata.Builder()
+                            .setContentType("image/png")
+                            .build();
+
+                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray), metadata);
 
                     //adding the profile photo to storage reference and user data to real time database
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
