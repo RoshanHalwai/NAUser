@@ -1,8 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.emergency;
 
-import java.io.Serializable;
-
-public class NammaApartmentEmergency implements Serializable {
+public class NammaApartmentEmergency {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -10,7 +8,7 @@ public class NammaApartmentEmergency implements Serializable {
     private String emergencyType;
     private String fullName;
     private String phoneNumber;
-    private String blockNumber;
+    private String apartmentName;
     private String flatNumber;
 
     /* ------------------------------------------------------------- *
@@ -21,47 +19,52 @@ public class NammaApartmentEmergency implements Serializable {
 
     }
 
-    NammaApartmentEmergency(String emergencyType, String fullName, String phoneNumber, String blockNumber, String flatNumber) {
+    NammaApartmentEmergency(String emergencyType, String fullName, String phoneNumber, String apartmentName, String flatNumber) {
         this.emergencyType = emergencyType;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
-        this.blockNumber = blockNumber;
+        this.apartmentName = apartmentName;
         this.flatNumber = flatNumber;
     }
+
     /* ------------------------------------------------------------- *
-     * Setters
+     * Getters
      * ------------------------------------------------------------- */
 
     public String getEmergencyType() {
         return emergencyType;
     }
 
-    public void setEmergencyType(String emergencyType) {
-        this.emergencyType = emergencyType;
-    }
-
     public String getFullName() {
         return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public String getApartmentName() {
+        return apartmentName;
+    }
+
+    public void setApartmentName(String apartmentName) {
+        this.apartmentName = apartmentName;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setEmergencyType(String emergencyType) {
+        this.emergencyType = emergencyType;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getBlockNumber() {
-        return blockNumber;
-    }
-
-    public void setBlockNumber(String blockNumber) {
-        this.blockNumber = blockNumber;
     }
 
     public String getFlatNumber() {

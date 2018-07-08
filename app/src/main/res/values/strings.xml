@@ -228,7 +228,12 @@
     <!--Raise Fire Alarm & Theft Alarm-->
     <string name="tap_on_bell_icon_to_create_alert">Tap on bell icon to create alert</string>
     <string name="image_to_create_an_alarm">Image to create an alarm</string>
-    <string name="emergency_alarm_raised">Emergency alarm raised</string>
+    <string name="emergency_alarm_raised">Emergency alarm has been raised</string>
+    <string name="emergency_type_medical">Medical</string>
+    <string name="emergency_type_fire_alarm">Fire</string>
+    <string name="emergency_type_theft_alarm">Theft</string>
+    <string name="emergency_dialog_message">Emergency notification will be sent to the Guard. Press OK to confirm.</string>
+    <string name="dialog_button_ok">OK</string>
 
     <!--MySweetHome Activity-->
     <string name="add_my_family_members">Add My Family Members</string>
