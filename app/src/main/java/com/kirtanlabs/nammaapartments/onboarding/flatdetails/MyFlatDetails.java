@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -324,6 +326,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
             case R.id.editFlat:
                 findViewById(R.id.textResidentType).setVisibility(View.INVISIBLE);
                 findViewById(R.id.radioResidentType).setVisibility(View.INVISIBLE);
+                RadioGroup radioGroup = findViewById(R.id.radioResidentType);
+                radioGroup.clearCheck();
             case R.id.radioResidentType:
                 findViewById(R.id.textVerificationMessage).setVisibility(View.INVISIBLE);
                 findViewById(R.id.buttonContinue).setVisibility(View.INVISIBLE);
@@ -392,11 +396,10 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(FIREBASE_ADMIN);
+                    DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_ADMIN);
                     adminUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            //Getting UID of Admin of the flat from usersData
                             String adminUID = dataSnapshot.getValue().toString();
                             DatabaseReference adminNameReference = PRIVATE_USERS_REFERENCE.child(adminUID);
                             adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -435,12 +438,17 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         e.printStackTrace();
                     }
 
-                    //getting the storage reference
+                    //Getting the storage reference
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
                             .child(Constants.FIREBASE_CHILD_PRIVATE)
                             .child(userUID);
 
-                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray));
+                    //Create file metadata including the content type
+                    StorageMetadata metadata = new StorageMetadata.Builder()
+                            .setContentType("image/png")
+                            .build();
+
+                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray), metadata);
 
                     //adding the profile photo to storage reference and user data to real time database
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -460,7 +468,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         /*Adding user UID under Flats->FlatNumber*/
                         flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);
 
-                        flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(FIREBASE_ADMIN).setValue(userUID);
+                        /*Mapping Admin with user UID under Flats->FlatNumber*/
+                        flatsReference.child(FIREBASE_ADMIN).setValue(userUID);
 
                         //dismissing the progress dialog
                         hideProgressDialog();

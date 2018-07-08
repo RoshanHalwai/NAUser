@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -337,8 +336,8 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                         ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
                                 .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
                     } else {
-                        //TODO: Show Dialog box indicating that they cannot delete this visitor since they haven't invited them
-                        Log.d("NammaApartment TAG", "User cannot delete this record since they haven't invited them");
+                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
+                                mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
                     }
                     break;
             }

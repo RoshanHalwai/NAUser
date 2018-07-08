@@ -1,9 +1,20 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.kirtanlabs.nammaapartments.R;
 
-import java.util.Objects;
+import java.util.Map;
+
+import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -13,18 +24,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
+        Map<String, String> remoteMessageData = remoteMessage.getData();
+        String notificationUID = remoteMessageData.get("notification_uid");
 
-        //if the message contains data payload
-        //It is a map of custom key values
-        //we can read it easily
-        if (remoteMessage.getData().size() > 0) {
-            //handle the data message here
-        }
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_custom_notification);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setCustomBigContentView(remoteViews)
+                .setSound(RingtoneManager.getDefaultUri(Notification.DEFAULT_SOUND))
+                .setPriority(PRIORITY_MAX);
 
-        //getting the title and the body
-        String title = Objects.requireNonNull(remoteMessage.getNotification()).getTitle();
-        String body = remoteMessage.getNotification().getBody();
-        MyNotificationManager.getInstance(this).displayNotification(title, body);
+        int mNotificationID = (int) System.currentTimeMillis();
+
+        Intent acceptButtonIntent = new Intent("accept_button_clicked");
+        acceptButtonIntent.putExtra("Notification_UID", notificationUID);
+        acceptButtonIntent.putExtra("Notification_Id", mNotificationID);
+        PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(this, 123, acceptButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.buttonAccept, acceptPendingIntent);
+
+        Intent rejectButtonIntent = new Intent("reject_button_clicked");
+        rejectButtonIntent.putExtra("Notification_UID", notificationUID);
+        acceptButtonIntent.putExtra("Notification_Id", mNotificationID);
+        PendingIntent rejectPendingIntent = PendingIntent.getBroadcast(this, 123, rejectButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.buttonReject, rejectPendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(mNotificationID, mBuilder.build());
     }
+
 }
