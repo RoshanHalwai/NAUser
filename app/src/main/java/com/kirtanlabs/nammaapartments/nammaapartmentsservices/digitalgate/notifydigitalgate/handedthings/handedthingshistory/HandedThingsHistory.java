@@ -53,7 +53,7 @@ public class HandedThingsHistory extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.given_things;
+        return R.string.history;
     }
 
     @Override
