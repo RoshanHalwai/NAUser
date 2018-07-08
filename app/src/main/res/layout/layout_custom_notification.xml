@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
+    android:background="#ffffff"
     android:layout_height="150dp">
 
     <LinearLayout
@@ -14,13 +15,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="NammaApartments"
+            android:text="Namma Apartments"
+            android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:textColor="@android:color/black"
             android:text="Roshan would like to enter your society"
             android:textSize="16sp" />
 
@@ -37,14 +40,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Accept" />
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/nmLightBlack"
+                android:text="Accept"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/buttonReject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Reject" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/nmLightBlack"
+                android:text="Reject"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
