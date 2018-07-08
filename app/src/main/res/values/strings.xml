@@ -273,6 +273,7 @@
     <string name="name_validation">Please Enter Name</string>
     <string name="accept_alphabets">Accept Alphabets Only.</string>
     <string name="enter_relation">Please Enter Relation</string>
+    <string name="enter_date_time">Please select date and time</string>
     <string name="upload_image">Please Upload Image</string>
     <string name="mobile_number_exists">Mobile Number already exists</string>
     <string name="invalid_email">Invalid Email Address</string>

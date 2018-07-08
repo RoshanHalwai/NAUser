@@ -197,6 +197,17 @@
                     android:textSize="18sp"
                     tools:ignore="LabelFor,TextFields" />
 
+                <TextView
+                    android:id="@+id/textErrorDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/editPickDateTime"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/enter_date_time"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone" />
+
             </RelativeLayout>
             <Button
                 android:id="@+id/buttonInvite"
@@ -206,8 +217,7 @@
                 android:background="@color/nmBlack"
                 android:text="@string/invite"
                 android:textColor="@color/nmLightYellow"
-                android:textSize="@dimen/button_default_size"
-                android:visibility="gone" />
+                android:textSize="@dimen/button_default_size" />
 
         </LinearLayout>
     </ScrollView>
