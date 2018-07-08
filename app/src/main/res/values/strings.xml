@@ -281,5 +281,6 @@
     <string name="relation_check">Please check at least one Relation</string>
     <string name="things">Things:</string>
     <string name="default_notification_channel_id">01</string>
+    <string name="enter_time">Please select time.</string>
 
 </resources>
