@@ -28,7 +28,6 @@ import java.util.Objects;
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
-import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
@@ -57,12 +56,7 @@ public class HandedThings extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        /*We use a common class for Handed Things to my Guest and handed Things to my Daily Services, we set the title
-         * based on the user click on NotifyGate Home screen*/
-        if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.handed_things_to_my_guest
-                || getIntent().getIntExtra(HANDED_THINGS_TO, 0)==R.string.handed_things_to_my_daily_services) {
-            handed_things_to = R.string.given_things;
-        }
+        handed_things_to = R.string.given_things;
         return handed_things_to;
     }
 

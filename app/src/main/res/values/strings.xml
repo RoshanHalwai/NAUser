@@ -108,7 +108,6 @@
     <string name="my_sweet_home">My Sweet Home</string>
     <string name="emergency">Emergency</string>
 
-
     <!--Inviting Visitors Activity-->
     <string name="visitor_name">Visitor Name</string>
     <string name="visitor_mobile">Visitor Mobile</string>
@@ -202,8 +201,6 @@
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
     <string name="daily_service_description_hint">Ex: Clothes</string>
 
-
-
     <!--Daily Services Home-->
     <string name="remove">Remove</string>
     <string name="flats">Flats:</string>
@@ -264,7 +261,6 @@
     <string name="edit_my_family_member_details">Edit My Family Member Details</string>
     <string name="update">Update</string>
 
-
     <!--Validations-->
     <string name="number_10digit_validation">Please Enter a valid 10 digit mobile number</string>
     <string name="mobile_number_validation">Please Enter Mobile Number</string>
@@ -277,7 +273,6 @@
     <string name="email_validation">Please Enter E-Mail Address</string>
     <string name="relation_check">Please check at least one Relation</string>
     <string name="things">Things:</string>
-
     <string name="default_notification_channel_id">01</string>
 
 </resources>
