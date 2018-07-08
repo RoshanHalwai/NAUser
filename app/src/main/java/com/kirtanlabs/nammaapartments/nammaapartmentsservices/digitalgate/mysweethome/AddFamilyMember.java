@@ -57,6 +57,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 import static com.kirtanlabs.nammaapartments.ImagePicker.bitmapToByteArray;
+import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -369,10 +370,14 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     if (radioButtonFamilyMember.isChecked()) {
                         DatabaseReference familyMemberReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID)
                                 .child(Constants.FIREBASE_CHILD_FAMILY_MEMBERS);
-                        familyMemberReference.child(NammaApartmentsGlobal.userUID).setValue(true);
-                        DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                        familyMemberReference.child(userUID).setValue(true);
+                        DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(userUID)
                                 .child(Constants.FIREBASE_CHILD_FAMILY_MEMBERS);
                         currentUserReference.child(familyMemberUID).setValue(true);
+
+                        /*Update Current User details in Application context for future use*/
+                        currentNammaApartmentUser.getFamilyMembers().put(familyMemberUID, true);
+                        ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(currentNammaApartmentUser);
                     }
 
                     /*If Relation is Friend we share UID to user as well as friend and store the UID
@@ -380,10 +385,14 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     else {
                         DatabaseReference friendsReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID).
                                 child(Constants.FIREBASE_CHILD_FRIENDS);
-                        friendsReference.child(NammaApartmentsGlobal.userUID).setValue(true);
-                        DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                        friendsReference.child(userUID).setValue(true);
+                        DatabaseReference currentUserReference = PRIVATE_USERS_REFERENCE.child(userUID)
                                 .child(Constants.FIREBASE_CHILD_FRIENDS);
                         currentUserReference.child(familyMemberUID).setValue(true);
+
+                        /*Update Current User details in Application context for future use*/
+                        currentNammaApartmentUser.getFriends().put(familyMemberUID, true);
+                        ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(currentNammaApartmentUser);
                     }
 
                     /* Once we are done with storing data we need to call MySweetHome screen again
