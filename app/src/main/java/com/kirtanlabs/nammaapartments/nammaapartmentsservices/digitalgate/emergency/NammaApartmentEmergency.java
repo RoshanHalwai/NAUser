@@ -7,7 +7,7 @@ public class NammaApartmentEmergency implements Serializable {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-    private String alarmType;
+    private String emergencyType;
     private String fullName;
     private String phoneNumber;
     private String blockNumber;
@@ -21,8 +21,8 @@ public class NammaApartmentEmergency implements Serializable {
 
     }
 
-    NammaApartmentEmergency(String alarmType, String fullName, String phoneNumber, String blockNumber, String flatNumber) {
-        this.alarmType = alarmType;
+    NammaApartmentEmergency(String emergencyType, String fullName, String phoneNumber, String blockNumber, String flatNumber) {
+        this.emergencyType = emergencyType;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.blockNumber = blockNumber;
@@ -32,12 +32,12 @@ public class NammaApartmentEmergency implements Serializable {
      * Setters
      * ------------------------------------------------------------- */
 
-    public String getAlarmType() {
-        return alarmType;
+    public String getEmergencyType() {
+        return emergencyType;
     }
 
-    public void setAlarmType(String alarmType) {
-        this.alarmType = alarmType;
+    public void setEmergencyType(String emergencyType) {
+        this.emergencyType = emergencyType;
     }
 
     public String getFullName() {
