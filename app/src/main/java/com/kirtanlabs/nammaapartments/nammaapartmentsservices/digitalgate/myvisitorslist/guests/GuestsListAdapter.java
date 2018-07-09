@@ -237,6 +237,42 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                 .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
     }
 
+    /**
+     * This method is invoked when user tries to remove an entry from the Guests List
+     */
+    private void openRemoveIconDialog(int position) {
+
+        AlertDialog.Builder alertRemoveIconDialog = new AlertDialog.Builder(mCtx);
+        View removeIconDialog = View.inflate(mCtx, R.layout.layout_dialog_cancel, null);
+
+        TextView textCancelDescription = removeIconDialog.findViewById(R.id.textCancelDescription);
+        textCancelDescription.setTypeface(Constants.setLatoRegularFont(mCtx));
+
+        alertRemoveIconDialog.setPositiveButton(R.string.dialog_button_ok, (dialog, which) -> {
+            NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
+            String inviterUID = nammaApartmentGuest.getInviterUID();
+            String visitorUID = nammaApartmentGuest.getUid();
+            if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+                nammaApartmentGuestList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, nammaApartmentGuestList.size());
+                ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
+                        .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
+            } else {
+                baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
+                        mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
+            }
+        });
+
+        alertRemoveIconDialog.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+        alertRemoveIconDialog.setTitle(R.string.delete_entry);
+        alertRemoveIconDialog.setView(removeIconDialog);
+        dialog = alertRemoveIconDialog.create();
+        new Dialog(mCtx);
+        dialog.show();
+
+    }
+
     /* ------------------------------------------------------------- *
      * Guest View Holder class
      * ------------------------------------------------------------- */
@@ -327,18 +363,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                     openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
-                    String inviterUID = nammaApartmentGuest.getInviterUID();
-                    String visitorUID = nammaApartmentGuest.getUid();
-                    if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
-                        nammaApartmentGuestList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, nammaApartmentGuestList.size());
-                        ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
-                                .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
-                    } else {
-                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
-                                mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
-                    }
+                    openRemoveIconDialog(position);
                     break;
             }
         }
