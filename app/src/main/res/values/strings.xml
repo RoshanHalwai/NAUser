@@ -130,7 +130,6 @@
     <string name="package_arrivals">Package Arrivals</string>
     <string name="cab_arrivals">Cab Arrivals</string>
     <string name="my_guests_list">My Guests List</string>
-    <string name="delete_entry">Delete Entry</string>
 
     <!--Guests List Activity-->
     <string name="my_guests">Guests</string>

@@ -258,14 +258,11 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                 notifyItemRangeChanged(position, nammaApartmentGuestList.size());
                 ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
                         .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
-            } else {
-                baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
-                        mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
             }
         });
 
         alertRemoveIconDialog.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
-        alertRemoveIconDialog.setTitle(R.string.delete_entry);
+        alertRemoveIconDialog.setTitle(R.string.non_admin_remove_title_message);
         alertRemoveIconDialog.setView(removeIconDialog);
         dialog = alertRemoveIconDialog.create();
         new Dialog(mCtx);
@@ -363,7 +360,15 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                     openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
-                    openRemoveIconDialog(position);
+                    String inviterUID = nammaApartmentGuest.getInviterUID();
+                    if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+                        openRemoveIconDialog(position);
+                    }
+                    else {
+                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
+                                mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
+                    }
+
                     break;
             }
         }
