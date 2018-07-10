@@ -93,7 +93,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
                     intent.putExtra(Constants.SCREEN_TITLE, R.string.my_sweet_home);
                     startActivity(intent);
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.non_admin_add_family_members_title)
+                    showNotificationDialog(getResources().getString(R.string.non_admin_add_family_members_title)
                             , getResources().getString(R.string.non_admin_add_family_members_message)
                             , null);
                 }
