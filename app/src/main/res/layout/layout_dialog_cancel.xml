@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:text="@string/visitor_cancel"
+        android:text="@string/remove_guest_message"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size" />
 

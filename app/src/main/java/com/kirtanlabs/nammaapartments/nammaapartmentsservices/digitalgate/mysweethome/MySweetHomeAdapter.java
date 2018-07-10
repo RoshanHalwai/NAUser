@@ -328,7 +328,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                         openAccessDialog(nammaApartmentUser, position);
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
-                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
+                        baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
                                 mCtx.getResources().getString(R.string.non_admin_edit_message)
                                 , null);
                     }

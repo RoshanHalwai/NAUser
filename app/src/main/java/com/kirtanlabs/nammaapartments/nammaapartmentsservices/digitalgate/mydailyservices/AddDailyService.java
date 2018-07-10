@@ -423,7 +423,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         Intent DailyServiceHomeIntent = new Intent(AddDailyService.this, DailyServicesHome.class);
         DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         DailyServiceHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        showSuccessDialog(getResources().getString(R.string.daily_service_success_title),
+        showNotificationDialog(getResources().getString(R.string.daily_service_success_title),
                 getResources().getString(R.string.daily_service_success_message),
                 DailyServiceHomeIntent);
     }

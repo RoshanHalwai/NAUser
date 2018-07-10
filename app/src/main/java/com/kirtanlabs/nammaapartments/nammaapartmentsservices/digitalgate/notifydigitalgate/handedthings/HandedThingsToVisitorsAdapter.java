@@ -244,7 +244,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
                     /*Clear text of Description field so that the user doesn't get to see the old
                      * entry while creating a new one*/
                     editDescription.setText("");
-                    baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
+                    baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.handed_things_success_title),
                             mCtx.getResources().getString(R.string.handed_things_success_message),
                             handedThingsHistoryIntent);
                     break;
