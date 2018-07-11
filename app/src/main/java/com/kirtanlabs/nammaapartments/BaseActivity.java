@@ -299,7 +299,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * Shows message box with title, message and action to be peformed when user
+     * Shows message box with title, message and activity to be called when user
      * clicks on Ok button
      *
      * @param title   - Title of the message
@@ -307,7 +307,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param intent  - If null then on click of Ok, the dialog will disappear
      *                else intent activity will be called
      */
-    public void showSuccessDialog(String title, String message, Intent intent) {
+    public void showNotificationDialog(String title, String message, Intent intent) {
         AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
         alertNotifyGateDialog.setCancelable(false);
         alertNotifyGateDialog.setTitle(title);
@@ -318,6 +318,25 @@ public abstract class BaseActivity extends AppCompatActivity {
             alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> startActivity(intent));
         }
 
+        new Dialog(this);
+        alertNotifyGateDialog.show();
+    }
+
+    /**
+     * Shows message box with title, message and method to be executed when user
+     * clicks on Ok button
+     *
+     * @param title   - Title of the message
+     * @param message - Body of the message
+     * @param method  - Method to execute after click of OK button
+     */
+    public void showConfirmDialog(String title, String message, Runnable method) {
+        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setCancelable(false);
+        alertNotifyGateDialog.setTitle(title);
+        alertNotifyGateDialog.setMessage(message);
+        alertNotifyGateDialog.setPositiveButton("YES", (dialog, which) -> method.run());
+        alertNotifyGateDialog.setNegativeButton("NO", (dialog, which) -> dialog.cancel());
         new Dialog(this);
         alertNotifyGateDialog.show();
     }

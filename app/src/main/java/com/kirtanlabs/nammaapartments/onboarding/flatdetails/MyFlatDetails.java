@@ -412,7 +412,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
                                     //This dialog box pops up when a new user who is trying to sign up, already has a registered Admin
                                     //in that particular flat, because of which, the user is being restricted to sign up
-                                    showSuccessDialog(getString(R.string.title_multiple_admin), multipleAdminText, null);
+                                    showNotificationDialog(getString(R.string.title_multiple_admin), multipleAdminText, null);
                                     hideProgressDialog();
                                 }
 

@@ -400,7 +400,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     Intent MySweetHomeIntent = new Intent(AddFamilyMember.this, MySweetHome.class);
                     MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    showSuccessDialog(getString(R.string.family_member_success_title),
+                    showNotificationDialog(getString(R.string.family_member_success_title),
                             getString(R.string.family_member_success_message),
                             MySweetHomeIntent);
                 }).addOnFailureListener(exception -> {

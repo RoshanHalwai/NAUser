@@ -36,6 +36,7 @@ import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -51,9 +52,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
      * Private Members
      * ------------------------------------------------------------- */
 
-    private final Context mCtx;
+    private Context mCtx;
     private final BaseActivity baseActivity;
-    private final List<NammaApartmentGuest> nammaApartmentGuestList;
+    private List<NammaApartmentGuest> nammaApartmentGuestList;
     private View rescheduleDialog;
     private AlertDialog dialog;
     private EditText editPickDate;
@@ -237,6 +238,41 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                 .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
     }
 
+    /**
+     * Based on the position the guest data is removed from List in UI and Firebase
+     *
+     * @param position            of card view whose guest details need to be removed
+     * @param nammaApartmentGuest whose data needs to be removed
+     */
+    private void removeVisitor(int position, NammaApartmentGuest nammaApartmentGuest) {
+        String inviterUID = nammaApartmentGuest.getInviterUID();
+        if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+
+            /*Runnable Interface which gets invoked once user presses OK button in Confirmation Dialog*/
+            Runnable removeVisitor = () -> {
+                String visitorUID = nammaApartmentGuest.getUid();
+                nammaApartmentGuestList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, nammaApartmentGuestList.size());
+                DatabaseReference userDataReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference();
+                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
+            };
+            String confirmDialogTitle = mCtx.getString(R.string.remove_guest_title);
+            String confirmDialogMessage = mCtx.getString(R.string.remove_guest_message);
+
+            /*If Guest has not yet arrived, indicates User wants to cancel the invitation,
+             * setting title and message appropriately*/
+            if (nammaApartmentGuest.getStatus().equals(NOT_ENTERED)) {
+                confirmDialogTitle = mCtx.getString(R.string.cancel_invitation_title);
+                confirmDialogMessage = mCtx.getString(R.string.cancel_invitation_message);
+            }
+            baseActivity.showConfirmDialog(confirmDialogTitle, confirmDialogMessage, removeVisitor);
+        } else {
+            baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
+                    mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
+        }
+    }
+
     /* ------------------------------------------------------------- *
      * Guest View Holder class
      * ------------------------------------------------------------- */
@@ -327,18 +363,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                     openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
-                    String inviterUID = nammaApartmentGuest.getInviterUID();
-                    String visitorUID = nammaApartmentGuest.getUid();
-                    if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
-                        nammaApartmentGuestList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, nammaApartmentGuestList.size());
-                        ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_VISITORS)
-                                .child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
-                    } else {
-                        baseActivity.showSuccessDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
-                                mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
-                    }
+                    removeVisitor(position, nammaApartmentGuest);
                     break;
             }
         }

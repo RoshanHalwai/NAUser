@@ -478,7 +478,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 storeDigitalGateDetails(FIREBASE_CHILD_CABS);
                 Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
                 cabsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
-                showSuccessDialog(getResources().getString(R.string.notification_title),
+                showNotificationDialog(getResources().getString(R.string.notification_title),
                         getResources().getString(R.string.notification_message), cabsListIntent);
             }
         } else {
@@ -502,7 +502,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
                 Intent packagesListIntent = new Intent(ExpectingArrival.this, PackagesList.class);
                 packagesListIntent.putExtra(SCREEN_TITLE, getClass().toString());
-                showSuccessDialog(getResources().getString(R.string.notification_title),
+                showNotificationDialog(getResources().getString(R.string.notification_title),
                         getResources().getString(R.string.notification_message), packagesListIntent);
             }
         }

@@ -336,7 +336,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             //Notify users that they have successfully invited their visitor
             Intent guestsListIntent = new Intent(InvitingVisitors.this, GuestsList.class);
             guestsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
-            showSuccessDialog(getResources().getString(R.string.invitation_success_title),
+            showNotificationDialog(getResources().getString(R.string.invitation_success_title),
                     getResources().getString(R.string.invitation_success_message),
                     guestsListIntent);
         }).addOnFailureListener(exception -> {
