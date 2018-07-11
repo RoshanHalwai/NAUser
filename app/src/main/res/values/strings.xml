@@ -285,5 +285,7 @@
     <string name="things">Things:</string>
     <string name="default_notification_channel_id">01</string>
     <string name="enter_time">Please select time.</string>
+    <string name="valid_button">Please select at least one button</string>
+    <string name="cab_number_validation">Please Enter Cab Number</string>
 
 </resources>

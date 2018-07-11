@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -30,11 +31,11 @@ import java.util.Locale;
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.CAB_NUMBER_FIELD_LENGTH;
-import static com.kirtanlabs.nammaapartments.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
+import static com.kirtanlabs.nammaapartments.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
@@ -65,6 +66,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button16Hr,
             R.id.button24Hr};
     private EditText editPickDateTime, editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editVendorValue;
+    private TextView textErrorCabNumber, textErrorDateTime, textErrorValidForButton;
     private int arrivalType;
     private String selectedDate;
     private String packageVendorName;
@@ -104,6 +106,9 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         cabNumberLayout = findViewById(R.id.cabNumberLayout);
         TextView textCabOrVendorTitle = findViewById(R.id.textCabOrVendorTitle);
         TextView textDateTime = findViewById(R.id.textDateTime);
+        textErrorCabNumber = findViewById(R.id.textErrorCabNumber);
+        textErrorDateTime = findViewById(R.id.textErrorDateTime);
+        textErrorValidForButton = findViewById(R.id.textErrorValidForButton);
         TextView textValidFor = findViewById(R.id.textValidFor);
         editCabStateCode = findViewById(R.id.editCabStateCode);
         editCabRtoNumber = findViewById(R.id.editCabRtoNumber);
@@ -124,6 +129,9 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         /*Setting font for all the views*/
         textCabOrVendorTitle.setTypeface(setLatoBoldFont(this));
         textDateTime.setTypeface(setLatoBoldFont(this));
+        textErrorCabNumber.setTypeface(setLatoRegularFont(this));
+        textErrorDateTime.setTypeface(setLatoRegularFont(this));
+        textErrorValidForButton.setTypeface(setLatoRegularFont(this));
         textValidFor.setTypeface(setLatoBoldFont(this));
         editCabStateCode.setTypeface(setLatoRegularFont(this));
         editCabRtoNumber.setTypeface(setLatoRegularFont(this));
@@ -200,27 +208,12 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.editPickDateTime:
                 pickDate(this, this);
+                //Hide the keyboard.
+                editPickDateTime.setInputType(InputType.TYPE_NULL);
                 break;
             case R.id.buttonNotifyGate:
-                if (arrivalType == R.string.expecting_cab_arrival) {
-                    if (isAllFieldsFilled(new EditText[]{editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editPickDateTime}) && isValidForSelected) {
-                        storeDigitalGateDetails(FIREBASE_CHILD_CABS);
-                        Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
-                        cabsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
-                        showNotificationDialog(getResources().getString(R.string.notification_title),
-                                getResources().getString(R.string.notification_message), cabsListIntent);
-                    }
-                } else {
-                    if (isAllFieldsFilled(new EditText[]{editVendorValue, editPickDateTime}) && isValidForSelected) {
-                        storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
-                        Intent packagesListIntent = new Intent(ExpectingArrival.this, PackagesList.class);
-                        packagesListIntent.putExtra(SCREEN_TITLE, getClass().toString());
-                        showNotificationDialog(getResources().getString(R.string.notification_title),
-                                getResources().getString(R.string.notification_message), packagesListIntent);
-                    } else {
-                        editVendorValue.setError(getString(R.string.please_fill_details));
-                    }
-                }
+                // This method gets invoked to check all the editText fields and button validations.
+                validateFields();
                 break;
         }
     }
@@ -250,6 +243,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
+            textErrorDateTime.setVisibility(View.GONE);
         }
     }
 
@@ -326,6 +320,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             if (buttonId == id) {
                 selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
+                textErrorValidForButton.setVisibility(View.GONE);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
@@ -342,6 +337,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
+                    textErrorCabNumber.setVisibility(View.GONE);
                     editCabRtoNumber.requestFocus();
                 }
             }
@@ -370,6 +366,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabStateCode.requestFocus();
                 } else if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
+                    textErrorCabNumber.setVisibility(View.GONE);
                     editCabSerialNumberOne.requestFocus();
                 }
             }
@@ -390,6 +387,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
                     editCabRtoNumber.requestFocus();
                 } else if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
+                    textErrorCabNumber.setVisibility(View.GONE);
                     editCabSerialNumberTwo.requestFocus();
                 }
             }
@@ -422,6 +420,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
 
             @Override
             public void afterTextChanged(Editable et) {
+                textErrorCabNumber.setVisibility(View.GONE);
             }
         });
         editVendorValue.addTextChangedListener(new TextWatcher() {
@@ -452,4 +451,61 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             }
         });
     }
+
+    private void validateFields() {
+        boolean fieldsFilled;
+        if (arrivalType == R.string.expecting_cab_arrival) {
+            String cabStateCode = editCabStateCode.getText().toString();
+            String cabRtoNumber = editCabRtoNumber.getText().toString();
+            String cabSerialNumberOne = editCabSerialNumberOne.getText().toString();
+            String cabSerialNumberTwo = editCabSerialNumberTwo.getText().toString();
+            String cabDateTime = editPickDateTime.getText().toString();
+            fieldsFilled = isAllFieldsFilled(new EditText[]{editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editPickDateTime}) && isValidForSelected;
+            //This condition checks if all fields are not filled and if user presses notify gate button it will then display proper error messages.
+            if (!fieldsFilled) {
+                if (TextUtils.isEmpty(cabStateCode) || TextUtils.isEmpty(cabRtoNumber) || TextUtils.isEmpty(cabSerialNumberOne) || TextUtils.isEmpty(cabSerialNumberTwo)) {
+                    textErrorCabNumber.setVisibility(View.VISIBLE);
+                }
+                if (TextUtils.isEmpty(cabDateTime)) {
+                    textErrorDateTime.setVisibility(View.VISIBLE);
+                }
+                if (!isValidForSelected) {
+                    textErrorValidForButton.setVisibility(View.VISIBLE);
+                }
+            }
+            //This condition checks for if user has filled all the fields and navigates to appropriate screen.
+            if (fieldsFilled) {
+                storeDigitalGateDetails(FIREBASE_CHILD_CABS);
+                Intent cabsListIntent = new Intent(ExpectingArrival.this, CabsList.class);
+                cabsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
+                showNotificationDialog(getResources().getString(R.string.notification_title),
+                        getResources().getString(R.string.notification_message), cabsListIntent);
+            }
+        } else {
+            packageVendorName = editVendorValue.getText().toString();
+            String vendorDateTime = editPickDateTime.getText().toString();
+            fieldsFilled = isAllFieldsFilled(new EditText[]{editVendorValue, editPickDateTime}) && isValidForSelected;
+            //This condition checks if all fields are not filled and if user presses notify gate button it will then display proper error messages.
+            if (!fieldsFilled) {
+                if (TextUtils.isEmpty(packageVendorName)) {
+                    editVendorValue.setError(getString(R.string.name_validation));
+                }
+                if (TextUtils.isEmpty(vendorDateTime)) {
+                    textErrorDateTime.setVisibility(View.VISIBLE);
+                }
+                if (!isValidForSelected) {
+                    textErrorValidForButton.setVisibility(View.VISIBLE);
+                }
+            }
+            //This condition checks for if user has filled all the fields and navigates to appropriate screen.
+            if (fieldsFilled) {
+                storeDigitalGateDetails(FIREBASE_CHILD_DELIVERIES);
+                Intent packagesListIntent = new Intent(ExpectingArrival.this, PackagesList.class);
+                packagesListIntent.putExtra(SCREEN_TITLE, getClass().toString());
+                showNotificationDialog(getResources().getString(R.string.notification_title),
+                        getResources().getString(R.string.notification_message), packagesListIntent);
+            }
+        }
+    }
+
 }
