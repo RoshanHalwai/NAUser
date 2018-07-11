@@ -287,5 +287,14 @@
     <string name="enter_time">Please select time.</string>
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
+    
+    <!--Navigation Drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Avinash Chappa</string>
+    <string name="nav_header_subtitle">chappa.avinash200@gmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="logout">LogOut</string>
 
 </resources>
