@@ -36,7 +36,6 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.Constants.HYPHEN;
-import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
@@ -268,7 +267,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
         String userUID = nammaApartmentUser.getUID();
-        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(reference, dateTimeOfVisit, validFor, userUID, NOT_ENTERED);
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(reference, dateTimeOfVisit, validFor, userUID);
 
         //Store cabs/deliveries uid and value under userdata->private->currentUserFlat
         DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(reference);

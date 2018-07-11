@@ -14,6 +14,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT;
 
@@ -30,10 +31,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String remoteMessageType = remoteMessageData.get("type");
 
         if (remoteMessageType.equals("E-Intercom")) {
+            String message = remoteMessageData.get("message");
             String notificationUID = remoteMessageData.get("notification_uid");
             String userUID = remoteMessageData.get("user_uid");
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_custom_notification);
+
+            remoteViews.setTextViewText(R.id.textNotificationMessage, message);
 
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.namma_apartment_notification)
@@ -65,10 +69,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel mChannel = new NotificationChannel(
                         getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(mChannel);
+                Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
             }
 
-            notificationManager.notify(mNotificationID, notification);
+            Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
         } else {
             String message = remoteMessageData.get("message");
 
@@ -87,11 +91,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel mChannel = new NotificationChannel(
                         getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(mChannel);
+                Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
             }
 
             int mNotificationID = (int) System.currentTimeMillis();
-            notificationManager.notify(mNotificationID, notification);
+            Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
         }
     }
 

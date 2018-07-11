@@ -50,7 +50,7 @@ public class NammaApartmentDailyService implements Serializable {
         return numberOfFlats;
     }
 
-    public String getfullName() {
+    public String getFullName() {
         return fullName;
     }
 

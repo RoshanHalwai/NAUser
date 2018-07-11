@@ -52,9 +52,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
      * Private Members
      * ------------------------------------------------------------- */
 
-    private Context mCtx;
+    private final Context mCtx;
     private final BaseActivity baseActivity;
-    private List<NammaApartmentGuest> nammaApartmentGuestList;
+    private final List<NammaApartmentGuest> nammaApartmentGuestList;
     private View rescheduleDialog;
     private AlertDialog dialog;
     private EditText editPickDate;

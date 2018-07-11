@@ -29,6 +29,7 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -252,7 +253,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                         //Check if network is available or not
                         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-                        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
                         boolean isConnected = activeNetwork != null &&
                                 activeNetwork.isConnectedOrConnecting();
                         if (!isConnected) {

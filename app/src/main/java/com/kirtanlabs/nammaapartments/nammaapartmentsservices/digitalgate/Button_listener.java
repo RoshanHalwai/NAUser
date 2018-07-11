@@ -15,24 +15,26 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 
+import java.util.Objects;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 7/2/2018
  */
 public class Button_listener extends BroadcastReceiver {
 
-    String currentUserID;
+    private String currentUserID;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null) {
             String action = intent.getAction();
-            String notificationUID = intent.getExtras().getString("Notification_UID");
+            String notificationUID = Objects.requireNonNull(intent.getExtras()).getString("Notification_UID");
             int notificationId = intent.getExtras().getInt("Notification_Id");
 
             /*Clear the notification once button is pressed*/
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.cancel(notificationId);
+            Objects.requireNonNull(manager).cancel(notificationId);
 
             /*Get current user UID from Messaging Service*/
             currentUserID = intent.getExtras().getString("User_UID");
@@ -55,7 +57,7 @@ public class Button_listener extends BroadcastReceiver {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserFlatDetails userFlatDetails = dataSnapshot.getValue(NammaApartmentUser.class).getFlatDetails();
+                UserFlatDetails userFlatDetails = Objects.requireNonNull(dataSnapshot.getValue(NammaApartmentUser.class)).getFlatDetails();
                 DatabaseReference userDataReference = FirebaseDatabase.getInstance().getReference().child("userData")
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(userFlatDetails.getCity())

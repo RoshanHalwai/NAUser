@@ -27,12 +27,12 @@ public class NammaApartmentArrival {
     public NammaApartmentArrival() {
     }
 
-    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String inviterUID, String status) {
+    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String inviterUID) {
         this.reference = reference;
         this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;
         this.inviterUID = inviterUID;
-        this.status = status;
+        this.status = com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
     }
 
     /* ------------------------------------------------------------- *

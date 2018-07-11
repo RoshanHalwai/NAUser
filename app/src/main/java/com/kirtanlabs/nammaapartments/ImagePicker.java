@@ -148,12 +148,18 @@ public class ImagePicker {
     private static int getRotationFromGallery(Context context, Uri imageUri) {
         String[] columns = {MediaStore.Images.Media.ORIENTATION};
         Cursor cursor = context.getContentResolver().query(imageUri, columns, null, null, null);
-        if (cursor == null) return 0;
+        if (cursor == null) {
+            return 0;
+        }
 
         cursor.moveToFirst();
 
         int orientationColumnIndex = cursor.getColumnIndex(columns[0]);
-        return cursor.getInt(orientationColumnIndex);
+        int rotationValue = cursor.getInt(orientationColumnIndex);
+        if (!cursor.isClosed()) {
+            cursor.close();
+        }
+        return rotationValue;
     }
 
 

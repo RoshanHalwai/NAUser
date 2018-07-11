@@ -86,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         activityTitle.setText(resourceId);
     }
 
-    protected void setBackButtonListener() {
+    private void setBackButtonListener() {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
     }

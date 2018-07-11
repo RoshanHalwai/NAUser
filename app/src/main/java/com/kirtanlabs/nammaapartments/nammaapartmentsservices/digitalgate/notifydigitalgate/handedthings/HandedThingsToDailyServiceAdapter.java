@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 
@@ -70,7 +71,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
         //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
-        holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getfullName());
+        holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNumberOfFlats()));
@@ -196,7 +197,6 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentDailyService.setDailyServiceHandedThingsDescription(handedThingsDescription);
                     String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-                    String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
 
                     /*We need to keep track of when users are handing things to their visitors hence
                      * we map Date with Things, since date is unique*/
@@ -204,7 +204,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                     SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                     String todayDateString = sm.format(todayDate);
                     DatabaseReference DailyServicesReference = PUBLIC_DAILYSERVICES_REFERENCE
-                            .child(dailyServiceTypeValue)
+                            .child(DailyServiceType.getKeyByValue(dailyServiceType))
                             .child(nammaApartmentDailyService.getUID())
                             .child(NammaApartmentsGlobal.userUID);
                     DailyServicesReference.child(FIREBASE_CHILD_HANDED_THINGS)

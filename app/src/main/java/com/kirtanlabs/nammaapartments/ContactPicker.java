@@ -17,8 +17,8 @@ public class ContactPicker {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private Uri uriContact;
-    private Context context;
+    private final Uri uriContact;
+    private final Context context;
 
     /* ------------------------------------------------------------- *
      * Constructor

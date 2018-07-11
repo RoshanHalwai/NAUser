@@ -27,12 +27,12 @@ public class NammaApartmentGuest {
     public NammaApartmentGuest() {
     }
 
-    NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String status, String inviterUID) {
+    NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
         this.dateAndTimeOfVisit = dateAndTimeOfVisit;
-        this.status = status;
+        this.status = com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
         this.inviterUID = inviterUID;
     }
 
@@ -56,10 +56,6 @@ public class NammaApartmentGuest {
         return dateAndTimeOfVisit;
     }
 
-    public void setDateAndTimeOfVisit(String dateAndTimeOfVisit) {
-        this.dateAndTimeOfVisit = dateAndTimeOfVisit;
-    }
-
     public String getProfilePhoto() {
         return profilePhoto;
     }
@@ -67,10 +63,6 @@ public class NammaApartmentGuest {
     public String getHandedThingsDescription() {
         return handedThingsDescription;
     }
-
-    /* ------------------------------------------------------------- *
-     * Setters
-     * ------------------------------------------------------------- */
 
     public String getInviterUID() {
         return inviterUID;
@@ -80,8 +72,16 @@ public class NammaApartmentGuest {
         return status;
     }
 
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setDateAndTimeOfVisit(String dateAndTimeOfVisit) {
+        this.dateAndTimeOfVisit = dateAndTimeOfVisit;
     }
 
     public void setProfilePhoto(String profilePhoto) {
@@ -91,4 +91,5 @@ public class NammaApartmentGuest {
     public void setHandedThingsDescription(String handedThingsDescription) {
         this.handedThingsDescription = handedThingsDescription;
     }
+
 }

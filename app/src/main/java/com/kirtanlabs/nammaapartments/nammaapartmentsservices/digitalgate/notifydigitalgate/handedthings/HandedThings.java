@@ -16,6 +16,7 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
@@ -166,7 +167,7 @@ public class HandedThings extends BaseActivity {
                         @Override
                         public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
                             NammaApartmentGuest nammaApartmentGuest = nammaApartmentVisitorData.getValue(NammaApartmentGuest.class);
-                            if (nammaApartmentGuest.getStatus().equals(ENTERED)) {
+                            if (Objects.requireNonNull(nammaApartmentGuest).getStatus().equals(ENTERED)) {
                                 nammaApartmentGuestList.add(index++, nammaApartmentGuest);
                                 adapterVisitors.notifyDataSetChanged();
                             }
@@ -254,13 +255,13 @@ public class HandedThings extends BaseActivity {
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.child("status").getValue().toString().equals(ENTERED)) {
+                                        if (Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString().equals(ENTERED)) {
                                             long numberOfFlats = dataSnapshot.getChildrenCount() - 1;
                                             if (dataSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                nammaApartmentDailyService.setNumberOfFlats(numberOfFlats);
-                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
+                                                Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(numberOfFlats);
+                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();
                                             }

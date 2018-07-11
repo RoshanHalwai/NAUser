@@ -62,15 +62,14 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
           hence hiding the back button from the Title Bar*/
         hideBackButton();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         /*At this point new user and existing user would have their records in firebase and hence we store
          * the values to NammaApartmentsGlobal*/
@@ -113,7 +112,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             finish();
         }
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -13,8 +13,8 @@ public class NammaApartmentUser implements Serializable {
     private UserFlatDetails flatDetails;
     private UserPersonalDetails personalDetails;
     private UserPrivileges privileges;
-    private Map<String, Boolean> familyMembers = new HashMap<>();
-    private Map<String, Boolean> friends = new HashMap<>();
+    private final Map<String, Boolean> familyMembers = new HashMap<>();
+    private final Map<String, Boolean> friends = new HashMap<>();
     private String uid;
 
     /* ------------------------------------------------------------- *

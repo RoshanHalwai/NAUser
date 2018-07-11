@@ -1,6 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.emergency;
 
-public class NammaApartmentEmergency {
+class NammaApartmentEmergency {
 
     /* ------------------------------------------------------------- *
      * Private Members
