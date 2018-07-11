@@ -400,7 +400,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                     adminUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            String adminUID = dataSnapshot.getValue().toString();
+                            String adminUID = Objects.requireNonNull(dataSnapshot.getValue()).toString();
                             DatabaseReference adminNameReference = PRIVATE_USERS_REFERENCE.child(adminUID);
                             adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -453,7 +453,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                     //adding the profile photo to storage reference and user data to real time database
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
                         /*Create an instance of NammaApartmentUser class*/
-                        UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, taskSnapshot.getDownloadUrl().toString());
+                        UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
                         UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
                         UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
                         NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);

@@ -28,8 +28,6 @@ import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
 public class GuestsList extends BaseActivity {
 
-    DatabaseReference userDataReference;
-    DatabaseReference myVisitorsReference;
     private List<NammaApartmentGuest> nammaApartmentGuestList;
     private GuestsListAdapter guestsListAdapter;
     private int index = 0;

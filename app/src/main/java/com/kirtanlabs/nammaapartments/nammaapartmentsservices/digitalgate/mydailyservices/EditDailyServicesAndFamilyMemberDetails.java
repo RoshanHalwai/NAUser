@@ -255,7 +255,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
     private void getMyDailyServiceAndFamilyMemberDetails() {
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_daily_services) {
             NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
-            name = nammaApartmentDailyService.getfullName();
+            name = nammaApartmentDailyService.getFullName();
             mobile = nammaApartmentDailyService.getPhoneNumber();
             editMemberAndServiceName.setText(name);
             editMemberAndServiceName.setSelection(name.length());
@@ -459,7 +459,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
         NammaApartmentDailyService nammaApartmentDailyService = (NammaApartmentDailyService) getIntent().getSerializableExtra(DAILY_SERVICE_OBJECT);
         String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
         String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
-        //On Updation of DailyService Details we have to check for these 3 cases.
+        //On updating DailyService Details we have to check for these 3 cases.
         if (nameTextChanged) {
             String updatedDailyServiceName = editMemberAndServiceName.getText().toString();
             nammaApartmentDailyService.setFullName(updatedDailyServiceName);
@@ -495,7 +495,7 @@ public class EditDailyServicesAndFamilyMemberDetails extends BaseActivity implem
      */
     private void updateFamilyMemberDetails() {
         NammaApartmentUser nammaApartmentUser = (NammaApartmentUser) getIntent().getSerializableExtra(FAMILY_MEMBER_OBJECT);
-        //On Updation Family Member Details we have to check for these 3 cases.
+        //On updating Family Member Details we have to check for these 3 cases.
         if (nameTextChanged) {
             String updatedFamilyMemberName = editMemberAndServiceName.getText().toString();
             nammaApartmentUser.getPersonalDetails().setFullName(updatedFamilyMemberName);

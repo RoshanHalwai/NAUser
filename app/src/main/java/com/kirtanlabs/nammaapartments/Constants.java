@@ -18,12 +18,6 @@ import java.util.Map;
 public class Constants {
 
     /* ------------------------------------------------------------- *
-     * Namma Apartment GCM Channels
-     * ------------------------------------------------------------- */
-
-    public static final String CHANNEL_ID = "my_channel_01";
-
-    /* ------------------------------------------------------------- *
      * Intent Keys
      * ------------------------------------------------------------- */
 
@@ -83,7 +77,6 @@ public class Constants {
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
-    public static final String FIREBASE_CHILD_HANDED_THINGS_DESCRIPTION = "handedThingsDescription";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
@@ -91,15 +84,10 @@ public class Constants {
     private static final String FIREBASE_MYCHILDDAYCARE = "myChildDayCare";
     private static final String FIREBASE_MYCOOK = "myCook";
     private static final String FIREBASE_MYDAILYNEWSPAPER = "myDailyNewspaper";
-    public static final String FIREBASE_CHILD_MYDAILYSERVICES = "myDailyServices";
     private static final String FIREBASE_MYDRIVER = "myDriver";
     private static final String FIREBASE_MYMAID = "myMaid";
     private static final String FIREBASE_MYMILKMAN = "myMilkman";
     private static final String FIREBASE_MYLAUNDRY = "myLaundry";
-    public static final String FIREBASE_CHILD_MYVISITORS = "myVisitors";
-    public static final String FIREBASE_CHILD_MYCABS = "myCabs";
-    public static final String FIREBASE_CHILD_MYDELIVERIES = "myDeliveries ";
-    public static final String FIREBASE_CHILD_OWNERSUID = "ownersUID";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
@@ -159,7 +147,6 @@ public class Constants {
      * Mapping Daily Services
      * ------------------------------------------------------------- */
 
-    private static final Map<String, String> DAILY_SERVICE_MAP;
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
 
     /* ------------------------------------------------------------- *
@@ -183,7 +170,6 @@ public class Constants {
         aMap.put(FIREBASE_MYCHILDDAYCARE, FIREBASE_CHILD_CHILDDAYCARES);
         aMap.put(FIREBASE_MYDAILYNEWSPAPER, FIREBASE_CHILD_DAILYNEWSPAPERS);
         aMap.put(FIREBASE_CHILD_MYCARBIKECLEANER, FIREBASE_CHILD_CARBIKECLEANERS);
-        DAILY_SERVICE_MAP = Collections.unmodifiableMap(aMap);
     }
 
     /* ------------------------------------------------------------- *

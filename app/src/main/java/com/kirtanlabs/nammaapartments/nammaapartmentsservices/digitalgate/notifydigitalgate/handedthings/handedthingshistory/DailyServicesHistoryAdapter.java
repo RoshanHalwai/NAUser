@@ -53,7 +53,7 @@ public class DailyServicesHistoryAdapter extends RecyclerView.Adapter<DailyServi
         //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
-        holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getfullName());
+        holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textHandedThingsValue.setText((nammaApartmentDailyService.getDailyServiceHandedThingsDescription()));
         holder.textInvitationDateValue.setText(nammaApartmentDailyService.getDateOfVisit());

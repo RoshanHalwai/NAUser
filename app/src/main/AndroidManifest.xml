@@ -147,7 +147,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory"></activity>
+        <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
     </application>
 
 </manifest>

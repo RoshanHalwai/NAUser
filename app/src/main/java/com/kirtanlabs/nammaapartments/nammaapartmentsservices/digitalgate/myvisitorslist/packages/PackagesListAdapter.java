@@ -29,8 +29,8 @@ public class PackagesListAdapter extends RecyclerView.Adapter<PackagesListAdapte
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-    private Context mCtx;
-    private List<NammaApartmentArrival> nammaApartmentArrivalList;
+    private final Context mCtx;
+    private final List<NammaApartmentArrival> nammaApartmentArrivalList;
 
     /* ------------------------------------------------------------- *
      * Constructor

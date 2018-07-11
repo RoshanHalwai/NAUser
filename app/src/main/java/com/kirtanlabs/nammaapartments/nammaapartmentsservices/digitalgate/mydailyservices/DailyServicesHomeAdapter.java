@@ -26,6 +26,7 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMEOFVISIT;
@@ -97,7 +98,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
         //Creating an instance of NammaApartmentDailyService class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
-        holder.textServiceNameValue.setText(nammaApartmentDailyService.getfullName());
+        holder.textServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
@@ -307,10 +308,9 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
                     String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-                    dailyServiceType = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
                     DatabaseReference userDailyServiceReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference()
                             .child(FIREBASE_CHILD_DAILYSERVICES);
-                    userDailyServiceReference.child(dailyServiceType)
+                    userDailyServiceReference.child(DailyServiceType.getKeyByValue(dailyServiceType))
                             .child(nammaApartmentDailyService.getUID())
                             .removeValue();
                     break;

@@ -190,6 +190,8 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
 
+            textVisitorTypeValue.setText(mCtx.getString(R.string.guest));
+
             buttonYes.setOnClickListener(this);
             buttonNo.setOnClickListener(this);
             buttonNotifyGate.setOnClickListener(this);

@@ -311,7 +311,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         String visitorMobile = editVisitorMobile.getText().toString();
         String visitorDateTime = editPickDateTime.getText().toString();
         NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(visitorUID,
-                visitorName, visitorMobile, visitorDateTime, Constants.NOT_ENTERED, NammaApartmentsGlobal.userUID);
+                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID);
 
         //getting the storage reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)

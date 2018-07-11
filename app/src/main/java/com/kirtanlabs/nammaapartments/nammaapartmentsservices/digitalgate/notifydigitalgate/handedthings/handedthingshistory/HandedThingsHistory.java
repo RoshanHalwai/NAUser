@@ -13,6 +13,7 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.invitevisitors.NammaApartmentGuest;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
@@ -266,8 +267,8 @@ public class HandedThingsHistory extends BaseActivity {
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             for (DataSnapshot dates : dataSnapshot.getChildren()) {
                                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(dailyServiceType.substring(0, 1).toUpperCase() + dailyServiceType.substring(1));
-                                                                nammaApartmentDailyService.setDailyServiceHandedThingsDescription(dates.getValue().toString());
+                                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
+                                                                nammaApartmentDailyService.setDailyServiceHandedThingsDescription(Objects.requireNonNull(dates.getValue()).toString());
                                                                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                                                                 try {
                                                                     Date date = dateFormat.parse(dates.getKey());
