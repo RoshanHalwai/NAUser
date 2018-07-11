@@ -111,6 +111,16 @@
                         android:textSize="@dimen/text_view_numbers_size"
                         tools:ignore="LabelFor" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textErrorCabNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/cab_number_validation"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone" />
                 <TextView
                     android:id="@+id/textDateTime"
                     android:layout_width="match_parent"
@@ -135,6 +145,16 @@
                     android:focusableInTouchMode="true"
                     android:textSize="@dimen/edit_text_default_size"
                     tools:ignore="LabelFor,TextFields" />
+
+                <TextView
+                    android:id="@+id/textErrorDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/enter_date_time"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/textValidFor"
@@ -254,6 +274,15 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/textErrorValidForButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/valid_button"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone" />
                 <Button
                     android:id="@+id/buttonNotifyGate"
                     android:layout_width="match_parent"

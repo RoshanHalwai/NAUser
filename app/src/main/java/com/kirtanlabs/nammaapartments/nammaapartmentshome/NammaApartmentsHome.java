@@ -1,11 +1,19 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +25,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.Objects;
@@ -24,15 +33,20 @@ import java.util.Objects;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
-public class NammaApartmentsHome extends BaseActivity {
+public class NammaApartmentsHome extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+    /*Root Layout for Navigation Drawer*/
+    private DrawerLayout drawer;
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_namma_apartments_home;
+        return R.layout.activity_nahome_navigation_drawer;
     }
 
     @Override
@@ -47,6 +61,16 @@ public class NammaApartmentsHome extends BaseActivity {
         /*Since this is Namma Apartments Home Screen we wouldn't want the users to go back to OTP screen,
           hence hiding the back button from the Title Bar*/
         hideBackButton();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         /*At this point new user and existing user would have their records in firebase and hence we store
          * the values to NammaApartmentsGlobal*/
@@ -76,6 +100,22 @@ public class NammaApartmentsHome extends BaseActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_logout) {
+            Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
+            startActivity(intent);
+            finish();
+        }
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     /* ------------------------------------------------------------- *

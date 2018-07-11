@@ -241,7 +241,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     /**
      * Based on the position the guest data is removed from List in UI and Firebase
      *
-     * @param position of card view whose guest details need to be removed
+     * @param position            of card view whose guest details need to be removed
      * @param nammaApartmentGuest whose data needs to be removed
      */
     private void removeVisitor(int position, NammaApartmentGuest nammaApartmentGuest) {
