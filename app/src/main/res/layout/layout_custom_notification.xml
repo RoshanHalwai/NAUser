@@ -20,11 +20,11 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/textNotificationMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textColor="@android:color/black"
-            android:text="Roshan would like to enter your society"
             android:textSize="16sp" />
 
         <LinearLayout

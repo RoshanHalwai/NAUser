@@ -30,10 +30,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String remoteMessageType = remoteMessageData.get("type");
 
         if (remoteMessageType.equals("E-Intercom")) {
+            String message = remoteMessageData.get("message");
             String notificationUID = remoteMessageData.get("notification_uid");
             String userUID = remoteMessageData.get("user_uid");
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_custom_notification);
+
+            remoteViews.setTextViewText(R.id.textNotificationMessage, message);
 
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.namma_apartment_notification)
