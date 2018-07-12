@@ -198,12 +198,11 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     private void updateDailyServiceDetails(int position) {
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-        String dailyServiceTypeValue = dailyServiceType.substring(0, 1).toLowerCase() + dailyServiceType.substring(1);
         String updatedTime = editPickTime.getText().toString();
         nammaApartmentDailyService.setTimeOfVisit(updatedTime);
         notifyItemChanged(position);
         DatabaseReference updatedTimeReference = PUBLIC_DAILYSERVICES_REFERENCE
-                .child(dailyServiceTypeValue)
+                .child(DailyServiceType.getKeyByValue(dailyServiceType))
                 .child(nammaApartmentDailyService.getUID())
                 .child(NammaApartmentsGlobal.userUID)
                 .child(FIREBASE_CHILD_TIMEOFVISIT);

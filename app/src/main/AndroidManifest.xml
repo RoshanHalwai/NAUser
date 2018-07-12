@@ -125,9 +125,6 @@
             android:name=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.digitalgate.mydailyservices.EditDailyServicesAndFamilyMemberDetails"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".nammaapartmentsservices.digitalgate.myvisitorslist.VisitorsList"
             android:screenOrientation="portrait" />
         <activity
