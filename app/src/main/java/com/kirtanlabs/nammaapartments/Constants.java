@@ -6,9 +6,6 @@ import android.graphics.Typeface;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/1/2018
@@ -52,7 +49,7 @@ public class Constants {
 
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_ADMIN = "admin";
-    public static final String FIREBASE_CHILD_APARTMENTS = "apartments";
+    private static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
     private static final String FIREBASE_CHILD_CITIES = "cities";
@@ -67,7 +64,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_EMAIL = "email";
     public static final String FIREBASE_CHILD_EMERGENCIES = "emergencies";
-    public static final String FIREBASE_CHILD_FLATS = "flats";
+    private static final String FIREBASE_CHILD_FLATS = "flats";
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
@@ -77,23 +74,14 @@ public class Constants {
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
-    private static final String FIREBASE_CHILD_MYCARBIKECLEANER = "myCarBikeCleaner";
-    private static final String FIREBASE_MYCHILDDAYCARE = "myChildDayCare";
-    private static final String FIREBASE_MYCOOK = "myCook";
-    private static final String FIREBASE_MYDAILYNEWSPAPER = "myDailyNewspaper";
-    private static final String FIREBASE_MYDRIVER = "myDriver";
-    private static final String FIREBASE_MYMAID = "myMaid";
-    private static final String FIREBASE_MYMILKMAN = "myMilkman";
-    private static final String FIREBASE_MYLAUNDRY = "myLaundry";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
-    public static final String FIREBASE_CHILD_PHONENUMBER = "phoneNumber";
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
     public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
-    public static final String FIREBASE_CHILD_SOCIETIES = "societies";
+    private static final String FIREBASE_CHILD_SOCIETIES = "societies";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_USER_DATA = "userData";
@@ -115,11 +103,13 @@ public class Constants {
     private static final DatabaseReference DAILYSERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DAILYSERVICES);
     private static final DatabaseReference CABS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CABS);
     private static final DatabaseReference DELIVERIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DELIVERIES);
-    private static final DatabaseReference FLATS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_FLATS);
     private static final DatabaseReference EMERGENCIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EMERGENCIES);
-    public static final DatabaseReference PRIVATE_FLATS_REFERENCE = FLATS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     private static final DatabaseReference PRIVATE_CLIENTS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CLIENTS).child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference CITIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_CITIES);
+    public static final DatabaseReference SOCIETIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_SOCIETIES);
+    public static final DatabaseReference FLATS_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_FLATS);
+    public static final DatabaseReference APARTMENTS_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_APARTMENTS);
+
     public static final DatabaseReference PRIVATE_USERS_REFERENCE = USER_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PRIVATE_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PRIVATE_DELIVERY_REFERENCE = DELIVERIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
@@ -138,18 +128,15 @@ public class Constants {
     /* ------------------------------------------------------------- *
      * Family member/Friend Relation retrieval
      * ------------------------------------------------------------- */
+
     public static final String FAMILY_MEMBER =  "Family Member";
     public static final String FRIEND = "Friend";
 
     /* ------------------------------------------------------------- *
-     * Mapping Daily Services
+     * Request Code
      * ------------------------------------------------------------- */
 
     public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
-
-    /* ------------------------------------------------------------- *
-     * Request Code
-     * ------------------------------------------------------------- */
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
     public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
 
@@ -157,18 +144,6 @@ public class Constants {
     public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
-
-    static {
-        final Map<String, String> aMap = new HashMap<>();
-        aMap.put(FIREBASE_MYCOOK, FIREBASE_CHILD_COOKS);
-        aMap.put(FIREBASE_MYDRIVER, FIREBASE_CHILD_DRIVERS);
-        aMap.put(FIREBASE_MYMILKMAN, FIREBASE_CHILD_MILKMEN);
-        aMap.put(FIREBASE_MYLAUNDRY, FIREBASE_CHILD_LAUNDRIES);
-        aMap.put(FIREBASE_MYMAID, FIREBASE_CHILD_MAIDS);
-        aMap.put(FIREBASE_MYCHILDDAYCARE, FIREBASE_CHILD_CHILDDAYCARES);
-        aMap.put(FIREBASE_MYDAILYNEWSPAPER, FIREBASE_CHILD_DAILYNEWSPAPERS);
-        aMap.put(FIREBASE_CHILD_MYCARBIKECLEANER, FIREBASE_CHILD_CARBIKECLEANERS);
-    }
 
     /* ------------------------------------------------------------- *
      * Font Types

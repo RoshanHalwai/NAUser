@@ -65,9 +65,10 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * Private Members
      * ------------------------------------------------------------- */
 
-    private final List<String> itemsInList = new ArrayList<>();
+    private List<String> itemsInList = new ArrayList<>();
     private Dialog dialog;
     private ListView listView;
+
     private ArrayAdapter<String> adapter;
 
     private EditText editCity;
@@ -196,25 +197,11 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
     private void initializeListWithSearchView() {
         dialog = new Dialog(MyFlatDetails.this);
-        dialog.setContentView(R.layout.cities_listview);
+        dialog.setContentView(R.layout.layout_search_flat);
 
         inputSearch = dialog.findViewById(R.id.inputSearch);
         listView = dialog.findViewById(R.id.list);
         inputSearch.setTypeface(Constants.setLatoItalicFont(MyFlatDetails.this));
-
-        /*Setting font for all the items in the list view*/
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, itemsInList) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textView = view.findViewById(android.R.id.text1);
-                textView.setTypeface(Constants.setLatoRegularFont(MyFlatDetails.this));
-                return view;
-            }
-        };
-        listView.setAdapter(adapter);
 
         /*Attaching listeners to ListView*/
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -255,29 +242,23 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 hideViews(R.id.editCity);
                 updateItemsInList(Constants.CITIES_REFERENCE);
                 break;
+
             case R.id.editSociety:
                 hideViews(R.id.editSociety);
-                updateItemsInList(Constants.CITIES_REFERENCE
-                        .child(editCity.getText().toString())
-                        .child(Constants.FIREBASE_CHILD_SOCIETIES));
+                updateItemsInList(Constants.SOCIETIES_REFERENCE
+                        .child(editCity.getText().toString()));
                 break;
+
             case R.id.editApartment:
                 hideViews(R.id.editApartment);
-                updateItemsInList(Constants.CITIES_REFERENCE
-                        .child(editCity.getText().toString())
-                        .child(Constants.FIREBASE_CHILD_SOCIETIES)
-                        .child(editSociety.getText().toString())
-                        .child(Constants.FIREBASE_CHILD_APARTMENTS));
+                updateItemsInList(Constants.APARTMENTS_REFERENCE
+                        .child(editSociety.getText().toString()));
                 break;
+
             case R.id.editFlat:
                 hideViews(R.id.editFlat);
-                updateItemsInList(Constants.CITIES_REFERENCE
-                        .child(editCity.getText().toString())
-                        .child(Constants.FIREBASE_CHILD_SOCIETIES)
-                        .child(editSociety.getText().toString())
-                        .child(Constants.FIREBASE_CHILD_APARTMENTS)
-                        .child(editApartment.getText().toString())
-                        .child(Constants.FIREBASE_CHILD_FLATS));
+                updateItemsInList(Constants.FLATS_REFERENCE
+                        .child(editApartment.getText().toString()));
                 break;
         }
     }
@@ -288,14 +269,29 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * @param databaseReference for getting values from firebase
      */
     private void updateItemsInList(DatabaseReference databaseReference) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        /*Setting font for all the items in the list view*/
+        inputSearch.getText().clear();
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, itemsInList) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setTypeface(Constants.setLatoRegularFont(MyFlatDetails.this));
+                return view;
+            }
+        };
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot values : dataSnapshot.getChildren()) {
-                    itemsInList.add(values.getKey());
-                    adapter.notifyDataSetChanged();
+                for (DataSnapshot keys : dataSnapshot.getChildren()) {
+                    itemsInList.add(keys.getKey());
                 }
+                adapter.notifyDataSetChanged();
                 Collections.sort(itemsInList);
+                listView.setAdapter(adapter);
                 dialog.show();
             }
 
@@ -375,6 +371,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 getResources().getString(R.string.creating_your_account),
                 getResources().getString(R.string.please_wait_a_moment));
 
+        /*Get selected Flat Details*/
         String city = editCity.getText().toString();
         String apartmentName = editApartment.getText().toString();
         String flatNumber = editFlat.getText().toString();
@@ -387,6 +384,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 : radioButtonOwner.getText().toString();
         String userUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+        /*Create User Data reference*/
         DatabaseReference flatsReference = FirebaseDatabase.getInstance().getReference().child(FIREBASE_CHILD_USER_DATA)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(city).child(societyName)
@@ -395,6 +393,9 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         flatsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                /*If a record of the flat details already exits in firebase it means User has to request
+                 * the Admin to add them as Family Member. This is done to ensure a flat does not have
+                 * multiple admins*/
                 if (dataSnapshot.exists()) {
                     DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_ADMIN);
                     adminUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -428,7 +429,10 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
                         }
                     });
-                } else {
+                }
+                /*Record not found, user is the first family member for the entered flat details.
+                 * Setup account for them*/
+                else {
                     byte[] byteArray = null;
                     String filename = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
                     try {
