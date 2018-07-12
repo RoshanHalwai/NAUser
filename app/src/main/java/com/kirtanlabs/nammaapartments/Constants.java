@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +68,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_DAILYSERVICE_TYPE = "dailyServiceType";
     public static final String FIREBASE_CHILD_DATEANDTIMEOFVISIT = "dateAndTimeOfVisit";
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
+    public static final String FIREBASE_CHILD_EMAIL = "email";
     public static final String FIREBASE_CHILD_EMERGENCIES = "emergencies";
     public static final String FIREBASE_CHILD_FLATS = "flats";
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
@@ -91,6 +91,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
+    public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
     public static final String FIREBASE_CHILD_PHONENUMBER = "phoneNumber";
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
