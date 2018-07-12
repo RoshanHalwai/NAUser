@@ -70,7 +70,8 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         /*At this point new user and existing user would have their records in firebase and hence we store
          * the values to NammaApartmentsGlobal*/
         DatabaseReference userReference = Constants.PRIVATE_USERS_REFERENCE
@@ -107,9 +108,21 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         int id = item.getItemId();
 
         if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
+        }
+
+        if (id == R.id.nav_appSettings) {
+            //TODO:To implement this Functionality later
+        }
+
+        if (id == R.id.nav_myProfile) {
+            Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
+            startActivity(intent);
         }
 
         drawer = findViewById(R.id.drawer_layout);
