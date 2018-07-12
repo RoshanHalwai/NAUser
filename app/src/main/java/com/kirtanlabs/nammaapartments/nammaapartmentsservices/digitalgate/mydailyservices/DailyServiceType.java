@@ -12,22 +12,22 @@ import java.util.Map;
  * ------------------------------------------------------------- */
 public class DailyServiceType {
 
-    // Reverse-lookup map for getting a day from an abbreviation
-    private static final Map<String, String> lookup = new HashMap<>();
+    // Reverse-dailyServiceLookup map for getting a day from an abbreviation
+    private static final Map<String, String> dailyServiceLookup = new HashMap<>();
 
     /* ------------------------------------------------------------- *
      * Static Initialization
      * ------------------------------------------------------------- */
 
     static {
-        lookup.put("cooks", "Cook");
-        lookup.put("maids", "Maid");
-        lookup.put("childDayCares", "Child Day Care");
-        lookup.put("dailyNewsPapers", "Daily Newspaper");
-        lookup.put("carBikeCleaners", "Car/Bike Cleaner");
-        lookup.put("drivers", "Driver");
-        lookup.put("laundries", "Laundry");
-        lookup.put("milkmen", "Milkman");
+        dailyServiceLookup.put("cooks", "Cook");
+        dailyServiceLookup.put("maids", "Maid");
+        dailyServiceLookup.put("childDayCares", "Child Day Care");
+        dailyServiceLookup.put("dailyNewsPapers", "Daily Newspaper");
+        dailyServiceLookup.put("carBikeCleaners", "Car/Bike Cleaner");
+        dailyServiceLookup.put("drivers", "Driver");
+        dailyServiceLookup.put("laundries", "Laundry");
+        dailyServiceLookup.put("milkmen", "Milkman");
     }
 
     /* ------------------------------------------------------------- *
@@ -35,11 +35,11 @@ public class DailyServiceType {
      * ------------------------------------------------------------- */
 
     public static String get(String dailyServiceType) {
-        return lookup.get(dailyServiceType);
+        return dailyServiceLookup.get(dailyServiceType);
     }
 
     public static String getKeyByValue(String dailyServiceType) {
-        for (Map.Entry dailyService : lookup.entrySet()) {
+        for (Map.Entry dailyService : dailyServiceLookup.entrySet()) {
             if (dailyService.getValue().equals(dailyServiceType)) {
                 return dailyService.getKey().toString();
             }
