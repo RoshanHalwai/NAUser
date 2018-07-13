@@ -32,10 +32,6 @@ public class Button_listener extends BroadcastReceiver {
             String notificationUID = Objects.requireNonNull(intent.getExtras()).getString("Notification_UID");
             int notificationId = intent.getExtras().getInt("Notification_Id");
 
-            /*Clear the notification once button is pressed*/
-            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Objects.requireNonNull(manager).cancel(notificationId);
-
             /*Get current user UID from Messaging Service*/
             currentUserID = intent.getExtras().getString("User_UID");
 
@@ -48,6 +44,10 @@ public class Button_listener extends BroadcastReceiver {
                 Log.d("Notification Test", action);
                 Log.d("notificationUID", notificationUID);
             }
+
+            /*Clear the notification once button is pressed*/
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            Objects.requireNonNull(manager).cancel(notificationId);
         }
 
     }
