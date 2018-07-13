@@ -206,11 +206,13 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                                         @Override
                                         public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
                                             long numberOfFlats = dailyServiceCountSnapshot.getChildrenCount() - 1;
+                                            String dailyServiceStatus = dailyServiceCountSnapshot.child(Constants.FIREBASE_CHILD_STATUS).getValue().toString();
                                             if (dailyServiceCountSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
                                                 Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(numberOfFlats);
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
+                                                Objects.requireNonNull(nammaApartmentDailyService).setStatus(dailyServiceStatus);
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 dailyServicesHomeAdapter.notifyDataSetChanged();
                                             }
