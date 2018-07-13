@@ -93,6 +93,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
         String stringServiceName = mCtx.getResources().getString(R.string.name) + ":";
         holder.textServiceName.setText(stringServiceName);
+        holder.textInvitationTime.setText(R.string.status);
         holder.textInvitationDateOrServiceRating.setText(R.string.rating);
         holder.textInvitedByOrNumberOfFlats.setText(R.string.flats);
 
@@ -101,7 +102,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
+        holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getStatus());
         holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNumberOfFlats()));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
