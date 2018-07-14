@@ -92,7 +92,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
         String stringServiceName = mCtx.getResources().getString(R.string.name) + ":";
         holder.textServiceName.setText(stringServiceName);
-        holder.textInvitationStatus.setText(R.string.status);
+        holder.textInvitationTimeOrStatus.setText(R.string.status);
         holder.textInvitationDateOrServiceRating.setText(R.string.rating);
         holder.textInvitedByOrNumberOfFlats.setText(R.string.flats);
 
@@ -101,7 +101,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        holder.textInvitationStatusValue.setText(String.valueOf(nammaApartmentDailyService.getStatus()));
+        holder.textInvitationTimeOrStatusValue.setText(nammaApartmentDailyService.getStatus());
         holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNumberOfFlats()));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
@@ -226,8 +226,8 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         final TextView textServiceTypeValue;
         final TextView textInvitationDateOrServiceRating;
         final TextView textInvitationDateOrServiceRatingValue;
-        final TextView textInvitationStatus;
-        final TextView textInvitationStatusValue;
+        final TextView textInvitationTimeOrStatus;
+        final TextView textInvitationTimeOrStatusValue;
         final TextView textInvitedByOrNumberOfFlats;
         final TextView textInvitedByOrNumberOfFlatsValue;
         final TextView textCall;
@@ -249,13 +249,13 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textServiceName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textServiceType = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
-            textInvitationStatus = itemView.findViewById(R.id.textInvitationTime);
+            textInvitationTimeOrStatus = itemView.findViewById(R.id.textInvitationTimeOrStatus);
             textInvitedByOrNumberOfFlats = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
 
             textServiceNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
             textServiceTypeValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
             textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
-            textInvitationStatusValue = itemView.findViewById(R.id.textInvitationTimeValue);
+            textInvitationTimeOrStatusValue = itemView.findViewById(R.id.textInvitationTimeOrStatusValue);
             textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
 
             textCall = itemView.findViewById(R.id.textCall);
@@ -267,13 +267,13 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
             textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textInvitationStatus.setTypeface(Constants.setLatoRegularFont(mCtx));
+            textInvitationTimeOrStatus.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
             textServiceNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textServiceTypeValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textInvitationStatusValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+            textInvitationTimeOrStatusValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
 
             textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
@@ -301,7 +301,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     break;
                 case R.id.textRescheduleOrEdit:
                     //Create a Time Dialog in which user can change time of their daily services.
-                    openTimeDialog(textInvitationStatusValue.getText().toString(), position);
+                    openTimeDialog(nammaApartmentDailyService.getTimeOfVisit(), position);
                     break;
                 case R.id.textCancel:
                     nammaApartmentDailyServiceList.remove(position);
