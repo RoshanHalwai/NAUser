@@ -93,7 +93,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         holder.textGuestNameValue.setText(nammaApartmentGuest.getFullName());
         holder.textGuestStatusValue.setText(nammaApartmentGuest.getStatus());
         holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
-        holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
+        holder.textInvitationTimeOrStatusValue.setText(separatedDateAndTime[1]);
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
@@ -289,8 +289,8 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         private final TextView textGuestStatusValue;
         private final TextView textInvitationDate;
         private final TextView textInvitationDateValue;
-        private final TextView textInvitationTime;
-        private final TextView textInvitationTimeValue;
+        private final TextView textInvitationTimeOrStatus;
+        private final TextView textInvitationTimeOrStatusValue;
         private final TextView textInvitedBy;
         private final TextView textInvitedByValue;
         private final TextView textCall;
@@ -308,12 +308,12 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             textGuestName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textGuestStatus = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDate = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
-            textInvitationTime = itemView.findViewById(R.id.textInvitationTime);
+            textInvitationTimeOrStatus = itemView.findViewById(R.id.textInvitationTimeOrStatus);
             textInvitedBy = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
             textGuestNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
             textGuestStatusValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
             textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
-            textInvitationTimeValue = itemView.findViewById(R.id.textInvitationTimeValue);
+            textInvitationTimeOrStatusValue = itemView.findViewById(R.id.textInvitationTimeOrStatusValue);
             textInvitedByValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
@@ -325,12 +325,12 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             textGuestName.setTypeface(setLatoRegularFont(mCtx));
             textGuestStatus.setTypeface(setLatoRegularFont(mCtx));
             textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
-            textInvitationTime.setTypeface(setLatoRegularFont(mCtx));
+            textInvitationTimeOrStatus.setTypeface(setLatoRegularFont(mCtx));
             textInvitedBy.setTypeface(setLatoRegularFont(mCtx));
             textGuestNameValue.setTypeface(setLatoBoldFont(mCtx));
             textGuestStatusValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitationDateValue.setTypeface(setLatoBoldFont(mCtx));
-            textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
+            textInvitationTimeOrStatusValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
 
             textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
@@ -360,7 +360,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                     baseActivity.sendTextMessage(nammaApartmentGuest.getMobileNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeValue.getText().toString(), position);
+                    openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeOrStatusValue.getText().toString(), position);
                     break;
                 case R.id.textCancel:
                     removeVisitor(position, nammaApartmentGuest);
