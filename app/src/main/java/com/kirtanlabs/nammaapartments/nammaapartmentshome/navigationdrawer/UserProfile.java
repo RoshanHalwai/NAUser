@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentshome;
+package com.kirtanlabs.nammaapartments.nammaapartmentshome.navigationdrawer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,16 +31,17 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_EMAIL;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
@@ -64,9 +65,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private Button buttonUpdate;
     private AlertDialog imageSelectionDialog;
     private Dialog dialog;
-    private ArrayAdapter<String> adapterFlatMembers;
     private boolean isCurrentUserNameChanged;
-    private List<String> itemsInList = new ArrayList<>();
+    private List<String> flatMembersList = new ArrayList<>();
     private boolean isCurrentUserEmailChanged;
     private boolean isCurrentUserPhotoChanged;
     private byte[] profilePhotoByteArray;
@@ -88,6 +88,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*We would want to have all family member names well before user clicks on Change Admin Button*/
+        fillFlatMemberNames();
 
         /*Custom DialogBox with list of all image services*/
         createImageSelectionDialog();
@@ -163,9 +166,13 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 updateUserDetailsInFirebase();
                 break;
             case R.id.buttonChangeAdmin:
-                //This dialog shows list of family members in that particular flat.
-                openFlatMembersDialog();
-                dialog.show();
+                if (flatMembersList.isEmpty()) {
+                    showNotificationDialog(getString(R.string.change_admin), getString(R.string.no_flat_members), null);
+                } else {
+                    //This dialog shows list of family members in that particular flat.
+                    openFlatMembersDialog();
+                    dialog.show();
+                }
                 break;
         }
     }
@@ -357,8 +364,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         inputSearch.setVisibility(View.GONE);
         textFlatMembers.setVisibility(View.VISIBLE);
         textFlatMembers.setTypeface(Constants.setLatoBoldFont(UserProfile.this));
-        adapterFlatMembers = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, itemsInList) {
+        ArrayAdapter<String> adapterFlatMembers = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, flatMembersList) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -368,10 +375,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 return view;
             }
         };
-        itemsInList.clear();
         listFlatMembers.setAdapter(adapterFlatMembers);
-        /*This method we call for retrieving list of family members*/
-        retrieveFlatMemberDetails();
+
         /*Attaching listeners to ListView*/
         listFlatMembers.setOnItemClickListener((parent, view, position, id) -> {
             String itemValue = (String) listFlatMembers.getItemAtPosition(position);
@@ -385,40 +390,42 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * This method gets invoked when user presses on click of change admin a list should display of
-     * the family members related to that particular user.
+     * Fills the family members related to that particular user.
      */
-    private void retrieveFlatMemberDetails() {
-        DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
-        privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void fillFlatMemberNames() {
+        //TODO: Ensure Flat Member names are shown to the users only after firebase operation is completed
+        Map<String, Boolean> friends = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFriends();
+        Map<String, Boolean> familyMembers = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFamilyMembers();
+        if (!familyMembers.isEmpty()) {
+            for (String userUID : familyMembers.keySet()) {
+                fillFlatMemberNamesUtil(userUID);
+            }
+        }
+
+        if (!friends.isEmpty()) {
+            for (String userUID : friends.keySet()) {
+                fillFlatMemberNamesUtil(userUID);
+            }
+        }
+    }
+
+    private void fillFlatMemberNamesUtil(String userUID) {
+        DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(userUID)
+                .child(FIREBASE_CHILD_PERSONALDETAILS)
+                .child(FIREBASE_CHILD_FULLNAME);
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
-                    if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
-                        DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey())
-                                .child(FIREBASE_CHILD_PERSONALDETAILS)
-                                .child(FIREBASE_CHILD_FULLNAME);
-                        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String flatMemberName = Objects.requireNonNull(dataSnapshot.getValue()).toString();
-                                itemsInList.add(index, flatMemberName);
-                                adapterFlatMembers.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
+                String flatMemberName = Objects.requireNonNull(dataSnapshot.getValue()).toString();
+                flatMembersList.add(index, flatMemberName);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
     }
+
 }
