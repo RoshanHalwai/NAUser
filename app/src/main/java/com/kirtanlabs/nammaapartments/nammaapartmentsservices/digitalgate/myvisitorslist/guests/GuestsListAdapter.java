@@ -88,6 +88,11 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
         NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
 
+        /*If Guest has not arrived we change cancel text with appropriate text */
+        if (nammaApartmentGuest.getStatus().equals(NOT_ENTERED)) {
+            holder.textCancel.setText(mCtx.getString(R.string.cancel));
+        }
+
         String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
         String separatedDateAndTime[] = TextUtils.split(dateAndTime, "\t\t ");
         holder.textGuestNameValue.setText(nammaApartmentGuest.getFullName());
