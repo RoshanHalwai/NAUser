@@ -82,6 +82,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
     public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
     private static final String FIREBASE_CHILD_SOCIETIES = "societies";
+    public static final String FIREBASE_CHILD_STATUS = "status";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_USER_DATA = "userData";
@@ -129,7 +130,7 @@ public class Constants {
      * Family member/Friend Relation retrieval
      * ------------------------------------------------------------- */
 
-    public static final String FAMILY_MEMBER =  "Family Member";
+    public static final String FAMILY_MEMBER = "Family Member";
     public static final String FRIEND = "Friend";
 
     /* ------------------------------------------------------------- *

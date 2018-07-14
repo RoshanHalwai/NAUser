@@ -125,4 +125,8 @@ public class NammaApartmentDailyService implements Serializable {
     public void setDateOfVisit(String dateOfVisit) {
         this.dateOfVisit = dateOfVisit;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
