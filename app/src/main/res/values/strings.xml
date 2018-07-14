@@ -230,7 +230,8 @@
     <string name="edit">Edit</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-
+    <string name="send_otp_daily_service">We will send an OTP to your daily service for authentication</string>
+    <string name="daily_service">Daily Service</string>
     <!--Raise Fire Alarm & Theft Alarm-->
     <string name="tap_on_bell_icon_to_create_alert">Tap on bell icon to create alert</string>
     <string name="image_to_create_an_alarm">Image to create an alarm</string>

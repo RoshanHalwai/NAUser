@@ -287,7 +287,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     private void updateOTPDescription() {
         if (getIntent().getExtras() != null) {
             service_type = getIntent().getStringExtra(SERVICE_TYPE);
-            String description = getResources().getString(R.string.send_otp_message).replace("visitor", service_type);
+            String description = getResources().getString(R.string.send_otp_daily_service).replace(getString(R.string.daily_service), service_type);
             textDescriptionDailyService.setText(description);
         }
     }
