@@ -25,6 +25,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
@@ -107,6 +108,19 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.nav_myProfile) {
+            Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
+            startActivity(intent);
+        }
+        if (id == R.id.nav_myFamilyMembers) {
+            Intent mySweetHomeIntent = new Intent(NammaApartmentsHome.this, MySweetHome.class);
+            mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(mySweetHomeIntent);
+        }
+        if (id == R.id.nav_appSettings) {
+            //TODO:To implement this Functionality later
+        }
         if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
@@ -114,15 +128,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-        }
-
-        if (id == R.id.nav_appSettings) {
-            //TODO:To implement this Functionality later
-        }
-
-        if (id == R.id.nav_myProfile) {
-            Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
-            startActivity(intent);
         }
 
         drawer = findViewById(R.id.drawer_layout);
