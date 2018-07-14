@@ -163,12 +163,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 updateUserDetailsInFirebase();
                 break;
             case R.id.buttonChangeAdmin:
-                NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-                boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
-                if (isAdmin) {
-                    openFlatMembersDialog();
-                    dialog.show();
-                }
+                //This dialog shows list of family members in that particular flat.
+                openFlatMembersDialog();
+                dialog.show();
                 break;
         }
     }
