@@ -11,6 +11,15 @@
         android:layout_margin="10dp"
         android:inputType="textCapWords" />
 
+    <TextView
+        android:id="@+id/textFlatMembers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/text_list_family_members"
+        android:textSize="@dimen/text_view_default_size"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
