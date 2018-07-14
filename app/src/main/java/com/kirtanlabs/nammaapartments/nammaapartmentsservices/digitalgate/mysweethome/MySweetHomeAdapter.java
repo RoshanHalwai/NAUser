@@ -266,13 +266,13 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textMemberName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textMemberRelation = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
-            textGrantedAccess = itemView.findViewById(R.id.textInvitationTime);
+            textGrantedAccess = itemView.findViewById(R.id.textInvitationTimeOrStatus);
             textInvitedByOrNumberOfFlats = itemView.findViewById(R.id.textInvitedByOrNumberOfFlats);
 
             textMemberNameValue = itemView.findViewById(R.id.textVisitorOrServiceNameValue);
             textMemberRelationValue = itemView.findViewById(R.id.textVisitorOrServiceTypeValue);
             textInvitationDateOrServiceRatingValue = itemView.findViewById(R.id.textInvitationDateOrServiceRatingValue);
-            textGrantedAccessValue = itemView.findViewById(R.id.textInvitationTimeValue);
+            textGrantedAccessValue = itemView.findViewById(R.id.textInvitationTimeOrStatusValue);
             textInvitedByOrNumberOfFlatsValue = itemView.findViewById(R.id.textInvitedByOrNumberOfFlatsValue);
             visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
@@ -329,8 +329,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     } else {
                         //Here we are showing users a dialog box since they are not admin of that particular flat.
                         baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
-                                mCtx.getResources().getString(R.string.non_admin_edit_message)
-                                , null);
+                                mCtx.getResources().getString(R.string.non_admin_edit_message), null);
                     }
                     break;
                 case R.id.textCancel:
