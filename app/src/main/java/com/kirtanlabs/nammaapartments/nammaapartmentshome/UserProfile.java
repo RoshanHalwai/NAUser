@@ -1,19 +1,28 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -24,11 +33,14 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_EMAIL;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
@@ -51,10 +63,14 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private EditText editCurrentUserName, editCurrentUserEmail;
     private Button buttonUpdate;
     private AlertDialog imageSelectionDialog;
+    private Dialog dialog;
+    private ArrayAdapter<String> adapterFlatMembers;
     private boolean isCurrentUserNameChanged;
+    private List<String> itemsInList = new ArrayList<>();
     private boolean isCurrentUserEmailChanged;
     private boolean isCurrentUserPhotoChanged;
     private byte[] profilePhotoByteArray;
+    private int index = 0;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -84,7 +100,6 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         editCurrentUserEmail = findViewById(R.id.editCurrentUserEmail);
         Button buttonChangeAdmin = findViewById(R.id.buttonChangeAdmin);
         buttonUpdate = findViewById(R.id.buttonUpdate);
-
         /*Setting font for all the views*/
         textName.setTypeface(setLatoBoldFont(this));
         textEmail.setTypeface(setLatoBoldFont(this));
@@ -141,8 +156,18 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 updateUserDetailsInFirebase();
                 break;
             case R.id.buttonChangeAdmin:
-                //TODO:To change this Toast Functionality and implement ListView of currentUsers FamilyMembers/Friends.
-                Toast.makeText(this, "Here we can display list of family members", Toast.LENGTH_SHORT).show();
+                NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+                boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
+                if (isAdmin) {
+                    openFlatMembersDialog();
+                    dialog.show();
+                    dialog.setCancelable(false);
+                } else {
+                    showNotificationDialog(getResources().getString(R.string.non_admin_change_admin_title)
+                            , getResources().getString(R.string.non_admin_change_admin_message)
+                            , null);
+                }
+                break;
         }
     }
 
@@ -215,10 +240,10 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 nammaApartmentUser.getPersonalDetails().setProfilePhoto(profilePhotoPath);
 
                 //Update the new profile photo URL in firebase
-                DatabaseReference updatedUserEmailReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
                         .child(FIREBASE_CHILD_PERSONALDETAILS)
                         .child(FIREBASE_CHILD_PROFILE_PHOTO);
-                updatedUserEmailReference.setValue(profilePhotoPath);
+                updatedUserPhotoReference.setValue(profilePhotoPath);
 
                 //dismissing the progress dialog
                 hideProgressDialog();
@@ -321,4 +346,77 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    /**
+     * This method gets invoked when user tries to change admin by clicking on change admin button.
+     */
+    private void openFlatMembersDialog() {
+        dialog = new Dialog(UserProfile.this);
+        dialog.setContentView(R.layout.list_family_members);
+        TextView textFamilyMemberDescription = dialog.findViewById(R.id.textFamilyMemberDescription);
+        ListView listFlatMembers = dialog.findViewById(R.id.listFlatMembers);
+        textFamilyMemberDescription.setTypeface(Constants.setLatoBoldFont(UserProfile.this));
+        adapterFlatMembers = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, itemsInList) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setTypeface(Constants.setLatoRegularFont(UserProfile.this));
+                return view;
+            }
+        };
+        itemsInList.clear();
+        listFlatMembers.setAdapter(adapterFlatMembers);
+        /*This method we call for retrieving list of family members*/
+        retrieveFlatMemberDetails();
+        /*Attaching listeners to ListView*/
+        listFlatMembers.setOnItemClickListener((parent, view, position, id) -> {
+            String itemValue = (String) listFlatMembers.getItemAtPosition(position);
+            String confirmDialogTitle = getResources().getString(R.string.non_admin_change_admin_title);
+            String confirmDialogMessage = getResources().getString(R.string.admin_change_key);
+            String confirmDialogMessageValue = confirmDialogMessage.replace(getString(R.string.person), itemValue);
+            //TODO:Create a runnable method that will perform necessary action on click of Ok button.
+            showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, null);
+            dialog.cancel();
+        });
+    }
+
+    /**
+     * This method gets invoked when user presses on click of change admin a list should display of
+     * the family members related to that particular user.
+     */
+    private void retrieveFlatMemberDetails() {
+        DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
+        privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
+                    if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
+                        DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey())
+                                .child(FIREBASE_CHILD_PERSONALDETAILS)
+                                .child(FIREBASE_CHILD_FULLNAME);
+                        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String flatMemberName = Objects.requireNonNull(dataSnapshot.getValue()).toString();
+                                itemsInList.add(index, flatMemberName);
+                                adapterFlatMembers.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
