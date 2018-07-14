@@ -310,10 +310,9 @@
     <string name="updating_profile">Updating your profile</string>
     <string name="update_message">Update Message</string>
     <string name="update_success_message">You have successfully updated your profile</string>
-    <string name="admin_change_key">Are you sure you want to make person as Admin? Note, your admin privileges will be transferred to person.</string>
-    <string name="text_list_family_members">Change Admin to…</string>
+    <string name="admin_change_key">Are you sure you want to make person as Admin? Note: your admin privileges will be transferred to person.</string>
+    <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
-    <string name="non_admin_change_admin_message">Sorry you cannot use this feature since you are not the admin of this flat.</string>
     <string name="person">person</string>
 
 </resources>

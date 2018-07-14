@@ -112,6 +112,13 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
           image gets pre-loaded in circularImageView.*/
         retrieveUserDetails();
 
+        //Based on the admin privileges we are hiding change admin button.
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
+        if (!isAdmin) {
+            buttonChangeAdmin.setVisibility(View.GONE);
+        }
+
         /*Setting event for all button clicks */
         currentUserProfilePic.setOnClickListener(this);
         buttonUpdate.setOnClickListener(this);
@@ -161,11 +168,6 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 if (isAdmin) {
                     openFlatMembersDialog();
                     dialog.show();
-                    dialog.setCancelable(false);
-                } else {
-                    showNotificationDialog(getResources().getString(R.string.non_admin_change_admin_title)
-                            , getResources().getString(R.string.non_admin_change_admin_message)
-                            , null);
                 }
                 break;
         }
@@ -351,10 +353,13 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      */
     private void openFlatMembersDialog() {
         dialog = new Dialog(UserProfile.this);
-        dialog.setContentView(R.layout.list_family_members);
-        TextView textFamilyMemberDescription = dialog.findViewById(R.id.textFamilyMemberDescription);
-        ListView listFlatMembers = dialog.findViewById(R.id.listFlatMembers);
-        textFamilyMemberDescription.setTypeface(Constants.setLatoBoldFont(UserProfile.this));
+        dialog.setContentView(R.layout.layout_search_flat);
+        TextView textFlatMembers = dialog.findViewById(R.id.textFlatMembers);
+        ListView listFlatMembers = dialog.findViewById(R.id.list);
+        EditText inputSearch = dialog.findViewById(R.id.inputSearch);
+        inputSearch.setVisibility(View.GONE);
+        textFlatMembers.setVisibility(View.VISIBLE);
+        textFlatMembers.setTypeface(Constants.setLatoBoldFont(UserProfile.this));
         adapterFlatMembers = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, itemsInList) {
             @NonNull
