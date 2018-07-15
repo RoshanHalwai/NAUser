@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +29,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.navigationdrawer.NammaApartmentsHelp;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
@@ -33,6 +38,8 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 
 public class NammaApartmentsHome extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +49,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
      * ------------------------------------------------------------- */
     /*Root Layout for Navigation Drawer*/
     private DrawerLayout drawer;
+    private Dialog dialog;
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
@@ -122,6 +130,14 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         if (id == R.id.nav_appSettings) {
             //TODO:To implement this Functionality later
         }
+        if (id == R.id.nav_help) {
+            Intent helpIntent = new Intent(NammaApartmentsHome.this, NammaApartmentsHelp.class);
+            startActivity(helpIntent);
+        }
+        if (id == R.id.nav_rateUs) {
+            openRateDialog();
+            dialog.show();
+        }
         if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
@@ -134,6 +150,28 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This dialog gets invoked when user clicks on rateUs button.
+     */
+    private void openRateDialog() {
+        dialog = new Dialog(NammaApartmentsHome.this);
+        dialog.setContentView(R.layout.layout_rate_us_dialog);
+        TextView textRateDialog = dialog.findViewById(R.id.textRateDialog);
+        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
+        Button buttonRateNow = dialog.findViewById(R.id.buttonRateNow);
+        Button buttonRemindLater = dialog.findViewById(R.id.buttonRemindLater);
+        textRateDialog.setTypeface(setLatoRegularFont(this));
+        buttonRateNow.setTypeface(setLatoLightFont(this));
+        buttonRemindLater.setTypeface(setLatoLightFont(this));
+        //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.
+        buttonRateNow.setOnClickListener(v -> dialog.cancel());
+        buttonRemindLater.setOnClickListener(v -> dialog.cancel());
     }
 
     /* ------------------------------------------------------------- *
