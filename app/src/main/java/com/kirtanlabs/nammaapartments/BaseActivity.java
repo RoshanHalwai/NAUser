@@ -46,11 +46,6 @@ import static com.kirtanlabs.nammaapartments.Constants.SEND_SMS_PERMISSION_REQUE
 import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
 
 /**
- * KirtanLabs Pvt. Ltd.
- * Created by Roshan Halwai on 5/1/2018
- */
-
-/**
  * Root activity for most of the Activities of this project.
  * Responsible for creating toolbar by getting title from the activity
  * and implementing events on back button.
@@ -105,7 +100,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
-
 
     /* ------------------------------------------------------------- *
      * Overriding AppCompatActivity Methods
@@ -241,11 +235,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         textView.setText(text);
     }
 
-    protected void hideFeatureUnavailableLayout() {
-        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
-        featureUnavailableLayout.setVisibility(View.INVISIBLE);
-    }
-
     /**
      * This method checks if all the editTexts are filled or not.
      *
@@ -269,9 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return returns a boolean variable based on the context.
      */
     protected boolean isValidPhone(String phone) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
-        return check;
+        return !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= PHONE_NUMBER_MAX_LENGTH;
     }
 
     /**
@@ -281,9 +268,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @throws NumberFormatException because if user tries to enter number in place of name.
      */
     protected boolean isValidPersonName(String name) throws NumberFormatException {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z ]+", name);
-        return check;
+        return !Pattern.matches("[a-zA-Z ]+", name);
     }
 
     /**
@@ -293,52 +278,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return returns a boolean  variable based on that context.
      */
     protected boolean isValidEmail(String email) {
-        boolean check;
-        check = !Pattern.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", email);
-        return check;
-    }
-
-    /**
-     * Shows message box with title, message and activity to be called when user
-     * clicks on Ok button
-     *
-     * @param title   - Title of the message
-     * @param message - Body of the message
-     * @param intent  - If null then on click of Ok, the dialog will disappear
-     *                else intent activity will be called
-     */
-    public void showNotificationDialog(String title, String message, Intent intent) {
-        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
-        alertNotifyGateDialog.setCancelable(false);
-        alertNotifyGateDialog.setTitle(title);
-        alertNotifyGateDialog.setMessage(message);
-        if (intent == null) {
-            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
-        } else {
-            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> startActivity(intent));
-        }
-
-        new Dialog(this);
-        alertNotifyGateDialog.show();
-    }
-
-    /**
-     * Shows message box with title, message and method to be executed when user
-     * clicks on Ok button
-     *
-     * @param title   - Title of the message
-     * @param message - Body of the message
-     * @param method  - Method to execute after click of OK button
-     */
-    public void showConfirmDialog(String title, String message, Runnable method) {
-        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
-        alertNotifyGateDialog.setCancelable(false);
-        alertNotifyGateDialog.setTitle(title);
-        alertNotifyGateDialog.setMessage(message);
-        alertNotifyGateDialog.setPositiveButton("YES", (dialog, which) -> method.run());
-        alertNotifyGateDialog.setNegativeButton("NO", (dialog, which) -> dialog.cancel());
-        new Dialog(this);
-        alertNotifyGateDialog.show();
+        return !Pattern.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+", email);
     }
 
     protected void showProgressIndicator() {
@@ -429,4 +369,48 @@ public abstract class BaseActivity extends AppCompatActivity {
         timePickerDialog.setCanceledOnTouchOutside(false);
         timePickerDialog.show();
     }
+
+    /**
+     * Shows message box with title, message and method to be executed when user
+     * clicks on Ok button
+     *
+     * @param title   - Title of the message
+     * @param message - Body of the message
+     * @param method  - Method to execute after click of OK button
+     */
+    public void showConfirmDialog(String title, String message, Runnable method) {
+        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setCancelable(false);
+        alertNotifyGateDialog.setTitle(title);
+        alertNotifyGateDialog.setMessage(message);
+        alertNotifyGateDialog.setPositiveButton("YES", (dialog, which) -> method.run());
+        alertNotifyGateDialog.setNegativeButton("NO", (dialog, which) -> dialog.cancel());
+        new Dialog(this);
+        alertNotifyGateDialog.show();
+    }
+
+    /**
+     * Shows message box with title, message and activity to be called when user
+     * clicks on Ok button
+     *
+     * @param title   - Title of the message
+     * @param message - Body of the message
+     * @param intent  - If null then on click of Ok, the dialog will disappear
+     *                else intent activity will be called
+     */
+    public void showNotificationDialog(String title, String message, Intent intent) {
+        AlertDialog.Builder alertNotifyGateDialog = new AlertDialog.Builder(this);
+        alertNotifyGateDialog.setCancelable(false);
+        alertNotifyGateDialog.setTitle(title);
+        alertNotifyGateDialog.setMessage(message);
+        if (intent == null) {
+            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
+        } else {
+            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> startActivity(intent));
+        }
+
+        new Dialog(this);
+        alertNotifyGateDialog.show();
+    }
+
 }
