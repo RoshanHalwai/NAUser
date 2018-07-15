@@ -66,6 +66,9 @@
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
+    <string name="rate_us_dialog">Love using our App,then please rate us on PlayStore </string>
+    <string name="rate_now">Rate Now</string>
+    <string name="remind_later">Remind me later </string>
 
     <!--Society Services Activity-->
     <string name="digital_gate">Digi Gate</string>
@@ -317,5 +320,12 @@
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
+
+    <!--Namma Apartments Help Activity-->
+    <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="using_na_app">Using Namma Apartments App</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="Terms_and_conditions">Terms and Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
 
 </resources>
