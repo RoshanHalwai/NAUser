@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.plumber.Plumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +52,12 @@ public class SocietyServices extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
-            case 0: {
-                Intent intent = new Intent(getActivity(), DigitalGateHome.class);
-                startActivity(intent);
-            }
+            case 0:
+                startActivity(new Intent(getActivity(), DigitalGateHome.class));
+                break;
+            case 1:
+                startActivity(new Intent(getActivity(), Plumber.class));
+                break;
         }
     }
 
