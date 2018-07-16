@@ -292,7 +292,7 @@
     <string name="enter_time">Please select time.</string>
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
-    
+
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -321,11 +321,46 @@
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
 
+    <!--Plumber Activity-->
+    <string name="request_plumber">Request Plumber</string>
+    <string name="select_slot">Select Slot</string>
+    <string name="select_problem">Select Problem</string>
+    <string name="immediately">Immediately</string>
+    <string name="morning_slot">9AM - 12PM</string>
+    <string name="noon_slot">12PM - 3PM</string>
+    <string name="evening_slot">3PM - 5PM</string>
+    <string-array name="plumbing_issues_list">
+        <item>@string/select_any_one</item>
+        <item>@string/dripping_faucets</item>
+        <item>@string/slow_draining_sink</item>
+        <item>@string/clogged_bath_or_shower_drain</item>
+        <item>@string/clogged_toilet</item>
+        <item>@string/running_toilet</item>
+        <item>@string/faulty_water_heater</item>
+        <item>@string/low_water_pressure</item>
+        <item>@string/jammed_garbage_disposal</item>
+        <item>@string/leaky_pipes</item>
+        <item>@string/sewer_system_backup</item>
+    </string-array>
+
+    <string name="select_any_one">Select any one</string>
+    <string name="select_from_here">Select</string>
+    <string name="dripping_faucets">Dripping faucets</string>
+    <string name="slow_draining_sink">Slow draining sink</string>
+    <string name="clogged_bath_or_shower_drain">Clogged bath or shower drain</string>
+    <string name="clogged_toilet">Clogged toilet</string>
+    <string name="running_toilet">Running toilet</string>
+    <string name="faulty_water_heater">Faulty water heater</string>
+    <string name="low_water_pressure">Low water pressure</string>
+    <string name="jammed_garbage_disposal">Jammed garbage disposal</string>
+    <string name="leaky_pipes">Leaky pipes</string>
+    <string name="sewer_system_backup">Sewer system backup</string>
+
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="using_na_app">Using Namma Apartments App</string>
     <string name="contact_us">Contact Us</string>
     <string name="Terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
-
+    
 </resources>

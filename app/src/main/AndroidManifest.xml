@@ -33,6 +33,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -150,6 +151,11 @@
         </provider>
 
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
+
+        <!--Plumber Screen-->
+        <activity
+            android:name=".nammaapartmentsservices.plumber.Plumber"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
