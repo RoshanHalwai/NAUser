@@ -10,15 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NammaApartmentsHelp extends BaseActivity {
+
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
+
     List<String> helpList;
     ListView listOfHelpServices;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
+
     @Override
     protected int getLayoutResourceId() {
         //We would use the same layout we created for Notify Gate.
