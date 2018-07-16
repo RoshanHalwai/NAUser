@@ -14,13 +14,13 @@ import android.widget.ListView;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.tradesman.Tradesman;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.SocietyServices;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SocietyServices extends Fragment implements AdapterView.OnItemClickListener {
+public class SocietyServicesHome extends Fragment implements AdapterView.OnItemClickListener {
 
     /* ------------------------------------------------------------- *
      * Overriding Fragment Objects
@@ -29,7 +29,7 @@ public class SocietyServices extends Fragment implements AdapterView.OnItemClick
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_society_services, container, false);
+        return inflater.inflate(R.layout.activity_society_services_home, container, false);
     }
 
     @Override
@@ -57,17 +57,17 @@ public class SocietyServices extends Fragment implements AdapterView.OnItemClick
                 startActivity(new Intent(getActivity(), DigitalGateHome.class));
                 break;
             case 1:
-                Intent intentPlumber = new Intent(getActivity(), Tradesman.class);
+                Intent intentPlumber = new Intent(getActivity(), SocietyServices.class);
                 intentPlumber.putExtra(Constants.SCREEN_TITLE, R.string.plumber);
                 startActivity(intentPlumber);
                 break;
             case 2:
-                Intent intentCarpenter = new Intent(getActivity(), Tradesman.class);
+                Intent intentCarpenter = new Intent(getActivity(), SocietyServices.class);
                 intentCarpenter.putExtra(Constants.SCREEN_TITLE, R.string.carpenter);
                 startActivity(intentCarpenter);
                 break;
             case 3:
-                Intent intentElectrician = new Intent(getActivity(), Tradesman.class);
+                Intent intentElectrician = new Intent(getActivity(), SocietyServices.class);
                 intentElectrician.putExtra(Constants.SCREEN_TITLE, R.string.electrician);
                 startActivity(intentElectrician);
                 break;

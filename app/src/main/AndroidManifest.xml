@@ -152,9 +152,9 @@
 
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
 
-        <!--Tradesman Screen-->
+        <!--SocietyServices Screen-->
         <activity
-            android:name=".nammaapartmentsservices.tradesman.Tradesman"
+            android:name=".nammaapartmentsservices.societyservices.SocietyServices"
             android:screenOrientation="portrait" />
     </application>
 

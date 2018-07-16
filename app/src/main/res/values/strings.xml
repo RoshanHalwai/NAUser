@@ -321,7 +321,7 @@
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
 
-    <!--Tradesman Activity-->
+    <!--SocietyServices Activity-->
     <string name="request_plumber">Request Plumber</string>
     <string name="request_carpenter">Request Carpenter</string>
     <string name="request_electrician">Request Electrician</string>
