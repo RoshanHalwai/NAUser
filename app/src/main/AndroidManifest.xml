@@ -151,7 +151,9 @@
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
 
         <!--Plumber Screen-->
-        <activity android:name=".nammaapartmentsservices.plumber.Plumber" />
+        <activity
+            android:name=".nammaapartmentsservices.plumber.Plumber"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
