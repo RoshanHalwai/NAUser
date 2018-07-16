@@ -91,7 +91,9 @@
         <activity
             android:name=".nammaapartmentshome.navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".nammaapartmentshome.navigationdrawer.NammaApartmentsHelp"
+            android:screenOrientation="portrait" />
         <!-- Digital Gate Screens -->
         <activity
             android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome"
