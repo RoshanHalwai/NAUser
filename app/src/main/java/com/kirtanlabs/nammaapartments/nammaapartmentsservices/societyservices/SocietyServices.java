@@ -38,7 +38,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_tradesman;
+        return R.layout.activity_society_services;
     }
 
     @Override
