@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.plumber.Plumber;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.tradesman.Tradesman;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,19 @@ public class SocietyServices extends Fragment implements AdapterView.OnItemClick
                 startActivity(new Intent(getActivity(), DigitalGateHome.class));
                 break;
             case 1:
-                startActivity(new Intent(getActivity(), Plumber.class));
+                Intent intentPlumber = new Intent(getActivity(), Tradesman.class);
+                intentPlumber.putExtra(Constants.SCREEN_TITLE, R.string.plumber);
+                startActivity(intentPlumber);
+                break;
+            case 2:
+                Intent intentCarpenter = new Intent(getActivity(), Tradesman.class);
+                intentCarpenter.putExtra(Constants.SCREEN_TITLE, R.string.carpenter);
+                startActivity(intentCarpenter);
+                break;
+            case 3:
+                Intent intentElectrician = new Intent(getActivity(), Tradesman.class);
+                intentElectrician.putExtra(Constants.SCREEN_TITLE, R.string.electrician);
+                startActivity(intentElectrician);
                 break;
         }
     }
