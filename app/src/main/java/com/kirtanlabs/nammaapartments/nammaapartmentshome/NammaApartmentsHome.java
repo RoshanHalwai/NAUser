@@ -158,7 +158,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new SocietyServices();
+                    return new SocietyServicesHome();
                 case 1:
                     return new ApartmentServices();
                 default:

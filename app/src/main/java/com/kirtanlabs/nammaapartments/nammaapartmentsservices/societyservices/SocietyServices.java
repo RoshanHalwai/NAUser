@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.tradesman;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +19,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class Tradesman extends BaseActivity implements View.OnClickListener {
+public class SocietyServices extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -96,7 +96,7 @@ public class Tradesman extends BaseActivity implements View.OnClickListener {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textProblem = view.findViewById(android.R.id.text1);
-                textProblem.setTypeface(Constants.setLatoRegularFont(Tradesman.this));
+                textProblem.setTypeface(Constants.setLatoRegularFont(SocietyServices.this));
                 return view;
             }
         };
