@@ -115,8 +115,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.nav_myProfile: {
                 Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
                 startActivity(intent);
@@ -139,7 +138,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
             case R.id.nav_rateUs: {
-                openRateDialog();
+                showRateUsDialog();
                 dialog.show();
                 break;
             }
@@ -166,16 +165,24 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     /**
      * This dialog gets invoked when user clicks on rateUs button.
      */
-    private void openRateDialog() {
+    private void showRateUsDialog() {
+
+        /*Creating and Inflating the layout for rate us dialog */
         dialog = new Dialog(NammaApartmentsHome.this);
         dialog.setContentView(R.layout.layout_rate_us_dialog);
+
+        /*Getting Id's for all the views*/
         TextView textRateDialog = dialog.findViewById(R.id.textRateDialog);
         RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
         Button buttonRateNow = dialog.findViewById(R.id.buttonRateNow);
         Button buttonRemindLater = dialog.findViewById(R.id.buttonRemindLater);
+
+        /*Setting Fonts for all the views*/
         textRateDialog.setTypeface(setLatoRegularFont(this));
         buttonRateNow.setTypeface(setLatoLightFont(this));
         buttonRemindLater.setTypeface(setLatoLightFont(this));
+
+        /*Setting OnClick Listeners to the views*/
         //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.
         buttonRateNow.setOnClickListener(v -> dialog.cancel());
         buttonRemindLater.setOnClickListener(v -> dialog.cancel());
