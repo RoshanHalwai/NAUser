@@ -152,9 +152,9 @@
 
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
 
-        <!--Plumber Screen-->
+        <!--Tradesman Screen-->
         <activity
-            android:name=".nammaapartmentsservices.plumber.Plumber"
+            android:name=".nammaapartmentsservices.tradesman.Tradesman"
             android:screenOrientation="portrait" />
     </application>
 
