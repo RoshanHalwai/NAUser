@@ -66,6 +66,9 @@
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
+    <string name="rate_us_dialog">Love using our App,then please rate us on PlayStore </string>
+    <string name="rate_now">Rate Now</string>
+    <string name="remind_later">Remind me later </string>
 
     <!--Society Services Activity-->
     <string name="digital_gate">Digi Gate</string>
@@ -289,7 +292,7 @@
     <string name="enter_time">Please select time.</string>
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
-    
+
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -317,5 +320,88 @@
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
+
+    <!--SocietyServices Activity-->
+    <string name="request_plumber">Request Plumber</string>
+    <string name="request_carpenter">Request Carpenter</string>
+    <string name="request_electrician">Request Electrician</string>
+    <string name="select_slot">Select Slot</string>
+    <string name="select_problem">Select Problem</string>
+    <string name="immediately">Immediately</string>
+    <string name="morning_slot">9AM - 12PM</string>
+    <string name="noon_slot">12PM - 3PM</string>
+    <string name="evening_slot">3PM - 5PM</string>
+
+    <string-array name="plumbing_issues_list">
+        <item>@string/select_any_one</item>
+        <item>@string/dripping_faucets</item>
+        <item>@string/slow_draining_sink</item>
+        <item>@string/clogged_bath_or_shower_drain</item>
+        <item>@string/clogged_toilet</item>
+        <item>@string/running_toilet</item>
+        <item>@string/faulty_water_heater</item>
+        <item>@string/low_water_pressure</item>
+        <item>@string/jammed_garbage_disposal</item>
+        <item>@string/leaky_pipes</item>
+        <item>@string/sewer_system_backup</item>
+    </string-array>
+    <string name="select_any_one">Select any one</string>
+    <string name="select_from_here">Select</string>
+    <string name="dripping_faucets">Dripping faucets</string>
+    <string name="slow_draining_sink">Slow draining sink</string>
+    <string name="clogged_bath_or_shower_drain">Clogged bath or shower drain</string>
+    <string name="clogged_toilet">Clogged toilet</string>
+    <string name="running_toilet">Running toilet</string>
+    <string name="faulty_water_heater">Faulty water heater</string>
+    <string name="low_water_pressure">Low water pressure</string>
+    <string name="jammed_garbage_disposal">Jammed garbage disposal</string>
+    <string name="leaky_pipes">Leaky pipes</string>
+    <string name="sewer_system_backup">Sewer system backup</string>
+
+    <string-array name="electrical_issues_list">
+        <item>@string/select_any_one</item>
+        <item>@string/frequent_electrical_surge</item>
+        <item>@string/sags_and_dips_in_power</item>
+        <item>@string/light_switches_not_working_properly</item>
+        <item>@string/circuit_overload</item>
+        <item>@string/circuit_breaker_tripping_frequently</item>
+        <item>@string/lights_too_bright_or_dim</item>
+        <item>@string/electrical_shocks</item>
+        <item>@string/high_electrical_bill</item>
+        <item>@string/light_bulbs_burning_out_too_often</item>
+        <item>@string/recessed_light_goes_out_and_comes_back_on</item>
+    </string-array>
+    <string name="frequent_electrical_surge">Frequent Electrical Surge</string>
+    <string name="sags_and_dips_in_power">Sags and Dips in Power</string>
+    <string name="light_switches_not_working_properly">Light Switches not working properly</string>
+    <string name="circuit_breaker_tripping_frequently">Circuit Breaker Tripping Frequently</string>
+    <string name="circuit_overload">Circuit Overload</string>
+    <string name="lights_too_bright_or_dim">Lights too Bright or Dim</string>
+    <string name="electrical_shocks">Electrical Shocks</string>
+    <string name="high_electrical_bill">High Electrical Bill</string>
+    <string name="light_bulbs_burning_out_too_often">Light Bulbs burning out too often</string>
+    <string name="recessed_light_goes_out_and_comes_back_on">Recessed Light ‘Goes Out’ and comes back on</string>
+
+    <string-array name="carpentry_issues_list">
+        <item>@string/select_any_one</item>
+        <item>@string/carpentry_finish_appears_uneven</item>
+        <item>@string/split_in_the_wood</item>
+        <item>@string/weak_joints</item>
+        <item>@string/dents_in_wood</item>
+        <item>@string/glue_stuck</item>
+    </string-array>
+    <string name="unable_to_open_drawers_and_doors">Unable to open drawers and doors</string>
+    <string name="carpentry_finish_appears_uneven">Carpentry finish appears uneven</string>
+    <string name="split_in_the_wood">Split in the wood</string>
+    <string name="weak_joints">Weak joints</string>
+    <string name="dents_in_wood">Dents in wood</string>
+    <string name="glue_stuck">Glue stuck</string>
+
+    <!--Namma Apartments Help Activity-->
+    <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="using_na_app">Using Namma Apartments App</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="Terms_and_conditions">Terms and Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
 
 </resources>

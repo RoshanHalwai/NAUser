@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textRateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:text="@string/rate_us_dialog"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:numStars="5"
+        android:progressTint="@color/nmLightYellow"
+        android:rating="5"
+        android:stepSize="1"
+        tools:targetApi="lollipop" />
+
+    <Button
+        android:id="@+id/buttonRateNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_margin"
+        android:background="@color/nmBlack"
+        android:text="@string/rate_now"
+        android:textAllCaps="false"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size" />
+
+    <Button
+        android:id="@+id/buttonRemindLater"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_margin"
+        android:background="@color/nmBlack"
+        android:text="@string/remind_later"
+        android:textAllCaps="false"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size" />
+</LinearLayout>

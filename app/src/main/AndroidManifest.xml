@@ -33,6 +33,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
         <service android:name=".nammaapartmentsservices.digitalgate.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -90,7 +91,9 @@
         <activity
             android:name=".nammaapartmentshome.navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".nammaapartmentshome.navigationdrawer.NammaApartmentsHelp"
+            android:screenOrientation="portrait" />
         <!-- Digital Gate Screens -->
         <activity
             android:name=".nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome"
@@ -148,6 +151,11 @@
         </provider>
 
         <activity android:name=".nammaapartmentsservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
+
+        <!--SocietyServices Screen-->
+        <activity
+            android:name=".nammaapartmentsservices.societyservices.SocietyServices"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
