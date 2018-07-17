@@ -95,7 +95,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.namma_apartment_notification)
                     .setAutoCancel(true)
-                    .setContentTitle("Namma Apartments")
+                    .setContentTitle(getString(R.string.app_name))
                     .setContentText(message)
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setPriority(PRIORITY_DEFAULT)
