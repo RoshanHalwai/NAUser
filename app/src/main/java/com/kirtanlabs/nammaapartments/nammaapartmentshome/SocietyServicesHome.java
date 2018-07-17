@@ -13,7 +13,7 @@ import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.digitalgatehome.DigitalGateHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.SocietyServices;
 
 import java.util.ArrayList;

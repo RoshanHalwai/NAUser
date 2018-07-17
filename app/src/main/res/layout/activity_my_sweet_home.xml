@@ -5,7 +5,7 @@
     android:id="@+id/layoutFamilyMembers"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nammaapartmentsservices.digitalgate.mysweethome.MySweetHome">
+    tools:context=".nammaapartmentsservices.societyservices.digitalgate.mysweethome.MySweetHome">
 
     <include
         android:id="@+id/layoutActivityBase"

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.ApartmentServices;
+import com.kirtanlabs.nammaapartments.nammaapartmentshome.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.SocietyServicesHome;
 
 /**
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
 
         /*Setting event for text views*/
         textSocietyServices.setOnClickListener(v -> startActivity(new Intent(this, SocietyServicesHome.class)));
-        textApartmentServices.setOnClickListener(v -> startActivity(new Intent(this, ApartmentServices.class)));
+        textApartmentServices.setOnClickListener(v -> startActivity(new Intent(this, ApartmentServicesHome.class)));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +10,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -29,9 +30,9 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.navigationdrawer.NammaApartmentsHelp;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.navigationdrawer.UserProfile;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.digitalgate.mysweethome.MySweetHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mysweethome.MySweetHome;
+import com.kirtanlabs.nammaapartments.navigationdrawer.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
@@ -47,9 +48,11 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
-    /*Root Layout for Navigation Drawer*/
+
+    private SmoothActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private Dialog dialog;
+
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
@@ -76,10 +79,10 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         /*At this point new user and existing user would have their records in firebase and hence we store
@@ -117,15 +120,21 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.nav_myProfile: {
-                Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
-                startActivity(intent);
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawers();
                 break;
             }
             case R.id.nav_myFamilyMembers: {
-                Intent mySweetHomeIntent = new Intent(NammaApartmentsHome.this, MySweetHome.class);
-                mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mySweetHomeIntent);
+                toggle.runWhenIdle(() -> {
+                    Intent mySweetHomeIntent = new Intent(NammaApartmentsHome.this, MySweetHome.class);
+                    mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mySweetHomeIntent);
+                });
+                drawer.closeDrawers();
                 break;
             }
             case R.id.nav_appSettings: {
@@ -133,28 +142,34 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
             case R.id.nav_help: {
-                Intent helpIntent = new Intent(NammaApartmentsHome.this, NammaApartmentsHelp.class);
-                startActivity(helpIntent);
+                toggle.runWhenIdle(() -> {
+                    Intent helpIntent = new Intent(NammaApartmentsHome.this, NammaApartmentsHelp.class);
+                    startActivity(helpIntent);
+                });
+                drawer.closeDrawers();
                 break;
             }
             case R.id.nav_rateUs: {
-                showRateUsDialog();
-                dialog.show();
+                toggle.runWhenIdle(() -> {
+                    showRateUsDialog();
+                    dialog.show();
+                });
+                drawer.closeDrawers();
                 break;
             }
             case R.id.nav_logout: {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
+                toggle.runWhenIdle(() -> {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                });
+                drawer.closeDrawers();
                 break;
             }
         }
-
-        drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -212,7 +227,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 case 0:
                     return new SocietyServicesHome();
                 case 1:
-                    return new ApartmentServices();
+                    return new ApartmentServicesHome();
                 default:
                     return null;
             }
@@ -221,6 +236,40 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         @Override
         public int getCount() {
             return 2;
+        }
+    }
+
+    private class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle {
+
+        private Runnable runnable;
+
+        public SmoothActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            invalidateOptionsMenu();
+        }
+
+        @Override
+        public void onDrawerClosed(View view) {
+            super.onDrawerClosed(view);
+            invalidateOptionsMenu();
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+            super.onDrawerStateChanged(newState);
+            if (runnable != null && newState == DrawerLayout.STATE_IDLE) {
+                runnable.run();
+                runnable = null;
+            }
+        }
+
+        public void runWhenIdle(Runnable runnable) {
+            this.runnable = runnable;
         }
     }
 
