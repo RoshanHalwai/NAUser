@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.digitalgate.invitevisitors.InvitingVisitors">
+    tools:context=".nammaapartmentsservices.societyservices.digitalgate.invitevisitors.InvitingVisitors">
 
     <include layout="@layout/activity_base" />
 
