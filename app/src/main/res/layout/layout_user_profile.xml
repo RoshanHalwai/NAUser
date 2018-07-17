@@ -3,19 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/activity_base" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/currentUserProfilePic"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:src="@drawable/add_member" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/nmBlack"
+            app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/currentUserProfilePic"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/add_member" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textName"
@@ -29,13 +45,15 @@
         android:textSize="@dimen/text_view_default_size" />
 
     <EditText
-        android:id="@+id/editCurrentUserName"
+        android:id="@+id/editUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:drawableEnd="@drawable/edit_pen"
         android:inputType="textCapWords|textNoSuggestions"
         android:textColor="@color/nmBlack"
+        android:drawableRight="@drawable/edit_pen"
         android:textSize="@dimen/edit_text_default_size"
         tools:ignore="LabelFor" />
 
@@ -52,27 +70,45 @@
         android:visibility="visible" />
 
     <EditText
-        android:id="@+id/editCurrentUserEmail"
+        android:id="@+id/editUserEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:drawableEnd="@drawable/edit_pen"
+        android:drawableRight="@drawable/edit_pen"
         android:inputType="textEmailAddress"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/edit_text_default_size"
         android:visibility="visible"
         tools:ignore="LabelFor" />
 
-    <Button
-        android:id="@+id/buttonChangeAdmin"
+    <TextView
+        android:id="@+id/textFlatAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/button_margin"
-        android:background="@color/nmBlack"
-        android:text="@string/change_admin"
-        android:textColor="@color/nmLightYellow"
-        android:textSize="@dimen/button_default_size"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Flat Admin"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/text_view_default_size"
         android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editFlatAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableEnd="@drawable/edit_pen"
+        android:drawableRight="@drawable/edit_pen"
+        android:focusable="false"
+        android:inputType="textCapWords|textNoSuggestions"
+        android:longClickable="false"
+        android:textColor="@color/nmBlack"
+        android:textSize="@dimen/edit_text_default_size"
+        tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/buttonUpdate"
@@ -83,6 +119,6 @@
         android:text="@string/update"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </LinearLayout>

@@ -383,7 +383,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         alertNotifyGateDialog.setCancelable(false);
         alertNotifyGateDialog.setTitle(title);
         alertNotifyGateDialog.setMessage(message);
-        alertNotifyGateDialog.setPositiveButton("YES", (dialog, which) -> method.run());
+        alertNotifyGateDialog.setPositiveButton("YES", (dialog, which) -> {
+            dialog.cancel();
+            method.run();
+        });
         alertNotifyGateDialog.setNegativeButton("NO", (dialog, which) -> dialog.cancel());
         new Dialog(this);
         alertNotifyGateDialog.show();
