@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -24,8 +25,7 @@ public class NammaApartmentDailyService implements Serializable {
     private String uid;
     private String dailyServiceHandedThingsDescription;
     private String status;
-    private long numberOfFlats;
-
+    private Map<String, String> noOfFlats;
     /* ------------------------------------------------------------- *
      * Constructors
      * ------------------------------------------------------------- */
@@ -45,10 +45,6 @@ public class NammaApartmentDailyService implements Serializable {
     /* ------------------------------------------------------------- *
      * Getters
      * ------------------------------------------------------------- */
-
-    public long getNumberOfFlats() {
-        return numberOfFlats;
-    }
 
     public String getFullName() {
         return fullName;
@@ -90,6 +86,10 @@ public class NammaApartmentDailyService implements Serializable {
         return dateOfVisit;
     }
 
+
+    public Map<String, String> getNoOfFlats() {
+        return noOfFlats;
+    }
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -118,15 +118,15 @@ public class NammaApartmentDailyService implements Serializable {
         this.dailyServiceHandedThingsDescription = dailyServiceHandedThingsDescription;
     }
 
-    public void setNumberOfFlats(long numberOfFlats) {
-        this.numberOfFlats = numberOfFlats;
-    }
-
     public void setDateOfVisit(String dateOfVisit) {
         this.dateOfVisit = dateOfVisit;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setNoOfFlats(Map<String, String> noOfFlats) {
+        this.noOfFlats = noOfFlats;
     }
 }

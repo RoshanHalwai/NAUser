@@ -20,6 +20,7 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
@@ -205,12 +206,13 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                                     reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
-                                            long numberOfFlats = dailyServiceCountSnapshot.getChildrenCount() - 1;
-                                            String dailyServiceStatus = dailyServiceCountSnapshot.child(Constants.FIREBASE_CHILD_STATUS).getValue().toString();
+
+                                            String dailyServiceStatus = Objects.requireNonNull(dailyServiceCountSnapshot.child(Constants.FIREBASE_CHILD_STATUS).getValue()).toString();
                                             if (dailyServiceCountSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(numberOfFlats);
+                                                Map<String, String> noOfFlats = Objects.requireNonNull(nammaApartmentDailyService).getNoOfFlats();
+                                                Objects.requireNonNull(nammaApartmentDailyService).setNoOfFlats(noOfFlats);
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                 Objects.requireNonNull(nammaApartmentDailyService).setStatus(dailyServiceStatus);
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
