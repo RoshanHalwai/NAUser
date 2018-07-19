@@ -404,4 +404,34 @@
     <string name="Terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
 
+    <!-- Strings related to Settings -->
+
+    <!-- General settings -->
+    <string name="general">General Settings</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="app_version">App Version 1.0</string>
+    <string name="report_bug">Report A Bug</string>
+    <string name="location_services">Location Services</string>
+
+    <string-array name="change_languages_list">
+        <item>@string/english</item>
+        <item>@string/hindi</item>
+        <item>@string/tamil</item>
+        <item>@string/kannada</item>
+        <item>@string/telugu</item>
+    </string-array>
+
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="tamil">Tamil</string>
+    <string name="kannada">Kannada</string>
+    <string name="telugu">Telugu</string>
+
+    <!-- Notification settings -->
+    <string name="notifications">Notification Settings</string>
+    <string name="new_message_notifications">New Message Notifications</string>
+    <string name="email_notifications">Email Notifications</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="in_app_sound_notification">Enable in-app sound Notifications</string>
+    <string name="product_updates">Product Updates</string>
 </resources>

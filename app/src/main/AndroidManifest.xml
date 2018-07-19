@@ -88,12 +88,24 @@
         <activity
             android:name=".nammaapartmentshome.NammaApartmentsHome"
             android:screenOrientation="portrait" />
+
+        <!-- Navigation Drawer Screens -->
         <activity
             android:name=".navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.NammaApartmentsHelp"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.nammaapartmentssettings.NammaApartmentSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.nammaapartmentssettings.GeneralSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.nammaapartmentssettings.NotificationSettings"
+            android:screenOrientation="portrait" />
+
         <!-- Digital Gate Screens -->
         <activity
             android:name=".nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome"
