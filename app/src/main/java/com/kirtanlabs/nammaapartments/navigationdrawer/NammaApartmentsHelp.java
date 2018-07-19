@@ -51,7 +51,7 @@ public class NammaApartmentsHelp extends BaseActivity {
         helpList.add(getString(R.string.privacy_policy));
 
         /*Creating the Adapter*/
-        HelpAdapter helpAdapter = new HelpAdapter(this, helpList);
+        HelpAndSettingsAdapter helpAdapter = new HelpAndSettingsAdapter(this, helpList);
 
         //*Attaching adapter to the listview *//*
         listOfHelpServices.setAdapter(helpAdapter);

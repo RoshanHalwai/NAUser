@@ -14,7 +14,7 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
 
-class NammaApartmentServiceAdapter extends ArrayAdapter<NammaApartmentService> {
+public class NammaApartmentServiceAdapter extends ArrayAdapter<NammaApartmentService> {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -28,7 +28,7 @@ class NammaApartmentServiceAdapter extends ArrayAdapter<NammaApartmentService> {
      * Constructors
      * ------------------------------------------------------------- */
 
-    NammaApartmentServiceAdapter(@NonNull Context context, List<NammaApartmentService> servicesList) {
+    public NammaApartmentServiceAdapter(@NonNull Context context, List<NammaApartmentService> servicesList) {
         super(context, R.layout.list_services);
         this.servicesList = servicesList;
         this.context = context;
