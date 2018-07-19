@@ -155,6 +155,7 @@
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
     <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
+    <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
 
     <!--Cabs List And PackagesList Activity-->
     <string name="cabs_number">Cab No:</string>
@@ -223,7 +224,7 @@
     <string name="adding_your_daily_service">Adding your Daily Service</string>
     <string name="daily_service_success_title">Daily Service Message</string>
     <string name="daily_service_success_message">You have successfully added your Daily Service.</string>
-    <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
+    <string name="remove_daily_service_title">Remove Daily Service</string>
 
     <!--Adding My Daily Services-->
     <string name="name">Name</string>
