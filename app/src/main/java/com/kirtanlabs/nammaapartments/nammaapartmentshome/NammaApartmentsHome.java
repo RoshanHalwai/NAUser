@@ -33,6 +33,7 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.NammaApartmentsHelp;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
+import com.kirtanlabs.nammaapartments.navigationdrawer.nammaapartmentssettings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
@@ -138,7 +139,11 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
             case R.id.nav_appSettings: {
-                //TODO:To implement this Functionality later
+                toggle.runWhenIdle(() -> {
+                    Intent settingsIntent = new Intent(NammaApartmentsHome.this, NammaApartmentSettings.class);
+                    startActivity(settingsIntent);
+                });
+                drawer.closeDrawers();
                 break;
             }
             case R.id.nav_help: {

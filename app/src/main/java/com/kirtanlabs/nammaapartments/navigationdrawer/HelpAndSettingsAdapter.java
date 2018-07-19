@@ -16,12 +16,12 @@ import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class HelpAdapter extends ArrayAdapter<String> {
+public class HelpAndSettingsAdapter extends ArrayAdapter<String> {
 
     private final Context mCtx;
     private final List<String> helpList;
 
-    HelpAdapter(Context mCtx, List<String> helpList) {
+    public HelpAndSettingsAdapter(Context mCtx, List<String> helpList) {
         super(mCtx, R.layout.layout_notify_digital_gate, helpList);
         this.mCtx = mCtx;
         this.helpList = helpList;

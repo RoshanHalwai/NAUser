@@ -208,6 +208,29 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                 .child(FIREBASE_CHILD_TIMEOFVISIT);
         updatedTimeReference.setValue(updatedTime);
     }
+
+    /**
+     * @param position                   of card view whose daily service details needs to be removed.
+     * @param nammaApartmentDailyService whose data needs to be removed.
+     */
+    private void removeDailyServiceDialog(int position, NammaApartmentDailyService nammaApartmentDailyService) {
+        /*Runnable Interface which gets invoked once user presses OK button in Confirmation Dialog*/
+        Runnable removeDailyServiceDialog = () ->
+        {
+            nammaApartmentDailyServiceList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
+            String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+            DatabaseReference userDailyServiceReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference()
+                    .child(FIREBASE_CHILD_DAILYSERVICES);
+            userDailyServiceReference.child(DailyServiceType.getKeyByValue(dailyServiceType))
+                    .child(nammaApartmentDailyService.getUID())
+                    .removeValue();
+        };
+        String confirmDialogTitle = mCtx.getString(R.string.remove_daily_service_title);
+        String confirmDialogMessage = mCtx.getString(R.string.daily_service_cancel);
+        baseActivity.showConfirmDialog(confirmDialogTitle, confirmDialogMessage, removeDailyServiceDialog);
+    }
     /* ------------------------------------------------------------- *
      * Daily Service Holder class
      * ------------------------------------------------------------- */
@@ -304,18 +327,12 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     openTimeDialog(nammaApartmentDailyService.getTimeOfVisit(), position);
                     break;
                 case R.id.textCancel:
-                    nammaApartmentDailyServiceList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
-                    String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-                    DatabaseReference userDailyServiceReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference()
-                            .child(FIREBASE_CHILD_DAILYSERVICES);
-                    userDailyServiceReference.child(DailyServiceType.getKeyByValue(dailyServiceType))
-                            .child(nammaApartmentDailyService.getUID())
-                            .removeValue();
+                    //Create a Remove Dialog in which user can remove their daily services.
+                    removeDailyServiceDialog(position, nammaApartmentDailyService);
                     break;
             }
         }
     }
+
 
 }
