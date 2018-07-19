@@ -48,7 +48,7 @@ public class NammaApartmentSettings extends BaseActivity implements AdapterView.
         /*Creating the Adapter*/
         HelpAndSettingsAdapter helpAdapter = new HelpAndSettingsAdapter(this, settingsList);
 
-        //*Attaching adapter to the listview *//*
+        /*Attaching adapter to the listview */
         listOfSettings.setAdapter(helpAdapter);
     }
 
