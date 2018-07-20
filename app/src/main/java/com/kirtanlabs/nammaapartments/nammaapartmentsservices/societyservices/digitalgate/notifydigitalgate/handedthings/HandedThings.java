@@ -205,7 +205,7 @@ public class HandedThings extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
+                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
                 } else {
                     DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
                     privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
