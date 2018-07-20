@@ -29,6 +29,7 @@ import java.util.Objects;
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
@@ -196,15 +197,15 @@ public class HandedThings extends BaseActivity {
     private void checkAndRetrieveCurrentDailyServices() {
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_DAILYSERVICES);
+        DatabaseReference myDailyServicesReference = userDataReference.child(FIREBASE_CHILD_DAILYSERVICES);
 
-        /*We first check if this flat has any visitors*/
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        /*We first check if this flat has any dailyServices*/
+        myDailyServicesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
+                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
                 } else {
                     DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
                     privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -255,12 +256,12 @@ public class HandedThings extends BaseActivity {
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString().equals(ENTERED)) {
-                                            long numberOfFlats = dataSnapshot.getChildrenCount() - 1;
+                                        if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED)) {
+                                            int noOfFlats = (int) dataSnapshot.getChildrenCount() - 1;
                                             if (dataSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                //Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(numberOfFlats);
+                                                Objects.requireNonNull(nammaApartmentDailyService).setNoOfFlats(String.valueOf(noOfFlats));
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();

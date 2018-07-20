@@ -68,13 +68,13 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
 
     @Override
     public void onBindViewHolder(@NonNull HandedThingsToDailyServiceAdapter.DailyServiceViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        //Creating an instance of NammaApartmentDailyService class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        holder.textDailyServiceNoOfFlatsValue.setText("1");
+        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNoOfFlats()));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.profileImage);
     }

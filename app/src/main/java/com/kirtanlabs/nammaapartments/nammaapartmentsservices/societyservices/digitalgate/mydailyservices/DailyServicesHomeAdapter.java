@@ -102,7 +102,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitationTimeOrStatusValue.setText(nammaApartmentDailyService.getStatus());
-        holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNoOfFlats().size()));
+        holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNoOfFlats()));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
