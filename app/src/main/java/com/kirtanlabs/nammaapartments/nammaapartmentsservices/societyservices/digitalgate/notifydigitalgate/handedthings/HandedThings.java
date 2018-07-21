@@ -261,7 +261,7 @@ public class HandedThings extends BaseActivity {
                                             if (dataSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                Objects.requireNonNull(nammaApartmentDailyService).setNoOfFlats(String.valueOf(noOfFlats));
+                                                Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(String.valueOf(noOfFlats));
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();
