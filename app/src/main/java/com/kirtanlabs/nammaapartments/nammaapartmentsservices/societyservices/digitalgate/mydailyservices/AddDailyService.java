@@ -389,6 +389,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
 
                 //adding the profile photo to storage reference and daily service data to real time database
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    //Creating an instance of Namma Apartment Daily Service
                     NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
                             dailyServiceUID, fullName,
                             phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, rating);

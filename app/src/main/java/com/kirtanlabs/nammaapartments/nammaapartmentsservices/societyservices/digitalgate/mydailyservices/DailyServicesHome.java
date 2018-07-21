@@ -18,7 +18,9 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
@@ -39,6 +41,7 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;
     private int index = 0;
+    public static Map<String, Long> numberOfFlats = new HashMap<>();
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -176,10 +179,10 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                 .child(FIREBASE_CHILD_DAILYSERVICES);
         dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
                 hideProgressIndicator();
                 /*Iterate over each daily service type*/
-                for (DataSnapshot dailyServicesSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                     String dailyServiceType = dailyServicesSnapshot.getKey();
                     DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
 
@@ -188,7 +191,6 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                     dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
-
                             /*Iterate over each of them and add listener to each of them*/
                             for (DataSnapshot dailyServicesTypeSnapshot : dailyServiceUIDSnapshot.getChildren()) {
                                 String dailyServiceUID = dailyServicesTypeSnapshot.getKey();
@@ -199,13 +201,12 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                                     @Override
                                     public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
                                         String dailyServiceStatus = Objects.requireNonNull(dailyServiceCountSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString();
-                                        int numberOfFlats = (int) dailyServiceCountSnapshot.getChildrenCount() - 1;
                                         if (dailyServiceCountSnapshot.hasChild(userUID)) {
+                                            numberOfFlats.put(dailyServiceUID, dailyServiceCountSnapshot.getChildrenCount() - 1);
                                             DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
                                             NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
                                             Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                             nammaApartmentDailyService.setStatus(dailyServiceStatus);
-                                            nammaApartmentDailyService.setNumberOfFlats(String.valueOf(numberOfFlats));
                                             nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                             dailyServicesHomeAdapter.notifyDataSetChanged();
                                         }

@@ -24,7 +24,6 @@ public class NammaApartmentDailyService implements Serializable {
     private String uid;
     private String dailyServiceHandedThingsDescription;
     private String status;
-    private String numberOfFlats;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -86,9 +85,6 @@ public class NammaApartmentDailyService implements Serializable {
         return dateOfVisit;
     }
 
-    public String getNumberOfFlats() {
-        return numberOfFlats;
-    }
 
     /* ------------------------------------------------------------- *
      * Setters
@@ -124,9 +120,5 @@ public class NammaApartmentDailyService implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public void setNumberOfFlats(String numberOfFlats) {
-        this.numberOfFlats = numberOfFlats;
     }
 }

@@ -45,6 +45,7 @@ public class HandedThings extends BaseActivity {
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
     private int index = 0;
+    public static long numberOfFlats;
 
 
     /* ------------------------------------------------------------- *
@@ -257,11 +258,10 @@ public class HandedThings extends BaseActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED)) {
-                                            int noOfFlats = (int) dataSnapshot.getChildrenCount() - 1;
+                                            numberOfFlats = dataSnapshot.getChildrenCount() - 1;
                                             if (dataSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(String.valueOf(noOfFlats));
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();
