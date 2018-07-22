@@ -67,7 +67,7 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
         holder.textVisitorNameValue.setText(nammaApartmentGuest.getFullName());
         holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-        holder.textHandedThingsValue.setText(nammaApartmentGuest.getHandedThingsDescription());
+        holder.textHandedThingsValue.setText(nammaApartmentGuest.getHandedThings());
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.profileImage);
 

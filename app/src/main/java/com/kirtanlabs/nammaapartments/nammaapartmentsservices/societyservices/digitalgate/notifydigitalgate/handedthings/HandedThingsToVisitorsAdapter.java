@@ -227,7 +227,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
                     Intent handedThingsHistoryIntent = new Intent(mCtx, HandedThingsHistory.class);
                     handedThingsHistoryIntent.putExtra(SCREEN_TITLE, R.string.my_guests);
                     String handedThingsDescription = editDescription.getText().toString();
-                    nammaApartmentGuest.setHandedThingsDescription(handedThingsDescription);
+                    nammaApartmentGuest.setHandedThings(handedThingsDescription);
                     DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
                             .child(nammaApartmentGuest.getUid());
                     preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)
