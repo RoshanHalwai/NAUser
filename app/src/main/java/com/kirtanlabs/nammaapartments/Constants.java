@@ -6,6 +6,8 @@ import android.graphics.Typeface;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.net.PortUnreachableException;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/1/2018
@@ -26,6 +28,7 @@ public class Constants {
     public static final String PROFILE_PHOTO = "profile_photo";
     public static final String SCREEN_TITLE = "screen_title";
     public static final String SERVICE_TYPE = "service_type";
+    public static final String IN_PROGRESS = "in progress";
 
     /* ------------------------------------------------------------- *
      * Validation Keys

@@ -19,6 +19,7 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
+import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -181,24 +182,22 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
      * Store the details of Society Service to Firebase
      */
     private void storeSocietyServiceDetails() {
-        //Get the societyServiceUID
+        /*Get the societyServiceUID*/
         DatabaseReference societyServiceNotificationReference = SOCIETYSERVICENOTIFICATION_REFERENCE;
         String societyServiceUID = societyServiceNotificationReference.push().getKey();
 
-        //Get the data entered by user while lodging the Society Service issue
+        /*Get the data entered by user while lodging the Society Service issue*/
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         String userUID = nammaApartmentUser.getUID();
         String timeSlot = selectedButton.getText().toString();
         String societyServiceType = getString(screenTitle).toLowerCase();
 
-        /*Store Society Service data entered by user while lodging the Society Service issue, under a
-         * new parent named societyServiceNotifications in Firebase
-         */
+        /*Store Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, societyServiceUID, "in progress", societyServiceUID);
+                userUID, societyServiceType, societyServiceUID, IN_PROGRESS, societyServiceUID);
         societyServiceNotificationReference.child(societyServiceUID).setValue(nammaApartmentSocietyServices);
 
-        //Map Society Service UID with value in userData under Flat Number
+        /*Map Society Service UID with value in userData under Flat Number*/
         DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference()
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
