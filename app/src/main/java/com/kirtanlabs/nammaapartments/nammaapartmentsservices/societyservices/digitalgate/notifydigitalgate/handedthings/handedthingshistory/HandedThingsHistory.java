@@ -12,10 +12,10 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.guests.RetrievingGuestList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.NammaApartmentDailyService;
-import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -26,8 +26,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
@@ -41,7 +41,6 @@ public class HandedThingsHistory extends BaseActivity {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private List<NammaApartmentGuest> nammaApartmentGuestList;
     private GuestsHistoryAdapter guestsHistoryAdapter;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHistoryAdapter dailyServicesHistoryAdapter;
@@ -76,11 +75,36 @@ public class HandedThingsHistory extends BaseActivity {
         /*Based on the previous screen title we decide whose history of handed things can be displayed
          * User can give things to either Daily Services or their Guests*/
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_guests) {
-            nammaApartmentGuestList = new ArrayList<>();
-            guestsHistoryAdapter = new GuestsHistoryAdapter(nammaApartmentGuestList, this);
-            recyclerView.setAdapter(guestsHistoryAdapter);
-            checkAndRetrieveCurrentVisitorsFromFirebase();
-        } else {
+
+            /*Creating userUID List which contains UID of current user and their family members*/
+            List<String> userUIDList = new ArrayList<>();
+            Set<String> userFamilyMemberUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFamilyMembers().keySet();
+            userUIDList.add(NammaApartmentsGlobal.userUID);
+            userUIDList.addAll(userFamilyMemberUID);
+
+            new RetrievingGuestList(HandedThingsHistory.this).getGuests(nammaApartmentGuestList -> {
+                hideProgressIndicator();
+                if (!nammaApartmentGuestList.isEmpty()) {
+                    List<NammaApartmentGuest> handedThingsGuestList = new ArrayList<>();
+                    for (NammaApartmentGuest nammaApartmentGuest : nammaApartmentGuestList) {
+                        if (!(nammaApartmentGuest.getHandedThings() == null)) {
+                            handedThingsGuestList.add(nammaApartmentGuest);
+                        }
+                    }
+                    if (!handedThingsGuestList.isEmpty()) {
+                        guestsHistoryAdapter = new GuestsHistoryAdapter(handedThingsGuestList, HandedThingsHistory.this);
+                        recyclerView.setAdapter(guestsHistoryAdapter);
+                    } else {
+                        showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                    }
+                } else {
+                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                }
+            }, userUIDList);
+        }
+
+        /*History of Handed things to Daily Services*/
+        else {
             nammaApartmentDailyServiceList = new ArrayList<>();
             dailyServicesHistoryAdapter = new DailyServicesHistoryAdapter(nammaApartmentDailyServiceList, this);
             recyclerView.setAdapter(dailyServicesHistoryAdapter);
@@ -92,90 +116,6 @@ public class HandedThingsHistory extends BaseActivity {
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
-
-    /**
-     * Check if the flat has any guests. If it does not have any visitors we show guests unavailable message
-     * Else, we display the guests of the current user and their family members
-     */
-    private void checkAndRetrieveCurrentVisitorsFromFirebase() {
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
-
-        /*We first check if this flat has any visitors*/
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
-                } else {
-                    //Retrieve user guests list from firebase
-                    retrieveCurrentVisitorsFromFirebase(NammaApartmentsGlobal.userUID);
-
-                    //Retrieve user family member guests list from firebase
-                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-                    Map<String, Boolean> familyMembers = currentNammaApartmentUser.getFamilyMembers();
-                    if (familyMembers != null && !familyMembers.isEmpty()) {
-                        for (String userUID : familyMembers.keySet()) {
-                            retrieveCurrentVisitorsFromFirebase(userUID);
-                        }
-                    }
-                    //TODO: Ensure user friends visitors are not added in Guests List
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    /**
-     * We retrieve visitors for current user and their family members if any
-     */
-    private void retrieveCurrentVisitorsFromFirebase(String userUID) {
-        //First retrieve the current user visitors
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
-        myVisitorsReference.child(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                hideProgressIndicator();
-                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
-                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                            .child(visitorsSnapshot.getKey());
-                    preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
-                            //We only display those visitor details who has one "handedThings" as one of its child
-                            if (nammaApartmentVisitorData.hasChild(FIREBASE_CHILD_HANDED_THINGS)) {
-                                NammaApartmentGuest nammaApartmentGuest = nammaApartmentVisitorData.getValue(NammaApartmentGuest.class);
-                                Objects.requireNonNull(nammaApartmentGuest).setHandedThingsDescription(
-                                        Objects.requireNonNull(nammaApartmentVisitorData.child(FIREBASE_CHILD_HANDED_THINGS)
-                                                .getValue()).toString());
-                                nammaApartmentGuestList.add(index++, nammaApartmentGuest);
-                                guestsHistoryAdapter.notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     /**
      * Check if the flat has any daily service. If it does not have any daily services added we show daily service unavailable message
