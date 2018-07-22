@@ -18,13 +18,12 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.NammaApartmentDailyService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.guests.RetrievingGuestList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
-import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
@@ -41,7 +40,6 @@ public class HandedThings extends BaseActivity {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private List<NammaApartmentGuest> nammaApartmentGuestList;
     private HandedThingsToVisitorsAdapter adapterVisitors;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
@@ -77,25 +75,38 @@ public class HandedThings extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Creating recycler view adapter
-        nammaApartmentGuestList = new ArrayList<>();
-        adapterVisitors = new HandedThingsToVisitorsAdapter(nammaApartmentGuestList, this);
-
         nammaApartmentDailyServiceList = new ArrayList<>();
         adapterDailyService = new HandedThingsToDailyServiceAdapter(nammaApartmentDailyServiceList, this);
 
         /*Retrieve those visitor details who status is Entered*/
         if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.my_guests) {
-            //Retrieve user visitor list from firebase only when their status is "Entered"
-            recyclerView.setAdapter(adapterVisitors);
-            checkAndRetrieveCurrentVisitorsFromFirebase();
+            new RetrievingGuestList(HandedThings.this).getGuests(nammaApartmentGuestList -> {
+                hideProgressIndicator();
+                if (!nammaApartmentGuestList.isEmpty()) {
+                    List<NammaApartmentGuest> enteredGuestList = new ArrayList<>();
+                    for (NammaApartmentGuest nammaApartmentGuest : nammaApartmentGuestList) {
+                        if (nammaApartmentGuest.getStatus().equals(ENTERED)) {
+                            enteredGuestList.add(nammaApartmentGuest);
+                        }
+                    }
+                    if (!enteredGuestList.isEmpty()) {
+                        adapterVisitors = new HandedThingsToVisitorsAdapter(enteredGuestList, HandedThings.this);
+                        recyclerView.setAdapter(adapterVisitors);
+                    } else {
+                        showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                    }
+                } else {
+                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                }
+            });
+            //checkAndRetrieveCurrentVisitorsFromFirebase();
         } else {
             //To retrieve user daily Services list from firebase only when their status is "Entered"
             recyclerView.setAdapter(adapterDailyService);
             checkAndRetrieveCurrentDailyServices();
         }
 
-        /*Since we have History button here, we would want to perform navigate users to Handed Things history
+        /*Since we have History button here, we would want to users to navigate to Handed Things history
          * and display data based on the screen title*/
         ImageView historyButton = findViewById(R.id.historyButton);
         historyButton.setVisibility(View.VISIBLE);
@@ -110,86 +121,6 @@ public class HandedThings extends BaseActivity {
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
-
-    /**
-     * Check if the flat has any guests. If it does not have any visitors we show guests unavailable message
-     * Else, we display the guests of the current user and their family members
-     */
-    private void checkAndRetrieveCurrentVisitorsFromFirebase() {
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
-
-        /*We first check if this flat has any visitors*/
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
-                } else {
-                    //Retrieve user guests list from firebase
-                    retrieveCurrentVisitorsFromFirebase(NammaApartmentsGlobal.userUID);
-
-                    //Retrieve user family member guests list from firebase
-                    NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-                    Map<String, Boolean> familyMembers = currentNammaApartmentUser.getFamilyMembers();
-                    if (familyMembers != null && !familyMembers.isEmpty()) {
-                        for (String userUID : familyMembers.keySet()) {
-                            retrieveCurrentVisitorsFromFirebase(userUID);
-                        }
-                    }
-                    //TODO: Ensure user friends visitors are not added in Guests List
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    /**
-     * We retrieve visitors for current user and their family members if any
-     */
-    private void retrieveCurrentVisitorsFromFirebase(String userUID) {
-        //First retrieve the current user visitors
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
-        myVisitorsReference.child(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                hideProgressIndicator();
-                for (DataSnapshot visitorsSnapshot : dataSnapshot.getChildren()) {
-                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                            .child(visitorsSnapshot.getKey());
-                    preApprovedVisitorReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot nammaApartmentVisitorData) {
-                            NammaApartmentGuest nammaApartmentGuest = nammaApartmentVisitorData.getValue(NammaApartmentGuest.class);
-                            if (Objects.requireNonNull(nammaApartmentGuest).getStatus().equals(ENTERED)) {
-                                nammaApartmentGuestList.add(index++, nammaApartmentGuest);
-                                adapterVisitors.notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     /**
      * Check if the flat has any daily service. If it does not have any daily services added we show daily service unavailable message
