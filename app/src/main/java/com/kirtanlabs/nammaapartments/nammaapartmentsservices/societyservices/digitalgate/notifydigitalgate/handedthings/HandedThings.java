@@ -22,6 +22,7 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.di
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,8 +46,7 @@ public class HandedThings extends BaseActivity {
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
     private int index = 0;
-    public static long numberOfFlats;
-
+    public static Map<String, Long> numberOfFlats = new HashMap<>();
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -251,15 +251,16 @@ public class HandedThings extends BaseActivity {
                         public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
                             /*Iterate over each of them and add listener to each of them*/
                             for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
+                                String dailyServiceUID = childSnapshot.getKey();
                                 DatabaseReference reference = PUBLIC_DAILYSERVICES_REFERENCE
                                         .child(dailyServiceUIDSnapshot.getKey())    // Daily Service Type
-                                        .child(childSnapshot.getKey());             // Daily Service UID
+                                        .child(dailyServiceUID);                    // Daily Service UID
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED)) {
-                                            numberOfFlats = dataSnapshot.getChildrenCount() - 1;
                                             if (dataSnapshot.hasChild(userUID)) {
+                                                numberOfFlats.put(dailyServiceUID, dataSnapshot.getChildrenCount() - 1);
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
