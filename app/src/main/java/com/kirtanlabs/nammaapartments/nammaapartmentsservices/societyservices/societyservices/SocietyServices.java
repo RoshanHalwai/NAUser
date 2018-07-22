@@ -1,20 +1,30 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_AVAILABLE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -25,12 +35,14 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
      * Private Members
      * ------------------------------------------------------------- */
 
-    private int screenTitle;
-    private String[] problemsList;
     private final int[] buttonIds = new int[]{R.id.buttonImmediately,
             R.id.buttonMorningSlot,
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
+    private int screenTitle;
+    private String[] problemsList;
+    private String selectedProblem;
+    private Button selectedButton;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -108,6 +120,19 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         buttonMorningSlot.setOnClickListener(this);
         buttonNoonSlot.setOnClickListener(this);
         buttonEveningSlot.setOnClickListener(this);
+        buttonRequestService.setOnClickListener(this);
+        spinnerSelectProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedProblem = problemsList[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /* ------------------------------------------------------------- *
@@ -129,6 +154,9 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             case R.id.buttonEveningSlot:
                 selectButton(R.id.buttonEveningSlot);
                 break;
+            case R.id.buttonRequestService:
+                storeSocietyServiceDetails();
+                break;
         }
     }
 
@@ -145,10 +173,64 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
+                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
         }
     }
+
+    /**
+     * Store the details of Society Services to Firebase
+     */
+    private void storeSocietyServiceDetails() {
+        //Get the societyServiceUID
+        DatabaseReference societyServiceNotificationReference = SOCIETYSERVICENOTIFICATION_REFERENCE;
+        String societyServiceUID = societyServiceNotificationReference.push().getKey();
+
+        //Get data of Society Service (Plumber/Carpenter/Electrician)
+//        NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+//        String userUID = nammaApartmentUser.getUID();
+//        String timeSlot = selectedButton.getText().toString();
+//        String societyServiceType = getString(screenTitle).toLowerCase();
+
+        //Store Society Service notification details under a new parent named societyServiceNotifications
+        //TODO: Notification UID has been hardcoded. It will get updated once notification is triggered.
+//        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(selectedProblem, timeSlot,
+//                userUID, societyServiceType, "abc", "pending", societyServiceUID);
+//        societyServiceNotificationReference.child("abc").setValue(nammaApartmentSocietyServices);
+
+        //Store Society Service details in userData
+        DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
+        societyServiceUserDataReference.child(societyServiceUID).setValue(true); //TODO: Notification UID to be inserted in place of hardcoded UID.
+
+        //Store Society Service details under a new parent named societyServices. Reiterate through all available plumber/carpenter/electrician.
+//        DatabaseReference societyServiceAvailableReference = SOCIETYSERVICES_REFERENCE.child(societyServiceType).child(FIREBASE_CHILD_AVAILABLE);
+//        societyServiceAvailableReference.child(societyServiceUID).setValue("tokenId");
+
+        /*TODO: Uncomment these when 'unavailable' Society Service feature is implemented. Right now we are just showing 'Available'*/
+        /*DatabaseReference societyServiceUnavailableReference = SOCIETYSERVICES_REFERENCE.child(societyServiceType).child(FIREBASE_CHILD_UNAVAILABLE);
+        societyServiceUnavailableReference.child(societyServiceUID).setValue(true);*/
+
+        //Mapping Society Service Mobile Number with UID in societyServices->societyServiceType->data->all
+//        DatabaseReference societyServiceDataReference = SOCIETYSERVICES_REFERENCE.child(societyServiceType).child("data");
+//        societyServiceDataReference.child(FIREBASE_CHILD_ALL).child("9876543210").setValue(societyServiceUID);
+
+        //Storing details of Society Service inside societyServices->societyServiceType->data->private
+        //TODO: Details of Plumber/Electrician/Carpenter will be stored once the Society Service data is available.
+//        societyServiceDataReference.child(FIREBASE_CHILD_PRIVATE).child(societyServiceUID).setValue("details");
+
+        //Create a unique ID for every push notifications
+//        DatabaseReference societyServiceNotificationsReference = societyServiceDataReference
+//                .child(FIREBASE_CHILD_PRIVATE)
+//                .child("notifications")
+//                .child("abc")
+//                .push();
+//
+//        societyServiceNotificationsReference.setValue("accepted");
+    }
+
 }
