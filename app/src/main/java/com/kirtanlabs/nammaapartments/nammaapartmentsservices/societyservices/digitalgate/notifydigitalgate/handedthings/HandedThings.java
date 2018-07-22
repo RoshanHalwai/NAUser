@@ -12,7 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
@@ -22,12 +21,15 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.di
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
@@ -42,7 +44,7 @@ public class HandedThings extends BaseActivity {
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
     private int index = 0;
-
+    public static Map<String, Long> numberOfFlats = new HashMap<>();
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -127,10 +129,10 @@ public class HandedThings extends BaseActivity {
     private void checkAndRetrieveCurrentDailyServices() {
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_DAILYSERVICES);
+        DatabaseReference myDailyServicesReference = userDataReference.child(FIREBASE_CHILD_DAILYSERVICES);
 
-        /*We first check if this flat has any visitors*/
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        /*We first check if this flat has any dailyServices*/
+        myDailyServicesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
@@ -180,18 +182,18 @@ public class HandedThings extends BaseActivity {
                         public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
                             /*Iterate over each of them and add listener to each of them*/
                             for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
+                                String dailyServiceUID = childSnapshot.getKey();
                                 DatabaseReference reference = PUBLIC_DAILYSERVICES_REFERENCE
                                         .child(dailyServiceUIDSnapshot.getKey())    // Daily Service Type
-                                        .child(childSnapshot.getKey());             // Daily Service UID
+                                        .child(dailyServiceUID);                    // Daily Service UID
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString().equals(ENTERED)) {
-                                            long numberOfFlats = dataSnapshot.getChildrenCount() - 1;
+                                        if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED)) {
                                             if (dataSnapshot.hasChild(userUID)) {
+                                                numberOfFlats.put(dailyServiceUID, dataSnapshot.getChildrenCount() - 1);
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                Objects.requireNonNull(nammaApartmentDailyService).setNumberOfFlats(numberOfFlats);
                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();

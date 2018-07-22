@@ -47,6 +47,8 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DRIVERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
@@ -353,9 +355,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String dailyServiceUID;
-
-                dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                String dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
                 //We map daily service mobile number with their UID to avoid other users to add same daily service again
                 dailyServiceMobileNumberReference.setValue(dailyServiceUID);
@@ -380,15 +380,16 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
 
                 //getting the storage reference
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_DAILYSERVICES)
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_DAILYSERVICES)
+                        .child(FIREBASE_CHILD_PRIVATE)
                         .child(dailyServiceChild)
                         .child(dailyServiceUID);
 
-                UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
+                UploadTask uploadTask = storageReference.putBytes(profilePhotoByteArray);
 
                 //adding the profile photo to storage reference and daily service data to real time database
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    //Creating an instance of Namma Apartment Daily Service
                     NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
                             dailyServiceUID, fullName,
                             phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, rating);
@@ -398,7 +399,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
 
                         /* We add status directly under dailyService UID since Guard may change the status of the daily service
                         and we would want all the users to know about it*/
-                    dailyServicePublicReference.child(dailyServiceUID).child("status").setValue(NOT_ENTERED);
+                    dailyServicePublicReference.child(dailyServiceUID).child(FIREBASE_CHILD_STATUS).setValue(NOT_ENTERED);
 
                     //dismissing the progress dialog
                     hideProgressDialog();
