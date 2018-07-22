@@ -7,13 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -44,12 +39,6 @@ public class GuestsList extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /*Creating userUID List which contains UID of current user and their family members*/
-        List<String> userUIDList = new ArrayList<>();
-        Set<String> userFamilyMemberUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFamilyMembers().keySet();
-        userUIDList.add(NammaApartmentsGlobal.userUID);
-        userUIDList.addAll(userFamilyMemberUID);
-
         /*Retrieve Guest data*/
         new RetrievingGuestList(GuestsList.this).getGuests(nammaApartmentGuestList -> {
             hideProgressIndicator();
@@ -59,7 +48,7 @@ public class GuestsList extends BaseActivity {
                 guestsListAdapter = new GuestsListAdapter(nammaApartmentGuestList, GuestsList.this);
                 recyclerView.setAdapter(guestsListAdapter);
             }
-        }, userUIDList);
+        });
 
     }
 

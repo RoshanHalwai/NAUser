@@ -12,6 +12,7 @@ import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.di
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -24,6 +25,7 @@ public class RetrievingGuestList {
      * ------------------------------------------------------------- */
 
     private DatabaseReference userDataReference;
+    private List<String> userUIDList;
     private int count = 0;
 
     /* ------------------------------------------------------------- *
@@ -33,6 +35,10 @@ public class RetrievingGuestList {
     public RetrievingGuestList(Context context) {
         NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) context.getApplicationContext());
         userDataReference = nammaApartmentsGlobal.getUserDataReference();
+        userUIDList = new ArrayList<>();
+        Set<String> userFamilyMemberUID = nammaApartmentsGlobal.getNammaApartmentUser().getFamilyMembers().keySet();
+        userUIDList.add(NammaApartmentsGlobal.userUID);
+        userUIDList.addAll(userFamilyMemberUID);
     }
 
     /* ------------------------------------------------------------- *
@@ -40,11 +46,11 @@ public class RetrievingGuestList {
      * ------------------------------------------------------------- */
 
     /**
-     * @param guestListCallback receiving result with list of all guest data of userUID present in
-     *                          userUIDList
-     * @param userUIDList       which contains a list of userUID whose guest list needs to be retrieved
+     *
+     * @param guestListCallback receiving result with list of all guest data of userUID present in userUIDList
+     *                          containint list of current user UID and their family members UID
      */
-    public void getGuests(GuestListCallback guestListCallback, List<String> userUIDList) {
+    public void getGuests(GuestListCallback guestListCallback) {
         List<NammaApartmentGuest> nammaApartmentAllGuestList = new ArrayList<>();
         isGuestReferenceExists(guestReferenceExits -> {
             if (guestReferenceExits) {

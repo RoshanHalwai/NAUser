@@ -15,16 +15,15 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.guests.RetrievingGuestList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.NammaApartmentDailyService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.guests.RetrievingGuestList;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DAILYSERVICES;
@@ -79,13 +78,6 @@ public class HandedThings extends BaseActivity {
 
         /*Retrieve those visitor details who status is Entered*/
         if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.my_guests) {
-
-            /*Creating userUID List which contains UID of current user and their family members*/
-            List<String> userUIDList = new ArrayList<>();
-            Set<String> userFamilyMemberUID = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFamilyMembers().keySet();
-            userUIDList.add(NammaApartmentsGlobal.userUID);
-            userUIDList.addAll(userFamilyMemberUID);
-
             new RetrievingGuestList(HandedThings.this).getGuests(nammaApartmentGuestList -> {
                 hideProgressIndicator();
                 if (!nammaApartmentGuestList.isEmpty()) {
@@ -104,7 +96,7 @@ public class HandedThings extends BaseActivity {
                 } else {
                     showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
                 }
-            }, userUIDList);
+            });
             //checkAndRetrieveCurrentVisitorsFromFirebase();
         } else {
             //To retrieve user daily Services list from firebase only when their status is "Entered"
