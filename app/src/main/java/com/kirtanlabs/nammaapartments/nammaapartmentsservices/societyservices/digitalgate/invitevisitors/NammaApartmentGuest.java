@@ -18,7 +18,7 @@ public class NammaApartmentGuest {
     private String status;
     private String inviterUID;
     private String profilePhoto;
-    private String handedThingsDescription;
+    private String handedThings;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -60,8 +60,8 @@ public class NammaApartmentGuest {
         return profilePhoto;
     }
 
-    public String getHandedThingsDescription() {
-        return handedThingsDescription;
+    public String getHandedThings() {
+        return handedThings;
     }
 
     public String getInviterUID() {
@@ -88,8 +88,8 @@ public class NammaApartmentGuest {
         this.profilePhoto = profilePhoto;
     }
 
-    public void setHandedThingsDescription(String handedThingsDescription) {
-        this.handedThingsDescription = handedThingsDescription;
+    public void setHandedThings(String handedThings) {
+        this.handedThings = handedThings;
     }
 
 }

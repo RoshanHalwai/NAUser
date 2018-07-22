@@ -204,6 +204,7 @@
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
+    <string name="history_unavailable_message">Sorry you cannot use this feature since you have not handed things in past.</string>
     <string name="history">History</string>
 
     <!--Handed Things To Daily Service Activity-->
@@ -435,4 +436,5 @@
     <string name="vibrate">Vibrate</string>
     <string name="in_app_sound_notification">Enable in-app sound Notifications</string>
     <string name="product_updates">Product Updates</string>
+
 </resources>
