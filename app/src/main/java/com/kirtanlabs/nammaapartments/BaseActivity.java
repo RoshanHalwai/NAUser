@@ -268,7 +268,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @throws NumberFormatException because if user tries to enter number in place of name.
      */
     protected boolean isValidPersonName(String name) throws NumberFormatException {
-        return !Pattern.matches("[a-zA-Z ]+", name);
+        return !Pattern.matches("[a-zA-Z0-9.@() ]+", name);
     }
 
     /**
