@@ -16,8 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_EMAIL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
@@ -58,9 +57,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      * ------------------------------------------------------------- */
 
     private de.hdodenhof.circleimageview.CircleImageView currentUserProfilePic;
-    private EditText editUserName;
-    private EditText editUserEmail;
-    private EditText editFlatAdmin;
+    private EditText editUserName, editUserEmail, editFlatAdmin;
     private String userName, userEmail, admin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
@@ -256,10 +253,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
             String confirmDialogTitle = getResources().getString(R.string.non_admin_change_admin_title);
             String confirmDialogMessage = getResources().getString(R.string.admin_change_key);
             String confirmDialogMessageValue = confirmDialogMessage.replace(getString(R.string.person), itemValue);
-            showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, () -> {
-                editFlatAdmin.setText(itemValue);
-
-            });
+            showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, () -> editFlatAdmin.setText(itemValue));
             flatMembersDialog.cancel();
         });
     }
@@ -304,13 +298,40 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
 
         /*Based on the admin privileges we are hiding change admin button.*/
         if (currentNammaApartmentUser.getPrivileges().isAdmin()) {
-            admin = "You are the Administrator";
+            admin = getResources().getString(R.string.admin_notification);
             editFlatAdmin.setText(admin);
         } else {
             /*We should not allow the other flat members to change the Administrator details*/
             editFlatAdmin.setEnabled(false);
             editFlatAdmin.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            /*TODO: Get the name of the Admin*/
+            DatabaseReference adminNameReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                    .child(FIREBASE_ADMIN);
+            adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot adminUIDSnapshot) {
+                    String adminUID = Objects.requireNonNull(adminUIDSnapshot.getValue()).toString();
+                    DatabaseReference adminUIDNameReference = PRIVATE_USERS_REFERENCE.child(adminUID)
+                            .child(FIREBASE_CHILD_PERSONALDETAILS)
+                            .child(FIREBASE_CHILD_FULLNAME);
+                    adminUIDNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot adminNameDataSnapshot) {
+                            String adminName = adminNameDataSnapshot.getValue(String.class);
+                            editFlatAdmin.setText(adminName);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
     }
@@ -379,14 +400,11 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                     DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
                             .child(FIREBASE_CHILD_PERSONALDETAILS)
                             .child(FIREBASE_CHILD_PROFILE_PHOTO);
-                    updatedUserPhotoReference.setValue(profilePhotoPath).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            hideProgressDialog();
-                            showNotificationDialog(getString(R.string.update_message),
-                                    getString(R.string.update_success_message),
-                                    nammaApartmentsHome);
-                        }
+                    updatedUserPhotoReference.setValue(profilePhotoPath).addOnCompleteListener(task -> {
+                        hideProgressDialog();
+                        showNotificationDialog(getString(R.string.update_message),
+                                getString(R.string.update_success_message),
+                                nammaApartmentsHome);
                     });
                 });
             } else {
