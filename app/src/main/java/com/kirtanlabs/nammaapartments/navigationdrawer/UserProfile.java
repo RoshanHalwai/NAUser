@@ -316,7 +316,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                     adminUIDNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot adminNameDataSnapshot) {
-                            String adminName = Objects.requireNonNull(adminNameDataSnapshot.getValue()).toString();
+                            String adminName = adminNameDataSnapshot.getValue(String.class);
                             editFlatAdmin.setText(adminName);
                         }
 
