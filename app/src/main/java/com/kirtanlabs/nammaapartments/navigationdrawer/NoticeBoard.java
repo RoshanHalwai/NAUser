@@ -38,13 +38,22 @@ public class NoticeBoard extends BaseActivity implements AdapterView.OnClickList
     }
     private NoticeBoardAdapter getAdapter() {
         String[] stringTitle = {
-                getString(R.string.ganesh_festival),getString(R.string.ganesh_festival),getString(R.string.ganesh_festival),getString(R.string.ganesh_festival)
+                getString(R.string.ganesha_festival),
+                getString(R.string.ganesha_festival),
+                getString(R.string.ganesha_festival),
+                getString(R.string.ganesha_festival)
         };
         String[] stringMessage ={
-                getString(R.string.notice_board_message),getString(R.string.notice_board_message),getString(R.string.notice_board_message),getString(R.string.notice_board_message)
+                getString(R.string.notice_board_message),
+                getString(R.string.notice_board_message),
+                getString(R.string.notice_board_message),
+                getString(R.string.notice_board_message)
         };
         String[] stringInCharge ={
-                getString(R.string.in_charge),getString(R.string.in_charge),getString(R.string.in_charge),getString(R.string.in_charge)
+                getString(R.string.in_charge),
+                getString(R.string.in_charge),
+                getString(R.string.in_charge),
+                getString(R.string.in_charge)
         };
         return new NoticeBoardAdapter(this ,stringTitle,stringMessage,stringInCharge);
     }

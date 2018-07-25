@@ -141,7 +141,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             }
             case R.id.nav_myNoticeBoard: {
                 toggle.runWhenIdle(() ->{
-                    Intent noticeBoardIntent =new Intent(NammaApartmentsHome.this, NoticeBoard.class);
+                    Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
                     startActivity(noticeBoardIntent);
                 });
                 drawer.closeDrawers();

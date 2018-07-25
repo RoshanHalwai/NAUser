@@ -22,8 +22,8 @@ public class NoticeBoardAdapter extends BaseAdapter {
     NoticeBoardAdapter(Context context, String[] stringTitle, String[] stringMessage, String[] stringInCharge) {
         this.context = context;
         this.stringTitle = stringTitle;
-        this.stringMessage=stringMessage;
-        this.stringInCharge=stringInCharge;
+        this.stringMessage = stringMessage;
+        this.stringInCharge = stringInCharge;
     }
 
 
@@ -53,8 +53,8 @@ public class NoticeBoardAdapter extends BaseAdapter {
         }
         /*Getting Id's for all the views*/
        TextView textTitleGridLayout = gridView.findViewById(R.id.textTitleGridLayout);
-       TextView textMessageGridLayout =gridView.findViewById(R.id.textMessageGridLayout);
-       TextView textInChargeGridLayout =gridView.findViewById(R.id.textInChargeGridLayout);
+       TextView textMessageGridLayout = gridView.findViewById(R.id.textMessageGridLayout);
+       TextView textInChargeGridLayout = gridView.findViewById(R.id.textInChargeGridLayout);
 
         /*Setting font for the TextView*/
         textTitleGridLayout.setTypeface(Constants.setLatoRegularFont(context));
