@@ -169,7 +169,7 @@
 
         <!--SocietyServices Screen-->
         <activity
-            android:name=".nammaapartmentsservices.societyservices.SocietyServices"
+            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServices"
             android:screenOrientation="portrait" />
     </application>
 

@@ -1,19 +1,26 @@
-package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices;
+package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
+import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
@@ -25,12 +32,14 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
      * Private Members
      * ------------------------------------------------------------- */
 
-    private int screenTitle;
-    private String[] problemsList;
     private final int[] buttonIds = new int[]{R.id.buttonImmediately,
             R.id.buttonMorningSlot,
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
+    private int screenTitle;
+    private String[] problemsList;
+    private String problem;
+    private Button selectedButton;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -108,6 +117,19 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         buttonMorningSlot.setOnClickListener(this);
         buttonNoonSlot.setOnClickListener(this);
         buttonEveningSlot.setOnClickListener(this);
+        buttonRequestService.setOnClickListener(this);
+        spinnerSelectProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                problem = problemsList[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /* ------------------------------------------------------------- *
@@ -129,6 +151,9 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             case R.id.buttonEveningSlot:
                 selectButton(R.id.buttonEveningSlot);
                 break;
+            case R.id.buttonRequestService:
+                storeSocietyServiceDetails();
+                break;
         }
     }
 
@@ -145,10 +170,39 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
+                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
         }
     }
+
+    /**
+     * Store the details of Society Service to Firebase
+     */
+    private void storeSocietyServiceDetails() {
+        /*Get the societyServiceUID*/
+        DatabaseReference societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+        String societyServiceUID = societyServiceNotificationReference.push().getKey();
+
+        /*Get the data entered by user while lodging the Society Service issue*/
+        NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        String userUID = nammaApartmentUser.getUID();
+        String timeSlot = selectedButton.getText().toString();
+        String societyServiceType = getString(screenTitle).toLowerCase();
+
+        /*Store Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
+                userUID, societyServiceType, societyServiceUID, IN_PROGRESS, societyServiceUID);
+        societyServiceNotificationReference.child(societyServiceUID).setValue(nammaApartmentSocietyServices);
+
+        /*Map Society Service UID with value in userData under Flat Number*/
+        DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
+        societyServiceUserDataReference.child(societyServiceUID).setValue(true);
+
+    }
+
 }
