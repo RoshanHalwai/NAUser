@@ -52,7 +52,6 @@ public class Constants {
     public static final String LOGGED_IN = "loggedIn";
     public static final String USER_UID = "userUid";
 
-
     /* ------------------------------------------------------------- *
      * Firebase objects
      * ------------------------------------------------------------- */
