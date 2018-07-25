@@ -18,10 +18,10 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
-import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -183,7 +183,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
      */
     private void storeSocietyServiceDetails() {
         /*Get the societyServiceUID*/
-        DatabaseReference societyServiceNotificationReference = SOCIETYSERVICENOTIFICATION_REFERENCE;
+        DatabaseReference societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
         String societyServiceUID = societyServiceNotificationReference.push().getKey();
 
         /*Get the data entered by user while lodging the Society Service issue*/
