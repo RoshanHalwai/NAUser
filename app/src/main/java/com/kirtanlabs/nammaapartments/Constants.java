@@ -44,6 +44,15 @@ public class Constants {
     public static final int OTP_TIMER = 120;
 
     /* ------------------------------------------------------------- *
+     * Shared Preference Keys
+     * ------------------------------------------------------------- */
+
+    public static final String NAMMA_APARTMENTS_PREFERENCE = "nammaApartmentsPreference";
+    public static final String FIRST_TIME = "firstTime";
+    public static final String LOGGED_IN = "loggedIn";
+    public static final String USER_UID = "userUid";
+
+    /* ------------------------------------------------------------- *
      * Firebase objects
      * ------------------------------------------------------------- */
 
