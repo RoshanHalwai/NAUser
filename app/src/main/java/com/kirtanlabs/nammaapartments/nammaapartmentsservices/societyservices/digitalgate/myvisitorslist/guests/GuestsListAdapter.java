@@ -244,7 +244,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     }
 
     /**
-     * Based on the position the guest data is removed from List in UI and Firebase
+     * Based on the position the guest data is removed from List in UI and in Firebase
+     * under userData the visitorUID is mapped to false to indicate that this visitor
+     * was once invited but has later been removed by the user
      *
      * @param position            of card view whose guest details need to be removed
      * @param nammaApartmentGuest whose data needs to be removed
@@ -261,6 +263,12 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                 notifyItemRangeChanged(position, nammaApartmentGuestList.size());
                 DatabaseReference userDataReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference();
                 userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(visitorUID).setValue(false);
+
+                /*This is to ensure when user deletes the last item in the list a blank screen is not shown
+                 * instead feature unavailable layout is shown*/
+                if (nammaApartmentGuestList.isEmpty()) {
+                    baseActivity.showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
+                }
             };
             String confirmDialogTitle = mCtx.getString(R.string.remove_guest_title);
             String confirmDialogMessage = mCtx.getString(R.string.remove_guest_message);
