@@ -11,7 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome;
@@ -24,7 +23,11 @@ import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FAMILY_MEMBERS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FRIENDS;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 
@@ -39,6 +42,7 @@ public class PackagesList extends BaseActivity {
      * ------------------------------------------------------------- */
     private List<NammaApartmentArrival> nammaApartmentArrivalList;
     private PackagesListAdapter packagesListAdapter;
+    private DatabaseReference userDataReference;
     private int index = 0;
 
     /* ------------------------------------------------------------- *
@@ -75,14 +79,14 @@ public class PackagesList extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Creating recycler view adapter
+        /*Creating recycler view adapter*/
         nammaApartmentArrivalList = new ArrayList<>();
         packagesListAdapter = new PackagesListAdapter(nammaApartmentArrivalList, this);
 
-        //Setting adapter to recycler view
+        /*Setting adapter to recycler view*/
         recyclerView.setAdapter(packagesListAdapter);
 
-        //To retrieve user packages list from firebase
+        /*To retrieve user packages list from firebase*/
         checkAndRetrievePackageDetails();
     }
 
@@ -114,22 +118,73 @@ public class PackagesList extends BaseActivity {
      * Else, we display the deliveries of the current user and their family members.
      */
     private void checkAndRetrievePackageDetails() {
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myDeliveriesReference = userDataReference.child(Constants.FIREBASE_CHILD_DELIVERIES);
+        userDataReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        DatabaseReference userPackagesReference = userDataReference.child(FIREBASE_CHILD_DELIVERIES);
+        String userUID = NammaApartmentsGlobal.userUID;
 
         /*We first check if this flat has any deliveries*/
-        myDeliveriesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        userPackagesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     hideProgressIndicator();
                     showFeatureUnavailableLayout(R.string.deliveries_unavailable_message);
                 } else {
-                    //Retrieve user deliveries list from firebase
-                    retrievePackageDetailsFromFirebase(NammaApartmentsGlobal.userUID);
+                    /*Retrieve user friends deliveries list from firebase*/
+                    DatabaseReference friendUIDDataReference = PRIVATE_USERS_REFERENCE.child(userUID);
+                    friendUIDDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot friendUIDSnapshot) {
+                            if (friendUIDSnapshot.hasChild(FIREBASE_CHILD_FRIENDS)) {
+                                /*To Block Admin From Seeing Admin Friends Cabs List*/
+                                if (currentNammaApartmentUser.getPrivileges().isAdmin()) {
+                                    hideProgressIndicator();
+                                } else {
+                                    DatabaseReference friendsDeliveriesDataReference = userDataReference.child(FIREBASE_CHILD_CABS).child(userUID);
+                                    friendsDeliveriesDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot friendsCabsSnapshot) {
+                                            if (!friendsCabsSnapshot.exists()) {
+                                                hideProgressIndicator();
+                                                showFeatureUnavailableLayout(R.string.deliveries_unavailable_message);
+                                            } else {
+                                                retrievePackageDetailsFromFirebase(userUID);
+                                            }
+                                        }
 
-                    //Retrieve user family member deliveries list from firebase
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+ 
+                    /*Retrieve user deliveries list from firebase*/
+                    DatabaseReference flatMembersCabsReference = PRIVATE_USERS_REFERENCE.child(userUID);
+                    flatMembersCabsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot flatMembersCabsSnapshot) {
+                            if (flatMembersCabsSnapshot.hasChild(FIREBASE_CHILD_FAMILY_MEMBERS)) {
+                                retrievePackageDetailsFromFirebase(userUID);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    /*Retrieve user family member deliveries list from firebase*/
                     NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
                     Map<String, Boolean> familyMembers = currentNammaApartmentUser.getFamilyMembers();
                     if (familyMembers != null && !familyMembers.isEmpty()) {
@@ -137,7 +192,6 @@ public class PackagesList extends BaseActivity {
                             retrievePackageDetailsFromFirebase(userUID);
                         }
                     }
-                    //TODO: Ensure user friends deliveries are not added in Packages List
                 }
             }
 
@@ -158,23 +212,23 @@ public class PackagesList extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 hideProgressIndicator();
-                    for (DataSnapshot deliveriesSnapshot : dataSnapshot.getChildren()) {
-                        DatabaseReference deliveriesDataReference = PUBLIC_DELIVERIES_REFERENCE
-                                .child(deliveriesSnapshot.getKey());
-                        deliveriesDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                NammaApartmentArrival nammaApartmentArrival = dataSnapshot.getValue(NammaApartmentArrival.class);
-                                nammaApartmentArrivalList.add(index++, nammaApartmentArrival);
-                                packagesListAdapter.notifyDataSetChanged();
-                            }
+                for (DataSnapshot deliveriesSnapshot : dataSnapshot.getChildren()) {
+                    DatabaseReference deliveriesDataReference = PUBLIC_DELIVERIES_REFERENCE
+                            .child(deliveriesSnapshot.getKey());
+                    deliveriesDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            NammaApartmentArrival nammaApartmentArrival = dataSnapshot.getValue(NammaApartmentArrival.class);
+                            nammaApartmentArrivalList.add(index++, nammaApartmentArrival);
+                            packagesListAdapter.notifyDataSetChanged();
+                        }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
-                    }
+                        }
+                    });
+                }
             }
 
             @Override
