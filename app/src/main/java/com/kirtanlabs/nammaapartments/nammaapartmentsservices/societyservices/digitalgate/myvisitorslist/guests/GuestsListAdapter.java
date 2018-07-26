@@ -260,7 +260,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, nammaApartmentGuestList.size());
                 DatabaseReference userDataReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference();
-                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(visitorUID).removeValue();
+                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(visitorUID).setValue(false);
             };
             String confirmDialogTitle = mCtx.getString(R.string.remove_guest_title);
             String confirmDialogMessage = mCtx.getString(R.string.remove_guest_message);
