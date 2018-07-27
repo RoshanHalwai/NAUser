@@ -227,7 +227,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param text feature unavailable message
      */
-    protected void showFeatureUnavailableLayout(int text) {
+    public void showFeatureUnavailableLayout(int text) {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
         featureUnavailableLayout.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.textFeatureUnavailable);

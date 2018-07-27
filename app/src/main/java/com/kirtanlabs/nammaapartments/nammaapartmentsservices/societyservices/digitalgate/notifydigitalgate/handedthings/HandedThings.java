@@ -80,7 +80,7 @@ public class HandedThings extends BaseActivity {
 
         /*Retrieve those visitor details who status is Entered*/
         if (getIntent().getIntExtra(HANDED_THINGS_TO, 0) == R.string.my_guests) {
-            new RetrievingGuestList(HandedThings.this).getGuests(nammaApartmentGuestList -> {
+            new RetrievingGuestList(HandedThings.this, false).getGuests(nammaApartmentGuestList -> {
                 hideProgressIndicator();
                 if (!nammaApartmentGuestList.isEmpty()) {
                     List<NammaApartmentGuest> enteredGuestList = new ArrayList<>();
