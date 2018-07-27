@@ -244,6 +244,12 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         buttonRemindLater.setOnClickListener(v -> dialog.cancel());
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     /* ------------------------------------------------------------- *
      * SectionPagerAdapter Class
      * ------------------------------------------------------------- */
