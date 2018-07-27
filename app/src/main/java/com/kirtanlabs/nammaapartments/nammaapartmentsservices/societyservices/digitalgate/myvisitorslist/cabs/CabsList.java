@@ -170,7 +170,7 @@ public class CabsList extends BaseActivity {
                     flatMembersCabsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot flatMembersCabsSnapshot) {
-                            if (flatMembersCabsSnapshot.hasChild(FIREBASE_CHILD_FAMILY_MEMBERS)) {
+                            if (currentNammaApartmentUser.getPrivileges().isAdmin() || flatMembersCabsSnapshot.hasChild(FIREBASE_CHILD_FAMILY_MEMBERS)) {
                                 retrieveCabsDetailsFromFirebase(userUID);
                             }
                         }

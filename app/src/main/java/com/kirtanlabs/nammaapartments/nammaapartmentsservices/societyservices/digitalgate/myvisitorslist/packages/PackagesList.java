@@ -23,7 +23,6 @@ import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FAMILY_MEMBERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FRIENDS;
@@ -141,7 +140,7 @@ public class PackagesList extends BaseActivity {
                                 if (currentNammaApartmentUser.getPrivileges().isAdmin()) {
                                     hideProgressIndicator();
                                 } else {
-                                    DatabaseReference friendsDeliveriesDataReference = userDataReference.child(FIREBASE_CHILD_CABS).child(userUID);
+                                    DatabaseReference friendsDeliveriesDataReference = userDataReference.child(FIREBASE_CHILD_DELIVERIES).child(userUID);
                                     friendsDeliveriesDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot friendsCabsSnapshot) {
@@ -173,7 +172,7 @@ public class PackagesList extends BaseActivity {
                     flatMembersCabsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot flatMembersCabsSnapshot) {
-                            if (flatMembersCabsSnapshot.hasChild(FIREBASE_CHILD_FAMILY_MEMBERS)) {
+                            if (currentNammaApartmentUser.getPrivileges().isAdmin() || flatMembersCabsSnapshot.hasChild(FIREBASE_CHILD_FAMILY_MEMBERS)) {
                                 retrievePackageDetailsFromFirebase(userUID);
                             }
                         }
