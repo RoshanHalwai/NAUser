@@ -148,9 +148,8 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
     /**
      * This method creates Access Dialog in which user can change access of other family members/friends.
-     *
      * @param nammaApartmentUser instance of NammaApartment User class in which it contains values in cardview.
-     * @param position of cardview for which granted access to be manipulated.
+     * @param position           of cardview for which granted access to be manipulated.
      */
     private void openAccessDialog(NammaApartmentUser nammaApartmentUser, int position) {
         accessDialog = View.inflate(mCtx, R.layout.layout_granted_access, null);
@@ -209,29 +208,31 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         dialog.show();
     }
 
-    private void RemoveDialog() {
-        AlertDialog.Builder alertRemoveDialog = new AlertDialog.Builder(mCtx);
-        View removeDialog = View.inflate(mCtx, R.layout.layout_remove_dialog, null);
+    /**
+     * This method is invoked to create a remove dialog.
+     */
+    private void removeDialog() {
+        AlertDialog.Builder alertEmergencyDialog = new AlertDialog.Builder(mCtx);
+        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_dialog, null);
 
-        TextView textRemoveDialog = removeDialog.findViewById(R.id.textRemoveDialog);
+        /*Getting Id's for all the views*/
+        TextView textEmergencyMessage = removeDialog.findViewById(R.id.textEmergencyMessage);
         TextView buttonOk = removeDialog.findViewById(R.id.buttonOk);
+        TextView buttonCancel = removeDialog.findViewById(R.id.buttonCancel);
+        buttonCancel.setVisibility(View.INVISIBLE);
 
         /*Setting Fonts for all the views*/
-        textRemoveDialog.setTypeface(setLatoBoldFont(mCtx));
+        textEmergencyMessage.setTypeface(setLatoBoldFont(mCtx));
         buttonOk.setTypeface(setLatoRegularFont(mCtx));
 
-        /*Creating and setting Remove Dialog*/
-        alertRemoveDialog.setView(removeDialog);
-        Dialog dialog = alertRemoveDialog.create();
+        textEmergencyMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
+        textEmergencyMessage.setText(R.string.remove_dialog);
+        alertEmergencyDialog.setView(removeDialog);
+        Dialog dialog = alertEmergencyDialog.create();
         new Dialog(mCtx);
         dialog.show();
-        buttonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+
+        buttonOk.setOnClickListener(v -> dialog.cancel());
 
     }
 
@@ -360,7 +361,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     }
                     break;
                 case R.id.textCancel:
-                    RemoveDialog();
+                    removeDialog();
                     break;
             }
         }

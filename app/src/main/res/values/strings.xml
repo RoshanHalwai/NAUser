@@ -238,6 +238,7 @@
     <string name="gallery">Gallery</string>
     <string name="send_otp_daily_service">We will send an OTP to your daily service for authentication</string>
     <string name="daily_service">daily service</string>
+
     <!--Raise Fire Alarm & Theft Alarm-->
     <string name="tap_on_bell_icon_to_create_alert">Tap on bell icon to create alert</string>
     <string name="image_to_create_an_alarm">Image to create an alarm</string>
@@ -272,6 +273,7 @@
     <string name="non_admin_edit_title_message">Edit Message</string>
     <string name="non_admin_remove_title_message">Delete Message</string>
     <string name="change_access">Change Access</string>
+    <string name="remove_dialog">This feature is currently unavailable</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
@@ -443,6 +445,4 @@
     <string name="ganesha_festival">Ganesha Festival</string>
     <string name="notice_board_message">All our beloved apartment members ,on behalf of the organizing team ,i have the pleasure of inviting you to the ganesha festival on 13th sep</string>
     <string name="in_charge">Committee</string>
-
-    <string name="remove_dialog">This feature is currently unavailable</string>
 </resources>
