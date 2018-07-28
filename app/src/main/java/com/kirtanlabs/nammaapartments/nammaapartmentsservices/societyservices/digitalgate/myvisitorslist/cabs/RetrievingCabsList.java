@@ -185,5 +185,4 @@ public class RetrievingCabsList {
     private interface CabDataCallback {
         void onCallBack(NammaApartmentArrival nammaApartmentArrival);
     }
-
 }

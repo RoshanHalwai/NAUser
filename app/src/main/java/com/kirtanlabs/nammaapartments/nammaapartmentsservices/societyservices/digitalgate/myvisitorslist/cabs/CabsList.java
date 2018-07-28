@@ -86,6 +86,5 @@ public class CabsList extends BaseActivity {
             super.onBackPressed();
         }
     }
-
 }
 
