@@ -220,7 +220,7 @@
     <string name="child_care_taker">Child Caretaker</string>
     <string name="newspaper_paper_man">NewsPaper man</string>
     <string name="laundry_man">Laundry man</string>
-    <string name="daily_service_cancel">Are you sure you want to remove this daily service? You will stop receiving notifications related to this daily service?</string>
+    <string name="daily_service_cancel">Are you sure you want to remove this Daily Service?\n\nNOTE: You will stop receiving notifications related to this Daily Service.</string>
     <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
     <string name="adding_your_daily_service">Adding your Daily Service</string>
