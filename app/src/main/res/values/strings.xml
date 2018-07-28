@@ -443,4 +443,6 @@
     <string name="ganesha_festival">Ganesha Festival</string>
     <string name="notice_board_message">All our beloved apartment members ,on behalf of the organizing team ,i have the pleasure of inviting you to the ganesha festival on 13th sep</string>
     <string name="in_charge">Committee</string>
+
+    <string name="remove_dialog">This feature is currently unavailable</string>
 </resources>

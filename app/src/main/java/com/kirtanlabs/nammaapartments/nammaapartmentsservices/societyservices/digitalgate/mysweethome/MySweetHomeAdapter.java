@@ -148,6 +148,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
     /**
      * This method creates Access Dialog in which user can change access of other family members/friends.
+     *
      * @param nammaApartmentUser instance of NammaApartment User class in which it contains values in cardview.
      * @param position of cardview for which granted access to be manipulated.
      */
@@ -206,6 +207,32 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
         new Dialog(mCtx);
         dialog.show();
+    }
+
+    private void RemoveDialog() {
+        AlertDialog.Builder alertRemoveDialog = new AlertDialog.Builder(mCtx);
+        View removeDialog = View.inflate(mCtx, R.layout.layout_remove_dialog, null);
+
+        TextView textRemoveDialog = removeDialog.findViewById(R.id.textRemoveDialog);
+        TextView buttonOk = removeDialog.findViewById(R.id.buttonOk);
+
+        /*Setting Fonts for all the views*/
+        textRemoveDialog.setTypeface(setLatoBoldFont(mCtx));
+        buttonOk.setTypeface(setLatoRegularFont(mCtx));
+
+        /*Creating and setting Remove Dialog*/
+        alertRemoveDialog.setView(removeDialog);
+        Dialog dialog = alertRemoveDialog.create();
+        new Dialog(mCtx);
+        dialog.show();
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
 
     /**
@@ -333,7 +360,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     }
                     break;
                 case R.id.textCancel:
-                    //TODO:To rethink about the remove functionality in MySweetHome .
+                    RemoveDialog();
                     break;
             }
         }
