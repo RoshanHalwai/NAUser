@@ -13,7 +13,7 @@ public class NammaApartmentSocietyServices {
 
     private String problem;
     private String timeSlot;
-    private String uid;
+    private String userUID;
     private String societyServiceType;
     private String notificationUID;
     private String status;
@@ -26,11 +26,11 @@ public class NammaApartmentSocietyServices {
     public NammaApartmentSocietyServices() {
     }
 
-    NammaApartmentSocietyServices(String problem, String timeSlot, String uid, String societyServiceType,
+    NammaApartmentSocietyServices(String problem, String timeSlot, String userUID, String societyServiceType,
                                   String notificationUID, String status, String takenBy) {
         this.problem = problem;
         this.timeSlot = timeSlot;
-        this.uid = uid;
+        this.userUID = userUID;
         this.societyServiceType = societyServiceType;
         this.notificationUID = notificationUID;
         this.status = status;
@@ -49,8 +49,8 @@ public class NammaApartmentSocietyServices {
         return timeSlot;
     }
 
-    public String getUID() {
-        return uid;
+    public String getUserUID() {
+        return userUID;
     }
 
     public String getSocietyServiceType() {

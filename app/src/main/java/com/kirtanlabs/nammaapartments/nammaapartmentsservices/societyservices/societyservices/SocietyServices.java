@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,9 +20,14 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATA;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -179,30 +185,47 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
     }
 
     /**
-     * Store the details of Society Service to Firebase
+     * Store the details of Society Service Notifications to Firebase
      */
     private void storeSocietyServiceDetails() {
-        /*Get the societyServiceUID*/
+        /*Getting the societyServiceUID*/
         DatabaseReference societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
         String societyServiceUID = societyServiceNotificationReference.push().getKey();
 
-        /*Get the data entered by user while lodging the Society Service issue*/
+        /*Getting the data entered by user while lodging the Society Service issue*/
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         String userUID = nammaApartmentUser.getUID();
         String timeSlot = selectedButton.getText().toString();
         String societyServiceType = getString(screenTitle).toLowerCase();
 
-        /*Store Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, societyServiceUID, IN_PROGRESS, societyServiceUID);
-        societyServiceNotificationReference.child(societyServiceUID).setValue(nammaApartmentSocietyServices);
+        /*Creating a reference to get notification UID*/
+        DatabaseReference notificationUIDReference = SOCIETYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL).child(societyServiceType)
+                .child(FIREBASE_CHILD_DATA).child(FIREBASE_CHILD_PRIVATE).child(societyServiceUID);
 
-        /*Map Society Service UID with value in userData under Flat Number*/
+        /*Generating a unique notification UID for every notification*/
+        String notificationUID = notificationUIDReference.child(FIREBASE_CHILD_NOTIFICATIONS).push().getKey();
+
+        /*Inserting the notification UID under 'notifications' child*/
+        notificationUIDReference.child(FIREBASE_CHILD_NOTIFICATIONS).child(notificationUID).push();
+
+        /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, societyServiceUID);
+        societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+
+        /*Mapping Society Service UID with value in userData under Flat Number*/
         DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference()
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
-        societyServiceUserDataReference.child(societyServiceUID).setValue(true);
+        societyServiceUserDataReference.child(notificationUID).setValue(true);
 
+        /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
+         * Since, cloud functions would have been triggered*/
+        Intent awaitingResponseIntent = new Intent(SocietyServices.this, AwaitingResponse.class);
+        awaitingResponseIntent.putExtra("NotificationUID", notificationUID);
+        awaitingResponseIntent.putExtra("societyServiceUID", societyServiceUID);
+        awaitingResponseIntent.putExtra("societyServiceType", societyServiceType);
+        startActivity(awaitingResponseIntent);
     }
 
 }

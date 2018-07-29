@@ -171,6 +171,8 @@
         <activity
             android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServices"
             android:screenOrientation="portrait" />
+        <activity android:name=".nammaapartmentsservices.societyservices.societyservices.AwaitingResponse"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
