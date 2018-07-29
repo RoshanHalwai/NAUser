@@ -6,8 +6,6 @@ import android.graphics.Typeface;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.net.PortUnreachableException;
-
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/1/2018
@@ -89,6 +87,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
+    public static final String FIREBASE_CHILD_DATA = "data";
     public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
@@ -100,7 +99,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_USER_DATA = "userData";
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
     public static final String FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION = "societyServiceNotifications";
-    public static final String FIREBASE_CHILD_SOCIETYSERVICE = "societyServices";
+    private static final String FIREBASE_CHILD_SOCIETYSERVICES = "societyServices";
+    public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
 
     public static final int FIREBASE_CHILD_RATING = 3;
 
@@ -108,7 +108,6 @@ public class Constants {
     public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
-
      * Firebase Database References
      * ------------------------------------------------------------- */
 
@@ -121,6 +120,8 @@ public class Constants {
     private static final DatabaseReference EMERGENCIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EMERGENCIES);
     private static final DatabaseReference PRIVATE_CLIENTS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CLIENTS).child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
+    public static final DatabaseReference SOCIETYSERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICES);
+    public static final DatabaseReference ALL_SOCIETYSERVICE_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICES).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference CITIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_CITIES);
     public static final DatabaseReference SOCIETIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_SOCIETIES);
     public static final DatabaseReference FLATS_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_FLATS);
