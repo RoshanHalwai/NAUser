@@ -142,6 +142,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                 break;
         }
     }
+
     /*-------------------------------------------------------------------------------
      *Private Methods
      *-----------------------------------------------------------------------------*/
@@ -149,7 +150,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     /**
      * This method creates Access Dialog in which user can change access of other family members/friends.
      * @param nammaApartmentUser instance of NammaApartment User class in which it contains values in cardview.
-     * @param position           of cardview for which granted access to be manipulated.
+     * @param position of cardview for which granted access to be manipulated.
      */
     private void openAccessDialog(NammaApartmentUser nammaApartmentUser, int position) {
         accessDialog = View.inflate(mCtx, R.layout.layout_granted_access, null);
@@ -208,24 +209,27 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     }
 
     /**
-     * This method is invoked to create a remove dialog.
+     * This method is invoked when user clicks on 'Remove' icon to remove a Family Member or Friend
+     * from the 'My Sweet Home' list
      */
     private void removeDialog() {
         AlertDialog.Builder alertRemoveDialog = new AlertDialog.Builder(mCtx);
-        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_and_remove_dialog, null);
+        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_dialog, null);
 
         /*Getting Id's for all the views*/
-        TextView textEmergencyMessageOrRemoveMessage = removeDialog.findViewById(R.id.textEmergencyMessageOrRemoveMessage);
+        TextView textRemoveMessage = removeDialog.findViewById(R.id.textEmergencyMessage);
         TextView buttonOk = removeDialog.findViewById(R.id.buttonOk);
         TextView buttonCancel = removeDialog.findViewById(R.id.buttonCancel);
+
         buttonCancel.setVisibility(View.INVISIBLE);
 
         /*Setting Fonts for all the views*/
-        textEmergencyMessageOrRemoveMessage.setTypeface(setLatoBoldFont(mCtx));
+        textRemoveMessage.setTypeface(setLatoBoldFont(mCtx));
         buttonOk.setTypeface(setLatoRegularFont(mCtx));
 
-        textEmergencyMessageOrRemoveMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
-        textEmergencyMessageOrRemoveMessage.setText(R.string.remove_dialog);
+        textRemoveMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
+        textRemoveMessage.setText(R.string.remove_dialog);
+
         alertRemoveDialog.setView(removeDialog);
         Dialog dialog = alertRemoveDialog.create();
         new Dialog(mCtx);

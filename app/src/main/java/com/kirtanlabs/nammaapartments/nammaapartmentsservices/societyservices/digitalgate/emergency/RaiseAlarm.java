@@ -76,15 +76,15 @@ public class RaiseAlarm extends BaseActivity {
      */
     private void showEmergencyDialog() {
         AlertDialog.Builder alertEmergencyDialog = new AlertDialog.Builder(this);
-        View emergencyDialog = View.inflate(this, R.layout.layout_emergency_and_remove_dialog, null);
+        View emergencyDialog = View.inflate(this, R.layout.layout_emergency_dialog, null);
 
         /*Getting Id's for all the views*/
-        TextView textEmergencyMessageOrRemoveMessage = emergencyDialog.findViewById(R.id.textEmergencyMessageOrRemoveMessage);
+        TextView textEmergencyMessage = emergencyDialog.findViewById(R.id.textEmergencyMessage);
         TextView buttonOk = emergencyDialog.findViewById(R.id.buttonOk);
         TextView buttonCancel = emergencyDialog.findViewById(R.id.buttonCancel);
 
         /*Setting Fonts for all the views*/
-        textEmergencyMessageOrRemoveMessage.setTypeface(setLatoBoldFont(this));
+        textEmergencyMessage.setTypeface(setLatoBoldFont(this));
         buttonOk.setTypeface(setLatoRegularFont(this));
         buttonCancel.setTypeface(setLatoRegularFont(this));
 
@@ -102,6 +102,7 @@ public class RaiseAlarm extends BaseActivity {
             dialog.cancel();
         });
     }
+
     /**
      * This method gets invoked when user is trying to raise any alarm for any emergency type.
      */
