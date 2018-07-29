@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer;
+package com.kirtanlabs.nammaapartments.navigationdrawer.help;
 
 import android.os.Bundle;
 import android.widget.ListView;

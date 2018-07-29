@@ -32,10 +32,10 @@ import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mysweethome.MySweetHome;
-import com.kirtanlabs.nammaapartments.navigationdrawer.NammaApartmentsHelp;
-import com.kirtanlabs.nammaapartments.navigationdrawer.NoticeBoard;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
-import com.kirtanlabs.nammaapartments.navigationdrawer.nammaapartmentssettings.NammaApartmentSettings;
+import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 

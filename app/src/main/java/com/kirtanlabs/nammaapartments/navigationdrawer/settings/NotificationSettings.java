@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.nammaapartmentssettings;
+package com.kirtanlabs.nammaapartments.navigationdrawer.settings;
 
 import android.os.Bundle;
 import android.widget.Switch;

@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer;
+package com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
