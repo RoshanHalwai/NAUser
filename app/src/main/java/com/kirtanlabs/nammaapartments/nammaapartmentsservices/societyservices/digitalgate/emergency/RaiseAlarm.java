@@ -102,6 +102,7 @@ public class RaiseAlarm extends BaseActivity {
             dialog.cancel();
         });
     }
+
     /**
      * This method gets invoked when user is trying to raise any alarm for any emergency type.
      */
