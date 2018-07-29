@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#fff"
 
-    tools:context=".navigationdrawer.NoticeBoard">
+    tools:context=".navigationdrawer.noticeboard.NoticeBoard">
 
     <include layout="@layout/activity_base" />
 

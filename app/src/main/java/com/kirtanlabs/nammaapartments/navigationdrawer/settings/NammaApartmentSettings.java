@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.nammaapartmentssettings;
+package com.kirtanlabs.nammaapartments.navigationdrawer.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.HelpAndSettingsAdapter;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.HelpAndSettingsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

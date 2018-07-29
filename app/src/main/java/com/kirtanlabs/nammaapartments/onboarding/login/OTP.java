@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class OTP extends BaseActivity implements View.OnClickListener {
+public class OTP extends BaseActivity implements View.OnClickListener, View.OnKeyListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -43,15 +44,8 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     private int RESEND_OTP_SECONDS;
     private int RESEND_OTP_MINUTE;
 
-    private EditText editFirstOTPDigit;
-    private EditText editSecondOTPDigit;
-    private EditText editThirdOTPDigit;
-    private EditText editFourthOTPDigit;
-    private EditText editFifthOTPDigit;
-    private EditText editSixthOTPDigit;
-    private TextView textPhoneVerification;
-    private TextView textResendOTPOrVerificationMessage;
-    private TextView textChangeNumberOrTimer;
+    private EditText editFirstOTPDigit, editSecondOTPDigit, editThirdOTPDigit, editFourthOTPDigit, editFifthOTPDigit, editSixthOTPDigit;
+    private TextView textPhoneVerification, textResendOTPOrVerificationMessage, textChangeNumberOrTimer;
     private Button buttonVerifyOTP;
     private int previousScreenTitle;
 
@@ -61,8 +55,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
-    private String phoneVerificationId;
-    private String userMobileNumber;
+    private String phoneVerificationId, userMobileNumber;
 
     /* ------------------------------------------------------------- *
      * Private Members for Firebase
@@ -132,8 +125,14 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(this);
         textResendOTPOrVerificationMessage.setOnClickListener(v -> resendOTP());
-        //TODO: Change SignIn.class since this screen can be used by multiple activities
+        /*TODO: Change SignIn.class since this screen can be used by multiple activities*/
         textChangeNumberOrTimer.setOnClickListener(v -> startActivity(new Intent(this, SignIn.class)));
+        editFirstOTPDigit.setOnKeyListener(this);
+        editSecondOTPDigit.setOnKeyListener(this);
+        editThirdOTPDigit.setOnKeyListener(this);
+        editFourthOTPDigit.setOnKeyListener(this);
+        editFifthOTPDigit.setOnKeyListener(this);
+        editSixthOTPDigit.setOnKeyListener(this);
 
         /* Since multiple activities make use of this class we get previous
          * screen title and update the views accordingly*/
@@ -142,13 +141,13 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding OnClickListener Methods
+     * Overriding OnClickListener and OnKey Listener Methods.
      * ------------------------------------------------------------- */
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonVerifyOTP) {
-            //displaying progress dialog while OTP is being validated
+            /*displaying progress dialog while OTP is being validated*/
             showProgressDialog(this,
                     getResources().getString(R.string.verifying_account),
                     getResources().getString(R.string.please_wait_a_moment));
@@ -171,6 +170,43 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         }
     }
 
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        switch (v.getId()) {
+            case R.id.editFirstOTPDigit:
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    editFirstOTPDigit.requestFocus();
+                }
+                break;
+            case R.id.editSecondOTPDigit:
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    editSecondOTPDigit.requestFocus();
+                }
+                break;
+            case R.id.editThirdOTPDigit:
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    editThirdOTPDigit.requestFocus();
+                }
+                break;
+            case R.id.editFourthOTPDigit:
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    editFourthOTPDigit.requestFocus();
+                }
+                break;
+            case R.id.editFifthOTPDigit:
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    editFifthOTPDigit.requestFocus();
+                }
+                break;
+            case R.id.editSixthOTPDigit:
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    editSixthOTPDigit.requestFocus();
+                }
+                break;
+        }
+        return false;
+    }
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
@@ -189,12 +225,12 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                //displaying progress dialog while OTP is being validated
+                /*displaying progress dialog while OTP is being validated*/
                 showProgressDialog(OTP.this,
                         getResources().getString(R.string.verifying_account),
                         getResources().getString(R.string.please_wait_a_moment));
 
-                //Hiding the Keyboard in case the Auto-Verification is completed
+                /*Hiding the Keyboard in case the Auto-Verification is completed*/
                 hideKeyboard();
                 textResendOTPOrVerificationMessage.setText(R.string.auto_verification_completed);
                 textResendOTPOrVerificationMessage.setEnabled(false);
@@ -261,17 +297,17 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                             finish();
                         }
                     } else {
-                        //Check if network is available or not
+                        /*Check if network is available or not*/
                         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
                         NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
                         boolean isConnected = activeNetwork != null &&
                                 activeNetwork.isConnectedOrConnecting();
                         if (!isConnected) {
-                            //Show this message if user is having no network connection
+                            /*Show this message if user is having no network connection*/
                             textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
                         } else {
-                            //Show this message if user has entered wrong OTP
+                            /*Show this message if user has entered wrong OTP*/
                             textResendOTPOrVerificationMessage.setText(R.string.wrong_otp_entered);
                         }
                     }
@@ -346,12 +382,13 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editSecondOTPDigit.requestFocus();
+                if (charSequence.length() == 1) {
+                    editSecondOTPDigit.requestFocus();
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -363,7 +400,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editThirdOTPDigit.requestFocus();
+                if (charSequence.length() == 1) {
+                    editThirdOTPDigit.requestFocus();
+                }
             }
 
             @Override
@@ -380,7 +419,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editFourthOTPDigit.requestFocus();
+                if (charSequence.length() == 1) {
+                    editFourthOTPDigit.requestFocus();
+                }
             }
 
             @Override
@@ -397,7 +438,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editFifthOTPDigit.requestFocus();
+                if (charSequence.length() == 1) {
+                    editFifthOTPDigit.requestFocus();
+                }
             }
 
             @Override
@@ -414,7 +457,9 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editSixthOTPDigit.requestFocus();
+                if (charSequence.length() == 1) {
+                    editSixthOTPDigit.requestFocus();
+                }
             }
 
             @Override
@@ -431,7 +476,10 @@ public class OTP extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                buttonVerifyOTP.setVisibility(View.VISIBLE);
+                if (charSequence.length() == 1) {
+                    buttonVerifyOTP.setVisibility(View.VISIBLE);
+                    hideKeyboard();
+                }
             }
 
             @Override

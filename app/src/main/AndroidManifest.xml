@@ -94,19 +94,19 @@
             android:name=".navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.NoticeBoard"
+            android:name=".navigationdrawer.noticeboard.NoticeBoard"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.nammaapartmentssettings.NammaApartmentSettings"
+            android:name=".navigationdrawer.settings.NammaApartmentSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.nammaapartmentssettings.GeneralSettings"
+            android:name=".navigationdrawer.settings.GeneralSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.nammaapartmentssettings.NotificationSettings"
+            android:name=".navigationdrawer.settings.NotificationSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.NammaApartmentsHelp"
+            android:name=".navigationdrawer.help.NammaApartmentsHelp"
             android:screenOrientation="portrait" />
 
         <!-- Digital Gate Screens -->
