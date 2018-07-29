@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -32,6 +33,7 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.nammaapartmentssettings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
@@ -53,6 +55,9 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     private SmoothActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private Dialog dialog;
+    private DatabaseReference userReference;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -84,13 +89,30 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        /* At this point We came to know that user has Successfully Logged In and now its no need to show Splash Screen */
+        sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+
+        Boolean isLoggedIn = sharedPreferences.getBoolean(Constants.LOGGED_IN, false);
+
+        /*If User is Logged In then take User Uid from Shared Preference*/
+        if (isLoggedIn) {
+            String userUid = sharedPreferences.getString(Constants.USER_UID, null);
+            userReference = Constants.PRIVATE_USERS_REFERENCE.child(userUid);
+        } else {
+            userReference = Constants.PRIVATE_USERS_REFERENCE
+                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+
+            editor = sharedPreferences.edit();
+            editor.putBoolean(Constants.FIRST_TIME, false);
+            editor.putBoolean(Constants.LOGGED_IN, true);
+            editor.putString(Constants.USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            editor.apply();
+        }
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         /*At this point new user and existing user would have their records in firebase and hence we store
          * the values to NammaApartmentsGlobal*/
-        DatabaseReference userReference = Constants.PRIVATE_USERS_REFERENCE
-                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,6 +160,14 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+            case R.id.nav_myNoticeBoard: {
+                toggle.runWhenIdle(() ->{
+                    Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
+                    startActivity(noticeBoardIntent);
+                });
+                drawer.closeDrawers();
+                break;
+            }
             case R.id.nav_appSettings: {
                 toggle.runWhenIdle(() -> {
                     Intent settingsIntent = new Intent(NammaApartmentsHome.this, NammaApartmentSettings.class);
@@ -163,6 +193,12 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
             case R.id.nav_logout: {
+                sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putBoolean(Constants.LOGGED_IN, false);
+                editor.putString(Constants.USER_UID, null);
+                editor.apply();
+
                 toggle.runWhenIdle(() -> {
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
@@ -206,6 +242,12 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.
         buttonRateNow.setOnClickListener(v -> dialog.cancel());
         buttonRemindLater.setOnClickListener(v -> dialog.cancel());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     /* ------------------------------------------------------------- *

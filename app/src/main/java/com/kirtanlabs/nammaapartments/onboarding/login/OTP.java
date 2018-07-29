@@ -148,6 +148,11 @@ public class OTP extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonVerifyOTP) {
+            //displaying progress dialog while OTP is being validated
+            showProgressDialog(this,
+                    getResources().getString(R.string.verifying_account),
+                    getResources().getString(R.string.please_wait_a_moment));
+
             boolean allFieldsFilled = isAllFieldsFilled(new EditText[]{
                     editFirstOTPDigit,
                     editSecondOTPDigit,
@@ -184,6 +189,11 @@ public class OTP extends BaseActivity implements View.OnClickListener {
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                //displaying progress dialog while OTP is being validated
+                showProgressDialog(OTP.this,
+                        getResources().getString(R.string.verifying_account),
+                        getResources().getString(R.string.please_wait_a_moment));
+
                 //Hiding the Keyboard in case the Auto-Verification is completed
                 hideKeyboard();
                 textResendOTPOrVerificationMessage.setText(R.string.auto_verification_completed);
@@ -227,6 +237,7 @@ public class OTP extends BaseActivity implements View.OnClickListener {
                             userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    hideProgressDialog();
                                     /* Check if User mobile number is found in database */
                                     if (dataSnapshot.exists()) {
                                         startActivity(new Intent(OTP.this, NammaApartmentsHome.class));

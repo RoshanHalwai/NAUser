@@ -32,6 +32,7 @@
     <string name="waiting_for_otp">Waiting for OTP. . .</string>
     <string name="change_mobile_number">Change Mobile Number</string>
     <string name="wrong_otp_entered">Wrong OTP has been entered</string>
+    <string name="verifying_account">Verifying Account</string>
 
     <!--Flat Details Screen-->
     <string name="my_flat_details">My Flat Details</string>
@@ -219,7 +220,7 @@
     <string name="child_care_taker">Child Caretaker</string>
     <string name="newspaper_paper_man">NewsPaper man</string>
     <string name="laundry_man">Laundry man</string>
-    <string name="daily_service_cancel">Are you sure you want to remove this daily service? You will stop receiving notifications related to this daily service?</string>
+    <string name="daily_service_cancel">Are you sure you want to remove this Daily Service?\n\nNOTE: You will stop receiving notifications related to this Daily Service.</string>
     <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
     <string name="adding_your_daily_service">Adding your Daily Service</string>
@@ -237,6 +238,7 @@
     <string name="gallery">Gallery</string>
     <string name="send_otp_daily_service">We will send an OTP to your daily service for authentication</string>
     <string name="daily_service">daily service</string>
+
     <!--Raise Fire Alarm & Theft Alarm-->
     <string name="tap_on_bell_icon_to_create_alert">Tap on bell icon to create alert</string>
     <string name="image_to_create_an_alarm">Image to create an alarm</string>
@@ -271,6 +273,7 @@
     <string name="non_admin_edit_title_message">Edit Message</string>
     <string name="non_admin_remove_title_message">Delete Message</string>
     <string name="change_access">Change Access</string>
+    <string name="remove_dialog">This feature is currently unavailable</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
@@ -438,4 +441,8 @@
     <string name="in_app_sound_notification">Enable in-app sound Notifications</string>
     <string name="product_updates">Product Updates</string>
 
+    <!--NoticeBoard -->
+    <string name="ganesha_festival">Ganesha Festival</string>
+    <string name="notice_board_message">All our beloved apartment members ,on behalf of the organizing team ,i have the pleasure of inviting you to the ganesha festival on 13th sep</string>
+    <string name="in_charge">Committee</string>
 </resources>

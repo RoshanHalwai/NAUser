@@ -83,6 +83,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         circleImageNewUserProfileImage.setOnFocusChangeListener(this);
         buttonSignUp.setOnClickListener(this);
     }
+
     /*-------------------------------------------------------------------------------
      *Overriding onActivityResult
      *-----------------------------------------------------------------------------*/
@@ -210,6 +211,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
             intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
             intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath);
             startActivity(intent);
+            finish();
         }
     }
 }

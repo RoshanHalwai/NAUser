@@ -142,6 +142,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                 break;
         }
     }
+
     /*-------------------------------------------------------------------------------
      *Private Methods
      *-----------------------------------------------------------------------------*/
@@ -203,9 +204,39 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         AlertDialog.Builder alertAccessDialog = new AlertDialog.Builder(mCtx);
         alertAccessDialog.setView(accessDialog);
         dialog = alertAccessDialog.create();
-
         new Dialog(mCtx);
         dialog.show();
+    }
+
+    /**
+     * This method is invoked when user clicks on 'Remove' icon to remove a Family Member or Friend
+     * from the 'My Sweet Home' list
+     */
+    private void removeDialog() {
+        AlertDialog.Builder alertRemoveDialog = new AlertDialog.Builder(mCtx);
+        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_dialog, null);
+
+        /*Getting Id's for all the views*/
+        TextView textRemoveMessage = removeDialog.findViewById(R.id.textEmergencyMessage);
+        TextView buttonOk = removeDialog.findViewById(R.id.buttonOk);
+        TextView buttonCancel = removeDialog.findViewById(R.id.buttonCancel);
+
+        buttonCancel.setVisibility(View.INVISIBLE);
+
+        /*Setting Fonts for all the views*/
+        textRemoveMessage.setTypeface(setLatoBoldFont(mCtx));
+        buttonOk.setTypeface(setLatoRegularFont(mCtx));
+
+        textRemoveMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
+        textRemoveMessage.setText(R.string.remove_dialog);
+
+        alertRemoveDialog.setView(removeDialog);
+        Dialog dialog = alertRemoveDialog.create();
+        new Dialog(mCtx);
+        dialog.show();
+
+        buttonOk.setOnClickListener(v -> dialog.cancel());
+
     }
 
     /**
@@ -333,7 +364,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     }
                     break;
                 case R.id.textCancel:
-                    //TODO:To rethink about the remove functionality in MySweetHome .
+                    removeDialog();
                     break;
             }
         }

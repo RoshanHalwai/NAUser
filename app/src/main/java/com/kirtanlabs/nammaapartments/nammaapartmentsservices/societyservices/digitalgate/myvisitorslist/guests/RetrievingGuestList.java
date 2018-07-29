@@ -27,12 +27,18 @@ public class RetrievingGuestList {
     private DatabaseReference userDataReference;
     private List<String> userUIDList;
     private int count = 0;
+    private boolean pastGuestListRequired;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    public RetrievingGuestList(Context context) {
+    /**
+     * @param context               of the current activity
+     * @param pastGuestListRequired usually false but for Handed Things History activity, the value will be true
+     */
+    public RetrievingGuestList(Context context, boolean pastGuestListRequired) {
+        this.pastGuestListRequired = pastGuestListRequired;
         NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) context.getApplicationContext());
         userDataReference = nammaApartmentsGlobal.getUserDataReference();
         userUIDList = new ArrayList<>();
@@ -114,7 +120,9 @@ public class RetrievingGuestList {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<String> guestUIDList = new ArrayList<>();
                 for (DataSnapshot visitorUIDSnapshot : dataSnapshot.getChildren()) {
-                    guestUIDList.add(visitorUIDSnapshot.getKey());
+                    if (visitorUIDSnapshot.getValue(Boolean.class).equals(true) || pastGuestListRequired) {
+                        guestUIDList.add(visitorUIDSnapshot.getKey());
+                    }
                 }
                 guestUIDListCallback.onCallBack(guestUIDList);
             }
