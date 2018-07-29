@@ -203,7 +203,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         AlertDialog.Builder alertAccessDialog = new AlertDialog.Builder(mCtx);
         alertAccessDialog.setView(accessDialog);
         dialog = alertAccessDialog.create();
-
         new Dialog(mCtx);
         dialog.show();
     }
@@ -212,23 +211,23 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
      * This method is invoked to create a remove dialog.
      */
     private void removeDialog() {
-        AlertDialog.Builder alertEmergencyDialog = new AlertDialog.Builder(mCtx);
-        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_dialog, null);
+        AlertDialog.Builder alertRemoveDialog = new AlertDialog.Builder(mCtx);
+        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_and_remove_dialog, null);
 
         /*Getting Id's for all the views*/
-        TextView textEmergencyMessage = removeDialog.findViewById(R.id.textEmergencyMessage);
+        TextView textEmergencyMessageOrRemoveMessage = removeDialog.findViewById(R.id.textEmergencyMessageOrRemoveMessage);
         TextView buttonOk = removeDialog.findViewById(R.id.buttonOk);
         TextView buttonCancel = removeDialog.findViewById(R.id.buttonCancel);
         buttonCancel.setVisibility(View.INVISIBLE);
 
         /*Setting Fonts for all the views*/
-        textEmergencyMessage.setTypeface(setLatoBoldFont(mCtx));
+        textEmergencyMessageOrRemoveMessage.setTypeface(setLatoBoldFont(mCtx));
         buttonOk.setTypeface(setLatoRegularFont(mCtx));
 
-        textEmergencyMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
-        textEmergencyMessage.setText(R.string.remove_dialog);
-        alertEmergencyDialog.setView(removeDialog);
-        Dialog dialog = alertEmergencyDialog.create();
+        textEmergencyMessageOrRemoveMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
+        textEmergencyMessageOrRemoveMessage.setText(R.string.remove_dialog);
+        alertRemoveDialog.setView(removeDialog);
+        Dialog dialog = alertRemoveDialog.create();
         new Dialog(mCtx);
         dialog.show();
 
