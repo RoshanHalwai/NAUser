@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".navigationdrawer.nammaapartmentssettings.NotificationSettings">
+    tools:context=".navigationdrawer.settings.NotificationSettings">
 
     <include layout="@layout/activity_base" />
 
