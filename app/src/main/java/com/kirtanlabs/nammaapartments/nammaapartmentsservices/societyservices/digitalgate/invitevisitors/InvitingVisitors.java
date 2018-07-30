@@ -138,6 +138,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     ContactPicker contactPicker = new ContactPicker(InvitingVisitors.this, data.getData());
                     editVisitorName.setText(contactPicker.retrieveContactName());
                     editVisitorMobile.setText(contactPicker.retrieveContactNumber());
+                    editVisitorName.setError(null);
+                    editVisitorMobile.setError(null);
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
