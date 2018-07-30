@@ -27,14 +27,13 @@ public class NammaApartmentSocietyServices {
     }
 
     NammaApartmentSocietyServices(String problem, String timeSlot, String userUID, String societyServiceType,
-                                  String notificationUID, String status, String takenBy) {
+                                  String notificationUID, String status) {
         this.problem = problem;
         this.timeSlot = timeSlot;
         this.userUID = userUID;
         this.societyServiceType = societyServiceType;
         this.notificationUID = notificationUID;
         this.status = status;
-        this.takenBy = takenBy;
     }
 
     /* ------------------------------------------------------------- *
@@ -69,4 +68,7 @@ public class NammaApartmentSocietyServices {
         return takenBy;
     }
 
+    public void setTakenBy(String takenBy) {
+        this.takenBy = takenBy;
+    }
 }

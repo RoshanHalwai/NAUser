@@ -13,7 +13,6 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 
 /**
@@ -40,33 +39,38 @@ public class AwaitingResponse extends BaseActivity {
         super.onCreate(savedInstanceState);
         textUserResponse = findViewById(R.id.textUserResponse);
 
+        showProgressIndicator();
+
         if (getIntent() != null && getIntent().getStringExtra("NotificationUID") != null) {
             String notificationUID = getIntent().getStringExtra("NotificationUID");
             String societyServiceType = getIntent().getStringExtra("societyServiceType");
-            String societyServiceUID = getIntent().getStringExtra("societyServiceUID");
 
             /*Getting the reference till 'notificationUID' in societyServices to set 'status' in Firebase*/
-            DatabaseReference societyServiceReference = Constants.ALL_SOCIETYSERVICE_REFERENCE.child(societyServiceType)
-                    .child(FIREBASE_CHILD_DATA).child(FIREBASE_CHILD_PRIVATE).child(societyServiceUID).child("notifications").child(notificationUID);
-            societyServiceReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            DatabaseReference societyServiceReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID).child("takenBy");
+            societyServiceReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    societyServiceReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                hideProgressIndicator();
 
-                                /*Setting the value of field 'status' under notifications in Firebase*/
+                    if (dataSnapshot.exists()) {
+                        String societyServiceUID = dataSnapshot.getValue(String.class);
+                        DatabaseReference societyServiceDataReference = Constants.SOCIETYSERVICES_REFERENCE
+                                .child(societyServiceType)
+                                .child(FIREBASE_CHILD_PRIVATE)
+                                .child(Constants.FIREBASE_CHILD_DATA)
+                                .child(Objects.requireNonNull(societyServiceUID));
+                        societyServiceDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                hideProgressIndicator();
                                 textUserResponse.setText(Objects.requireNonNull(dataSnapshot.getValue()).toString());
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
 
                 @Override

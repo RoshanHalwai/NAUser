@@ -282,7 +282,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showProgressIndicator() {
-        progressIndicator = findViewById(R.id.animationWaitingForCustomers);
+        progressIndicator = findViewById(R.id.animationWaitingForSocietyService);
         progressIndicator.smoothToShow();
     }
 

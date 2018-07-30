@@ -210,7 +210,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS, societyServiceUID);
+                userUID, societyServiceType, notificationUID, IN_PROGRESS);
         societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
 
         /*Mapping Society Service UID with value in userData under Flat Number*/
