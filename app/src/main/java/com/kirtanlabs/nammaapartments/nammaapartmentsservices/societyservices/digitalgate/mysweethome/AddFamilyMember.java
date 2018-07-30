@@ -170,6 +170,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     ContactPicker contactPicker = new ContactPicker(AddFamilyMember.this, data.getData());
                     editFamilyMemberName.setText(contactPicker.retrieveContactName());
                     editFamilyMemberMobile.setText(contactPicker.retrieveContactNumber());
+                    editFamilyMemberName.setError(null);
+                    editFamilyMemberMobile.setError(null);
+                    editFamilyMemberEmail.setError(null);
                     /*We need to check if mobile number selected from contact already exists
                      * in firebase*/
                     onFocusChange(editFamilyMemberMobile, false);

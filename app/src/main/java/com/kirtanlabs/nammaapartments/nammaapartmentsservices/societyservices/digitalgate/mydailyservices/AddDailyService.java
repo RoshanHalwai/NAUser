@@ -159,6 +159,8 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                     ContactPicker contactPicker = new ContactPicker(AddDailyService.this, data.getData());
                     editDailyServiceName.setText(contactPicker.retrieveContactName());
                     editDailyServiceMobile.setText(contactPicker.retrieveContactNumber());
+                    editDailyServiceName.setError(null);
+                    editDailyServiceMobile.setError(null);
                     break;
 
                 case CAMERA_PERMISSION_REQUEST_CODE:
