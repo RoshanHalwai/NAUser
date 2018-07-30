@@ -55,14 +55,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * ------------------------------------------------------------- */
 
     private CircleImageView circleImageInvitingVisitors;
-    private EditText editPickDateTime;
-    private EditText editVisitorName;
-    private EditText editVisitorMobile;
-    private TextView textErrorProfilePic;
-    private TextView textErrorDateTime;
+    private EditText editPickDateTime, editVisitorName, editVisitorMobile;
+    private TextView textErrorProfilePic, textErrorDateTime;
     private AlertDialog imageSelectionDialog;
-    private String selectedDate;
-    private String mobileNumber;
+    private String selectedDate, mobileNumber;
     private byte[] profilePhotoByteArray;
 
     /* ------------------------------------------------------------- *
@@ -142,6 +138,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     ContactPicker contactPicker = new ContactPicker(InvitingVisitors.this, data.getData());
                     editVisitorName.setText(contactPicker.retrieveContactName());
                     editVisitorMobile.setText(contactPicker.retrieveContactNumber());
+                    editVisitorName.setError(null);
+                    editVisitorMobile.setError(null);
                     break;
                 case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
@@ -172,13 +170,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 pickDate(this, this);
                 break;
             case R.id.buttonInvite:
-                if (profilePhotoByteArray == null) {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                    textErrorProfilePic.requestFocus();
-                } else {
-                    // This method gets invoked to check all the editText fields for validations.
-                    validateFields();
-                }
+                /* This method gets invoked to check all the editText fields for validations.*/
+                validateFields();
                 break;
         }
 
@@ -256,7 +249,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         mobileNumber = editVisitorMobile.getText().toString().trim();
         String dateTime = editPickDateTime.getText().toString().trim();
         boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editVisitorName, editVisitorMobile, editPickDateTime});
-        //This condition checks if all fields are not filled and if user presses invite button it will then display proper error messages.
+        /*This condition checks if all fields are not filled and if user presses invite button it will then display proper error messages.*/
         if (!fieldsFilled) {
             if (TextUtils.isEmpty(visitorsName)) {
                 editVisitorName.setError(getString(R.string.name_validation));
@@ -268,8 +261,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 textErrorDateTime.setVisibility(View.VISIBLE);
             }
         }
-        //This condition checks for if user has filled all the fields and also validates name,mobile number
-        //and date and time fields and displays appropriate error messages.
+        /*This condition checks for if user has filled all the fields and also validates name,mobile number
+          and displays appropriate error messages.*/
         if (fieldsFilled) {
             if (isValidPersonName(visitorsName)) {
                 editVisitorName.setError(getString(R.string.accept_alphabets));
@@ -280,9 +273,14 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 editVisitorMobile.requestFocus();
             }
         }
-        //This condition checks if name,mobile number and email are properly validated and then
-        // navigate to proper screen according to its requirement.
-        if (!isValidPersonName(visitorsName) && isValidPhone(mobileNumber) && !TextUtils.isEmpty(dateTime)) {
+        /*This condition checks if profile photo is uploaded or not else it will display appropriate
+         * error message.*/
+        if (profilePhotoByteArray == null) {
+            textErrorProfilePic.setVisibility(View.VISIBLE);
+        }
+        /*This condition checks if name,mobile number and email are properly validated and then
+          navigate to proper screen according to its requirement.*/
+        if (!isValidPersonName(visitorsName) && isValidPhone(mobileNumber) && !TextUtils.isEmpty(dateTime) && profilePhotoByteArray != null) {
             storeVisitorDetailsInFirebase();
         }
     }
@@ -291,29 +289,29 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * Stores Visitor's record in Firebase
      */
     private void storeVisitorDetailsInFirebase() {
-        //displaying progress dialog while image is uploading
+        /*displaying progress dialog while image is uploading*/
         showProgressDialog(this,
                 getResources().getString(R.string.inviting_your_visitor),
                 getResources().getString(R.string.please_wait_a_moment));
 
-        //Map Mobile number with visitor's UID
+        /*Map Mobile number with visitor's UID*/
         DatabaseReference preApprovedVisitorsMobileNumberReference = PREAPPROVED_VISITORS_MOBILE_REFERENCE;
         String visitorUID = preApprovedVisitorsMobileNumberReference.push().getKey();
         preApprovedVisitorsMobileNumberReference.child(mobileNumber).setValue(visitorUID);
 
-        //Store Visitor's UID under User Data -> User UId
+        /*Store Visitor's UID under User Data -> User UId*/
         DatabaseReference userVisitorReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
                 .child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID);
         userVisitorReference.child(visitorUID).setValue(true);
 
-        //Add Visitor record under visitors->private->preApprovedVisitors
+        /*Add Visitor record under visitors->private->preApprovedVisitors*/
         String visitorName = editVisitorName.getText().toString();
         String visitorMobile = editVisitorMobile.getText().toString();
         String visitorDateTime = editPickDateTime.getText().toString();
         NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(visitorUID,
                 visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID);
 
-        //getting the storage reference
+        /*getting the storage reference*/
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
@@ -321,19 +319,19 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
         UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
 
-        //adding the profile photo to storage reference and visitor data to real time database
+        /*adding the profile photo to storage reference and visitor data to real time database*/
         uploadTask.addOnSuccessListener(taskSnapshot -> {
-            //creating the upload object to store uploaded image details
+            /*creating the upload object to store uploaded image details*/
             nammaApartmentGuest.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
-            //adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID
+            /*adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID*/
             DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());
             preApprovedVisitorData.setValue(nammaApartmentGuest);
 
-            //dismissing the progress dialog
+            /*dismissing the progress dialog*/
             hideProgressDialog();
 
-            //Notify users that they have successfully invited their visitor
+            /*Notify users that they have successfully invited their visitor*/
             Intent guestsListIntent = new Intent(InvitingVisitors.this, GuestsList.class);
             guestsListIntent.putExtra(SCREEN_TITLE, getClass().toString());
             showNotificationDialog(getResources().getString(R.string.invitation_success_title),
