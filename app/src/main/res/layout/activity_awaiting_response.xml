@@ -24,12 +24,11 @@
             android:textSize="18sp" />
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/animationWaitingToLoadData"
+            android:id="@+id/animationWaitingForSocietyService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:visibility="visible"
             app:indicatorColor="@color/nmBlack"
             app:indicatorName="BallSpinFadeLoaderIndicator" />
 
