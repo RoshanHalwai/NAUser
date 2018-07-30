@@ -101,6 +101,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION = "societyServiceNotifications";
     private static final String FIREBASE_CHILD_SOCIETYSERVICES = "societyServices";
     public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
+    public static final String FIREBASE_CHILD_TIMESTAMP = "timestamp";
 
     public static final int FIREBASE_CHILD_RATING = 3;
 

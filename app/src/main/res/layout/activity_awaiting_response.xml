@@ -24,7 +24,7 @@
             android:textSize="18sp" />
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/animationWaitingForSocietyService"
+            android:id="@+id/animationWaitingForCustomers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

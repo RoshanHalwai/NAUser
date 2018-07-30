@@ -43,6 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String remoteMessageType = remoteMessageData.get("type");
 
+        //E-Intercom Notification requires Users Action
         if (remoteMessageType.equals("E-Intercom")) {
             String message = remoteMessageData.get("message") + ". Please Confirm?";
             String profilePhoto = remoteMessageData.get("profile_photo");
@@ -90,6 +91,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
         } else {
+
+            //General Notification - These do not require any user actions
             String message = remoteMessageData.get("message");
 
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
