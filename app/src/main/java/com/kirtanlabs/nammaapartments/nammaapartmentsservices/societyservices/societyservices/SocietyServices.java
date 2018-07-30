@@ -25,6 +25,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
@@ -212,6 +213,9 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
                 userUID, societyServiceType, notificationUID, IN_PROGRESS);
         societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+
+        /*Storing time stamp to keep track of notifications*/
+        societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
         /*Mapping Society Service UID with value in userData under Flat Number*/
         DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
