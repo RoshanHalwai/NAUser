@@ -72,14 +72,9 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     private AlertDialog imageSelectionDialog;
 
     private CircleImageView circleImageView;
-    private TextView textDescriptionDailyService;
-    private TextView textErrorProfilePic;
-    private TextView textErrorTime;
-    private EditText editPickTime;
-    private EditText editDailyServiceName;
-    private EditText editDailyServiceMobile;
-    private String service_type;
-    private String mobileNumber;
+    private TextView textDescriptionDailyService, textErrorProfilePic, textErrorTime;
+    private EditText editPickTime, editDailyServiceName, editDailyServiceMobile;
+    private String service_type, mobileNumber;
     private byte[] profilePhotoByteArray;
 
     /*----------------------------------------------------
@@ -140,6 +135,8 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         buttonSelectFromContact.setTypeface(setLatoLightFont(this));
         buttonAdd.setTypeface(setLatoLightFont(this));
 
+        /*This method gets invoked to change the OTP Description based on user DailyService Type
+         * selection*/
         updateOTPDescription();
 
         /*Setting event for all button clicks */
@@ -222,13 +219,8 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 pickTime(this, this);
                 break;
             case R.id.buttonAdd:
-                if (profilePhotoByteArray == null) {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                    textErrorProfilePic.requestFocus();
-                } else {
-                    // This method gets invoked to check all the editText fields for validations.
+                /*This method gets invoked to check all the editText fields for validations.*/
                     validateFields();
-                }
         }
     }
 
@@ -303,7 +295,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         mobileNumber = editDailyServiceMobile.getText().toString().trim();
         String pickTime = editPickTime.getText().toString().trim();
         boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceName, editDailyServiceMobile, editPickTime});
-        //This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.
+        /*This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.*/
         if (!fieldsFilled) {
             if (TextUtils.isEmpty(dailyServiceName)) {
                 editDailyServiceName.setError(getString(R.string.name_validation));
@@ -315,8 +307,8 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 textErrorTime.setVisibility(View.VISIBLE);
             }
         }
-        //This condition checks for if user has filled all the fields and also validates name,mobile number
-        //and time editText fields and displays appropriate error messages.
+        /*This condition checks for if user has filled all the fields and also validates name,mobile number
+          and time editText fields and displays appropriate error messages. */
         if (fieldsFilled) {
             if (isValidPersonName(dailyServiceName)) {
                 editDailyServiceName.setError(getString(R.string.accept_alphabets));
@@ -327,9 +319,14 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 editDailyServiceMobile.requestFocus();
             }
         }
-        //This condition checks if name,mobile number and time are properly validated and then
-        // navigate to proper screen according to its requirement.
-        if (!isValidPersonName(dailyServiceName) && isValidPhone(mobileNumber) && !TextUtils.isEmpty(pickTime)) {
+        /*This condition checks if profile photo is uploaded or not else it will display appropriate
+         * error message.*/
+        if (profilePhotoByteArray == null) {
+            textErrorProfilePic.setVisibility(View.VISIBLE);
+        }
+        /*This condition checks if name,mobile number and time are properly validated and then
+          navigate to proper screen according to its requirement.*/
+        if (!isValidPersonName(dailyServiceName) && isValidPhone(mobileNumber) && !TextUtils.isEmpty(pickTime) && profilePhotoByteArray != null) {
             Intent intentButtonAdd = new Intent(AddDailyService.this, OTP.class);
             service_type = getIntent().getStringExtra(SERVICE_TYPE);
             intentButtonAdd.putExtra(MOBILE_NUMBER, mobileNumber);
@@ -346,25 +343,25 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
      * @param dailyServiceChild root of DailyService reference
      */
     private void storeDailyServiceDetails(String dailyServiceChild) {
-        //displaying progress dialog while image is uploading
+        /*displaying progress dialog while image is uploading*/
         showProgressDialog(this,
                 getResources().getString(R.string.adding_your_daily_service),
                 getResources().getString(R.string.please_wait_a_moment));
-        //Map daily service to mobile number
+        /*Map daily service to mobile number*/
         DatabaseReference dailyServiceMobileNumberReference = PRIVATE_DAILYSERVICES_REFERENCE.child(mobileNumber);
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-                //We map daily service mobile number with their UID to avoid other users to add same daily service again
+                /*We map daily service mobile number with their UID to avoid other users to add same daily service again*/
                 dailyServiceMobileNumberReference.setValue(dailyServiceUID);
 
-                //Store UID with daily service type for access to Guard App
+                /*Store UID with daily service type for access to Guard App*/
                 DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
                 dailyServiceTypeReference.child(dailyServiceUID).setValue(dailyServiceChild);
 
-                //Store daily service details in Firebase
+                /*Store daily service details in Firebase*/
                 DatabaseReference dailyServicePublicReference = PUBLIC_DAILYSERVICES_REFERENCE.child(dailyServiceChild);
                 String fullName = editDailyServiceName.getText().toString();
                 String phoneNumber = editDailyServiceMobile.getText().toString();
@@ -372,14 +369,14 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 int rating = Constants.FIREBASE_CHILD_RATING;
                 String userUID = NammaApartmentsGlobal.userUID;
 
-                //Store daily service UID under userData -> dailyServices for future use
+                /*Store daily service UID under userData -> dailyServices for future use*/
                 DatabaseReference userDataDailyServiceReference = ((NammaApartmentsGlobal) getApplicationContext())
                         .getUserDataReference()
                         .child(FIREBASE_CHILD_DAILYSERVICES)
                         .child(dailyServiceChild);
                 userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
 
-                //getting the storage reference
+                /*getting the storage reference*/
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_DAILYSERVICES)
                         .child(FIREBASE_CHILD_PRIVATE)
                         .child(dailyServiceChild)
@@ -387,21 +384,21 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
 
                 UploadTask uploadTask = storageReference.putBytes(profilePhotoByteArray);
 
-                //adding the profile photo to storage reference and daily service data to real time database
+                /*adding the profile photo to storage reference and daily service data to real time database*/
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    //Creating an instance of Namma Apartment Daily Service
+                    /*Creating an instance of Namma Apartment Daily Service*/
                     NammaApartmentDailyService nammaApartmentDailyService = new NammaApartmentDailyService(
                             dailyServiceUID, fullName,
                             phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(), timeOfVisit, rating);
 
-                    //adding daily service data under Daily Service UID -> User UID
+                    /*adding daily service data under Daily Service UID -> User UID*/
                     dailyServicePublicReference.child(dailyServiceUID).child(userUID).setValue(nammaApartmentDailyService);
 
                         /* We add status directly under dailyService UID since Guard may change the status of the daily service
                         and we would want all the users to know about it*/
                     dailyServicePublicReference.child(dailyServiceUID).child(FIREBASE_CHILD_STATUS).setValue(NOT_ENTERED);
 
-                    //dismissing the progress dialog
+                    /*dismissing the progress dialog*/
                     hideProgressDialog();
 
                     /*Once we are done with storing data we need to call the Daily Services

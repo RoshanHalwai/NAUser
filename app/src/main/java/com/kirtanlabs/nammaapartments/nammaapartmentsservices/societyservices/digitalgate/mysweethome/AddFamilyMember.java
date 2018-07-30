@@ -70,16 +70,10 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
      *-----------------------------------------------*/
 
     private CircleImageView circleImageView;
-    private TextView textErrorProfilePic;
-    private TextView textErrorRelation;
-    private TextView textOtpDescriptionFamilyMemberOrFriend;
-    private EditText editFamilyMemberName;
-    private EditText editFamilyMemberMobile;
-    private EditText editFamilyMemberEmail;
-    private Button buttonYes;
-    private Button buttonNo;
-    private RadioButton radioButtonFriend;
-    private RadioButton radioButtonFamilyMember;
+    private TextView textErrorProfilePic, textErrorRelation, textOtpDescriptionFamilyMemberOrFriend;
+    private EditText editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail;
+    private Button buttonYes, buttonNo;
+    private RadioButton radioButtonFriend, radioButtonFamilyMember;
     private AlertDialog imageSelectionDialog;
     private boolean grantedAccess;
     private String mobileNumber;
@@ -160,7 +154,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonAdd.setOnClickListener(this);
         radioButtonFamilyMember.setOnClickListener(this);
         radioButtonFriend.setOnClickListener(this);
-
         editFamilyMemberMobile.setOnFocusChangeListener(this);
 
     }
@@ -213,13 +206,13 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 showUserContacts();
                 break;
             case R.id.radioButtonFamilyMember:
-                //This line hides the relation error message if it was shown on if any of the fields are not filled.
+                /*This line hides the relation error message if it was shown on if any of the fields are not filled.*/
                 textErrorRelation.setVisibility(View.GONE);
                 textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_family_member));
                 textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                 break;
             case R.id.radioButtonFriend:
-                //This line hides the relation error message if it was shown on if any of the fields are not filled.
+                /*This line hides the relation error message if it was shown on if any of the fields are not filled.*/
                 textErrorRelation.setVisibility(View.GONE);
                 textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_friend));
                 textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
@@ -239,13 +232,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 buttonNo.setTextColor(Color.WHITE);
                 break;
             case R.id.buttonAdd:
-                    if (profilePhotoByteArray == null) {
-                        textErrorProfilePic.setVisibility(View.VISIBLE);
-                        textErrorProfilePic.requestFocus();
-                    } else {
-                        textErrorProfilePic.setVisibility(View.INVISIBLE);
-                    }
-                // This method gets invoked to check all the validation fields such as editTexts and radioButtons.
+                /* This method gets invoked to check all the validation fields such as editTexts and radioButtons.*/
                 validateFields();
                 break;
         }
@@ -290,7 +277,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         alertNotificationDialog.setView(notificationDialog);
         imageSelectionDialog = alertNotificationDialog.create();
 
-        // Setting Custom Dialog Buttons
+        /* Setting Custom Dialog Buttons*/
         alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
         alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
 
@@ -317,12 +304,12 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
      * Store family member's details to firebase and map them to the users family members for future use
      */
     private void storeFamilyMembersDetails() {
-        //displaying progress dialog while image is uploading
+        /*displaying progress dialog while image is uploading*/
         showProgressDialog(this,
                 getString(R.string.adding_your_family_member),
                 getString(R.string.please_wait_a_moment));
 
-        //Map family member's mobile number with uid in users->all
+        /*Map family member's mobile number with uid in users->all*/
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
         familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -330,16 +317,16 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 String familyMemberUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                 familyMemberMobileNumberReference.setValue(familyMemberUID);
 
-                //getting the storage reference
+                /*getting the storage reference*/
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(familyMemberUID);
 
                 UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
 
-                //adding the profile photo to storage reference and daily service data to real time database
+                /*adding the profile photo to storage reference and daily service data to real time database*/
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    //Store family member's UID under users data structure for future use
+                    /*Store family member's UID under users data structure for future use*/
                     String fullName = editFamilyMemberName.getText().toString();
                     String phoneNumber = editFamilyMemberMobile.getText().toString();
                     String email = editFamilyMemberEmail.getText().toString();
@@ -358,7 +345,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     /*Storing new family member details in firebase under users->private->family member uid*/
                     PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
 
-                    //dismissing the progress dialog
+                    /*dismissing the progress dialog*/
                     hideProgressDialog();
 
                     /*Storing user UID under Flats*/
@@ -466,7 +453,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         mobileNumber = editFamilyMemberMobile.getText().toString().trim();
         String familyMemberEmail = editFamilyMemberEmail.getText().toString().trim();
         boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editFamilyMemberName, editFamilyMemberMobile, editFamilyMemberEmail});
-        //This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.
+        /*This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.*/
         if (!fieldsFilled) {
             if (TextUtils.isEmpty(familyMemberName)) {
                 editFamilyMemberName.setError(getString(R.string.name_validation));
@@ -481,8 +468,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 textErrorRelation.setVisibility(View.VISIBLE);
             }
         }
-        //This condition checks for if user has filled all the fields and also validates name,email and mobile number
-        //and displays proper error messages.
+        /*This condition checks for if user has filled all the fields and also validates name,email and mobile number
+         *and displays proper error messages.*/
         if (fieldsFilled) {
             if (!radioButtonFamilyMember.isChecked() && !radioButtonFriend.isChecked()) {
                 textErrorRelation.setVisibility(View.VISIBLE);
@@ -497,9 +484,14 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 editFamilyMemberMobile.setError(getString(R.string.number_10digit_validation));
             }
         }
-        //This condition checks if name,mobile number and email are properly validated and then
-        // navigate to proper screen according to its requirement.
-        if (!isValidPersonName(familyMemberName) && isValidPhone(mobileNumber) && !isValidEmail(familyMemberEmail)) {
+        /*This condition checks if profile photo is uploaded or not else it will display appropriate
+         * error message.*/
+        if (profilePhotoByteArray == null) {
+            textErrorProfilePic.setVisibility(View.VISIBLE);
+        }
+        /*This condition checks if name,mobile number,email are properly validated and then
+         *navigate to proper screen according to its requirement.*/
+        if (!isValidPersonName(familyMemberName) && isValidPhone(mobileNumber) && !isValidEmail(familyMemberEmail) && profilePhotoByteArray != null) {
             if (grantedAccess)
                 openNotificationDialog();
             else {
