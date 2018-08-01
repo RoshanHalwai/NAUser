@@ -445,4 +445,10 @@
     <string name="ganesha_festival">Ganesha Festival</string>
     <string name="notice_board_message">All our beloved apartment members ,on behalf of the organizing team ,i have the pleasure of inviting you to the ganesha festival on 13th sep</string>
     <string name="in_charge">Committee</string>
+
+    <!--Awaiting Response Activity-->
+    <string name="society_service_accepted_request">Your request has been accepted by a Plumber. Here are the details:</string>
+    <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
+    <string name="no_response_yet">Plumber has not Responded Yet</string>
+
 </resources>

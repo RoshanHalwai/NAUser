@@ -1,6 +1,8 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +24,16 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 
 public class AwaitingResponse extends BaseActivity {
 
-    TextView textUserResponse;
+    /*----------------------------------------------
+     *Private Members
+     *-----------------------------------------------*/
+
+    private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse;
+    private TextView textSocietyServiceNameValue, textMobileNumberValue;
+
+    /*----------------------------------------------------
+     *  Overriding BaseActivity Objects
+     *----------------------------------------------------*/
 
     @Override
     protected int getLayoutResourceId() {
@@ -37,7 +48,31 @@ public class AwaitingResponse extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        textUserResponse = findViewById(R.id.textUserResponse);
+
+        /*Getting Id's for all the views*/
+        layoutAwaitingResponse = findViewById(R.id.layoutAwaitingResponse);
+        layoutAcceptedResponse = findViewById(R.id.layoutAcceptedResponse);
+        TextView textNotificationSent = findViewById(R.id.textNotificationSent);
+        TextView textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
+        TextView textSocietyServiceName = findViewById(R.id.textSocietyServiceName);
+        TextView textMobileNumber = findViewById(R.id.textMobileNumber);
+        textSocietyServiceNameValue = findViewById(R.id.textSocietyServiceNameValue);
+        textMobileNumberValue = findViewById(R.id.textMobileNumberValue);
+        TextView textPlumberResponse = findViewById(R.id.textPlumberResponse);
+
+        /*Setting font for all the views*/
+        textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
+        textSocietyServiceName.setTypeface(Constants.setLatoRegularFont(this));
+        textMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
+        textSocietyServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
+        textMobileNumberValue.setTypeface(Constants.setLatoBoldFont(this));
+        textSocietyServiceAcceptedRequest.setTypeface(Constants.setLatoBoldFont(this));
+        textPlumberResponse.setTypeface(Constants.setLatoBoldFont(this));
+
+        String societyServiceNameTitle = getString(R.string.name) + ":";
+        textSocietyServiceName.setText(societyServiceNameTitle);
+        String societyServiceMobileTitle = getString(R.string.mobile) + ":";
+        textMobileNumber.setText(societyServiceMobileTitle);
 
         showProgressIndicator();
 
@@ -62,7 +97,13 @@ public class AwaitingResponse extends BaseActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 hideProgressIndicator();
-                                textUserResponse.setText(Objects.requireNonNull(dataSnapshot.getValue()).toString());
+                                layoutAwaitingResponse.setVisibility(View.GONE);
+                                layoutAcceptedResponse.setVisibility(View.VISIBLE);
+
+                                String societyServiceName = dataSnapshot.child(Constants.FIREBASE_CHILD_FULLNAME).getValue(String.class);
+                                String societyServiceMobileNumber = dataSnapshot.child(Constants.FIREBASE_CHILD_MOBILE_NUMBER).getValue(String.class);
+                                textSocietyServiceNameValue.setText(societyServiceName);
+                                textMobileNumberValue.setText(societyServiceMobileNumber);
                             }
 
                             @Override
