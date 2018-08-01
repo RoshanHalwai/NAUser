@@ -29,6 +29,7 @@ import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
@@ -58,12 +59,12 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
 
     private de.hdodenhof.circleimageview.CircleImageView currentUserProfilePic;
     private EditText editUserName, editUserEmail, editFlatAdmin;
-    private String userName, userEmail, admin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
     private List<String> flatMembersList = new ArrayList<>();
     private byte[] profilePhotoByteArray;
     private int index = 0;
+    private String userName, userEmail, admin, itemValue;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -223,7 +224,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * This method gets invoked when user tries to change admin by clicking on change admin button.
+     * This method gets invoked when user tries to change admin by clicking on Flat Admin editText.
      */
     private void createFlatMembersDialog() {
         flatMembersDialog = new Dialog(UserProfile.this);
@@ -249,11 +250,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
 
         /*Attaching listeners to ListView*/
         listFlatMembers.setOnItemClickListener((parent, view, position, id) -> {
-            String itemValue = (String) listFlatMembers.getItemAtPosition(position);
-            String confirmDialogTitle = getResources().getString(R.string.non_admin_change_admin_title);
-            String confirmDialogMessage = getResources().getString(R.string.admin_change_key);
-            String confirmDialogMessageValue = confirmDialogMessage.replace(getString(R.string.person), itemValue);
-            showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, () -> editFlatAdmin.setText(itemValue));
+            itemValue = (String) listFlatMembers.getItemAtPosition(position);
+            editFlatAdmin.setText(itemValue);
             flatMembersDialog.cancel();
         });
     }
@@ -337,7 +335,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * This method gets invoked when user wants to update existing name and existing email.
+     * This method gets invoked when user wants to update existing name and existing email and also
+     * for updating profile photo as well as if flat admin value changes.
      */
     private void updateUserDetailsInFirebase() {
         String updatedUserName = editUserName.getText().toString();
@@ -377,6 +376,15 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
             }
 
             /*Admin has been changed*/
+            if (!updatedAdmin.equals(admin)) {
+                changeAdmin();
+            } else {
+                if (!updatedUserName.equals(userName) || !updatedUserEmail.equals(userEmail)) {
+                    showNotificationDialog(getString(R.string.update_message),
+                            getString(R.string.update_success_message),
+                            nammaApartmentsHome);
+                }
+            }
             /*TODO: Update admin UID under userData in Firebase*/
 
             /*Profile pic has been changed*/
@@ -389,14 +397,14 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                         .child(userUID);
 
                 UploadTask uploadTask = storageReference.putBytes(profilePhotoByteArray);
-                //adding the profile photo to storage reference
+                /*adding the profile photo to storage reference*/
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
 
-                    //creating the upload object to store uploaded image details
+                    /*creating the upload object to store uploaded image details*/
                     String profilePhotoPath = Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString();
                     nammaApartmentUser.getPersonalDetails().setProfilePhoto(profilePhotoPath);
 
-                    //Update the new profile photo URL in firebase
+                    /*Update the new profile photo URL in firebase*/
                     DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
                             .child(FIREBASE_CHILD_PERSONALDETAILS)
                             .child(FIREBASE_CHILD_PROFILE_PHOTO);
@@ -407,12 +415,24 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                                 nammaApartmentsHome);
                     });
                 });
-            } else {
-                showNotificationDialog(getString(R.string.update_message),
-                        getString(R.string.update_success_message),
-                        nammaApartmentsHome);
             }
         }
+    }
+
+    private void changeAdmin() {
+        /*Runnable Interface which gets invoked once user presses Yes button in Confirmation
+                Dialog */
+        Intent loginIntent = new Intent(UserProfile.this, SignIn.class);
+        Runnable updateDialog = () ->
+        {
+            showNotificationDialog(getString(R.string.update_message),
+                    getString(R.string.update_success_message),
+                    loginIntent);
+        };
+        String confirmDialogTitle = getResources().getString(R.string.non_admin_change_admin_title);
+        String confirmDialogMessage = getResources().getString(R.string.admin_change_key);
+        String confirmDialogMessageValue = confirmDialogMessage.replace(getString(R.string.person), itemValue);
+        showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, updateDialog);
     }
 
     private interface FirebaseCallback {
