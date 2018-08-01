@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 7/20/2018
@@ -114,7 +116,8 @@ public class RetrievingGuestList {
      *                             from firebase
      */
     private void getGuestUIDList(GuestUIDListCallback guestUIDListCallback, String userUID) {
-        DatabaseReference guestListReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS).child(userUID);
+        DatabaseReference guestListReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS)
+                .child(userUID).child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
         guestListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
