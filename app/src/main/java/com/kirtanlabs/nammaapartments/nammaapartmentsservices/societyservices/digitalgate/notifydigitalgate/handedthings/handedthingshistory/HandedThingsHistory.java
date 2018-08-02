@@ -224,6 +224,9 @@ public class HandedThingsHistory extends BaseActivity {
 
                                                         }
                                                     });
+                                                } else {
+                                                    hideProgressIndicator();
+                                                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
                                                 }
                                             }
 
