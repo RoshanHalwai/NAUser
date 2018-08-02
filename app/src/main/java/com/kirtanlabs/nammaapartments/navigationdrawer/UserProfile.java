@@ -42,6 +42,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_EMAIL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -62,9 +63,11 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
     private List<String> flatMembersList = new ArrayList<>();
+    private List<String> flatMembersUIDList = new ArrayList<>();
     private byte[] profilePhotoByteArray;
     private int index = 0;
-    private String userName, userEmail, admin, itemValue;
+    private String userName, userEmail, adminName, itemValue, selectedFamilyMemberUID;
+    private NammaApartmentUser currentNammaApartmentUser;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -83,6 +86,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*Here we are getting the instance of current user when screen loads for the first time*/
+        currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
 
         /*We would want to have all family member names well before user clicks on Change Admin Button*/
         fillFlatMemberNames();
@@ -110,8 +116,11 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         buttonUpdate.setTypeface(setLatoLightFont(this));
 
         /*This method is for retrieval of currentUser details and gets pre-filled in EditTexts and
-          image gets pre-loaded in circularImageView.*/
+         *image gets pre-loaded in circularImageView.*/
         retrieveUserDetails();
+
+        /*We would want to retrieve admin Name well before the screen gets loaded.*/
+        retrieveAdminName();
 
         /*Setting event for all button clicks */
         editUserName.setOnClickListener(this);
@@ -176,8 +185,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private void familyMemberList(FirebaseCallback callback) {
         Map<String, Boolean> familyMembers = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFamilyMembers();
         if (!familyMembers.isEmpty()) {
-            for (String userUID : familyMembers.keySet()) {
-                DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(userUID)
+            for (String familyMemberUID : familyMembers.keySet()) {
+                DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(familyMemberUID)
                         .child(FIREBASE_CHILD_PERSONALDETAILS)
                         .child(FIREBASE_CHILD_FULLNAME);
                 userReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -185,6 +194,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String flatMemberName = dataSnapshot.getValue(String.class);
                         flatMembersList.add(index, flatMemberName);
+                        flatMembersUIDList.add(index, familyMemberUID);
                     }
 
                     @Override
@@ -201,8 +211,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private void friendsMemberList(FirebaseCallback callback) {
         Map<String, Boolean> friends = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getFriends();
         if (!friends.isEmpty()) {
-            for (String userUID : friends.keySet()) {
-                DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(userUID)
+            for (String friendUID : friends.keySet()) {
+                DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(friendUID)
                         .child(FIREBASE_CHILD_PERSONALDETAILS)
                         .child(FIREBASE_CHILD_FULLNAME);
                 userReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -210,6 +220,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String flatMemberName = dataSnapshot.getValue(String.class);
                         flatMembersList.add(index, flatMemberName);
+                        flatMembersUIDList.add(index, friendUID);
                     }
 
                     @Override
@@ -251,6 +262,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         /*Attaching listeners to ListView*/
         listFlatMembers.setOnItemClickListener((parent, view, position, id) -> {
             itemValue = (String) listFlatMembers.getItemAtPosition(position);
+            selectedFamilyMemberUID = flatMembersUIDList.get(position);
             editFlatAdmin.setText(itemValue);
             flatMembersDialog.cancel();
         });
@@ -281,40 +293,46 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         });
         imageSelectionDialog = builder.create();
     }
-
     /**
-     * This method gets invoked to pre-fill the details of existing user name and email id.
+     * This method gets invoked to pre-fill the details of existing user name and email id and also
+     * existing user profile photo.
      */
     private void retrieveUserDetails() {
-        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         userName = currentNammaApartmentUser.getPersonalDetails().getFullName();
         userEmail = currentNammaApartmentUser.getPersonalDetails().getEmail();
         editUserName.setText(userName);
         editUserEmail.setText(userEmail);
         Glide.with(this.getApplicationContext()).load(currentNammaApartmentUser.getPersonalDetails().getProfilePhoto()).into(currentUserProfilePic);
         currentUserProfilePic.setTag(R.id.currentUserProfilePic, "Actual Image");
+    }
 
-        /*Based on the admin privileges we are hiding change admin button.*/
+    /**
+     * This method gets invoked to retrieve and display appropriate admin name text in User Profile
+     * Screen.
+     */
+    private void retrieveAdminName() {
+        /*Based on the admin privileges we are displaying appropriate admin name text in Flat Admin*/
         if (currentNammaApartmentUser.getPrivileges().isAdmin()) {
-            admin = getResources().getString(R.string.admin_notification);
-            editFlatAdmin.setText(admin);
+            adminName = getResources().getString(R.string.admin_notification);
+            editFlatAdmin.setText(adminName);
         } else {
             /*We should not allow the other flat members to change the Administrator details*/
             editFlatAdmin.setEnabled(false);
             editFlatAdmin.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            DatabaseReference adminNameReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+            DatabaseReference adminNameReference = ((NammaApartmentsGlobal) getApplicationContext())
+                    .getUserDataReference()
                     .child(FIREBASE_ADMIN);
             adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot adminUIDSnapshot) {
-                    String adminUID = Objects.requireNonNull(adminUIDSnapshot.getValue()).toString();
+                    String adminUID = Objects.requireNonNull(adminUIDSnapshot.getValue(String.class));
                     DatabaseReference adminUIDNameReference = PRIVATE_USERS_REFERENCE.child(adminUID)
                             .child(FIREBASE_CHILD_PERSONALDETAILS)
                             .child(FIREBASE_CHILD_FULLNAME);
                     adminUIDNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot adminNameDataSnapshot) {
-                            String adminName = adminNameDataSnapshot.getValue(String.class);
+                            adminName = adminNameDataSnapshot.getValue(String.class);
                             editFlatAdmin.setText(adminName);
                         }
 
@@ -331,7 +349,6 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 }
             });
         }
-
     }
 
     /**
@@ -347,21 +364,18 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         Intent nammaApartmentsHome = new Intent(this, NammaApartmentsHome.class);
         if (updatedUserName.equals(userName) &&
                 updatedUserEmail.equals(userEmail) &&
-                updatedAdmin.equals(admin) &&
+                updatedAdmin.equals(adminName) &&
                 !profilePicChanged) {
-
-            /*TODO: Give proper message since there has been no changes in the view*/
             showNotificationDialog(getString(R.string.update_message),
-                    getString(R.string.update_success_message),
-                    nammaApartmentsHome);
+                    getString(R.string.no_update_message),
+                    null);
         } else {
-            NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-            DatabaseReference personalDetailsReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+            DatabaseReference personalDetailsReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
                     .child(FIREBASE_CHILD_PERSONALDETAILS);
 
             /*User Name has been changed*/
             if (!updatedUserName.equals(userName)) {
-                nammaApartmentUser.getPersonalDetails().setFullName(updatedUserName);
+                currentNammaApartmentUser.getPersonalDetails().setFullName(updatedUserName);
                 DatabaseReference updatedUserNameReference = personalDetailsReference
                         .child(FIREBASE_CHILD_FULLNAME);
                 updatedUserNameReference.setValue(updatedUserName);
@@ -369,14 +383,15 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
 
             /*Email address has been changed*/
             if (!updatedUserEmail.equals(userEmail)) {
-                nammaApartmentUser.getPersonalDetails().setEmail(updatedUserEmail);
+                currentNammaApartmentUser.getPersonalDetails().setEmail(updatedUserEmail);
                 DatabaseReference updatedUserEmailReference = personalDetailsReference
                         .child(FIREBASE_CHILD_EMAIL);
                 updatedUserEmailReference.setValue(updatedUserEmail);
             }
 
             /*Admin has been changed*/
-            if (!updatedAdmin.equals(admin)) {
+            if (!updatedAdmin.equals(adminName)) {
+                /*This method invokes if user wants to change admin to other flat members.*/
                 changeAdmin();
             } else {
                 if (!updatedUserName.equals(userName) || !updatedUserEmail.equals(userEmail)) {
@@ -385,7 +400,6 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                             nammaApartmentsHome);
                 }
             }
-            /*TODO: Update admin UID under userData in Firebase*/
 
             /*Profile pic has been changed*/
             if (profilePicChanged) {
@@ -402,10 +416,10 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
 
                     /*creating the upload object to store uploaded image details*/
                     String profilePhotoPath = Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString();
-                    nammaApartmentUser.getPersonalDetails().setProfilePhoto(profilePhotoPath);
+                    currentNammaApartmentUser.getPersonalDetails().setProfilePhoto(profilePhotoPath);
 
                     /*Update the new profile photo URL in firebase*/
-                    DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentUser.getUID())
+                    DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
                             .child(FIREBASE_CHILD_PERSONALDETAILS)
                             .child(FIREBASE_CHILD_PROFILE_PHOTO);
                     updatedUserPhotoReference.setValue(profilePhotoPath).addOnCompleteListener(task -> {
@@ -419,12 +433,33 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * This method gets invoked when user tries to change admin privileges to either user's family
+     * member or friends.
+     */
     private void changeAdmin() {
         /*Runnable Interface which gets invoked once user presses Yes button in Confirmation
-                Dialog */
+         * Dialog */
         Intent loginIntent = new Intent(UserProfile.this, SignIn.class);
-        Runnable updateDialog = () ->
+        Runnable updateAdminDetailsInFirebase = () ->
         {
+            DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
+            /*Current user will loose Admin Privileges so change admin to false*/
+            DatabaseReference currentUserPrivateReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
+                    .child(FIREBASE_CHILD_PRIVILEGES)
+                    .child(FIREBASE_ADMIN);
+            currentUserPrivateReference.setValue(false);
+
+            /*New User will get Admin Privileges so change admin to true*/
+            DatabaseReference newUserPrivateReference = PRIVATE_USERS_REFERENCE.child(selectedFamilyMemberUID)
+                    .child(FIREBASE_CHILD_PRIVILEGES)
+                    .child(FIREBASE_ADMIN);
+            newUserPrivateReference.setValue(true);
+
+            /*Here,we need to update the admin UID under userdata->flatNumber->admin*/
+            DatabaseReference adminUIDReference = userDataReference.child(FIREBASE_ADMIN);
+            adminUIDReference.setValue(selectedFamilyMemberUID);
+
             showNotificationDialog(getString(R.string.update_message),
                     getString(R.string.update_success_message),
                     loginIntent);
@@ -432,7 +467,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         String confirmDialogTitle = getResources().getString(R.string.non_admin_change_admin_title);
         String confirmDialogMessage = getResources().getString(R.string.admin_change_key);
         String confirmDialogMessageValue = confirmDialogMessage.replace(getString(R.string.person), itemValue);
-        showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, updateDialog);
+        showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, updateAdminDetailsInFirebase);
     }
 
     private interface FirebaseCallback {
