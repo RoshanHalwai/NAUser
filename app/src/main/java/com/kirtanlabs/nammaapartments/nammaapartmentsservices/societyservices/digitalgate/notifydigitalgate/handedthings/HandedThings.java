@@ -99,7 +99,6 @@ public class HandedThings extends BaseActivity {
                     showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
                 }
             });
-            //checkAndRetrieveCurrentVisitorsFromFirebase();
         } else {
             //To retrieve user daily Services list from firebase only when their status is "Entered"
             recyclerView.setAdapter(adapterDailyService);
@@ -165,7 +164,6 @@ public class HandedThings extends BaseActivity {
 
     /**
      * Retrieve only those daily service details whose status is entered
-     *
      * @param userUID - whose daily services needs to be retrieved
      */
     private void retrieveDailyServiceFromFirebase(String userUID) {
@@ -198,6 +196,9 @@ public class HandedThings extends BaseActivity {
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();
                                             }
+                                        } else {
+                                            hideProgressIndicator();
+                                            showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
                                         }
                                     }
 
