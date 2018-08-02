@@ -17,6 +17,13 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 7/2/2018
@@ -53,20 +60,28 @@ public class Button_listener extends BroadcastReceiver {
     }
 
     private void replyNotification(final String notificationUID, final String status) {
-        DatabaseReference databaseReference = Constants.PRIVATE_USERS_REFERENCE.child(currentUserID);
+        DatabaseReference databaseReference = PRIVATE_USERS_REFERENCE.child(currentUserID);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserFlatDetails userFlatDetails = Objects.requireNonNull(dataSnapshot.getValue(NammaApartmentUser.class)).getFlatDetails();
-                DatabaseReference userDataReference = FirebaseDatabase.getInstance().getReference().child("userData")
+                DatabaseReference currentUserDataReference = FirebaseDatabase.getInstance().getReference().child(FIREBASE_CHILD_USER_DATA)
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(userFlatDetails.getCity())
                         .child(userFlatDetails.getSocietyName())
                         .child(userFlatDetails.getApartmentName())
-                        .child(userFlatDetails.getFlatNumber())
-                        .child("notifications")
+                        .child(userFlatDetails.getFlatNumber());
+
+                DatabaseReference currentUserNotificationReference = currentUserDataReference
+                        .child(FIREBASE_CHILD_NOTIFICATIONS)
                         .child(currentUserID);
-                userDataReference.child(notificationUID).child("status").setValue(status);
+                currentUserNotificationReference.child(notificationUID).child(FIREBASE_CHILD_STATUS).setValue(status);
+
+                DatabaseReference currentUserVisitorReference = currentUserDataReference
+                        .child(FIREBASE_CHILD_VISITORS)
+                        .child(currentUserID)
+                        .child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
+
             }
 
             @Override
