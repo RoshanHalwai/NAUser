@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.HandedThings;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
@@ -26,6 +29,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATI
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMESTAMP;
+import static com.kirtanlabs.nammaapartments.Constants.HANDED_THINGS_TO;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
@@ -86,7 +90,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         buttonEveningSlot.setTypeface(setLatoRegularFont(this));
         buttonRequestService.setTypeface(setLatoLightFont(this));
 
-        // We want Button Immediately should be selected on start of activity
+        /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
 
         // We display list of issues according to screen title
@@ -116,7 +120,8 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
                 return view;
             }
         };
-        //Setting adapter to Spinner view
+
+        /*Setting adapter to Spinner view*/
         spinnerSelectProblem.setAdapter(adapter);
 
         /*Setting event for views*/
@@ -136,6 +141,15 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+
+        /*Since we have History button here, we would want users to navigate to history and take a look at their
+         * History of that particular Society Service*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+        historyButton.setOnClickListener(v -> {
+            Intent societyServiceHistoryIntent = new Intent(SocietyServices.this, SocietyServicesHistory.class);
+            startActivity(societyServiceHistoryIntent);
         });
     }
 
