@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -86,7 +87,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         buttonEveningSlot.setTypeface(setLatoRegularFont(this));
         buttonRequestService.setTypeface(setLatoLightFont(this));
 
-        // We want Button Immediately should be selected on start of activity
+        /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
 
         // We display list of issues according to screen title
@@ -116,7 +117,8 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
                 return view;
             }
         };
-        //Setting adapter to Spinner view
+
+        /*Setting adapter to Spinner view*/
         spinnerSelectProblem.setAdapter(adapter);
 
         /*Setting event for views*/
@@ -136,6 +138,15 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+
+        /*Since we have History button here, we would want users to navigate to history and take a look at their
+         * History of that particular Society Service*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+        historyButton.setOnClickListener(v -> {
+            Intent societyServiceHistoryIntent = new Intent(SocietyServices.this, SocietyServicesHistory.class);
+            startActivity(societyServiceHistoryIntent);
         });
     }
 

@@ -338,6 +338,7 @@
     <string name="morning_slot">9AM - 12PM</string>
     <string name="noon_slot">12PM - 3PM</string>
     <string name="evening_slot">3PM - 5PM</string>
+    <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/select_any_one</item>
