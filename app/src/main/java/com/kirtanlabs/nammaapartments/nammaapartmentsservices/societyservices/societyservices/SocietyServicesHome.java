@@ -2,11 +2,7 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.s
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,19 +12,13 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATA;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
@@ -189,25 +179,14 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
      * Store the details of Society Service Notifications to Firebase
      */
     private void storeSocietyServiceDetails() {
-        /*Getting the societyServiceUID*/
+        /*Generating the societyServiceUID*/
         DatabaseReference societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-        String societyServiceUID = societyServiceNotificationReference.push().getKey();
+        String notificationUID = societyServiceNotificationReference.push().getKey();
 
-        /*Getting the data entered by user while lodging the Society Service issue*/
-        NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-        String userUID = nammaApartmentUser.getUID();
+        /*Getting the data entered by user while logging the Society Service issue*/
+        String userUID = NammaApartmentsGlobal.userUID;
         String timeSlot = selectedButton.getText().toString();
         String societyServiceType = getString(screenTitle).toLowerCase();
-
-        /*Creating a reference to get notification UID*/
-        DatabaseReference notificationUIDReference = SOCIETYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL).child(societyServiceType)
-                .child(FIREBASE_CHILD_DATA).child(FIREBASE_CHILD_PRIVATE).child(societyServiceUID);
-
-        /*Generating a unique notification UID for every notification*/
-        String notificationUID = notificationUIDReference.child(FIREBASE_CHILD_NOTIFICATIONS).push().getKey();
-
-        /*Inserting the notification UID under 'notifications' child*/
-        notificationUIDReference.child(FIREBASE_CHILD_NOTIFICATIONS).child(notificationUID).push();
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
@@ -227,7 +206,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
          * Since, cloud functions would have been triggered*/
         Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
         awaitingResponseIntent.putExtra("NotificationUID", notificationUID);
-        awaitingResponseIntent.putExtra("societyServiceUID", societyServiceUID);
         awaitingResponseIntent.putExtra("societyServiceType", societyServiceType);
         startActivity(awaitingResponseIntent);
     }
