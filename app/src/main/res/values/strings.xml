@@ -155,7 +155,7 @@
     <string name="remove_guest_message">Are you sure you want to remove this Guest data from the list?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there Fare no guests at your flat.</string>
     <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
 
     <!--Cabs List And PackagesList Activity-->
@@ -328,7 +328,7 @@
     <string name="person">person</string>
     <string name="admin_notification">You are the Administrator</string>
 
-    <!--SocietyServices Activity-->
+    <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
     <string name="request_carpenter">Request Carpenter</string>
     <string name="request_electrician">Request Electrician</string>
@@ -339,6 +339,7 @@
     <string name="noon_slot">12PM - 3PM</string>
     <string name="evening_slot">3PM - 5PM</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
+    <string name="society_service_unavailable_message">Sorry you cannot use this feature since currently there has not been any Society Service at your flat so far.</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>
@@ -446,7 +447,7 @@
     <string name="in_charge">Committee</string>
 
     <!--Awaiting Response Activity-->
-    <string name="society_service_accepted_request">Your request has been accepted by a Plumber. Here are the details:</string>
+    <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
     <string name="no_response_yet">Plumber has not Responded Yet</string>
 

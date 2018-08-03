@@ -167,9 +167,9 @@
 
         <activity android:name=".nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
 
-        <!--SocietyServices Screen-->
+        <!--SocietyServicesHome Screen-->
         <activity
-            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServices"
+            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome"
             android:screenOrientation="portrait" />
         <activity
             android:name=".nammaapartmentsservices.societyservices.societyservices.AwaitingResponse"

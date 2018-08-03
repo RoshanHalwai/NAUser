@@ -12,24 +12,18 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATA;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class SocietyServices extends BaseActivity implements View.OnClickListener {
+public class SocietyServicesHome extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -111,7 +105,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         ImageView historyButton = findViewById(R.id.historyButton);
         historyButton.setVisibility(View.VISIBLE);
         historyButton.setOnClickListener(v -> {
-            Intent societyServiceHistoryIntent = new Intent(SocietyServices.this, SocietyServicesHistory.class);
+            Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
             startActivity(societyServiceHistoryIntent);
         });
     }
@@ -124,7 +118,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textSelectProblemValue:
-                Intent intent = new Intent(SocietyServices.this, SocietyServiceProblemList.class);
+                Intent intent = new Intent(SocietyServicesHome.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
                 startActivityForResult(intent, SELECT_SOCIETY_SERVICE_REQUEST_CODE);
                 break;
@@ -185,29 +179,18 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
      * Store the details of Society Service Notifications to Firebase
      */
     private void storeSocietyServiceDetails() {
-        /*Getting the societyServiceUID*/
+        /*Generating the societyServiceUID*/
         DatabaseReference societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-        String societyServiceUID = societyServiceNotificationReference.push().getKey();
+        String notificationUID = societyServiceNotificationReference.push().getKey();
 
-        /*Getting the data entered by user while lodging the Society Service issue*/
-        NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
-        String userUID = nammaApartmentUser.getUID();
+        /*Getting the data entered by user while logging the Society Service issue*/
+        String userUID = NammaApartmentsGlobal.userUID;
         String timeSlot = selectedButton.getText().toString();
         String societyServiceType = getString(screenTitle).toLowerCase();
 
-        /*Creating a reference to get notification UID*/
-        DatabaseReference notificationUIDReference = SOCIETYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL).child(societyServiceType)
-                .child(FIREBASE_CHILD_DATA).child(FIREBASE_CHILD_PRIVATE).child(societyServiceUID);
-
-        /*Generating a unique notification UID for every notification*/
-        String notificationUID = notificationUIDReference.child(FIREBASE_CHILD_NOTIFICATIONS).push().getKey();
-
-        /*Inserting the notification UID under 'notifications' child*/
-        notificationUIDReference.child(FIREBASE_CHILD_NOTIFICATIONS).child(notificationUID).push();
-
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS);
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, null);
         societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
 
         /*Storing time stamp to keep track of notifications*/
@@ -217,13 +200,12 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference()
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
-        societyServiceUserDataReference.child(notificationUID).setValue(true);
+        societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
 
         /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
          * Since, cloud functions would have been triggered*/
-        Intent awaitingResponseIntent = new Intent(SocietyServices.this, AwaitingResponse.class);
+        Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
         awaitingResponseIntent.putExtra("NotificationUID", notificationUID);
-        awaitingResponseIntent.putExtra("societyServiceUID", societyServiceUID);
         awaitingResponseIntent.putExtra("societyServiceType", societyServiceType);
         startActivity(awaitingResponseIntent);
     }

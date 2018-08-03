@@ -30,6 +30,7 @@ public class AwaitingResponse extends BaseActivity {
 
     private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse;
     private TextView textSocietyServiceNameValue, textMobileNumberValue;
+    private TextView textEndOTPValue;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -56,8 +57,10 @@ public class AwaitingResponse extends BaseActivity {
         TextView textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
         TextView textSocietyServiceName = findViewById(R.id.textSocietyServiceName);
         TextView textMobileNumber = findViewById(R.id.textMobileNumber);
+        TextView textEndOTP = findViewById(R.id.textEndOTP);
         textSocietyServiceNameValue = findViewById(R.id.textSocietyServiceNameValue);
         textMobileNumberValue = findViewById(R.id.textMobileNumberValue);
+        textEndOTPValue = findViewById(R.id.textEndOTPValue);
         TextView textPlumberResponse = findViewById(R.id.textPlumberResponse);
 
         /*Setting font for all the views*/
@@ -66,6 +69,7 @@ public class AwaitingResponse extends BaseActivity {
         textMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
         textSocietyServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
         textMobileNumberValue.setTypeface(Constants.setLatoBoldFont(this));
+        textEndOTPValue.setTypeface(Constants.setLatoBoldFont(this));
         textSocietyServiceAcceptedRequest.setTypeface(Constants.setLatoBoldFont(this));
         textPlumberResponse.setTypeface(Constants.setLatoBoldFont(this));
 
@@ -81,13 +85,14 @@ public class AwaitingResponse extends BaseActivity {
             String societyServiceType = getIntent().getStringExtra("societyServiceType");
 
             /*Getting the reference till 'notificationUID' in societyServices to set 'status' in Firebase*/
-            DatabaseReference societyServiceReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID).child("takenBy");
+            DatabaseReference societyServiceReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID);
             societyServiceReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.exists()) {
-                        String societyServiceUID = dataSnapshot.getValue(String.class);
+                    NammaApartmentSocietyServices nammaApartmentSocietyServices = dataSnapshot.getValue(NammaApartmentSocietyServices.class);
+                    if (nammaApartmentSocietyServices.getTakenBy() != null) {
+                        String societyServiceUID = nammaApartmentSocietyServices.getTakenBy();
+                        String endOTP = nammaApartmentSocietyServices.getEndOTP();
                         DatabaseReference societyServiceDataReference = Constants.SOCIETYSERVICES_REFERENCE
                                 .child(societyServiceType)
                                 .child(FIREBASE_CHILD_PRIVATE)
@@ -104,6 +109,7 @@ public class AwaitingResponse extends BaseActivity {
                                 String societyServiceMobileNumber = dataSnapshot.child(Constants.FIREBASE_CHILD_MOBILE_NUMBER).getValue(String.class);
                                 textSocietyServiceNameValue.setText(societyServiceName);
                                 textMobileNumberValue.setText(societyServiceMobileNumber);
+                                textEndOTPValue.setText(endOTP);
                             }
 
                             @Override
