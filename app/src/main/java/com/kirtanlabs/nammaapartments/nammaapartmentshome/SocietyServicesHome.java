@@ -14,7 +14,6 @@ import android.widget.ListView;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,17 +56,17 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 startActivity(new Intent(getActivity(), DigitalGateHome.class));
                 break;
             case 1:
-                Intent intentPlumber = new Intent(getActivity(), SocietyServices.class);
+                Intent intentPlumber = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
                 intentPlumber.putExtra(Constants.SCREEN_TITLE, R.string.plumber);
                 startActivity(intentPlumber);
                 break;
             case 2:
-                Intent intentCarpenter = new Intent(getActivity(), SocietyServices.class);
+                Intent intentCarpenter = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
                 intentCarpenter.putExtra(Constants.SCREEN_TITLE, R.string.carpenter);
                 startActivity(intentCarpenter);
                 break;
             case 3:
-                Intent intentElectrician = new Intent(getActivity(), SocietyServices.class);
+                Intent intentElectrician = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
                 intentElectrician.putExtra(Constants.SCREEN_TITLE, R.string.electrician);
                 startActivity(intentElectrician);
                 break;

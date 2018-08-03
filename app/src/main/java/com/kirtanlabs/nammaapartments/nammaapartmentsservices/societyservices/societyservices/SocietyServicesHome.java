@@ -2,7 +2,11 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.s
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +33,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class SocietyServices extends BaseActivity implements View.OnClickListener {
+public class SocietyServicesHome extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -111,7 +115,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         ImageView historyButton = findViewById(R.id.historyButton);
         historyButton.setVisibility(View.VISIBLE);
         historyButton.setOnClickListener(v -> {
-            Intent societyServiceHistoryIntent = new Intent(SocietyServices.this, SocietyServicesHistory.class);
+            Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
             startActivity(societyServiceHistoryIntent);
         });
     }
@@ -124,7 +128,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textSelectProblemValue:
-                Intent intent = new Intent(SocietyServices.this, SocietyServiceProblemList.class);
+                Intent intent = new Intent(SocietyServicesHome.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
                 startActivityForResult(intent, SELECT_SOCIETY_SERVICE_REQUEST_CODE);
                 break;
@@ -221,7 +225,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
 
         /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
          * Since, cloud functions would have been triggered*/
-        Intent awaitingResponseIntent = new Intent(SocietyServices.this, AwaitingResponse.class);
+        Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
         awaitingResponseIntent.putExtra("NotificationUID", notificationUID);
         awaitingResponseIntent.putExtra("societyServiceUID", societyServiceUID);
         awaitingResponseIntent.putExtra("societyServiceType", societyServiceType);
