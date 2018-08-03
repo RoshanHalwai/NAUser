@@ -190,7 +190,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS);
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, null);
         societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
 
         /*Storing time stamp to keep track of notifications*/

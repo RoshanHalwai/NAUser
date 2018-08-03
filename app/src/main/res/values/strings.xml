@@ -447,7 +447,7 @@
     <string name="in_charge">Committee</string>
 
     <!--Awaiting Response Activity-->
-    <string name="society_service_accepted_request">Your request has been accepted by a Plumber. Here are the details:</string>
+    <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
     <string name="no_response_yet">Plumber has not Responded Yet</string>
 
