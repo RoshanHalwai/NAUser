@@ -27,6 +27,7 @@ public class Constants {
     public static final String SCREEN_TITLE = "screen_title";
     public static final String SERVICE_TYPE = "service_type";
     public static final String IN_PROGRESS = "in progress";
+    public static final String SOCIETY_SERVICE_PROBLEM = "society_service_problem";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -166,6 +167,7 @@ public class Constants {
     public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
     public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
+    public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
     /* ------------------------------------------------------------- *

@@ -341,7 +341,6 @@
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
 
     <string-array name="plumbing_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/dripping_faucets</item>
         <item>@string/slow_draining_sink</item>
         <item>@string/clogged_bath_or_shower_drain</item>
@@ -367,7 +366,6 @@
     <string name="sewer_system_backup">Sewer system backup</string>
 
     <string-array name="electrical_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/frequent_electrical_surge</item>
         <item>@string/sags_and_dips_in_power</item>
         <item>@string/light_switches_not_working_properly</item>
@@ -391,7 +389,6 @@
     <string name="recessed_light_goes_out_and_comes_back_on">Recessed Light ‘Goes Out’ and comes back on</string>
 
     <string-array name="carpentry_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/carpentry_finish_appears_uneven</item>
         <item>@string/split_in_the_wood</item>
         <item>@string/weak_joints</item>
