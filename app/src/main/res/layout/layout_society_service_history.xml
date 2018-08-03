@@ -101,7 +101,6 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:padding="2dp"
-                        android:text="Ashish Jha"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -110,7 +109,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="9986553474"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -119,7 +117,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Clogged Toilet"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -128,7 +125,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="3 PM - 6 PM"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 

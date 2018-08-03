@@ -34,7 +34,7 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
-public class SocietyServices extends BaseActivity implements View.OnClickListener {
+public class SocietyServicesHome extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -113,7 +113,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textProblem = view.findViewById(android.R.id.text1);
-                textProblem.setTypeface(Constants.setLatoRegularFont(SocietyServices.this));
+                textProblem.setTypeface(Constants.setLatoRegularFont(SocietyServicesHome.this));
                 return view;
             }
         };
@@ -145,7 +145,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         ImageView historyButton = findViewById(R.id.historyButton);
         historyButton.setVisibility(View.VISIBLE);
         historyButton.setOnClickListener(v -> {
-            Intent societyServiceHistoryIntent = new Intent(SocietyServices.this, SocietyServicesHistory.class);
+            Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
             startActivity(societyServiceHistoryIntent);
         });
     }
@@ -236,7 +236,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
 
         /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
          * Since, cloud functions would have been triggered*/
-        Intent awaitingResponseIntent = new Intent(SocietyServices.this, AwaitingResponse.class);
+        Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
         awaitingResponseIntent.putExtra("NotificationUID", notificationUID);
         awaitingResponseIntent.putExtra("societyServiceUID", societyServiceUID);
         awaitingResponseIntent.putExtra("societyServiceType", societyServiceType);
