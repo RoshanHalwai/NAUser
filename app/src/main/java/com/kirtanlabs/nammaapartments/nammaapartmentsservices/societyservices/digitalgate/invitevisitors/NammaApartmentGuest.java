@@ -27,12 +27,11 @@ public class NammaApartmentGuest {
     public NammaApartmentGuest() {
     }
 
-    NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID) {
+    public NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
         this.dateAndTimeOfVisit = dateAndTimeOfVisit;
-        this.status = com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
         this.inviterUID = inviterUID;
     }
 
