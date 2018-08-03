@@ -200,7 +200,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference()
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
-        societyServiceUserDataReference.child(notificationUID).setValue(true);
+        societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
 
         /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
          * Since, cloud functions would have been triggered*/
