@@ -171,9 +171,14 @@
         <activity
             android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServices"
             android:screenOrientation="portrait" />
-        <activity android:name=".nammaapartmentsservices.societyservices.societyservices.AwaitingResponse"
+        <activity
+            android:name=".nammaapartmentsservices.societyservices.societyservices.AwaitingResponse"
             android:screenOrientation="portrait" />
-        <activity android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHistory"
+        <activity
+            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServiceProblemList"
             android:screenOrientation="portrait" />
     </application>
 

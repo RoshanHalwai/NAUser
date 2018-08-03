@@ -2,15 +2,9 @@ package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.s
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +23,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_SOCIETYSER
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SOCIETYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
@@ -45,9 +40,9 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
     private int screenTitle;
-    private String[] problemsList;
     private String problem;
     private Button selectedButton;
+    private TextView textSelectProblemValue;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -70,8 +65,8 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
 
         /*Getting Id's for all the views*/
         TextView textSelectProblem = findViewById(R.id.textSelectProblem);
-        Spinner spinnerSelectProblem = findViewById(R.id.spinnerSelectProblem);
         TextView textSelectSlot = findViewById(R.id.textSelectSlot);
+        textSelectProblemValue = findViewById(R.id.textSelectProblemValue);
         Button buttonImmediately = findViewById(R.id.buttonImmediately);
         Button buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
         Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
@@ -81,6 +76,7 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         /*Setting font for all the views*/
         textSelectProblem.setTypeface(setLatoBoldFont(this));
         textSelectSlot.setTypeface(setLatoBoldFont(this));
+        textSelectProblemValue.setTypeface(setLatoRegularFont(this));
         buttonImmediately.setTypeface(setLatoRegularFont(this));
         buttonMorningSlot.setTypeface(setLatoRegularFont(this));
         buttonNoonSlot.setTypeface(setLatoRegularFont(this));
@@ -90,55 +86,25 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
 
-        // We display list of issues according to screen title
+        /* We set button text according to screen title */
         switch (screenTitle) {
             case R.string.plumber:
                 buttonRequestService.setText(R.string.request_plumber);
-                problemsList = getResources().getStringArray(R.array.plumbing_issues_list);
                 break;
             case R.string.carpenter:
                 buttonRequestService.setText(R.string.request_carpenter);
-                problemsList = getResources().getStringArray(R.array.carpentry_issues_list);
                 break;
             case R.string.electrician:
                 buttonRequestService.setText(R.string.request_electrician);
-                problemsList = getResources().getStringArray(R.array.electrical_issues_list);
         }
 
-        /*Setting font for all the items in the list*/
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, problemsList) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textProblem = view.findViewById(android.R.id.text1);
-                textProblem.setTypeface(Constants.setLatoRegularFont(SocietyServices.this));
-                return view;
-            }
-        };
-
-        /*Setting adapter to Spinner view*/
-        spinnerSelectProblem.setAdapter(adapter);
-
         /*Setting event for views*/
+        textSelectProblemValue.setOnClickListener(this);
         buttonImmediately.setOnClickListener(this);
         buttonMorningSlot.setOnClickListener(this);
         buttonNoonSlot.setOnClickListener(this);
         buttonEveningSlot.setOnClickListener(this);
         buttonRequestService.setOnClickListener(this);
-        spinnerSelectProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                problem = problemsList[position];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
@@ -157,6 +123,11 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.textSelectProblemValue:
+                Intent intent = new Intent(SocietyServices.this, SocietyServiceProblemList.class);
+                intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
+                startActivityForResult(intent, SELECT_SOCIETY_SERVICE_REQUEST_CODE);
+                break;
             case R.id.buttonImmediately:
                 selectButton(R.id.buttonImmediately);
                 break;
@@ -172,6 +143,20 @@ public class SocietyServices extends BaseActivity implements View.OnClickListene
             case R.id.buttonRequestService:
                 storeSocietyServiceDetails();
                 break;
+        }
+    }
+
+    /*-------------------------------------------------------------------------------
+     *Overriding onActivityResult
+     *-----------------------------------------------------------------------------*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
+            problem = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
+            textSelectProblemValue.setText(problem);
         }
     }
 
