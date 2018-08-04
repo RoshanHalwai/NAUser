@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
@@ -230,7 +230,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
                     handedThingsHistoryIntent.putExtra(SCREEN_TITLE, R.string.my_guests);
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentGuest.setHandedThings(handedThingsDescription);
-                    if (nammaApartmentGuest.getGuestType().equals(FIREBASE_CHILD_PREAPPROVED)) {
+                    if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_PREAPPROVED_VISITORS)) {
                         DatabaseReference preApprovedVisitorReference = PREAPPROVED_VISITORS_REFERENCE
                                 .child(nammaApartmentGuest.getUid());
                         preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)

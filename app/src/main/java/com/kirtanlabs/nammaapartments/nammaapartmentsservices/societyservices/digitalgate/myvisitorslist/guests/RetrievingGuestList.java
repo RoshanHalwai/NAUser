@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GUESTS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
@@ -160,10 +161,10 @@ public class RetrievingGuestList {
         DatabaseReference guestListReference;
         if (postApprovedVisitors) {
             guestListReference = userDataReference.child(FIREBASE_CHILD_VISITORS)
-                    .child(userUID).child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
+                    .child(userUID).child(FIREBASE_CHILD_POSTAPPROVED_VISITORS).child(FIREBASE_CHILD_GUESTS);
         } else {
             guestListReference = userDataReference.child(FIREBASE_CHILD_VISITORS)
-                    .child(userUID).child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
+                    .child(userUID).child(FIREBASE_CHILD_PREAPPROVED_VISITORS).child(FIREBASE_CHILD_GUESTS);
         }
         guestListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -28,6 +28,12 @@ public class Constants {
     public static final String SERVICE_TYPE = "service_type";
     public static final String IN_PROGRESS = "in progress";
     public static final String SOCIETY_SERVICE_PROBLEM = "society_service_problem";
+    public static final String NOTIFICATION_UID = "notificationUID";
+    public static final String NOTIFICATION_ID = "notificationID";
+    public static final String USER_UID = "userUID";
+    public static final String VISITOR_TYPE = "visitorType";
+    public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
+    public static final String MESSAGE = "message";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -52,7 +58,6 @@ public class Constants {
     public static final String NAMMA_APARTMENTS_PREFERENCE = "nammaApartmentsPreference";
     public static final String FIRST_TIME = "firstTime";
     public static final String LOGGED_IN = "loggedIn";
-    public static final String USER_UID = "userUid";
 
     /* ------------------------------------------------------------- *
      * Firebase objects
@@ -81,16 +86,15 @@ public class Constants {
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
+    public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
     public static final String FIREBASE_CHILD_MOBILE_NUMBER = "mobileNumber";
     public static final String FIREBASE_CHILD_OWNERS_UID = "ownersUID";
-    public static final String FIREBASE_CHILD_POSTAPPROVED = "postApproved";
-    public static final String FIREBASE_CHILD_POSTAPPROVEDVISITORS = "postApprovedVisitors";
-    public static final String FIREBASE_CHILD_PREAPPROVED = "preApproved";
-    public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
+    public static final String FIREBASE_CHILD_POSTAPPROVED_VISITORS = "postApprovedVisitors";
+    public static final String FIREBASE_CHILD_PREAPPROVED_VISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_DATA = "data";
@@ -115,6 +119,12 @@ public class Constants {
     public static final String NOT_ENTERED = "Not Entered";
 
     /* ------------------------------------------------------------- *
+     * Firebase Values
+     * ------------------------------------------------------------- */
+
+    public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
+
+    /* ------------------------------------------------------------- *
      * Firebase Database References
      * ------------------------------------------------------------- */
 
@@ -128,7 +138,6 @@ public class Constants {
     private static final DatabaseReference PRIVATE_CLIENTS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CLIENTS).child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETYSERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICES);
-    public static final DatabaseReference ALL_SOCIETYSERVICE_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICES).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference CITIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_CITIES);
     public static final DatabaseReference SOCIETIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_SOCIETIES);
     public static final DatabaseReference FLATS_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_FLATS);
@@ -146,13 +155,30 @@ public class Constants {
     public static final DatabaseReference PRIVATE_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PUBLIC_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
-    public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
+    public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVED_VISITORS);
     public static final DatabaseReference PREAPPROVED_VISITORS_MOBILE_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
-    public static final DatabaseReference POSTAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
-
+    public static final DatabaseReference POSTAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_POSTAPPROVED_VISITORS);
 
     /* ------------------------------------------------------------- *
-     * Family member/Friend Relation retrieval
+     * Remote Message Keys
+     * ------------------------------------------------------------- */
+
+    public static final String REMOTE_MESSAGE = "message";
+    public static final String REMOTE_NOTIFICATION_UID = "notification_uid";
+    public static final String REMOTE_USER_UID = "user_uid";
+    public static final String REMOTE_VISITOR_TYPE = "visitor_type";
+    public static final String REMOTE_TYPE = "type";
+    public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
+
+    /* ------------------------------------------------------------- *
+     * Receiver Action Keys
+     * ------------------------------------------------------------- */
+
+    public static final String ACCEPT_BUTTON_CLICKED = "accept_button_clicked";
+    public static final String REJECT_BUTTON_CLICKED = "reject_button_clicked";
+
+    /* ------------------------------------------------------------- *
+     * Application Specific
      * ------------------------------------------------------------- */
 
     public static final String FAMILY_MEMBER = "Family Member";
@@ -176,14 +202,6 @@ public class Constants {
      * Font Types
      * ------------------------------------------------------------- */
 
-    public static Typeface setLatoBlackFont(Context c) {
-        return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Black.ttf");
-    }
-
-    public static Typeface setLatoBlackItalicFont(Context c) {
-        return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-BlackItalic.ttf");
-    }
-
     public static Typeface setLatoBoldFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Bold.ttf");
     }
@@ -192,24 +210,12 @@ public class Constants {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-BoldItalic.ttf");
     }
 
-    public static Typeface setLatoHairlineFont(Context c) {
-        return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Hairline.ttf");
-    }
-
-    public static Typeface setLatoHairlineItalicFont(Context c) {
-        return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-HairlineItalic.ttf");
-    }
-
     public static Typeface setLatoItalicFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Italic.ttf");
     }
 
     public static Typeface setLatoLightFont(Context c) {
         return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Light.ttf");
-    }
-
-    public static Typeface setLatoLightItalicFont(Context c) {
-        return Typeface.createFromAsset(c.getAssets(), "fonts/Lato-LightItalic.ttf");
     }
 
     public static Typeface setLatoRegularFont(Context c) {

@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,16 +21,22 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.Constants.ACCEPT_BUTTON_CLICKED;
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ACCEPTED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.MESSAGE;
+import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_ID;
+import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.USER_UID;
+import static com.kirtanlabs.nammaapartments.Constants.VISITOR_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.Constants.VISITOR_TYPE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -39,27 +44,23 @@ import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
  */
 public class Button_listener extends BroadcastReceiver {
 
-    private String currentUserID, visitorName, visitorProfilePhoto;
+    private String currentUserID, visitorName, visitorProfilePhoto, visitorType;
+    private String notificationUID;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null) {
             String action = intent.getAction();
-            String notificationUID = Objects.requireNonNull(intent.getExtras()).getString("Notification_UID");
-            int notificationId = intent.getExtras().getInt("Notification_Id");
+            int notificationId = intent.getExtras().getInt(NOTIFICATION_ID);
+            if (action.equals(ACCEPT_BUTTON_CLICKED)) {
+                notificationUID = Objects.requireNonNull(intent.getExtras()).getString(NOTIFICATION_UID);
 
-            /*Get current user UID from Messaging Service*/
-            currentUserID = intent.getExtras().getString("User_UID");
-            visitorName = intent.getExtras().getString("Message");
-
-            if (action.equals("accept_button_clicked")) {
-                replyNotification(notificationUID, "Accepted");
-                Log.d("Notification Test", action);
-                Log.d("notificationUID", notificationUID);
-            } else {
-                replyNotification(notificationUID, "Rejected");
-                Log.d("Notification Test", action);
-                Log.d("notificationUID", notificationUID);
+                /*Get current user UID from Messaging Service*/
+                currentUserID = intent.getExtras().getString(USER_UID);
+                visitorName = intent.getExtras().getString(MESSAGE);
+                visitorType = intent.getExtras().getString(VISITOR_TYPE);
+                visitorProfilePhoto = intent.getExtras().getString(VISITOR_PROFILE_PHOTO);
+                replyNotification();
             }
 
             /*Clear the notification once button is pressed*/
@@ -69,7 +70,7 @@ public class Button_listener extends BroadcastReceiver {
 
     }
 
-    private void replyNotification(final String notificationUID, final String status) {
+    private void replyNotification() {
         DatabaseReference databaseReference = PRIVATE_USERS_REFERENCE.child(currentUserID);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -85,19 +86,23 @@ public class Button_listener extends BroadcastReceiver {
                 /*Here we are setting the notification status under current userdata->userFlatNumber->notifications->notificationId->status*/
                 DatabaseReference currentUserNotificationReference = currentUserDataReference
                         .child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
-                        .child(currentUserID);
-                currentUserNotificationReference.child(notificationUID).child(FIREBASE_CHILD_STATUS).setValue(status);
+                        .child(currentUserID)
+                        .child(visitorType);
+                currentUserNotificationReference.child(notificationUID).child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_ACCEPTED);
 
                 /*Here we are creating reference for storing postApproved Visitors under userdata->userFlatNumber*/
                 DatabaseReference currentUserVisitorReference = currentUserDataReference
                         .child(FIREBASE_CHILD_VISITORS)
                         .child(currentUserID)
-                        .child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
-                String postApprovedVisitorUID = currentUserVisitorReference.push().getKey();
+                        .child(FIREBASE_CHILD_POSTAPPROVED_VISITORS)
+                        .child(visitorType);
+
+                /*We do not create new UID for post approved visitors instead we use the notification UID to
+                 * identify each visitor*/
+                String postApprovedVisitorUID = notificationUID;
                 currentUserVisitorReference.child(postApprovedVisitorUID).setValue(true);
 
-                /*Here we are creating postApprovedVisitors Data Storage Reference under visitors->postApprovedVisitors*/
-                DatabaseReference postApprovedVisitorData = POSTAPPROVED_VISITORS_REFERENCE.child(postApprovedVisitorUID);
+                /*Utility Functions to get Date and Time*/
                 Calendar calendar = Calendar.getInstance();
                 int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
@@ -110,29 +115,14 @@ public class Button_listener extends BroadcastReceiver {
                 String concatenatedDateAndTime = formattedDate + "\t\t" + " " + formattedTime;
                 String separatedVisitorName[] = TextUtils.split(visitorName, " ");
                 String postApprovedVisitorName = separatedVisitorName[0];
+
+                /*Creating instance of Namma Apartment Guest*/
+                DatabaseReference postApprovedVisitorData = POSTAPPROVED_VISITORS_REFERENCE.child(postApprovedVisitorUID);
                 NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
-                        postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                        postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED_VISITORS);
                 nammaApartmentGuest.setStatus(ENTERED);
-
-                /*Here we are creating reference for storing profile photo under postApprovedVisitors*/
-                DatabaseReference profilePhotoReference = currentUserDataReference.child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
-                        .child(currentUserID)
-                        .child(notificationUID)
-                        .child(FIREBASE_CHILD_PROFILE_PHOTO);
-                profilePhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        visitorProfilePhoto = dataSnapshot.getValue(String.class);
-                        nammaApartmentGuest.setProfilePhoto(visitorProfilePhoto);
-                        postApprovedVisitorData.setValue(nammaApartmentGuest);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
+                nammaApartmentGuest.setProfilePhoto(visitorProfilePhoto);
+                postApprovedVisitorData.setValue(nammaApartmentGuest);
             }
 
             @Override
@@ -142,4 +132,5 @@ public class Button_listener extends BroadcastReceiver {
         });
 
     }
+
 }
