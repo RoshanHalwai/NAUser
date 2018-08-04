@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
@@ -84,7 +84,7 @@ public class Button_listener extends BroadcastReceiver {
 
                 /*Here we are setting the notification status under current userdata->userFlatNumber->notifications->notificationId->status*/
                 DatabaseReference currentUserNotificationReference = currentUserDataReference
-                        .child(FIREBASE_CHILD_NOTIFICATIONS)
+                        .child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
                         .child(currentUserID);
                 currentUserNotificationReference.child(notificationUID).child(FIREBASE_CHILD_STATUS).setValue(status);
 
@@ -115,7 +115,7 @@ public class Button_listener extends BroadcastReceiver {
                 nammaApartmentGuest.setStatus(ENTERED);
 
                 /*Here we are creating reference for storing profile photo under postApprovedVisitors*/
-                DatabaseReference profilePhotoReference = currentUserDataReference.child(FIREBASE_CHILD_NOTIFICATIONS)
+                DatabaseReference profilePhotoReference = currentUserDataReference.child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
                         .child(currentUserID)
                         .child(notificationUID)
                         .child(FIREBASE_CHILD_PROFILE_PHOTO);
