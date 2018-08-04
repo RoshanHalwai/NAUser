@@ -34,7 +34,7 @@ public class NammaApartmentArrival {
         this.validFor = validFor;
         this.inviterUID = inviterUID;
         this.status = com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
-        this.status = approvalType;
+        this.approvalType = approvalType;
     }
 
     /* ------------------------------------------------------------- *
