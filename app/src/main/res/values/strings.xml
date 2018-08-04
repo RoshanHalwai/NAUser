@@ -155,7 +155,7 @@
     <string name="remove_guest_message">Are you sure you want to remove this Guest data from the list?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there Fare no guests at your flat.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
     <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
 
     <!--Cabs List And PackagesList Activity-->
