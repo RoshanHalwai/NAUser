@@ -19,6 +19,7 @@ public class NammaApartmentArrival {
     private String validFor;
     private String inviterUID;
     private String status;
+    private String approvalType;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -27,12 +28,13 @@ public class NammaApartmentArrival {
     public NammaApartmentArrival() {
     }
 
-    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String inviterUID) {
+    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String inviterUID, String approvalType) {
         this.reference = reference;
         this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;
         this.inviterUID = inviterUID;
         this.status = com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
+        this.status = approvalType;
     }
 
     /* ------------------------------------------------------------- *
@@ -57,6 +59,10 @@ public class NammaApartmentArrival {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getApprovalType() {
+        return approvalType;
     }
 
     /* ------------------------------------------------------------- *

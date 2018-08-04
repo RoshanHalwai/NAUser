@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
 
 public class RetrievingCabsList {
 
@@ -134,7 +134,7 @@ public class RetrievingCabsList {
      * @param cabUID          UID of the Cab whose data is to be retrieved from firebase
      */
     private void getCabDataByUID(CabDataCallback cabDataCallback, String cabUID) {
-        DatabaseReference cabDataReference = PUBLIC_CABS_REFERENCE.child(cabUID);
+        DatabaseReference cabDataReference = PRIVATE_CABS_REFERENCE.child(cabUID);
         cabDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

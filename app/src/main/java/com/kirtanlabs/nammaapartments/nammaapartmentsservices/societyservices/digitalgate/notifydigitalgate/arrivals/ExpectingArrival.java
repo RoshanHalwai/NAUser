@@ -28,18 +28,17 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.ALL_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.ARRIVAL_TYPE;
 import static com.kirtanlabs.nammaapartments.Constants.CAB_NUMBER_FIELD_LENGTH;
 import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERY_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_CABS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
@@ -267,7 +266,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         String dateTimeOfVisit = editPickDateTime.getText().toString();
         String validFor = selectedButton.getText().toString();
         String userUID = nammaApartmentUser.getUID();
-        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(reference, dateTimeOfVisit, validFor, userUID);
+        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(reference, dateTimeOfVisit, validFor, userUID, "preApproved");
 
         //Store cabs/deliveries uid and value under userdata->private->currentUserFlat
         DatabaseReference digitalGateUIDReference = ALL_USERS_REFERENCE.child(reference);
@@ -280,14 +279,14 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
 
         //Store the details of cab/delivery in cabs/deliveries->public->uid
         if (arrivalType == R.string.expecting_cab_arrival) {
-            DatabaseReference cabNumberReference = PRIVATE_CABS_REFERENCE.child(FIREBASE_CHILD_ALL);
-            cabNumberReference.child(reference).setValue(digitalGateUID);
-            DatabaseReference cabDetailsReference = PUBLIC_CABS_REFERENCE.child(digitalGateUID);
+            DatabaseReference cabNumberReference = ALL_CABS_REFERENCE.child(reference);
+            cabNumberReference.setValue(digitalGateUID);
+            DatabaseReference cabDetailsReference = PRIVATE_CABS_REFERENCE.child(digitalGateUID);
             cabDetailsReference.setValue(nammaApartmentArrival);
         } else {
-            DatabaseReference deliveryReference = PRIVATE_DELIVERY_REFERENCE.child(FIREBASE_CHILD_ALL);
-            deliveryReference.child(nammaApartmentUser.getPersonalDetails().getPhoneNumber()).setValue(digitalGateUID);
-            DatabaseReference deliveryDetailsReference = PUBLIC_DELIVERIES_REFERENCE.child(digitalGateUID);
+            DatabaseReference deliveryReference = ALL_DELIVERIES_REFERENCE.child(nammaApartmentUser.getPersonalDetails().getPhoneNumber());
+            deliveryReference.setValue(digitalGateUID);
+            DatabaseReference deliveryDetailsReference = PRIVATE_DELIVERIES_REFERENCE.child(digitalGateUID);
             deliveryDetailsReference.setValue(nammaApartmentArrival);
         }
     }
