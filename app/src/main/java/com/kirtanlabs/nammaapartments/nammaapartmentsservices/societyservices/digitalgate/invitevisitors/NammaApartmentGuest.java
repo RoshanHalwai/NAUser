@@ -19,7 +19,7 @@ public class NammaApartmentGuest {
     private String inviterUID;
     private String profilePhoto;
     private String handedThings;
-    private String guestType;
+    private String approvalType;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -28,13 +28,13 @@ public class NammaApartmentGuest {
     public NammaApartmentGuest() {
     }
 
-    public NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID, String guestType) {
+    public NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID, String approvalType) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
         this.dateAndTimeOfVisit = dateAndTimeOfVisit;
         this.inviterUID = inviterUID;
-        this.guestType = guestType;
+        this.approvalType = approvalType;
     }
 
     /* ------------------------------------------------------------- *
@@ -73,8 +73,8 @@ public class NammaApartmentGuest {
         return status;
     }
 
-    public String getGuestType() {
-        return guestType;
+    public String getApprovalType() {
+        return approvalType;
     }
 
     /* ------------------------------------------------------------- *

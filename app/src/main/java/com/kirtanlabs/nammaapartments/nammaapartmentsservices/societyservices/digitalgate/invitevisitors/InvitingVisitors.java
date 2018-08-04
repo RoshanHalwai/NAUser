@@ -36,8 +36,8 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GUESTS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
@@ -304,7 +304,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
         /*Store Visitor's UID under User Data -> User UId*/
         DatabaseReference userVisitorReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                .child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
+                .child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID)
+                .child(FIREBASE_CHILD_PREAPPROVED_VISITORS).child(FIREBASE_CHILD_GUESTS);
         userVisitorReference.child(visitorUID).setValue(true);
 
         /*Add Visitor record under visitors->private->preApprovedVisitors*/
@@ -312,12 +313,13 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         String visitorMobile = editVisitorMobile.getText().toString();
         String visitorDateTime = editPickDateTime.getText().toString();
         NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(visitorUID,
-                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID, FIREBASE_CHILD_PREAPPROVED);
+                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID, FIREBASE_CHILD_PREAPPROVED_VISITORS);
 
         /*getting the storage reference*/
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                .child(Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS)
+                .child(FIREBASE_CHILD_GUESTS)
                 .child(nammaApartmentGuest.getUid());
 
         UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
