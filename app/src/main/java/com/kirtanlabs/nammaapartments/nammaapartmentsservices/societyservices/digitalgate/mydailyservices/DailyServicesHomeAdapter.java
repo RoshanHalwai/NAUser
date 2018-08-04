@@ -225,7 +225,13 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     .child(FIREBASE_CHILD_DAILYSERVICES);
             userDailyServiceReference.child(DailyServiceType.getKeyByValue(dailyServiceType))
                     .child(nammaApartmentDailyService.getUID())
-                    .removeValue();
+                    .setValue(false);
+
+            /*This is to ensure when user deletes the last item in the list a blank screen is not shown
+             * instead feature unavailable layout is shown*/
+            if (nammaApartmentDailyServiceList.isEmpty()) {
+                baseActivity.showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
+            }
         };
         String confirmDialogTitle = mCtx.getString(R.string.remove_daily_service_title);
         String confirmDialogMessage = mCtx.getString(R.string.daily_service_cancel);
