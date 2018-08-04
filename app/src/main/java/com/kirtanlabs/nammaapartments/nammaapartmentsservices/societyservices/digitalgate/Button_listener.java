@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
@@ -81,11 +81,13 @@ public class Button_listener extends BroadcastReceiver {
                         .child(userFlatDetails.getSocietyName())
                         .child(userFlatDetails.getApartmentName())
                         .child(userFlatDetails.getFlatNumber());
+
                 /*Here we are setting the notification status under current userdata->userFlatNumber->notifications->notificationId->status*/
                 DatabaseReference currentUserNotificationReference = currentUserDataReference
-                        .child(FIREBASE_CHILD_NOTIFICATIONS)
+                        .child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
                         .child(currentUserID);
                 currentUserNotificationReference.child(notificationUID).child(FIREBASE_CHILD_STATUS).setValue(status);
+
                 /*Here we are creating reference for storing postApproved Visitors under userdata->userFlatNumber*/
                 DatabaseReference currentUserVisitorReference = currentUserDataReference
                         .child(FIREBASE_CHILD_VISITORS)
@@ -93,6 +95,7 @@ public class Button_listener extends BroadcastReceiver {
                         .child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
                 String postApprovedVisitorUID = currentUserVisitorReference.push().getKey();
                 currentUserVisitorReference.child(postApprovedVisitorUID).setValue(true);
+
                 /*Here we are creating postApprovedVisitors Data Storage Reference under visitors->postApprovedVisitors*/
                 DatabaseReference postApprovedVisitorData = POSTAPPROVED_VISITORS_REFERENCE.child(postApprovedVisitorUID);
                 Calendar calendar = Calendar.getInstance();
@@ -101,6 +104,7 @@ public class Button_listener extends BroadcastReceiver {
                 int year = calendar.get(Calendar.YEAR);
                 int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                 int currentMinute = calendar.get(Calendar.MINUTE);
+
                 String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
                 String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", currentHour, currentMinute);
                 String concatenatedDateAndTime = formattedDate + "\t\t" + " " + formattedTime;
@@ -109,8 +113,9 @@ public class Button_listener extends BroadcastReceiver {
                 NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
                         postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED);
                 nammaApartmentGuest.setStatus(ENTERED);
+
                 /*Here we are creating reference for storing profile photo under postApprovedVisitors*/
-                DatabaseReference profilePhotoReference = currentUserDataReference.child(FIREBASE_CHILD_NOTIFICATIONS)
+                DatabaseReference profilePhotoReference = currentUserDataReference.child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
                         .child(currentUserID)
                         .child(notificationUID)
                         .child(FIREBASE_CHILD_PROFILE_PHOTO);
