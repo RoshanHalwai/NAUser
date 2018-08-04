@@ -193,33 +193,36 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
                         public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
                             /*Iterate over each of them and add listener to each of them*/
                             for (DataSnapshot dailyServicesTypeSnapshot : dailyServiceUIDSnapshot.getChildren()) {
-                                String dailyServiceUID = dailyServicesTypeSnapshot.getKey();
-                                DatabaseReference dailyServicesTypePublicReference = PUBLIC_DAILYSERVICES_REFERENCE
-                                        .child(dailyServiceUIDSnapshot.getKey())  // Daily Service Type
-                                        .child(dailyServiceUID);                  // Daily Service UID
-                                dailyServicesTypePublicReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
-                                        String dailyServiceStatus = Objects.requireNonNull(dailyServiceCountSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString();
-                                        if (dailyServiceCountSnapshot.hasChild(userUID)) {
-                                            numberOfFlats.put(dailyServiceUID, dailyServiceCountSnapshot.getChildrenCount() - 1);
-                                            DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
-                                            NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                            Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
-                                            nammaApartmentDailyService.setStatus(dailyServiceStatus);
-                                            nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
-                                            dailyServicesHomeAdapter.notifyDataSetChanged();
+                                if (Objects.requireNonNull(dailyServicesTypeSnapshot.getValue(Boolean.class)).equals(true)) {
+                                    String dailyServiceUID = dailyServicesTypeSnapshot.getKey();
+                                    DatabaseReference dailyServicesTypePublicReference = PUBLIC_DAILYSERVICES_REFERENCE
+                                            .child(dailyServiceUIDSnapshot.getKey())  // Daily Service Type
+                                            .child(dailyServiceUID);                  // Daily Service UID
+                                    dailyServicesTypePublicReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
+                                            String dailyServiceStatus = Objects.requireNonNull(dailyServiceCountSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString();
+                                            if (dailyServiceCountSnapshot.hasChild(userUID)) {
+                                                numberOfFlats.put(dailyServiceUID, dailyServiceCountSnapshot.getChildrenCount() - 1);
+                                                DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
+                                                NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
+                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
+                                                nammaApartmentDailyService.setStatus(dailyServiceStatus);
+                                                nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
+                                                dailyServicesHomeAdapter.notifyDataSetChanged();
+                                            }
+
                                         }
 
-                                    }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
+
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {

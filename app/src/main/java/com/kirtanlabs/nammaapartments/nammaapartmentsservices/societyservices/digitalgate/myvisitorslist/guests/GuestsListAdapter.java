@@ -36,6 +36,7 @@ import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
@@ -267,7 +268,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, nammaApartmentGuestList.size());
                 DatabaseReference userDataReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference();
-                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(visitorUID).setValue(false);
+                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID)
+                        .child(FIREBASE_CHILD_PREAPPROVEDVISITORS)
+                        .child(visitorUID).setValue(false);
 
                 /*This is to ensure when user deletes the last item in the list a blank screen is not shown
                  * instead feature unavailable layout is shown*/
