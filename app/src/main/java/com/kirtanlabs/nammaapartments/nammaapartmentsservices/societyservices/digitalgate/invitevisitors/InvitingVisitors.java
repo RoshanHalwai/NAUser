@@ -36,7 +36,6 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.ALL_VISITORS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -143,7 +142,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     editVisitorName.setError(null);
                     editVisitorMobile.setError(null);
                     break;
-                case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
                     Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
                     circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
@@ -213,7 +211,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * ------------------------------------------------------------- */
 
     /**
-     * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
+     * Creates a custom dialog with a list view which contains Gallery option. This
      * imageSelectionDialog is displayed when user clicks on profile image which is on top of the screen.
      */
     private void createImageSelectionDialog() {
