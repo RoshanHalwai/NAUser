@@ -87,7 +87,9 @@ public class Constants {
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
     public static final String FIREBASE_CHILD_MOBILE_NUMBER = "mobileNumber";
     public static final String FIREBASE_CHILD_OWNERS_UID = "ownersUID";
+    public static final String FIREBASE_CHILD_POSTAPPROVED = "postApproved";
     public static final String FIREBASE_CHILD_POSTAPPROVEDVISITORS = "postApprovedVisitors";
+    public static final String FIREBASE_CHILD_PREAPPROVED = "preApproved";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";

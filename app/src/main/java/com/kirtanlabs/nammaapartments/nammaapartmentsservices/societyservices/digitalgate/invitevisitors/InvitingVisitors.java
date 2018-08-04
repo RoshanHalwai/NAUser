@@ -36,6 +36,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -311,7 +312,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         String visitorMobile = editVisitorMobile.getText().toString();
         String visitorDateTime = editPickDateTime.getText().toString();
         NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(visitorUID,
-                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID);
+                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID, FIREBASE_CHILD_PREAPPROVED);
 
         /*getting the storage reference*/
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)

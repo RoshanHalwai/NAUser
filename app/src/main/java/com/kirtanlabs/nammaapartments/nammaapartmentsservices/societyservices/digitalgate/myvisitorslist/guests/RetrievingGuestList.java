@@ -6,7 +6,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
 
@@ -14,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -54,11 +57,26 @@ public class RetrievingGuestList {
      * ------------------------------------------------------------- */
 
     /**
-     *
-     * @param guestListCallback receiving result with list of all guest data of userUID present in userUIDList
-     *                          containint list of current user UID and their family members UID
+     * @param guestListCallback  receiving result with list of all guest data of userUID present in userUIDList
+     *                           which contains list of current user preApproved Visitors and PostApproved Visitors.
      */
-    public void getGuests(GuestListCallback guestListCallback) {
+    public void getPreAndPostApprovedGuests(GuestListCallback guestListCallback) {
+        List<NammaApartmentGuest> preAndPostApprovedGuestList = new ArrayList<>();
+        getPreApprovedGuests(nammaApartmentPreApprovedGuestList -> {
+            preAndPostApprovedGuestList.addAll(nammaApartmentPreApprovedGuestList);
+            count = 0;
+            getPostApprovedGuests(nammaApartmentPostApprovedGuestList -> {
+                preAndPostApprovedGuestList.addAll(nammaApartmentPostApprovedGuestList);
+                guestListCallback.onCallBack(preAndPostApprovedGuestList);
+            });
+        });
+    }
+
+    /**
+     * @param guestListCallback receiving result with list of all guest data of userUID present in userUIDList
+     *                          contains list of current user UID and their family members UID
+     */
+    private void getPreApprovedGuests(GuestListCallback guestListCallback) {
         List<NammaApartmentGuest> nammaApartmentAllGuestList = new ArrayList<>();
         isGuestReferenceExists(guestReferenceExits -> {
             if (guestReferenceExits) {
@@ -69,7 +87,30 @@ public class RetrievingGuestList {
                         if (count == userUIDList.size()) {
                             guestListCallback.onCallBack(nammaApartmentAllGuestList);
                         }
-                    }, userUID);
+                    }, userUID, false);
+                }
+            } else {
+                guestListCallback.onCallBack(nammaApartmentAllGuestList);
+            }
+        });
+    }
+
+    /**
+     * @param guestListCallback receiving result with list of all guest data of userUID present in userUIDList
+     *                          contains list of current user UID and their family members UID
+     */
+    private void getPostApprovedGuests(GuestListCallback guestListCallback) {
+        List<NammaApartmentGuest> nammaApartmentAllGuestList = new ArrayList<>();
+        isGuestReferenceExists(guestReferenceExits -> {
+            if (guestReferenceExits) {
+                for (String userUID : userUIDList) {
+                    getGuests(nammaApartmentGuestList -> {
+                        nammaApartmentAllGuestList.addAll(nammaApartmentGuestList);
+                        count++;
+                        if (count == userUIDList.size()) {
+                            guestListCallback.onCallBack(nammaApartmentAllGuestList);
+                        }
+                    }, userUID, true);
                 }
             } else {
                 guestListCallback.onCallBack(nammaApartmentAllGuestList);
@@ -85,8 +126,8 @@ public class RetrievingGuestList {
      * @param guestListCallback receiving result with list of all guest data of userUID
      * @param userUID           whose guests needs to be retrieved from firebase
      */
-    private void getGuests(GuestListCallback guestListCallback, String userUID) {
-        getGuestUIDList(guestUIDList -> getGuestsList(guestListCallback, guestUIDList), userUID);
+    private void getGuests(GuestListCallback guestListCallback, String userUID, boolean postApprovedVisitors) {
+        getGuestUIDList(guestUIDList -> getGuestsList(guestListCallback, guestUIDList, postApprovedVisitors), userUID, postApprovedVisitors);
     }
 
     /**
@@ -94,7 +135,7 @@ public class RetrievingGuestList {
      *                          guestUIDList
      * @param guestUIDList      contains the list of all guests UID whose data needs to be retrieved from firebase
      */
-    private void getGuestsList(GuestListCallback guestListCallback, List<String> guestUIDList) {
+    private void getGuestsList(GuestListCallback guestListCallback, List<String> guestUIDList, boolean postApprovedVisitors) {
         List<NammaApartmentGuest> nammaApartmentGuestList = new ArrayList<>();
         if (guestUIDList.isEmpty()) {
             guestListCallback.onCallBack(nammaApartmentGuestList);
@@ -105,7 +146,7 @@ public class RetrievingGuestList {
                     if (nammaApartmentGuestList.size() == guestUIDList.size()) {
                         guestListCallback.onCallBack(nammaApartmentGuestList);
                     }
-                }, guestUID);
+                }, guestUID, postApprovedVisitors);
             }
         }
     }
@@ -115,9 +156,15 @@ public class RetrievingGuestList {
      * @param userUID              of the particular user whose guest UID List needs to be retrieved
      *                             from firebase
      */
-    private void getGuestUIDList(GuestUIDListCallback guestUIDListCallback, String userUID) {
-        DatabaseReference guestListReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS)
-                .child(userUID).child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
+    private void getGuestUIDList(GuestUIDListCallback guestUIDListCallback, String userUID, boolean postApprovedVisitors) {
+        DatabaseReference guestListReference;
+        if (postApprovedVisitors) {
+            guestListReference = userDataReference.child(FIREBASE_CHILD_VISITORS)
+                    .child(userUID).child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
+        } else {
+            guestListReference = userDataReference.child(FIREBASE_CHILD_VISITORS)
+                    .child(userUID).child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
+        }
         guestListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,8 +188,13 @@ public class RetrievingGuestList {
      * @param guestDataCallback receiving result of the Guest Data
      * @param guestUID          UID of the Guest whose data is to be retrieved from firebase
      */
-    private void getGuestDataByUID(GuestDataCallback guestDataCallback, String guestUID) {
-        DatabaseReference guestDataReference = Constants.PREAPPROVED_VISITORS_REFERENCE.child(guestUID);
+    private void getGuestDataByUID(GuestDataCallback guestDataCallback, String guestUID, boolean postApprovedVisitors) {
+        DatabaseReference guestDataReference;
+        if (postApprovedVisitors) {
+            guestDataReference = POSTAPPROVED_VISITORS_REFERENCE.child(guestUID);
+        } else {
+            guestDataReference = PREAPPROVED_VISITORS_REFERENCE.child(guestUID);
+        }
         guestDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -161,7 +213,7 @@ public class RetrievingGuestList {
      *                                else returns false
      */
     private void isGuestReferenceExists(GuestsReferenceCallback guestsReferenceCallback) {
-        DatabaseReference guestDataReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
+        DatabaseReference guestDataReference = userDataReference.child(FIREBASE_CHILD_VISITORS);
         guestDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
