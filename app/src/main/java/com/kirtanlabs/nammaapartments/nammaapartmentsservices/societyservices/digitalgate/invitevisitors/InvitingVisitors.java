@@ -225,7 +225,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         builder.setItems(selectionOptions, (dialog, which) -> {
             switch (which) {
                 case 0:
-                    pickImageFromGallitery();
+                    pickImageFromGallery();
                     break;
                 case 1:
                     imageSelectionDialog.cancel();
