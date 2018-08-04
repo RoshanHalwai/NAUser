@@ -220,18 +220,14 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] selectionOptions = {
                 getString(R.string.gallery),
-                getString(R.string.camera),
                 getString(R.string.cancel)
         };
         builder.setItems(selectionOptions, (dialog, which) -> {
             switch (which) {
                 case 0:
-                    pickImageFromGallery();
+                    pickImageFromGallitery();
                     break;
                 case 1:
-                    launchCamera();
-                    break;
-                case 2:
                     imageSelectionDialog.cancel();
             }
         });
