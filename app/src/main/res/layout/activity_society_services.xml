@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.societyservices.societyservices.SocietyServices">
+    tools:context=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome">
 
     <include layout="@layout/activity_base" />
 
@@ -29,15 +29,16 @@
                 android:textColor="@color/nmBlack"
                 android:textSize="@dimen/text_view_default_size" />
 
-            <Spinner
-                android:id="@+id/spinnerSelectProblem"
+            <TextView
+                android:id="@+id/textSelectProblemValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_margin="@dimen/text_view_default_size"
+                android:drawableEnd="@drawable/drop_down_arrow"
+                android:drawableRight="@drawable/drop_down_arrow"
+                android:text="@string/select_any_one"
                 android:textColor="@color/nmBlack"
-                android:textSize="@dimen/edit_text_default_size" />
+                android:textSize="@dimen/text_view_default_size" />
 
             <TextView
                 android:id="@+id/textSelectSlot"

@@ -27,6 +27,7 @@ public class Constants {
     public static final String SCREEN_TITLE = "screen_title";
     public static final String SERVICE_TYPE = "service_type";
     public static final String IN_PROGRESS = "in progress";
+    public static final String SOCIETY_SERVICE_PROBLEM = "society_service_problem";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -84,6 +85,9 @@ public class Constants {
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
+    public static final String FIREBASE_CHILD_MOBILE_NUMBER = "mobileNumber";
+    public static final String FIREBASE_CHILD_OWNERS_UID = "ownersUID";
+    public static final String FIREBASE_CHILD_POSTAPPROVEDVISITORS = "postApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVEDVISITORS = "preApprovedVisitors";
     private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
@@ -142,6 +146,7 @@ public class Constants {
     public static final DatabaseReference PUBLIC_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORS);
     public static final DatabaseReference PREAPPROVED_VISITORS_MOBILE_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
+    public static final DatabaseReference POSTAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_POSTAPPROVEDVISITORS);
 
 
     /* ------------------------------------------------------------- *
@@ -162,6 +167,7 @@ public class Constants {
     public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
     public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
     static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
+    public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
     static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
     /* ------------------------------------------------------------- *

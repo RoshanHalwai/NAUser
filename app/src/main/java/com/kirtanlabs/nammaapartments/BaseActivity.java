@@ -407,9 +407,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         alertNotifyGateDialog.setTitle(title);
         alertNotifyGateDialog.setMessage(message);
         if (intent == null) {
-            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
+            alertNotifyGateDialog.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
         } else {
-            alertNotifyGateDialog.setPositiveButton("Ok", (dialog, which) -> startActivity(intent));
+            alertNotifyGateDialog.setPositiveButton("OK", (dialog, which) -> startActivity(intent));
         }
 
         new Dialog(this);

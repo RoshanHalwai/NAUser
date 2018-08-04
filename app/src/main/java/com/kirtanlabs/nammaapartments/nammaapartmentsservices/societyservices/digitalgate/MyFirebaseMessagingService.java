@@ -70,6 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             acceptButtonIntent.putExtra("Notification_Id", mNotificationID);
             acceptButtonIntent.putExtra("Notification_UID", notificationUID);
             acceptButtonIntent.putExtra("User_UID", userUID);
+            acceptButtonIntent.putExtra("Message", message);
             PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(this, 123, acceptButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.buttonAccept, acceptPendingIntent);
 

@@ -267,13 +267,13 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
         fbAuth.signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(this, (task) -> {
+                    hideProgressDialog();
                     if (task.isSuccessful()) {
                         if (previousScreenTitle == R.string.login) {
                             userPrivateInfo = Constants.ALL_USERS_REFERENCE.child(userMobileNumber);
                             userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    hideProgressDialog();
                                     /* Check if User mobile number is found in database */
                                     if (dataSnapshot.exists()) {
                                         startActivity(new Intent(OTP.this, NammaApartmentsHome.class));

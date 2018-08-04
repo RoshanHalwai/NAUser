@@ -155,7 +155,7 @@
     <string name="remove_guest_message">Are you sure you want to remove this Guest data from the list?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
+    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there Fare no guests at your flat.</string>
     <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
 
     <!--Cabs List And PackagesList Activity-->
@@ -320,14 +320,15 @@
     <string name="updating_profile">Updating your profile</string>
     <string name="update_message">Update Message</string>
     <string name="update_success_message">You have successfully updated your profile</string>
-    <string name="admin_change_key">Are you sure you want to make person as Admin? Note: Your admin privileges will be transferred to person.</string>
+    <string name="no_update_message">You have not made any changes to your profile </string>
+    <string name="admin_change_key">Are you sure you want to make person as Admin? \nNote: Your admin privileges will be transferred to person.</string>
     <string name="no_flat_members">"Sorry there are no flat members added to your flat."</string>
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
     <string name="admin_notification">You are the Administrator</string>
 
-    <!--SocietyServices Activity-->
+    <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
     <string name="request_carpenter">Request Carpenter</string>
     <string name="request_electrician">Request Electrician</string>
@@ -337,9 +338,10 @@
     <string name="morning_slot">9AM - 12PM</string>
     <string name="noon_slot">12PM - 3PM</string>
     <string name="evening_slot">3PM - 5PM</string>
+    <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
+    <string name="society_service_unavailable_message">Sorry you cannot use this feature since currently there has not been any Society Service at your flat so far.</string>
 
     <string-array name="plumbing_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/dripping_faucets</item>
         <item>@string/slow_draining_sink</item>
         <item>@string/clogged_bath_or_shower_drain</item>
@@ -365,7 +367,6 @@
     <string name="sewer_system_backup">Sewer system backup</string>
 
     <string-array name="electrical_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/frequent_electrical_surge</item>
         <item>@string/sags_and_dips_in_power</item>
         <item>@string/light_switches_not_working_properly</item>
@@ -389,7 +390,6 @@
     <string name="recessed_light_goes_out_and_comes_back_on">Recessed Light ‘Goes Out’ and comes back on</string>
 
     <string-array name="carpentry_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/carpentry_finish_appears_uneven</item>
         <item>@string/split_in_the_wood</item>
         <item>@string/weak_joints</item>
@@ -445,4 +445,10 @@
     <string name="ganesha_festival">Ganesha Festival</string>
     <string name="notice_board_message">All our beloved apartment members ,on behalf of the organizing team ,i have the pleasure of inviting you to the ganesha festival on 13th sep</string>
     <string name="in_charge">Committee</string>
+
+    <!--Awaiting Response Activity-->
+    <string name="society_service_accepted_request">Your request has been accepted.</string>
+    <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
+    <string name="no_response_yet">Plumber has not Responded Yet</string>
+
 </resources>

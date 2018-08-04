@@ -39,6 +39,7 @@ import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_MOBILE_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -324,6 +325,9 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         uploadTask.addOnSuccessListener(taskSnapshot -> {
             /*creating the upload object to store uploaded image details*/
             nammaApartmentGuest.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
+
+            /*Setting Status as NOT_ENTERED For PreApproved Visitors */
+            nammaApartmentGuest.setStatus(NOT_ENTERED);
 
             /*adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID*/
             DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());

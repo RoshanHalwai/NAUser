@@ -18,6 +18,7 @@ public class NammaApartmentSocietyServices {
     private String notificationUID;
     private String status;
     private String takenBy;
+    private String endOTP;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -27,13 +28,14 @@ public class NammaApartmentSocietyServices {
     }
 
     NammaApartmentSocietyServices(String problem, String timeSlot, String userUID, String societyServiceType,
-                                  String notificationUID, String status) {
+                                  String notificationUID, String status, String endOTP) {
         this.problem = problem;
         this.timeSlot = timeSlot;
         this.userUID = userUID;
         this.societyServiceType = societyServiceType;
         this.notificationUID = notificationUID;
         this.status = status;
+        this.endOTP = endOTP;
     }
 
     /* ------------------------------------------------------------- *
@@ -68,7 +70,8 @@ public class NammaApartmentSocietyServices {
         return takenBy;
     }
 
-    public void setTakenBy(String takenBy) {
-        this.takenBy = takenBy;
+    public String getEndOTP() {
+        return endOTP;
     }
+
 }

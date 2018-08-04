@@ -8,6 +8,7 @@
     <include layout="@layout/activity_base" />
 
     <LinearLayout
+        android:id="@+id/layoutAwaitingResponse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="Notification has been sent to the User"
+            android:text="@string/notification_sent_to_society_service"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -33,14 +34,143 @@
             app:indicatorName="BallSpinFadeLoaderIndicator" />
 
         <TextView
-            android:id="@+id/textUserResponse"
+            android:id="@+id/textPlumberResponse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="User has not Responded Yet"
+            android:text="@string/no_response_yet"
             android:textColor="#000000"
             android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutAcceptedResponse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardSocietyService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/request_accepted" />
+
+                <TextView
+                    android:id="@+id/textSocietyServiceAcceptedRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/society_service_accepted_request"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/layoutTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textSocietyServiceName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/name"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+
+                        <TextView
+                            android:id="@+id/textMobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/mobile"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/textEndOTP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="OTP:"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutTitleValues"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textSocietyServiceNameValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="2dp"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/textMobileNumberValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="2dp"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/textEndOTPValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="2dp"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
     </LinearLayout>
 
 </LinearLayout>
