@@ -123,6 +123,7 @@ public class Constants {
      * ------------------------------------------------------------- */
 
     public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
+    public static final String FIREBASE_CHILD_REJECTED = "Rejected";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References

@@ -93,6 +93,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Intent rejectButtonIntent = new Intent(REJECT_BUTTON_CLICKED);
             rejectButtonIntent.putExtra(NOTIFICATION_ID, mNotificationID);
+            rejectButtonIntent.putExtra(NOTIFICATION_UID, notificationUID);
+            rejectButtonIntent.putExtra(USER_UID, userUID);
+            rejectButtonIntent.putExtra(VISITOR_TYPE, visitorType);
             PendingIntent rejectPendingIntent = PendingIntent.getBroadcast(this, 123, rejectButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.buttonReject, rejectPendingIntent);
 
