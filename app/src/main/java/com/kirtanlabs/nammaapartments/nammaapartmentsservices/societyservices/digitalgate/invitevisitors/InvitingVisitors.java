@@ -35,14 +35,13 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.kirtanlabs.nammaapartments.Constants.ALL_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GUESTS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
-import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_MOBILE_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -298,14 +297,13 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 getResources().getString(R.string.please_wait_a_moment));
 
         /*Map Mobile number with visitor's UID*/
-        DatabaseReference preApprovedVisitorsMobileNumberReference = PREAPPROVED_VISITORS_MOBILE_REFERENCE;
+        DatabaseReference preApprovedVisitorsMobileNumberReference = ALL_VISITORS_REFERENCE;
         String visitorUID = preApprovedVisitorsMobileNumberReference.push().getKey();
         preApprovedVisitorsMobileNumberReference.child(mobileNumber).setValue(visitorUID);
 
         /*Store Visitor's UID under User Data -> User UId*/
         DatabaseReference userVisitorReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                .child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID)
-                .child(FIREBASE_CHILD_PREAPPROVED_VISITORS).child(FIREBASE_CHILD_GUESTS);
+                .child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID);
         userVisitorReference.child(visitorUID).setValue(true);
 
         /*Add Visitor record under visitors->private->preApprovedVisitors*/
@@ -318,8 +316,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         /*getting the storage reference*/
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Constants.FIREBASE_CHILD_PREAPPROVED_VISITORS)
-                .child(FIREBASE_CHILD_GUESTS)
                 .child(nammaApartmentGuest.getUid());
 
         UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
@@ -333,7 +329,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             nammaApartmentGuest.setStatus(NOT_ENTERED);
 
             /*adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID*/
-            DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());
+            DatabaseReference preApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());
             preApprovedVisitorData.setValue(nammaApartmentGuest);
 
             /*dismissing the progress dialog*/

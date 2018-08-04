@@ -33,8 +33,8 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.MESSAGE;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_ID;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_UID;
-import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.REJECT_BUTTON_CLICKED;
 import static com.kirtanlabs.nammaapartments.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.Constants.VISITOR_PROFILE_PHOTO;
@@ -108,9 +108,7 @@ public class Button_listener extends BroadcastReceiver {
                 /*Here we are creating reference for storing postApproved Visitors under userdata->userFlatNumber*/
                 DatabaseReference currentUserVisitorReference = currentUserDataReference
                         .child(FIREBASE_CHILD_VISITORS)
-                        .child(currentUserID)
-                        .child(FIREBASE_CHILD_POSTAPPROVED_VISITORS)
-                        .child(visitorType);
+                        .child(currentUserID);
 
                 /*We do not create new UID for post approved visitors instead we use the notification UID to
                  * identify each visitor*/
@@ -132,7 +130,7 @@ public class Button_listener extends BroadcastReceiver {
                 String postApprovedVisitorName = separatedVisitorName[0];
 
                 /*Creating instance of Namma Apartment Guest*/
-                DatabaseReference postApprovedVisitorData = POSTAPPROVED_VISITORS_REFERENCE.child(postApprovedVisitorUID);
+                DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
                 NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
                         postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED_VISITORS);
                 nammaApartmentGuest.setStatus(ENTERED);

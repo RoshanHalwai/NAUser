@@ -86,7 +86,6 @@ public class Constants {
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
-    public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
@@ -95,7 +94,6 @@ public class Constants {
     public static final String FIREBASE_CHILD_OWNERS_UID = "ownersUID";
     public static final String FIREBASE_CHILD_POSTAPPROVED_VISITORS = "postApprovedVisitors";
     public static final String FIREBASE_CHILD_PREAPPROVED_VISITORS = "preApprovedVisitors";
-    private static final String FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER = "preApprovedVisitorsMobileNumber";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_DATA = "data";
     public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";
@@ -149,16 +147,15 @@ public class Constants {
     public static final DatabaseReference PRIVATE_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PRIVATE_DELIVERY_REFERENCE = DELIVERIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PRIVATE_EMERGENCY_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+    public static final DatabaseReference PRIVATE_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_USERS_REFERENCE = USER_REFERENCE.child(FIREBASE_CHILD_ALL);
     private static final DatabaseReference ALL_DAILYSERVICES_REFERENCE = DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL);
+    public static final DatabaseReference ALL_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference PUBLIC_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PUBLIC_DELIVERIES_REFERENCE = DELIVERIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PRIVATE_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PUBLIC_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
-    public static final DatabaseReference PREAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVED_VISITORS);
-    public static final DatabaseReference PREAPPROVED_VISITORS_MOBILE_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PREAPPROVEDVISITORSMOBILENUMBER);
-    public static final DatabaseReference POSTAPPROVED_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_POSTAPPROVED_VISITORS);
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
