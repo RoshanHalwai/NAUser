@@ -40,7 +40,7 @@ public class GuestsList extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         /*Retrieve Guest data*/
-        new RetrievingGuestList(GuestsList.this, false).getGuests(nammaApartmentGuestList -> {
+        new RetrievingGuestList(GuestsList.this, false).getPreAndPostApprovedGuests(nammaApartmentGuestList -> {
             hideProgressIndicator();
             if (nammaApartmentGuestList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.visitors_unavailable_message);

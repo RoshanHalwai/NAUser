@@ -19,6 +19,7 @@ public class NammaApartmentGuest {
     private String inviterUID;
     private String profilePhoto;
     private String handedThings;
+    private String guestType;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -27,12 +28,13 @@ public class NammaApartmentGuest {
     public NammaApartmentGuest() {
     }
 
-    public NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID) {
+    public NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID, String guestType) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
         this.dateAndTimeOfVisit = dateAndTimeOfVisit;
         this.inviterUID = inviterUID;
+        this.guestType = guestType;
     }
 
     /* ------------------------------------------------------------- *
@@ -69,6 +71,10 @@ public class NammaApartmentGuest {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getGuestType() {
+        return guestType;
     }
 
     /* ------------------------------------------------------------- *
