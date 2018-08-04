@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
@@ -30,6 +29,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_HANDED_THINGS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED;
+import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -228,10 +230,17 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
                     handedThingsHistoryIntent.putExtra(SCREEN_TITLE, R.string.my_guests);
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentGuest.setHandedThings(handedThingsDescription);
-                    DatabaseReference preApprovedVisitorReference = Constants.PREAPPROVED_VISITORS_REFERENCE
-                            .child(nammaApartmentGuest.getUid());
-                    preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)
-                            .setValue(handedThingsDescription);
+                    if (nammaApartmentGuest.getGuestType().equals(FIREBASE_CHILD_PREAPPROVED)) {
+                        DatabaseReference preApprovedVisitorReference = PREAPPROVED_VISITORS_REFERENCE
+                                .child(nammaApartmentGuest.getUid());
+                        preApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)
+                                .setValue(handedThingsDescription);
+                    } else {
+                        DatabaseReference postApprovedVisitorReference = POSTAPPROVED_VISITORS_REFERENCE
+                                .child(nammaApartmentGuest.getUid());
+                        postApprovedVisitorReference.child(FIREBASE_CHILD_HANDED_THINGS)
+                                .setValue(handedThingsDescription);
+                    }
 
                     /*We make sure the Card View is reset to its normal form once user gets navigated
                      * to Handed Things to Guests History screen*/
