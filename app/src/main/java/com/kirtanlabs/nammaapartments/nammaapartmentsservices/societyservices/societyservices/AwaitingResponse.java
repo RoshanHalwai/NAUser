@@ -93,7 +93,7 @@ public class AwaitingResponse extends BaseActivity {
                     if (nammaApartmentSocietyServices.getTakenBy() != null) {
                         String societyServiceUID = nammaApartmentSocietyServices.getTakenBy();
                         String endOTP = nammaApartmentSocietyServices.getEndOTP();
-                        DatabaseReference societyServiceDataReference = Constants.SOCIETYSERVICES_REFERENCE
+                        DatabaseReference societyServiceDataReference = Constants.SOCIETY_SERVICES_REFERENCE
                                 .child(societyServiceType)
                                 .child(FIREBASE_CHILD_PRIVATE)
                                 .child(Constants.FIREBASE_CHILD_DATA)
