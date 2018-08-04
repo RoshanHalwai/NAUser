@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_NOTIFICATIONS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVEDVISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
@@ -106,7 +107,7 @@ public class Button_listener extends BroadcastReceiver {
                 String separatedVisitorName[] = TextUtils.split(visitorName, " ");
                 String postApprovedVisitorName = separatedVisitorName[0];
                 NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
-                        postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID);
+                        postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED);
                 nammaApartmentGuest.setStatus(ENTERED);
                 /*Here we are creating reference for storing profile photo under postApprovedVisitors*/
                 DatabaseReference profilePhotoReference = currentUserDataReference.child(FIREBASE_CHILD_NOTIFICATIONS)

@@ -35,6 +35,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
@@ -91,6 +92,10 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         /*If Guest has not arrived we change cancel text with appropriate text */
         if (nammaApartmentGuest.getStatus().equals(NOT_ENTERED)) {
             holder.textCancel.setText(mCtx.getString(R.string.cancel));
+        }
+
+        if (nammaApartmentGuest.getGuestType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
+            holder.textInvitedBy.setText(R.string.approver);
         }
 
         String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
