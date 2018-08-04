@@ -26,6 +26,7 @@ import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ACCEPTED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_REJECTED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
@@ -34,6 +35,7 @@ import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_ID;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.Constants.POSTAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.REJECT_BUTTON_CLICKED;
 import static com.kirtanlabs.nammaapartments.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.Constants.VISITOR_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.Constants.VISITOR_TYPE;
@@ -46,20 +48,25 @@ public class Button_listener extends BroadcastReceiver {
 
     private String currentUserID, visitorName, visitorProfilePhoto, visitorType;
     private String notificationUID;
+    private String notificationResponse;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null) {
             String action = intent.getAction();
             int notificationId = intent.getExtras().getInt(NOTIFICATION_ID);
-            if (action.equals(ACCEPT_BUTTON_CLICKED)) {
-                notificationUID = Objects.requireNonNull(intent.getExtras()).getString(NOTIFICATION_UID);
+            /*Get current user UID from Messaging Service*/
+            notificationUID = intent.getExtras().getString(NOTIFICATION_UID);
+            currentUserID = intent.getExtras().getString(USER_UID);
+            visitorName = intent.getExtras().getString(MESSAGE);
+            visitorType = intent.getExtras().getString(VISITOR_TYPE);
 
-                /*Get current user UID from Messaging Service*/
-                currentUserID = intent.getExtras().getString(USER_UID);
-                visitorName = intent.getExtras().getString(MESSAGE);
-                visitorType = intent.getExtras().getString(VISITOR_TYPE);
+            if (action.equals(ACCEPT_BUTTON_CLICKED)) {
+                notificationResponse = FIREBASE_CHILD_ACCEPTED;
                 visitorProfilePhoto = intent.getExtras().getString(VISITOR_PROFILE_PHOTO);
+                replyNotification();
+            } else {
+                notificationResponse = REJECT_BUTTON_CLICKED;
                 replyNotification();
             }
 
@@ -83,12 +90,20 @@ public class Button_listener extends BroadcastReceiver {
                         .child(userFlatDetails.getApartmentName())
                         .child(userFlatDetails.getFlatNumber());
 
-                /*Here we are setting the notification status under current userdata->userFlatNumber->notifications->notificationId->status*/
+                /*Here we are setting the notification status so that Guard gets notified and allow visitor to enter the society*/
                 DatabaseReference currentUserNotificationReference = currentUserDataReference
                         .child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
                         .child(currentUserID)
-                        .child(visitorType);
-                currentUserNotificationReference.child(notificationUID).child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_ACCEPTED);
+                        .child(visitorType)
+                        .child(notificationUID);
+
+                /*We wouldn't want to store visitors data if user has clicked on reject button*/
+                if (notificationResponse.equals(REJECT_BUTTON_CLICKED)) {
+                    currentUserNotificationReference.child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_REJECTED);
+                    return;
+                }
+
+                currentUserNotificationReference.child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_ACCEPTED);
 
                 /*Here we are creating reference for storing postApproved Visitors under userdata->userFlatNumber*/
                 DatabaseReference currentUserVisitorReference = currentUserDataReference
