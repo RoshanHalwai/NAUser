@@ -46,7 +46,7 @@ import static com.kirtanlabs.nammaapartments.Constants.VISITOR_TYPE;
  */
 public class Button_listener extends BroadcastReceiver {
 
-    private String currentUserID, visitorName, visitorProfilePhoto, visitorType;
+    private String currentUserID, message, visitorProfilePhoto, visitorType;
     private String notificationUID;
     private String notificationResponse;
 
@@ -58,7 +58,7 @@ public class Button_listener extends BroadcastReceiver {
             /*Get current user UID from Messaging Service*/
             notificationUID = intent.getExtras().getString(NOTIFICATION_UID);
             currentUserID = intent.getExtras().getString(USER_UID);
-            visitorName = intent.getExtras().getString(MESSAGE);
+            message = intent.getExtras().getString(MESSAGE);
             visitorType = intent.getExtras().getString(VISITOR_TYPE);
 
             if (action.equals(ACCEPT_BUTTON_CLICKED)) {
@@ -126,8 +126,7 @@ public class Button_listener extends BroadcastReceiver {
                 String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
                 String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", currentHour, currentMinute);
                 String concatenatedDateAndTime = formattedDate + "\t\t" + " " + formattedTime;
-                String separatedVisitorName[] = TextUtils.split(visitorName, " ");
-                String postApprovedVisitorName = separatedVisitorName[0];
+                String postApprovedVisitorName = getValueFromMessage(message);
 
                 /*Creating instance of Namma Apartment Guest*/
                 DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
@@ -144,6 +143,20 @@ public class Button_listener extends BroadcastReceiver {
             }
         });
 
+    }
+
+    private String getValueFromMessage(String message) {
+
+        String separatedVisitorName[] = TextUtils.split(message, " ");
+        StringBuilder postApprovedVisitorName = new StringBuilder();
+        for (int i = 2; i < separatedVisitorName.length; i++) {
+            postApprovedVisitorName.append(separatedVisitorName[i]);
+            if (separatedVisitorName[i + 1].equals("wants")) {
+                break;
+            }
+            postApprovedVisitorName.append(" ");
+        }
+        return postApprovedVisitorName.toString();
     }
 
 }
