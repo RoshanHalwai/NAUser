@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         android:inputType="textVisiblePassword"
-        android:queryHint="@string/select_any_one" />
+        android:queryHint="@string/search" />
 
     <ListView
         android:id="@+id/listView"

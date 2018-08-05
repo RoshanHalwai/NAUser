@@ -24,21 +24,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/select_problem"
                 android:textColor="@color/nmBlack"
                 android:textSize="@dimen/text_view_default_size" />
 
-            <TextView
-                android:id="@+id/textSelectProblemValue"
+            <EditText
+                android:id="@+id/editTextSelectProblem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_view_default_size"
-                android:drawableEnd="@drawable/drop_down_arrow"
-                android:drawableRight="@drawable/drop_down_arrow"
-                android:text="@string/select_any_one"
+                android:layout_margin="15dp"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:textColorHint="@color/nmLightBlack"
                 android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/textSelectSlot"
