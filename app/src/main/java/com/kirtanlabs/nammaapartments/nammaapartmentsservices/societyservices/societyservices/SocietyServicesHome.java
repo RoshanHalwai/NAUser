@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     private int screenTitle;
     private String problem;
     private Button selectedButton;
-    private TextView textSelectProblemValue;
+    private EditText editTextSelectProblem;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -58,19 +59,19 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         /*Getting Id's for all the views*/
-        TextView textSelectProblem = findViewById(R.id.textSelectProblem);
         TextView textSelectSlot = findViewById(R.id.textSelectSlot);
-        textSelectProblemValue = findViewById(R.id.textSelectProblemValue);
+        TextView textSelectProblem = findViewById(R.id.textSelectProblem);
         Button buttonImmediately = findViewById(R.id.buttonImmediately);
         Button buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
         Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
         Button buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
         Button buttonRequestService = findViewById(R.id.buttonRequestService);
+        editTextSelectProblem = findViewById(R.id.editTextSelectProblem);
 
         /*Setting font for all the views*/
         textSelectProblem.setTypeface(setLatoBoldFont(this));
         textSelectSlot.setTypeface(setLatoBoldFont(this));
-        textSelectProblemValue.setTypeface(setLatoRegularFont(this));
+        editTextSelectProblem.setTypeface(setLatoRegularFont(this));
         buttonImmediately.setTypeface(setLatoRegularFont(this));
         buttonMorningSlot.setTypeface(setLatoRegularFont(this));
         buttonNoonSlot.setTypeface(setLatoRegularFont(this));
@@ -93,7 +94,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         }
 
         /*Setting event for views*/
-        textSelectProblemValue.setOnClickListener(this);
+        editTextSelectProblem.setOnClickListener(this);
         buttonImmediately.setOnClickListener(this);
         buttonMorningSlot.setOnClickListener(this);
         buttonNoonSlot.setOnClickListener(this);
@@ -117,7 +118,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.textSelectProblemValue:
+            case R.id.editTextSelectProblem:
                 Intent intent = new Intent(SocietyServicesHome.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
                 startActivityForResult(intent, SELECT_SOCIETY_SERVICE_REQUEST_CODE);
@@ -150,7 +151,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
             problem = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
-            textSelectProblemValue.setText(problem);
+            editTextSelectProblem.setText(problem);
         }
     }
 

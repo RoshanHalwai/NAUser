@@ -353,8 +353,9 @@
         <item>@string/jammed_garbage_disposal</item>
         <item>@string/leaky_pipes</item>
         <item>@string/sewer_system_backup</item>
+        <item>@string/others</item>
     </string-array>
-    <string name="select_any_one">Select any one</string>
+    <string name="search">Search</string>
     <string name="select_from_here">Select</string>
     <string name="dripping_faucets">Dripping faucets</string>
     <string name="slow_draining_sink">Slow draining sink</string>
@@ -366,6 +367,7 @@
     <string name="jammed_garbage_disposal">Jammed garbage disposal</string>
     <string name="leaky_pipes">Leaky pipes</string>
     <string name="sewer_system_backup">Sewer system backup</string>
+    <string name="others">Others</string>
 
     <string-array name="electrical_issues_list">
         <item>@string/frequent_electrical_surge</item>
@@ -378,6 +380,7 @@
         <item>@string/high_electrical_bill</item>
         <item>@string/light_bulbs_burning_out_too_often</item>
         <item>@string/recessed_light_goes_out_and_comes_back_on</item>
+        <item>@string/others</item>
     </string-array>
     <string name="frequent_electrical_surge">Frequent Electrical Surge</string>
     <string name="sags_and_dips_in_power">Sags and Dips in Power</string>
@@ -396,6 +399,7 @@
         <item>@string/weak_joints</item>
         <item>@string/dents_in_wood</item>
         <item>@string/glue_stuck</item>
+        <item>@string/others</item>
     </string-array>
     <string name="unable_to_open_drawers_and_doors">Unable to open drawers and doors</string>
     <string name="carpentry_finish_appears_uneven">Carpentry finish appears uneven</string>
