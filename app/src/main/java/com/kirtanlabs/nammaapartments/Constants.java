@@ -85,6 +85,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
+    public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
@@ -92,8 +93,9 @@ public class Constants {
     public static final String FIREBASE_CHILD_MILKMEN = "milkmen";
     public static final String FIREBASE_CHILD_MOBILE_NUMBER = "mobileNumber";
     public static final String FIREBASE_CHILD_OWNERS_UID = "ownersUID";
-    public static final String FIREBASE_CHILD_POSTAPPROVED_VISITORS = "postApprovedVisitors";
-    public static final String FIREBASE_CHILD_PREAPPROVED_VISITORS = "preApprovedVisitors";
+    public static final String FIREBASE_CHILD_PACKAGES = "packages";
+    public static final String FIREBASE_CHILD_POSTAPPROVED = "postApproved";
+    public static final String FIREBASE_CHILD_PREAPPROVED = "preApproved";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_DATA = "data";
     public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";

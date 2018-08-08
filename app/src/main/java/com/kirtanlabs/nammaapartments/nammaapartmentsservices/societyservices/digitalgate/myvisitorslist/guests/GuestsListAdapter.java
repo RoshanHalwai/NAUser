@@ -35,7 +35,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
@@ -94,7 +94,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             holder.textCancel.setText(mCtx.getString(R.string.cancel));
         }
 
-        if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED_VISITORS)) {
+        if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
             holder.textInvitedBy.setText(R.string.approver);
         }
 

@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.arrivals.NammaApartmentArrival;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 
@@ -24,8 +25,11 @@ import java.util.Objects;
 import static com.kirtanlabs.nammaapartments.Constants.ACCEPT_BUTTON_CLICKED;
 import static com.kirtanlabs.nammaapartments.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_ACCEPTED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_GUESTS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_REJECTED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
@@ -33,6 +37,8 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.MESSAGE;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_ID;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_UID;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_CABS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.REJECT_BUTTON_CLICKED;
@@ -52,7 +58,7 @@ public class Button_listener extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction() != null) {
+        if (intent.getAction() != null && intent.getExtras() != null) {
             String action = intent.getAction();
             int notificationId = intent.getExtras().getInt(NOTIFICATION_ID);
             /*Get current user UID from Messaging Service*/
@@ -106,9 +112,24 @@ public class Button_listener extends BroadcastReceiver {
                 currentUserNotificationReference.child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_ACCEPTED);
 
                 /*Here we are creating reference for storing postApproved Visitors under userdata->userFlatNumber*/
-                DatabaseReference currentUserVisitorReference = currentUserDataReference
-                        .child(FIREBASE_CHILD_VISITORS)
-                        .child(currentUserID);
+                DatabaseReference currentUserVisitorReference;
+                switch (visitorType) {
+                    case FIREBASE_CHILD_GUESTS:
+                        currentUserVisitorReference = currentUserDataReference
+                                .child(FIREBASE_CHILD_VISITORS)
+                                .child(currentUserID);
+                        break;
+                    case FIREBASE_CHILD_CABS:
+                        currentUserVisitorReference = currentUserDataReference
+                                .child(FIREBASE_CHILD_CABS)
+                                .child(currentUserID);
+                        break;
+                    default:
+                        currentUserVisitorReference = currentUserDataReference
+                                .child(FIREBASE_CHILD_DELIVERIES)
+                                .child(currentUserID);
+                        break;
+                }
 
                 /*We do not create new UID for post approved visitors instead we use the notification UID to
                  * identify each visitor*/
@@ -126,15 +147,34 @@ public class Button_listener extends BroadcastReceiver {
                 String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
                 String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", currentHour, currentMinute);
                 String concatenatedDateAndTime = formattedDate + "\t\t" + " " + formattedTime;
-                String postApprovedVisitorName = getValueFromMessage(message);
 
-                /*Creating instance of Namma Apartment Guest*/
-                DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
-                NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
-                        postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED_VISITORS);
-                nammaApartmentGuest.setStatus(ENTERED);
-                nammaApartmentGuest.setProfilePhoto(visitorProfilePhoto);
-                postApprovedVisitorData.setValue(nammaApartmentGuest);
+                if (visitorType.equals(FIREBASE_CHILD_GUESTS)) {
+                    String postApprovedVisitorName = getValueFromMessage(message, 2);
+
+                    /*Creating instance of Namma Apartment Guest*/
+                    DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
+                    NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
+                            postApprovedVisitorName, null, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                    nammaApartmentGuest.setStatus(ENTERED);
+                    nammaApartmentGuest.setProfilePhoto(visitorProfilePhoto);
+                    postApprovedVisitorData.setValue(nammaApartmentGuest);
+                } else if (visitorType.equals(FIREBASE_CHILD_CABS)) {
+                    String cabNumber = TextUtils.split(message, " ")[3];
+                    /*Creating instance of Namma Apartment Cab*/
+                    DatabaseReference postApprovedVisitorData = PRIVATE_CABS_REFERENCE.child(postApprovedVisitorUID);
+                    NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
+                            cabNumber, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                    nammaApartmentArrival.setStatus(ENTERED);
+                    postApprovedVisitorData.setValue(nammaApartmentArrival);
+                } else {
+                    String packageVendor = getValueFromMessage(message, 3);
+                    /*Creating instance of Namma Apartment Cab*/
+                    DatabaseReference postApprovedVisitorData = PRIVATE_DELIVERIES_REFERENCE.child(postApprovedVisitorUID);
+                    NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
+                            packageVendor, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                    nammaApartmentArrival.setStatus(ENTERED);
+                    postApprovedVisitorData.setValue(nammaApartmentArrival);
+                }
             }
 
             @Override
@@ -145,11 +185,10 @@ public class Button_listener extends BroadcastReceiver {
 
     }
 
-    private String getValueFromMessage(String message) {
-
+    private String getValueFromMessage(String message, int index) {
         String separatedVisitorName[] = TextUtils.split(message, " ");
         StringBuilder postApprovedVisitorName = new StringBuilder();
-        for (int i = 2; i < separatedVisitorName.length; i++) {
+        for (int i = index; i < separatedVisitorName.length; i++) {
             postApprovedVisitorName.append(separatedVisitorName[i]);
             if (separatedVisitorName[i + 1].equals("wants")) {
                 break;
