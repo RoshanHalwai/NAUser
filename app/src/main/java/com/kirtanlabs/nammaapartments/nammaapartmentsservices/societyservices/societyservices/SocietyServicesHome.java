@@ -35,7 +35,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
     private int screenTitle;
-    private String problem;
+    private String problem, societyServiceType;
     private Button selectedButton;
     private EditText editTextSelectProblem;
 
@@ -93,6 +93,13 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 buttonRequestService.setText(R.string.request_electrician);
         }
 
+        societyServiceType = getString(screenTitle).toLowerCase();
+
+        /*Since we have History button here, we would want users to navigate to history and take a look at their
+         * History of that particular Society Service*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+
         /*Setting event for views*/
         editTextSelectProblem.setOnClickListener(this);
         buttonImmediately.setOnClickListener(this);
@@ -100,15 +107,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonNoonSlot.setOnClickListener(this);
         buttonEveningSlot.setOnClickListener(this);
         buttonRequestService.setOnClickListener(this);
-
-        /*Since we have History button here, we would want users to navigate to history and take a look at their
-         * History of that particular Society Service*/
-        ImageView historyButton = findViewById(R.id.historyButton);
-        historyButton.setVisibility(View.VISIBLE);
-        historyButton.setOnClickListener(v -> {
-            Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
-            startActivity(societyServiceHistoryIntent);
-        });
+        historyButton.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -137,6 +136,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.buttonRequestService:
                 storeSocietyServiceDetails();
+                break;
+            case R.id.historyButton:
+                Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
+                societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
+                startActivity(societyServiceHistoryIntent);
                 break;
         }
     }
@@ -187,11 +191,10 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         /*Getting the data entered by user while logging the Society Service issue*/
         String userUID = NammaApartmentsGlobal.userUID;
         String timeSlot = selectedButton.getText().toString();
-        String societyServiceType = getString(screenTitle).toLowerCase();
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS, null);
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
         societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
 
         /*Storing time stamp to keep track of notifications*/

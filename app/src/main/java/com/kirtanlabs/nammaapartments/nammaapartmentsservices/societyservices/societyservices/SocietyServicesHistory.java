@@ -5,11 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.GuestsHistoryAdapter;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory;
-
-import java.util.List;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -18,7 +15,9 @@ import java.util.List;
 
 public class SocietyServicesHistory extends BaseActivity {
 
-    private SocietyServiceHistoryAdapter societyServiceHistoryAdapter;
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -39,22 +38,18 @@ public class SocietyServicesHistory extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        RetrievingSocietyServiceHistoryList retrievingSocietyServiceHistoryList = new RetrievingSocietyServiceHistoryList();
-        retrievingSocietyServiceHistoryList.getHistoryNotificationDataList(new RetrievingSocietyServiceHistoryList.HistoryNotificationDataListCallback() {
-            @Override
-            public void onCallback(List<NammaApartmentSocietyServices> historyNotificationDataList) {
-                if (historyNotificationDataList == null) {
-                    showFeatureUnavailableLayout(R.string.society_service_unavailable_message);
-                } else {
-                    for (NammaApartmentSocietyServices nammaApartmentSocietyServices : historyNotificationDataList) {
-                        if (nammaApartmentSocietyServices.getSocietyServiceType() == "plumber") {
-                            societyServiceHistoryAdapter = new SocietyServiceHistoryAdapter(historyNotificationDataList, SocietyServicesHistory.this);
-                            recyclerView.setAdapter(societyServiceHistoryAdapter);
-                        }
+        String societyServiceType = getIntent().getStringExtra(Constants.SCREEN_TITLE);
+
+        /*Retrieving all society service request details which user has raised till now*/
+        new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
+                .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
+                    if (societyServiceNotificationDataList == null) {
+                        showFeatureUnavailableLayout(R.string.society_service_unavailable_message);
+                    } else {
+                        SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                        recyclerView.setAdapter(adapter);
                     }
-                }
-            }
-        });
+                });
     }
 
 }

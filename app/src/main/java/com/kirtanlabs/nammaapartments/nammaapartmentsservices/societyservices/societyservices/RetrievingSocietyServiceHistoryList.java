@@ -23,25 +23,36 @@ public class RetrievingSocietyServiceHistoryList {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private DatabaseReference userDataReference;
+    private Context mCtx;
 
-    public void getHistoryNotificationDataList(HistoryNotificationDataListCallback historyNotificationDataListCallback) {
-        getNotificationUIDList(societyServiceNotificationUIDList -> getNotificationDataList(societyServiceNotificationUIDList,
-                societyServiceNotificationList -> historyNotificationDataListCallback.onCallback(societyServiceNotificationList)));
+    /* ------------------------------------------------------------- *
+     * Constructor
+     * ------------------------------------------------------------- */
+
+    RetrievingSocietyServiceHistoryList(Context mCtx) {
+        this.mCtx = mCtx;
     }
 
-    private void getNotificationUIDList(NotificationUIDCallback notificationUIDCallback) {
-        DatabaseReference notificationUIDReference = userDataReference.child(Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
-        notificationUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private void getSocietyServiceNotificationUIDList(String societyServiceType, NotificationUIDCallback notificationUIDCallback) {
+        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
+        DatabaseReference userDataReference = nammaApartmentsGlobal.getUserDataReference().child(Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION)
+                .child(societyServiceType);
+        userDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> notificationUIDList = new ArrayList<>();
-                for (DataSnapshot notificationUIDSnapshot : dataSnapshot.getChildren()) {
-                    if (notificationUIDSnapshot.getValue(Boolean.class).equals(true)) {
-                        notificationUIDList.add(notificationUIDSnapshot.getKey());
+                if (dataSnapshot.exists()) {
+                    ArrayList<String> notificationUIDList = new ArrayList<>();
+                    for (DataSnapshot notificationUIDDataSnapshot : dataSnapshot.getChildren()) {
+                        notificationUIDList.add(notificationUIDDataSnapshot.getKey());
                     }
+                    notificationUIDCallback.onCallBack(notificationUIDList);
+                } else {
+                    notificationUIDCallback.onCallBack(null);
                 }
-                notificationUIDCallback.onCallBack(notificationUIDList);
             }
 
             @Override
@@ -49,41 +60,33 @@ public class RetrievingSocietyServiceHistoryList {
 
             }
         });
-
     }
 
-    /**
-     * Returns a list of Notification data by taking a list of notification UID as input
-     *
-     * @param notificationUIDList          whose notification data needs to be returned
-     * @param notificationDataListCallback callback to return list of notification data
-     */
-    private void getNotificationDataList(List<String> notificationUIDList, NotificationDataListCallback notificationDataListCallback) {
-        List<NammaApartmentSocietyServices> notificationDataList = new ArrayList<>();
-        for (String notificationUID : notificationUIDList) {
-            getNotificationData(notificationUID, societyServiceNotification -> {
-                notificationDataList.add(societyServiceNotification);
-                if (notificationUIDList.size() == notificationDataList.size()) {
-                    notificationDataListCallback.onCallback(notificationDataList);
+    public void getNotificationDataList(String societyServiceType, NotificationDataListCallback notificationDataListCallback) {
+        getSocietyServiceNotificationUIDList(societyServiceType, societyServiceNotificationUIDList -> {
+            if (societyServiceNotificationUIDList != null) {
+                List<NammaApartmentSocietyServices> notificationDataList = new ArrayList<>();
+
+                for (String notificationUID : societyServiceNotificationUIDList) {
+                    DatabaseReference notificationData = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE
+                            .child(notificationUID);
+                    notificationData.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            NammaApartmentSocietyServices nammaApartmentSocietyServices = dataSnapshot.getValue(NammaApartmentSocietyServices.class);
+                            notificationDataList.add(nammaApartmentSocietyServices);
+
+                            notificationDataListCallback.onCallBack(notificationDataList);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-            });
-        }
-    }
-
-    private void getNotificationData(String notificationUID, NotificationDataCallback notificationDataCallback) {
-        DatabaseReference notificationUIDDataReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID);
-        notificationUIDDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String status = dataSnapshot.child("status").getValue(String.class);
-                if (status.equals("completed")) {
-                    notificationDataCallback.onCallBack(dataSnapshot.getValue(NammaApartmentSocietyServices.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            } else {
+                notificationDataListCallback.onCallBack(null);
             }
         });
     }
@@ -96,15 +99,7 @@ public class RetrievingSocietyServiceHistoryList {
         void onCallBack(List<String> societyServiceNotificationUIDList);
     }
 
-    public interface NotificationDataCallback {
-        void onCallBack(NammaApartmentSocietyServices societyServiceNotificationDataList);
-    }
-
     public interface NotificationDataListCallback {
-        void onCallback(List<NammaApartmentSocietyServices> societyServiceNotificationList);
-    }
-
-    public interface HistoryNotificationDataListCallback {
-        void onCallback(List<NammaApartmentSocietyServices> historyNotificationDataList);
+        void onCallBack(List<NammaApartmentSocietyServices> societyServiceNotificationDataList);
     }
 }
