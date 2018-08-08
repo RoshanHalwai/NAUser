@@ -28,6 +28,8 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.AddDailyService;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mysweethome.AddFamilyMember;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -125,8 +127,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         /*Setting event for Verify OTP button*/
         buttonVerifyOTP.setOnClickListener(this);
         textResendOTPOrVerificationMessage.setOnClickListener(v -> resendOTP());
-        /*TODO: Change SignIn.class since this screen can be used by multiple activities*/
-        textChangeNumberOrTimer.setOnClickListener(v -> startActivity(new Intent(this, SignIn.class)));
+        textChangeNumberOrTimer.setOnClickListener(v -> navigateToPreviousScreen());
         editFirstOTPDigit.setOnKeyListener(this);
         editSecondOTPDigit.setOnKeyListener(this);
         editThirdOTPDigit.setOnKeyListener(this);
@@ -512,4 +513,30 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         }
     }
 
+    /**
+     * This method gets invoked when user wants to change mobile number based on the previous screen
+     * it will navigate to that appropriate screen.
+     */
+    private void navigateToPreviousScreen() {
+        switch (previousScreenTitle) {
+            case R.string.login:
+                Intent loginIntent = new Intent(OTP.this, SignIn.class);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(loginIntent);
+                break;
+            case R.string.add_my_daily_service:
+                Intent dailyServicesIntent = new Intent(OTP.this, AddDailyService.class);
+                dailyServicesIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                dailyServicesIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(dailyServicesIntent);
+                break;
+            case R.string.add_family_members_details_screen:
+                Intent familyMemberIntent = new Intent(OTP.this, AddFamilyMember.class);
+                familyMemberIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                familyMemberIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(familyMemberIntent);
+                break;
+        }
+    }
 }
