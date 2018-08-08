@@ -28,7 +28,7 @@ public class NammaApartmentSocietyServices {
     }
 
     NammaApartmentSocietyServices(String problem, String timeSlot, String userUID, String societyServiceType,
-                                  String notificationUID, String status, String endOTP) {
+                                  String notificationUID, String status, String endOTP, String takenBy) {
         this.problem = problem;
         this.timeSlot = timeSlot;
         this.userUID = userUID;
@@ -36,6 +36,7 @@ public class NammaApartmentSocietyServices {
         this.notificationUID = notificationUID;
         this.status = status;
         this.endOTP = endOTP;
+        this.takenBy = takenBy;
     }
 
     /* ------------------------------------------------------------- *
