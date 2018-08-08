@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -31,6 +32,8 @@ import java.util.Objects;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT;
 import static com.kirtanlabs.nammaapartments.Constants.ACCEPT_BUTTON_CLICKED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PACKAGES;
 import static com.kirtanlabs.nammaapartments.Constants.MESSAGE;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_ID;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_UID;
@@ -69,7 +72,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             remoteViews.setTextViewText(R.id.textNotificationMessage, message);
 
-            remoteViews.setImageViewBitmap(R.id.eIntercomProfilePic, getBitmapFromURL(profilePhoto));
+            /*We don't want to show Profile image if cabs and packages enter into society*/
+            if (visitorType.equals(FIREBASE_CHILD_CABS) || visitorType.equals(FIREBASE_CHILD_PACKAGES)) {
+                remoteViews.setViewVisibility(R.id.eIntercomProfilePic, View.GONE);
+            } else {
+                remoteViews.setImageViewBitmap(R.id.eIntercomProfilePic, getBitmapFromURL(profilePhoto));
+            }
 
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.namma_apartment_notification)

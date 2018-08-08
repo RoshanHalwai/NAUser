@@ -28,7 +28,7 @@ public class NammaApartmentArrival {
     public NammaApartmentArrival() {
     }
 
-    NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String inviterUID, String approvalType) {
+    public NammaApartmentArrival(String reference, String dateAndTimeOfArrival, String validFor, String inviterUID, String approvalType) {
         this.reference = reference;
         this.dateAndTimeOfArrival = dateAndTimeOfArrival;
         this.validFor = validFor;
