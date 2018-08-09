@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT;
+import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_EXPAND_MSG;
+import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_EXPAND_TITLE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -58,6 +60,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.namma_apartment_notification)
+                    .setContentTitle(NOTIFICATION_EXPAND_TITLE)
+                    .setContentText(NOTIFICATION_EXPAND_MSG)
                     .setAutoCancel(true)
                     .setCustomBigContentView(remoteViews)
                     .setSound(RingtoneManager.getDefaultUri(Notification.DEFAULT_SOUND))
