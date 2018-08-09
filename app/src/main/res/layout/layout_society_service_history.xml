@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-
-    <include
-        android:id="@+id/titleBar"
-        layout="@layout/activity_base" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardViewSocietyService"
@@ -101,7 +97,6 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:padding="2dp"
-                        android:text="Ashish Jha"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -110,7 +105,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="9986553474"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -119,7 +113,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Clogged Toilet"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -128,7 +121,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="3 PM - 6 PM"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 

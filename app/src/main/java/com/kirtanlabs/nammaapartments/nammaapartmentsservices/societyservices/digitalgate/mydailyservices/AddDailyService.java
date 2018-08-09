@@ -47,6 +47,7 @@ import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DRIVERS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_LAUNDRIES;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MAIDS;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_MILKMEN;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_OWNERS_UID;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
@@ -382,6 +383,8 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_DAILYSERVICES)
                         .child(FIREBASE_CHILD_PRIVATE)
                         .child(dailyServiceChild)
+                        .child(FIREBASE_CHILD_OWNERS_UID)
+                        .child(userUID)
                         .child(dailyServiceUID);
 
                 UploadTask uploadTask = storageReference.putBytes(profilePhotoByteArray);

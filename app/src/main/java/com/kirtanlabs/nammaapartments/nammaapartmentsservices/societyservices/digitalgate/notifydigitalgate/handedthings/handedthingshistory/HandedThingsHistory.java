@@ -74,7 +74,7 @@ public class HandedThingsHistory extends BaseActivity {
         /*Based on the previous screen title we decide whose history of handed things can be displayed
          * User can give things to either Daily Services or their Guests*/
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_guests) {
-            new RetrievingGuestList(HandedThingsHistory.this, true).getGuests(nammaApartmentGuestList -> {
+            new RetrievingGuestList(HandedThingsHistory.this, true).getPreAndPostApprovedGuests(nammaApartmentGuestList -> {
                 hideProgressIndicator();
                 if (!nammaApartmentGuestList.isEmpty()) {
                     List<NammaApartmentGuest> handedThingsGuestList = new ArrayList<>();

@@ -19,6 +19,7 @@ public class NammaApartmentGuest {
     private String inviterUID;
     private String profilePhoto;
     private String handedThings;
+    private String approvalType;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -27,13 +28,13 @@ public class NammaApartmentGuest {
     public NammaApartmentGuest() {
     }
 
-    NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID) {
+    public NammaApartmentGuest(String uid, String fullName, String mobileNumber, String dateAndTimeOfVisit, String inviterUID, String approvalType) {
         this.uid = uid;
         this.fullName = fullName;
         this.mobileNumber = mobileNumber;
         this.dateAndTimeOfVisit = dateAndTimeOfVisit;
-        this.status = com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
         this.inviterUID = inviterUID;
+        this.approvalType = approvalType;
     }
 
     /* ------------------------------------------------------------- *
@@ -70,6 +71,10 @@ public class NammaApartmentGuest {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getApprovalType() {
+        return approvalType;
     }
 
     /* ------------------------------------------------------------- *

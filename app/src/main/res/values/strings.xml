@@ -144,6 +144,7 @@
     <string name="date">Date:</string>
     <string name="time">In Time:</string>
     <string name="invited_by">Inviter:</string>
+    <string name="approver">Approver:</string>
     <string name="call">Call</string>
     <string name="message">Message</string>
     <string name="reschedule">Reschedule</string>
@@ -328,7 +329,7 @@
     <string name="person">person</string>
     <string name="admin_notification">You are the Administrator</string>
 
-    <!--SocietyServices Activity-->
+    <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
     <string name="request_carpenter">Request Carpenter</string>
     <string name="request_electrician">Request Electrician</string>
@@ -339,9 +340,9 @@
     <string name="noon_slot">12PM - 3PM</string>
     <string name="evening_slot">3PM - 5PM</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
+    <string name="society_service_unavailable_message">Sorry you cannot use this feature since currently there has not been any Society Service at your flat so far.</string>
 
     <string-array name="plumbing_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/dripping_faucets</item>
         <item>@string/slow_draining_sink</item>
         <item>@string/clogged_bath_or_shower_drain</item>
@@ -352,8 +353,9 @@
         <item>@string/jammed_garbage_disposal</item>
         <item>@string/leaky_pipes</item>
         <item>@string/sewer_system_backup</item>
+        <item>@string/others</item>
     </string-array>
-    <string name="select_any_one">Select any one</string>
+    <string name="search">Search</string>
     <string name="select_from_here">Select</string>
     <string name="dripping_faucets">Dripping faucets</string>
     <string name="slow_draining_sink">Slow draining sink</string>
@@ -365,9 +367,9 @@
     <string name="jammed_garbage_disposal">Jammed garbage disposal</string>
     <string name="leaky_pipes">Leaky pipes</string>
     <string name="sewer_system_backup">Sewer system backup</string>
+    <string name="others">Others</string>
 
     <string-array name="electrical_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/frequent_electrical_surge</item>
         <item>@string/sags_and_dips_in_power</item>
         <item>@string/light_switches_not_working_properly</item>
@@ -378,6 +380,7 @@
         <item>@string/high_electrical_bill</item>
         <item>@string/light_bulbs_burning_out_too_often</item>
         <item>@string/recessed_light_goes_out_and_comes_back_on</item>
+        <item>@string/others</item>
     </string-array>
     <string name="frequent_electrical_surge">Frequent Electrical Surge</string>
     <string name="sags_and_dips_in_power">Sags and Dips in Power</string>
@@ -391,12 +394,12 @@
     <string name="recessed_light_goes_out_and_comes_back_on">Recessed Light ‘Goes Out’ and comes back on</string>
 
     <string-array name="carpentry_issues_list">
-        <item>@string/select_any_one</item>
         <item>@string/carpentry_finish_appears_uneven</item>
         <item>@string/split_in_the_wood</item>
         <item>@string/weak_joints</item>
         <item>@string/dents_in_wood</item>
         <item>@string/glue_stuck</item>
+        <item>@string/others</item>
     </string-array>
     <string name="unable_to_open_drawers_and_doors">Unable to open drawers and doors</string>
     <string name="carpentry_finish_appears_uneven">Carpentry finish appears uneven</string>
@@ -449,7 +452,7 @@
     <string name="in_charge">Committee</string>
 
     <!--Awaiting Response Activity-->
-    <string name="society_service_accepted_request">Your request has been accepted by a Plumber. Here are the details:</string>
+    <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
     <string name="no_response_yet">Plumber has not Responded Yet</string>
 

@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -32,6 +33,22 @@ import java.util.Objects;
 import static android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_EXPAND_MSG;
 import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_EXPAND_TITLE;
+import static com.kirtanlabs.nammaapartments.Constants.ACCEPT_BUTTON_CLICKED;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_CABS;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PACKAGES;
+import static com.kirtanlabs.nammaapartments.Constants.MESSAGE;
+import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_ID;
+import static com.kirtanlabs.nammaapartments.Constants.NOTIFICATION_UID;
+import static com.kirtanlabs.nammaapartments.Constants.REJECT_BUTTON_CLICKED;
+import static com.kirtanlabs.nammaapartments.Constants.REMOTE_MESSAGE;
+import static com.kirtanlabs.nammaapartments.Constants.REMOTE_NOTIFICATION_UID;
+import static com.kirtanlabs.nammaapartments.Constants.REMOTE_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.Constants.REMOTE_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.REMOTE_USER_UID;
+import static com.kirtanlabs.nammaapartments.Constants.REMOTE_VISITOR_TYPE;
+import static com.kirtanlabs.nammaapartments.Constants.USER_UID;
+import static com.kirtanlabs.nammaapartments.Constants.VISITOR_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.Constants.VISITOR_TYPE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -43,20 +60,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> remoteMessageData = remoteMessage.getData();
 
-        String remoteMessageType = remoteMessageData.get("type");
+        String remoteMessageType = remoteMessageData.get(REMOTE_TYPE);
 
         //E-Intercom Notification requires Users Action
         if (remoteMessageType.equals("E-Intercom")) {
-            String message = remoteMessageData.get("message") + ". Please Confirm?";
-            String profilePhoto = remoteMessageData.get("profile_photo");
-            String notificationUID = remoteMessageData.get("notification_uid");
-            String userUID = remoteMessageData.get("user_uid");
+            String message = remoteMessageData.get(REMOTE_MESSAGE);
+            String profilePhoto = remoteMessageData.get(REMOTE_PROFILE_PHOTO);
+            String notificationUID = remoteMessageData.get(REMOTE_NOTIFICATION_UID);
+            String userUID = remoteMessageData.get(REMOTE_USER_UID);
+            String visitorType = remoteMessageData.get(REMOTE_VISITOR_TYPE);
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_custom_notification);
 
             remoteViews.setTextViewText(R.id.textNotificationMessage, message);
 
-            remoteViews.setImageViewBitmap(R.id.eIntercomProfilePic, getBitmapFromURL(profilePhoto));
+            /*We don't want to show Profile image if cabs and packages enter into society*/
+            if (visitorType.equals(FIREBASE_CHILD_CABS) || visitorType.equals(FIREBASE_CHILD_PACKAGES)) {
+                remoteViews.setViewVisibility(R.id.eIntercomProfilePic, View.GONE);
+            } else {
+                remoteViews.setImageViewBitmap(R.id.eIntercomProfilePic, getBitmapFromURL(profilePhoto));
+            }
 
             Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                     .setSmallIcon(R.drawable.namma_apartment_notification)
@@ -70,17 +93,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             int mNotificationID = (int) System.currentTimeMillis();
 
-            Intent acceptButtonIntent = new Intent("accept_button_clicked");
-            acceptButtonIntent.putExtra("Notification_Id", mNotificationID);
-            acceptButtonIntent.putExtra("Notification_UID", notificationUID);
-            acceptButtonIntent.putExtra("User_UID", userUID);
+            Intent acceptButtonIntent = new Intent(ACCEPT_BUTTON_CLICKED);
+            acceptButtonIntent.putExtra(NOTIFICATION_ID, mNotificationID);
+            acceptButtonIntent.putExtra(NOTIFICATION_UID, notificationUID);
+            acceptButtonIntent.putExtra(USER_UID, userUID);
+            acceptButtonIntent.putExtra(MESSAGE, message);
+            acceptButtonIntent.putExtra(VISITOR_TYPE, visitorType);
+            acceptButtonIntent.putExtra(VISITOR_PROFILE_PHOTO, profilePhoto);
             PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(this, 123, acceptButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.buttonAccept, acceptPendingIntent);
 
-            Intent rejectButtonIntent = new Intent("reject_button_clicked");
-            rejectButtonIntent.putExtra("Notification_UID", notificationUID);
-            rejectButtonIntent.putExtra("Notification_Id", mNotificationID);
-            rejectButtonIntent.putExtra("User_UID", userUID);
+            Intent rejectButtonIntent = new Intent(REJECT_BUTTON_CLICKED);
+            rejectButtonIntent.putExtra(NOTIFICATION_ID, mNotificationID);
+            rejectButtonIntent.putExtra(NOTIFICATION_UID, notificationUID);
+            rejectButtonIntent.putExtra(USER_UID, userUID);
+            rejectButtonIntent.putExtra(VISITOR_TYPE, visitorType);
             PendingIntent rejectPendingIntent = PendingIntent.getBroadcast(this, 123, rejectButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.buttonReject, rejectPendingIntent);
 

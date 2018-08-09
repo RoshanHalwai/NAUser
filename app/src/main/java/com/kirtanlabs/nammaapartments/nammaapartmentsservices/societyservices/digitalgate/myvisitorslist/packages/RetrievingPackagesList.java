@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DELIVERIES;
-import static com.kirtanlabs.nammaapartments.Constants.PUBLIC_DELIVERIES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_DELIVERIES_REFERENCE;
 
 public class RetrievingPackagesList {
     /* ------------------------------------------------------------- *
@@ -133,7 +133,7 @@ public class RetrievingPackagesList {
      * @param packageUID          UID of the package whose data is to be retrieved from firebase
      */
     private void getPackageDataByUID(PackageDataCallBack packageDataCallBack, String packageUID) {
-        DatabaseReference packageDataReference = PUBLIC_DELIVERIES_REFERENCE.child(packageUID);
+        DatabaseReference packageDataReference = PRIVATE_DELIVERIES_REFERENCE.child(packageUID);
         packageDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

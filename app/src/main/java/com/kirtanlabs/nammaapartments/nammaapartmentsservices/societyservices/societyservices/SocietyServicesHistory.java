@@ -1,12 +1,12 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-
-import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -15,9 +15,13 @@ import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 
 public class SocietyServicesHistory extends BaseActivity {
 
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
+
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.layout_society_service_history;
+        return R.layout.activity_society_service_history;
     }
 
     @Override
@@ -29,19 +33,23 @@ public class SocietyServicesHistory extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*Getting Id's for all the views*/
-        TextView textName = findViewById(R.id.textName);
-        TextView textMobileNumber = findViewById(R.id.textMobileNumber);
-        TextView textProblem = findViewById(R.id.textProblem);
-        TextView textTimeSlot = findViewById(R.id.textTimeSlot);
+        /*Getting Id of recycler view*/
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewHistory);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /*Setting font for all the views*/
-        textName.setTypeface(setLatoBoldFont(this));
-        textMobileNumber.setTypeface(setLatoBoldFont(this));
-        textProblem.setTypeface(setLatoBoldFont(this));
-        textTimeSlot.setTypeface(setLatoBoldFont(this));
+        String societyServiceType = getIntent().getStringExtra(Constants.SCREEN_TITLE);
 
+        /*Retrieving all society service request details which user has raised till now*/
+        new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
+                .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
+                    if (societyServiceNotificationDataList == null) {
+                        showFeatureUnavailableLayout(R.string.society_service_unavailable_message);
+                    } else {
+                        SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
     }
 
-    //TODO: Actual Contents of the History screen to be added. Right now the Card View contains hardcoded data
 }

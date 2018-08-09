@@ -35,10 +35,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
-import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
 
@@ -91,6 +92,10 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         /*If Guest has not arrived we change cancel text with appropriate text */
         if (nammaApartmentGuest.getStatus().equals(NOT_ENTERED)) {
             holder.textCancel.setText(mCtx.getString(R.string.cancel));
+        }
+
+        if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
+            holder.textInvitedBy.setText(R.string.approver);
         }
 
         String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
@@ -239,7 +244,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
         nammaApartmentGuest.setDateAndTimeOfVisit(updatedDateAndTime);
         notifyItemChanged(position);
-        PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid())
+        PRIVATE_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid())
                 .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
     }
 
@@ -258,11 +263,13 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             /*Runnable Interface which gets invoked once user presses OK button in Confirmation Dialog*/
             Runnable removeVisitor = () -> {
                 String visitorUID = nammaApartmentGuest.getUid();
+                String approvalType = nammaApartmentGuest.getApprovalType();
                 nammaApartmentGuestList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, nammaApartmentGuestList.size());
                 DatabaseReference userDataReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference();
-                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID).child(visitorUID).setValue(false);
+                userDataReference.child(FIREBASE_CHILD_VISITORS).child(NammaApartmentsGlobal.userUID)
+                        .child(visitorUID).setValue(false);
 
                 /*This is to ensure when user deletes the last item in the list a blank screen is not shown
                  * instead feature unavailable layout is shown*/

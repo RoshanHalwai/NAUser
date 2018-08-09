@@ -6,13 +6,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.invitevisitors.NammaApartmentGuest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_VISITORS_REFERENCE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -52,11 +54,10 @@ public class RetrievingGuestList {
      * ------------------------------------------------------------- */
 
     /**
-     *
-     * @param guestListCallback receiving result with list of all guest data of userUID present in userUIDList
-     *                          containint list of current user UID and their family members UID
+     * @param guestListCallback  receiving result with list of all guest data of userUID present in userUIDList
+     *                           which contains list of current user preApproved Visitors and PostApproved Visitors.
      */
-    public void getGuests(GuestListCallback guestListCallback) {
+    public void getPreAndPostApprovedGuests(GuestListCallback guestListCallback) {
         List<NammaApartmentGuest> nammaApartmentAllGuestList = new ArrayList<>();
         isGuestReferenceExists(guestReferenceExits -> {
             if (guestReferenceExits) {
@@ -114,7 +115,8 @@ public class RetrievingGuestList {
      *                             from firebase
      */
     private void getGuestUIDList(GuestUIDListCallback guestUIDListCallback, String userUID) {
-        DatabaseReference guestListReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS).child(userUID);
+        DatabaseReference guestListReference = userDataReference.child(FIREBASE_CHILD_VISITORS)
+                .child(userUID);
         guestListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -139,7 +141,7 @@ public class RetrievingGuestList {
      * @param guestUID          UID of the Guest whose data is to be retrieved from firebase
      */
     private void getGuestDataByUID(GuestDataCallback guestDataCallback, String guestUID) {
-        DatabaseReference guestDataReference = Constants.PREAPPROVED_VISITORS_REFERENCE.child(guestUID);
+        DatabaseReference guestDataReference = PRIVATE_VISITORS_REFERENCE.child(guestUID);
         guestDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -158,7 +160,7 @@ public class RetrievingGuestList {
      *                                else returns false
      */
     private void isGuestReferenceExists(GuestsReferenceCallback guestsReferenceCallback) {
-        DatabaseReference guestDataReference = userDataReference.child(Constants.FIREBASE_CHILD_VISITORS);
+        DatabaseReference guestDataReference = userDataReference.child(FIREBASE_CHILD_VISITORS);
         guestDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -47,8 +47,7 @@
     <LinearLayout
         android:id="@+id/layoutAcceptedResponse"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardSocietyService"
@@ -115,6 +114,15 @@
                             android:textColor="@color/nmBlack"
                             android:textSize="18sp" />
 
+                        <TextView
+                            android:id="@+id/textEndOTP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="OTP:"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -137,6 +145,16 @@
 
                         <TextView
                             android:id="@+id/textMobileNumberValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="2dp"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/textEndOTPValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"

@@ -35,11 +35,12 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.Constants.ALL_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PREAPPROVED;
 import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_MOBILE_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.PREAPPROVED_VISITORS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.Constants.NOT_ENTERED;
+import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
@@ -141,7 +142,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     editVisitorName.setError(null);
                     editVisitorMobile.setError(null);
                     break;
-                case CAMERA_PERMISSION_REQUEST_CODE:
                 case GALLERY_PERMISSION_REQUEST_CODE:
                     Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
                     circleImageInvitingVisitors.setImageBitmap(bitmapProfilePic);
@@ -211,14 +211,13 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * ------------------------------------------------------------- */
 
     /**
-     * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
+     * Creates a custom dialog with a list view which contains Gallery option. This
      * imageSelectionDialog is displayed when user clicks on profile image which is on top of the screen.
      */
     private void createImageSelectionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] selectionOptions = {
                 getString(R.string.gallery),
-                getString(R.string.camera),
                 getString(R.string.cancel)
         };
         builder.setItems(selectionOptions, (dialog, which) -> {
@@ -227,9 +226,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                     pickImageFromGallery();
                     break;
                 case 1:
-                    launchCamera();
-                    break;
-                case 2:
                     imageSelectionDialog.cancel();
             }
         });
@@ -295,7 +291,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 getResources().getString(R.string.please_wait_a_moment));
 
         /*Map Mobile number with visitor's UID*/
-        DatabaseReference preApprovedVisitorsMobileNumberReference = PREAPPROVED_VISITORS_MOBILE_REFERENCE;
+        DatabaseReference preApprovedVisitorsMobileNumberReference = ALL_VISITORS_REFERENCE;
         String visitorUID = preApprovedVisitorsMobileNumberReference.push().getKey();
         preApprovedVisitorsMobileNumberReference.child(mobileNumber).setValue(visitorUID);
 
@@ -309,12 +305,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         String visitorMobile = editVisitorMobile.getText().toString();
         String visitorDateTime = editPickDateTime.getText().toString();
         NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(visitorUID,
-                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID);
+                visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID, FIREBASE_CHILD_PREAPPROVED);
 
         /*getting the storage reference*/
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Constants.FIREBASE_CHILD_PREAPPROVEDVISITORS)
                 .child(nammaApartmentGuest.getUid());
 
         UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(profilePhotoByteArray));
@@ -324,8 +319,11 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             /*creating the upload object to store uploaded image details*/
             nammaApartmentGuest.setProfilePhoto(Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
 
+            /*Setting Status as NOT_ENTERED For PreApproved Visitors */
+            nammaApartmentGuest.setStatus(NOT_ENTERED);
+
             /*adding visitor data under PREAPPROVED_VISITORS_REFERENCE->Visitor UID*/
-            DatabaseReference preApprovedVisitorData = PREAPPROVED_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());
+            DatabaseReference preApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid());
             preApprovedVisitorData.setValue(nammaApartmentGuest);
 
             /*dismissing the progress dialog*/
