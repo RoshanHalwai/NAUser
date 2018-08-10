@@ -119,7 +119,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         if (notificationUID != null) {
             /*Checking status of previous Request*/
             new RetrievingSocietyServiceHistoryList(getActivity())
-                    .getPreviousRequestStatus(notificationUID, status -> {
+                    .getSocietyServiceRequestStatus(notificationUID, status -> {
                         if (status.equals(IN_PROGRESS)) {
                             Intent awaitingResponseIntent = new Intent(getActivity(), AwaitingResponse.class);
                             awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);

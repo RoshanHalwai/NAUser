@@ -91,14 +91,14 @@ public class RetrievingSocietyServiceHistoryList {
         });
     }
 
-    public void getPreviousRequestStatus(String notificationUid, PreviousSocietyServiceRequestStatus previousSocietyServiceRequestStatus) {
+    public void getSocietyServiceRequestStatus(String notificationUid, SocietyServiceRequestStatus societyServiceRequestStatus) {
         DatabaseReference statusReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE
                 .child(notificationUid).child(Constants.FIREBASE_CHILD_STATUS);
         statusReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String status = dataSnapshot.getValue(String.class);
-                previousSocietyServiceRequestStatus.onCallBack(status);
+                societyServiceRequestStatus.onCallBack(status);
             }
 
             @Override
@@ -120,7 +120,7 @@ public class RetrievingSocietyServiceHistoryList {
         void onCallBack(List<NammaApartmentSocietyServices> societyServiceNotificationDataList);
     }
 
-    public interface PreviousSocietyServiceRequestStatus {
+    public interface SocietyServiceRequestStatus {
         void onCallBack(String status);
     }
 }
