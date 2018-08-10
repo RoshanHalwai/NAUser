@@ -91,6 +91,23 @@ public class RetrievingSocietyServiceHistoryList {
         });
     }
 
+    public void getPreviousRequestStatus(String notificationUid, PreviousSocietyServiceRequestStatus previousSocietyServiceRequestStatus) {
+        DatabaseReference statusReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE
+                .child(notificationUid).child(Constants.FIREBASE_CHILD_STATUS);
+        statusReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String status = dataSnapshot.getValue(String.class);
+                previousSocietyServiceRequestStatus.onCallBack(status);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     /* ------------------------------------------------------------- *
      * Interfaces
      * ------------------------------------------------------------- */
@@ -101,5 +118,9 @@ public class RetrievingSocietyServiceHistoryList {
 
     public interface NotificationDataListCallback {
         void onCallBack(List<NammaApartmentSocietyServices> societyServiceNotificationDataList);
+    }
+
+    public interface PreviousSocietyServiceRequestStatus {
+        void onCallBack(String status);
     }
 }
