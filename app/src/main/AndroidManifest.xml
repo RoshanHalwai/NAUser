@@ -180,6 +180,7 @@
         <activity
             android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServiceProblemList"
             android:screenOrientation="portrait" />
+        <activity android:name=".nammaapartmentshome.ApartmentServices" />
     </application>
 
 </manifest>
