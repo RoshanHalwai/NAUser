@@ -110,6 +110,7 @@ public class RetrievingCabsList {
      */
     private void getCabUIDList(CabUIDListCallback cabUIDListCallback, String userUID) {
         DatabaseReference cabListReference = userDataReference.child(FIREBASE_CHILD_CABS).child(userUID);
+        cabListReference.keepSynced(true);
         cabListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,6 +136,7 @@ public class RetrievingCabsList {
      */
     private void getCabDataByUID(CabDataCallback cabDataCallback, String cabUID) {
         DatabaseReference cabDataReference = PRIVATE_CABS_REFERENCE.child(cabUID);
+        cabDataReference.keepSynced(true);
         cabDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -154,6 +156,7 @@ public class RetrievingCabsList {
      */
     private void isCabReferenceExists(CabsReferenceCallback cabsReferenceCallback) {
         DatabaseReference cabDataReference = userDataReference.child(FIREBASE_CHILD_CABS);
+        cabDataReference.keepSynced(true);
         cabDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
