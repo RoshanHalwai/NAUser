@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,15 +8,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ApartmentServicesHome extends Fragment {
+public class ApartmentServicesHome extends Fragment implements AdapterView.OnItemClickListener {
 
     /* ------------------------------------------------------------- *
      * Overriding Fragment Objects
@@ -36,6 +39,64 @@ public class ApartmentServicesHome extends Fragment {
 
         /*Attaching adapter to the listview*/
         listView.setAdapter(getAdapter());
+
+        /*Setting event for list view items*/
+        listView.setOnItemClickListener(this);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnItemClickListener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0:
+                Intent intentCook = new Intent(getActivity(), ApartmentServices.class);
+                intentCook.putExtra(Constants.SCREEN_TITLE, R.string.cook);
+                startActivity(intentCook);
+                break;
+            case 1:
+                Intent intentMaid = new Intent(getActivity(), ApartmentServices.class);
+                intentMaid.putExtra(Constants.SCREEN_TITLE, R.string.maid);
+                startActivity(intentMaid);
+                break;
+            case 2:
+                Intent intentCarBikeCleaning = new Intent(getActivity(), ApartmentServices.class);
+                intentCarBikeCleaning.putExtra(Constants.SCREEN_TITLE, R.string.car_bike_cleaning);
+                startActivity(intentCarBikeCleaning);
+                break;
+            case 3:
+                Intent intentChildDayCare = new Intent(getActivity(), ApartmentServices.class);
+                intentChildDayCare.putExtra(Constants.SCREEN_TITLE, R.string.child_day_care);
+                startActivity(intentChildDayCare);
+                break;
+            case 4:
+                Intent intentDailyNewspaper = new Intent(getActivity(), ApartmentServices.class);
+                intentDailyNewspaper.putExtra(Constants.SCREEN_TITLE, R.string.daily_newspaper);
+                startActivity(intentDailyNewspaper);
+                break;
+            case 5:
+                Intent intentMilkMan = new Intent(getActivity(), ApartmentServices.class);
+                intentMilkMan.putExtra(Constants.SCREEN_TITLE, R.string.milk_man);
+                startActivity(intentMilkMan);
+                break;
+            case 6:
+                Intent intentLaundry = new Intent(getActivity(), ApartmentServices.class);
+                intentLaundry.putExtra(Constants.SCREEN_TITLE, R.string.laundry);
+                startActivity(intentLaundry);
+                break;
+            case 7:
+                Intent intentDriver = new Intent(getActivity(), ApartmentServices.class);
+                intentDriver.putExtra(Constants.SCREEN_TITLE, R.string.driver);
+                startActivity(intentDriver);
+                break;
+            case 8:
+                Intent intentGrocery = new Intent(getActivity(), ApartmentServices.class);
+                intentGrocery.putExtra(Constants.SCREEN_TITLE, R.string.groceries);
+                startActivity(intentGrocery);
+                break;
+        }
     }
 
     /* ------------------------------------------------------------- *
