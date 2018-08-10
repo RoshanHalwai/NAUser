@@ -24,33 +24,38 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_ADMIN;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_EMAIL;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVILEGES;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USERS;
-import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.setLatoBoldFont;
-import static com.kirtanlabs.nammaapartments.Constants.setLatoLightFont;
-import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
-import static com.kirtanlabs.nammaapartments.ImagePicker.bitmapToByteArray;
+import de.hdodenhof.circleimageview.CircleImageView;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EMAIL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FULLNAME;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getBitmapFromFile;
+import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getByteArrayFromFile;
+import static pl.aprilapps.easyphotopicker.EasyImageConfig.REQ_PICK_PICTURE_FROM_GALLERY;
+import static pl.aprilapps.easyphotopicker.EasyImageConfig.REQ_TAKE_PICTURE;
 
 public class UserProfile extends BaseActivity implements View.OnClickListener {
 
@@ -58,13 +63,13 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private de.hdodenhof.circleimageview.CircleImageView currentUserProfilePic;
     private EditText editUserName, editUserEmail, editFlatAdmin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
     private List<String> flatMembersList = new ArrayList<>();
     private List<String> flatMembersUIDList = new ArrayList<>();
-    private byte[] profilePhotoByteArray;
+    private CircleImageView currentUserProfilePic;
+    private File profilePhotoPath;
     private int index = 0;
     private String userName, userEmail, adminName, itemValue, selectedFamilyMemberUID;
     private NammaApartmentUser currentNammaApartmentUser;
@@ -138,12 +143,18 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case CAMERA_PERMISSION_REQUEST_CODE:
-                case GALLERY_PERMISSION_REQUEST_CODE:
-                    Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
-                    currentUserProfilePic.setImageBitmap(bitmapProfilePic);
-                    currentUserProfilePic.setTag(R.id.currentUserProfilePic, "Updated Image");
-                    profilePhotoByteArray = bitmapToByteArray(bitmapProfilePic);
+                case REQ_TAKE_PICTURE:
+                case REQ_PICK_PICTURE_FROM_GALLERY:
+                    EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+                        @Override
+                        public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
+                            if (source == EasyImage.ImageSource.GALLERY || source == EasyImage.ImageSource.CAMERA) {
+                                Bitmap userProfilePic = getBitmapFromFile(UserProfile.this, imageFile);
+                                currentUserProfilePic.setImageBitmap(userProfilePic);
+                                profilePhotoPath = imageFile;
+                            }
+                        }
+                    });
             }
         }
     }
@@ -293,6 +304,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         });
         imageSelectionDialog = builder.create();
     }
+
     /**
      * This method gets invoked to pre-fill the details of existing user name and email id and also
      * existing user profile photo.
@@ -359,7 +371,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         String updatedUserName = editUserName.getText().toString();
         String updatedUserEmail = editUserEmail.getText().toString();
         String updatedAdmin = editFlatAdmin.getText().toString();
-        boolean profilePicChanged = !currentUserProfilePic.getTag(R.id.currentUserProfilePic).equals("Actual Image");
+        boolean profilePicChanged = profilePhotoPath != null;
 
         Intent nammaApartmentsHome = new Intent(this, NammaApartmentsHome.class);
         if (updatedUserName.equals(userName) &&
@@ -410,7 +422,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(userUID);
 
-                UploadTask uploadTask = storageReference.putBytes(profilePhotoByteArray);
+                UploadTask uploadTask = storageReference.putBytes(getByteArrayFromFile(UserProfile.this, profilePhotoPath));
                 /*adding the profile photo to storage reference*/
                 uploadTask.addOnSuccessListener(taskSnapshot -> {
 

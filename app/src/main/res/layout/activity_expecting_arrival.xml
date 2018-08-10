@@ -121,6 +121,7 @@
                     android:text="@string/cab_number_validation"
                     android:textColor="@android:color/holo_red_dark"
                     android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/textDateTime"
                     android:layout_width="match_parent"
@@ -283,6 +284,7 @@
                     android:text="@string/valid_button"
                     android:textColor="@android:color/holo_red_dark"
                     android:visibility="gone" />
+
                 <Button
                     android:id="@+id/buttonNotifyGate"
                     android:layout_width="match_parent"

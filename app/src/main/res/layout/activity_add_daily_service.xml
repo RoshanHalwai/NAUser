@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.societyservices.digitalgate.mydailyservices.AddDailyService">
+    tools:context=".services.societyservices.digigate.mydailyservices.AddDailyService">
 
     <include layout="@layout/activity_base" />
 

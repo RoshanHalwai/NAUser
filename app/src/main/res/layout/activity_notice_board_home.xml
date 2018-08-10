@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#fff"
+    android:orientation="vertical"
 
     tools:context=".navigationdrawer.noticeboard.NoticeBoard">
 
@@ -16,9 +16,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
         android:columnWidth="100dp"
         android:gravity="center"
-        android:layout_marginTop="20dp"
         android:horizontalSpacing="10dp"
         android:numColumns="2"
         android:stretchMode="columnWidth"

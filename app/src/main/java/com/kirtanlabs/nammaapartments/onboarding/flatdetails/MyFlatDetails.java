@@ -30,29 +30,29 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPrivileges;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.Constants.ALL_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_ADMIN;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_FULLNAME;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PERSONALDETAILS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USERS;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
-import static com.kirtanlabs.nammaapartments.Constants.PRIVATE_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.ImagePicker.fileToByteArray;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FULLNAME;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getByteArrayFromFile;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -407,9 +407,9 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     //Getting full name of Admin of the flat from User's Private data
-                                    String adminName = dataSnapshot.child(FIREBASE_CHILD_PERSONALDETAILS).child(FIREBASE_CHILD_FULLNAME).getValue().toString();
+                                    String adminName = dataSnapshot.child(FIREBASE_CHILD_PERSONALDETAILS).child(FIREBASE_CHILD_FULLNAME).getValue(String.class);
                                     String multipleAdminText = getResources().getString(R.string.multiple_admin_restricted);
-                                    multipleAdminText = multipleAdminText.replace(FIREBASE_ADMIN, adminName);
+                                    multipleAdminText = multipleAdminText.replace(FIREBASE_ADMIN, Objects.requireNonNull(adminName));
 
                                     //This dialog box pops up when a new user who is trying to sign up, already has a registered Admin
                                     //in that particular flat, because of which, the user is being restricted to sign up
@@ -433,16 +433,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 /*Record not found, user is the first family member for the entered flat details.
                  * Setup account for them*/
                 else {
-                    byte[] byteArray = null;
-                    String filename = getIntent().getStringExtra(Constants.PROFILE_PHOTO);
-                    try {
-                        FileInputStream is = getApplicationContext().openFileInput(filename);
-                        byteArray = fileToByteArray(is);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    File profilePhotoPath = new File(getIntent().getStringExtra(Constants.PROFILE_PHOTO));
 
-                    //Getting the storage reference
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
                             .child(Constants.FIREBASE_CHILD_PRIVATE)
                             .child(userUID);
@@ -452,7 +444,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                             .setContentType("image/png")
                             .build();
 
-                    UploadTask uploadTask = storageReference.putBytes(Objects.requireNonNull(byteArray), metadata);
+                    UploadTask uploadTask = storageReference.putBytes(getByteArrayFromFile(MyFlatDetails.this, profilePhotoPath), metadata);
 
                     //adding the profile photo to storage reference and user data to real time database
                     uploadTask.addOnSuccessListener(taskSnapshot -> {

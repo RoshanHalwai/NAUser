@@ -7,8 +7,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_PRIVATE;
-import static com.kirtanlabs.nammaapartments.Constants.FIREBASE_CHILD_USER_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
 
 /**
  * Global NammaApartment class for storing User's Information
@@ -31,6 +31,15 @@ public class NammaApartmentsGlobal extends Application {
         return nammaApartmentUser;
     }
 
+    public void setNammaApartmentUser(NammaApartmentUser nammaApartmentUser) {
+        this.nammaApartmentUser = nammaApartmentUser;
+        userUID = nammaApartmentUser.getUID();
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
     public DatabaseReference getUserDataReference() {
         UserFlatDetails userFlatDetails = nammaApartmentUser.getFlatDetails();
         return FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_USER_DATA).child(FIREBASE_CHILD_PRIVATE)
@@ -38,15 +47,6 @@ public class NammaApartmentsGlobal extends Application {
                 .child(userFlatDetails.getSocietyName())
                 .child(userFlatDetails.getApartmentName())
                 .child(userFlatDetails.getFlatNumber());
-    }
-    
-    /* ------------------------------------------------------------- *
-     * Setters
-     * ------------------------------------------------------------- */
-
-    public void setNammaApartmentUser(NammaApartmentUser nammaApartmentUser) {
-        this.nammaApartmentUser = nammaApartmentUser;
-        userUID = nammaApartmentUser.getUID();
     }
 
 }

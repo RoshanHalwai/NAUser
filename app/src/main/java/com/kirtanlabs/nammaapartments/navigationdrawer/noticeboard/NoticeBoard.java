@@ -36,6 +36,7 @@ public class NoticeBoard extends BaseActivity implements AdapterView.OnClickList
     public void onClick(View view) {
 
     }
+
     private NoticeBoardAdapter getAdapter() {
         String[] stringTitle = {
                 getString(R.string.ganesha_festival),
@@ -43,18 +44,18 @@ public class NoticeBoard extends BaseActivity implements AdapterView.OnClickList
                 getString(R.string.ganesha_festival),
                 getString(R.string.ganesha_festival)
         };
-        String[] stringMessage ={
+        String[] stringMessage = {
                 getString(R.string.notice_board_message),
                 getString(R.string.notice_board_message),
                 getString(R.string.notice_board_message),
                 getString(R.string.notice_board_message)
         };
-        String[] stringInCharge ={
+        String[] stringInCharge = {
                 getString(R.string.in_charge),
                 getString(R.string.in_charge),
                 getString(R.string.in_charge),
                 getString(R.string.in_charge)
         };
-        return new NoticeBoardAdapter(this ,stringTitle,stringMessage,stringInCharge);
+        return new NoticeBoardAdapter(this, stringTitle, stringMessage, stringInCharge);
     }
 }

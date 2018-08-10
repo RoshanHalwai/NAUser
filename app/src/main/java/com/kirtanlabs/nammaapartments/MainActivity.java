@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.ApartmentServicesHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.SocietyServicesHome;
+import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
+import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 /**
  * KirtanLabs Pvt. Ltd.

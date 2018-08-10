@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 public class NoticeBoardAdapter extends BaseAdapter {
 
-    String[] stringTitle,stringMessage,stringInCharge;
     private final Context context;
+    String[] stringTitle, stringMessage, stringInCharge;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -52,9 +52,9 @@ public class NoticeBoardAdapter extends BaseAdapter {
             }
         }
         /*Getting Id's for all the views*/
-       TextView textTitleGridLayout = gridView.findViewById(R.id.textTitleGridLayout);
-       TextView textMessageGridLayout = gridView.findViewById(R.id.textMessageGridLayout);
-       TextView textInChargeGridLayout = gridView.findViewById(R.id.textInChargeGridLayout);
+        TextView textTitleGridLayout = gridView.findViewById(R.id.textTitleGridLayout);
+        TextView textMessageGridLayout = gridView.findViewById(R.id.textMessageGridLayout);
+        TextView textInChargeGridLayout = gridView.findViewById(R.id.textInChargeGridLayout);
 
         /*Setting font for the TextView*/
         textTitleGridLayout.setTypeface(Constants.setLatoRegularFont(context));

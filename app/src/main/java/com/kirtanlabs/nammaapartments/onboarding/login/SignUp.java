@@ -1,9 +1,7 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,18 +10,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
-import com.kirtanlabs.nammaapartments.ImagePicker;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.flatdetails.MyFlatDetails;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
-import java.io.FileOutputStream;
+import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
-import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
-import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getBitmapFromFile;
 
 public class SignUp extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
@@ -36,7 +34,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     private EditText editFullName;
     private EditText editEmailId;
     private AlertDialog imageSelectionDialog;
-    private String profilePhotoPath;
+    private File profilePhotoPath;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -97,22 +95,15 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         if (resultCode == EDIT_TEXT_EMPTY_LENGTH) {
             circleImageNewUserProfileImage.setVisibility(View.VISIBLE);
         } else {
-            if (requestCode == CAMERA_PERMISSION_REQUEST_CODE || requestCode == GALLERY_PERMISSION_REQUEST_CODE) {
-                Bitmap bitmapProfilePic = ImagePicker.getImageFromResult(this, resultCode, data);
-                circleImageNewUserProfileImage.setImageBitmap(bitmapProfilePic);
-                try {
-                    profilePhotoPath = "ProfilePic.png";
-                    FileOutputStream stream = this.openFileOutput(profilePhotoPath, Context.MODE_PRIVATE);
-                    if (profilePhotoPath != null) {
-                        textErrorProfilePic.setVisibility(View.INVISIBLE);
+            EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+                @Override
+                public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
+                    if (source == EasyImage.ImageSource.GALLERY || source == EasyImage.ImageSource.CAMERA) {
+                        circleImageNewUserProfileImage.setImageBitmap(getBitmapFromFile(SignUp.this, imageFile));
+                        profilePhotoPath = imageFile;
                     }
-                    bitmapProfilePic.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    stream.close();
-                    bitmapProfilePic.recycle();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
+            });
         }
     }
 
@@ -209,7 +200,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
             intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
             intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
             intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
-            intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath);
+            intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath.toString());
             startActivity(intent);
             finish();
         }

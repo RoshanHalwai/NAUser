@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 

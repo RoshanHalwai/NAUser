@@ -34,18 +34,19 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".nammaapartmentsservices.societyservices.digitalgate.MyFirebaseInstanceIdService">
+        <service android:name=".notifications.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".nammaapartmentsservices.societyservices.digitalgate.MyFirebaseMessagingService">
+
+        <service android:name=".notifications.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name=".nammaapartmentsservices.societyservices.digitalgate.Button_listener">
+        <receiver android:name=".notifications.ActionButtonListener">
             <intent-filter>
                 <action android:name="accept_button_clicked" />
                 <action android:name="reject_button_clicked" />
@@ -86,7 +87,7 @@
 
         <!-- Namma Apartments NammaApartmentsHome Screen -->
         <activity
-            android:name=".nammaapartmentshome.NammaApartmentsHome"
+            android:name=".home.activities.NammaApartmentsHome"
             android:screenOrientation="portrait" />
 
         <!-- Navigation Drawer Screens -->
@@ -111,76 +112,73 @@
 
         <!-- Digital Gate Screens -->
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome"
+            android:name=".services.societyservices.digigate.home.DigitalGateHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.invitevisitors.InvitingVisitors"
+            android:name=".services.societyservices.digigate.invitevisitors.InvitingVisitors"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.guests.GuestsList"
+            android:name=".services.societyservices.digigate.myvisitorslist.guests.GuestsList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.NotifyGateAndEmergencyHome"
+            android:name=".services.societyservices.digigate.notifydigitalgate.NotifyGateAndEmergencyHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.arrivals.ExpectingArrival"
+            android:name=".services.societyservices.digigate.notifydigitalgate.arrivals.ExpectingArrival"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.HandedThings"
+            android:name=".services.societyservices.digigate.notifydigitalgate.handedthings.HandedThings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.mydailyservices.DailyServicesHome"
+            android:name=".services.societyservices.digigate.mydailyservices.DailyServicesHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.mydailyservices.AddDailyService"
+            android:name=".services.societyservices.digigate.mydailyservices.AddDailyService"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.mysweethome.AddFamilyMember"
+            android:name=".services.societyservices.digigate.mysweethome.AddFamilyMember"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.emergency.RaiseAlarm"
+            android:name=".services.societyservices.digigate.emergency.RaiseAlarm"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.mysweethome.MySweetHome"
+            android:name=".services.societyservices.digigate.mysweethome.MySweetHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.VisitorsList"
+            android:name=".services.societyservices.digigate.myvisitorslist.VisitorsList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.cabs.CabsList"
+            android:name=".services.societyservices.digigate.myvisitorslist.cabs.CabsList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.packages.PackagesList"
+            android:name=".services.societyservices.digigate.myvisitorslist.packages.PackagesList"
             android:screenOrientation="portrait" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        <activity
+            android:name=".services.societyservices.digigate.notifydigitalgate.handedthings.history.HandedThingsHistory"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.handedthingshistory.HandedThingsHistory" />
+        <!--Society Services Screen-->
+        <activity
+            android:name=".services.societyservices.othersocietyservices.activities.SocietyServicesHome"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".services.societyservices.othersocietyservices.activities.AwaitingResponse"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".services.societyservices.othersocietyservices.activities.SocietyServicesHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".services.societyservices.othersocietyservices.activities.SocietyServiceProblemList"
+            android:screenOrientation="portrait" />
 
-        <!--SocietyServicesHome Screen-->
+        <!--Apartment Services Screen-->
         <activity
-            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome"
+            android:name=".home.activities.ApartmentServices"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".nammaapartmentsservices.societyservices.societyservices.AwaitingResponse"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHistory"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".nammaapartmentsservices.societyservices.societyservices.SocietyServiceProblemList"
-            android:screenOrientation="portrait" />
-        <activity android:name=".nammaapartmentshome.ApartmentServices" />
+
     </application>
 
 </manifest>

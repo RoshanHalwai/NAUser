@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.societyservices.digitalgate.myvisitorslist.guests.GuestsList">
+    tools:context=".services.societyservices.digigate.myvisitorslist.guests.GuestsList">
 
     <include
         android:id="@+id/titleBar"

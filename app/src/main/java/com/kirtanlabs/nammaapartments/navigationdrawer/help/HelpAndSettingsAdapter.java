@@ -14,7 +14,7 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.Constants.setLatoRegularFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class HelpAndSettingsAdapter extends ArrayAdapter<String> {
 

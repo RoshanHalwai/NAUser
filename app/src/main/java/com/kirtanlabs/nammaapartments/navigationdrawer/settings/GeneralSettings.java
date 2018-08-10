@@ -12,8 +12,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 public class GeneralSettings extends BaseActivity {
 

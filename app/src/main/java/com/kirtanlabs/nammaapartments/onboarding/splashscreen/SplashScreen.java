@@ -10,10 +10,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 /**
  * KirtanLabs Pvt. Ltd.

@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 
