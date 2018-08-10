@@ -36,11 +36,10 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
     private int screenTitle;
-    private String problem, societyServiceType, notificationUID;
+    private String problem;
+    private String societyServiceType;
     private Button selectedButton;
     private EditText editTextSelectProblem;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -60,10 +59,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        societyServiceType = getString(screenTitle).toLowerCase();
-        /*To Check if previous request of that particular society services completed or not.*/
-        checkPreviousRequestStatus();
 
         /*Getting Id's for all the views*/
         TextView textSelectSlot = findViewById(R.id.textSelectSlot);
@@ -100,6 +95,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 buttonRequestService.setText(R.string.request_electrician);
                 break;
         }
+
+        societyServiceType = getString(screenTitle).toLowerCase();
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
@@ -192,7 +189,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     private void storeSocietyServiceDetails() {
         /*Generating the societyServiceUID*/
         DatabaseReference societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-        notificationUID = societyServiceNotificationReference.push().getKey();
+        String notificationUID = societyServiceNotificationReference.push().getKey();
 
         /*Getting the data entered by user while logging the Society Service issue*/
         String userUID = NammaApartmentsGlobal.userUID;
@@ -212,8 +209,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
         societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
 
-        sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (screenTitle) {
             case R.string.plumber:
                 editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, notificationUID);
@@ -236,48 +233,4 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         finish();
     }
 
-    /**
-     * This method is used to check if their is any previous society service request is active or not.
-     */
-    private void checkPreviousRequestStatus() {
-        sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        switch (screenTitle) {
-            case R.string.plumber:
-                notificationUID = sharedPreferences.getString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
-                break;
-            case R.string.carpenter:
-                notificationUID = sharedPreferences.getString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
-                break;
-            case R.string.electrician:
-                notificationUID = sharedPreferences.getString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
-                break;
-        }
-
-        if (notificationUID != null) {
-            new RetrievingSocietyServiceHistoryList(SocietyServicesHome.this)
-                    .getPreviousRequestStatus(notificationUID, status -> {
-                        if (status.equals(IN_PROGRESS)) {
-                            Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
-                            awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
-                            awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
-                            startActivity(awaitingResponseIntent);
-                            finish();
-                        } else {
-                            editor = sharedPreferences.edit();
-                            switch (screenTitle) {
-                                case R.string.plumber:
-                                    editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                                case R.string.carpenter:
-                                    editor.putString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                                case R.string.electrician:
-                                    editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                            }
-                            editor.apply();
-                        }
-                    });
-        }
-    }
 }

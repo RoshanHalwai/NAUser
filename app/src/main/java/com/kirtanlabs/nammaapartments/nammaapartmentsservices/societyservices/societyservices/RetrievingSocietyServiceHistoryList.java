@@ -29,7 +29,7 @@ public class RetrievingSocietyServiceHistoryList {
      * Constructor
      * ------------------------------------------------------------- */
 
-    RetrievingSocietyServiceHistoryList(Context mCtx) {
+    public RetrievingSocietyServiceHistoryList(Context mCtx) {
         this.mCtx = mCtx;
     }
 

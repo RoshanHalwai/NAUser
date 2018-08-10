@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.nammaapartmentshome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +15,19 @@ import android.widget.ListView;
 import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.digitalgatehome.DigitalGateHome;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.AwaitingResponse;
+import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.RetrievingSocietyServiceHistoryList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
+
 public class SocietyServicesHome extends Fragment implements AdapterView.OnItemClickListener {
+
+    private String notificationUID;
 
     /* ------------------------------------------------------------- *
      * Overriding Fragment Objects
@@ -56,19 +64,16 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 startActivity(new Intent(getActivity(), DigitalGateHome.class));
                 break;
             case 1:
-                Intent intentPlumber = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
-                intentPlumber.putExtra(Constants.SCREEN_TITLE, R.string.plumber);
-                startActivity(intentPlumber);
+                /*To Check if User's previous request for that particular society service is completed or not.*/
+                checkPreviousRequestStatus(R.string.plumber);
                 break;
             case 2:
-                Intent intentCarpenter = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
-                intentCarpenter.putExtra(Constants.SCREEN_TITLE, R.string.carpenter);
-                startActivity(intentCarpenter);
+                /*To Check if User's previous request for that particular society service is completed or not.*/
+                checkPreviousRequestStatus(R.string.carpenter);
                 break;
             case 3:
-                Intent intentElectrician = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
-                intentElectrician.putExtra(Constants.SCREEN_TITLE, R.string.electrician);
-                startActivity(intentElectrician);
+                /*To Check if User's previous request for that particular society service is completed or not.*/
+                checkPreviousRequestStatus(R.string.electrician);
                 break;
         }
     }
@@ -93,4 +98,66 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
     }
 
+    /**
+     * This method is used to check if their is any previous society service request is active or not.
+     */
+    private void checkPreviousRequestStatus(int screenTitle) {
+        /*Retrieving user's previous society service request UID from shared preference*/
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        switch (screenTitle) {
+            case R.string.plumber:
+                notificationUID = sharedPreferences.getString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
+                break;
+            case R.string.carpenter:
+                notificationUID = sharedPreferences.getString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
+                break;
+            case R.string.electrician:
+                notificationUID = sharedPreferences.getString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
+                break;
+        }
+
+        if (notificationUID != null) {
+            /*Checking status of previous Request*/
+            new RetrievingSocietyServiceHistoryList(getActivity())
+                    .getPreviousRequestStatus(notificationUID, status -> {
+                        if (status.equals(IN_PROGRESS)) {
+                            Intent awaitingResponseIntent = new Intent(getActivity(), AwaitingResponse.class);
+                            awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
+                            awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, getString(screenTitle).toLowerCase());
+                            startActivity(awaitingResponseIntent);
+                        } else {
+                            /*Updating previous user's society service request Uid to null*/
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            switch (screenTitle) {
+                                case R.string.plumber:
+                                    editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
+                                    break;
+                                case R.string.carpenter:
+                                    editor.putString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
+                                    break;
+                                case R.string.electrician:
+                                    editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
+                                    break;
+                            }
+                            editor.apply();
+                            /*Navigating user to Society Service Home Screen where user can request for society services*/
+                            makeSocietyServiceRequest(screenTitle);
+                        }
+                    });
+        } else {
+            /*Navigating user to Society Service Home Screen where user can request for society services*/
+            makeSocietyServiceRequest(screenTitle);
+        }
+    }
+
+    /**
+     * This method is invoked to open Society Service Home screen, where user can request for society services.
+     *
+     * @param screenTitle - type of society service user needs.
+     */
+    private void makeSocietyServiceRequest(int screenTitle) {
+        Intent intent = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
+        intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
+        startActivity(intent);
+    }
 }
