@@ -80,9 +80,9 @@ public class AwaitingResponse extends BaseActivity {
 
         showProgressIndicator();
 
-        if (getIntent() != null && getIntent().getStringExtra("NotificationUID") != null) {
-            String notificationUID = getIntent().getStringExtra("NotificationUID");
-            String societyServiceType = getIntent().getStringExtra("societyServiceType");
+        if (getIntent() != null && getIntent().getStringExtra(Constants.NOTIFICATION_UID) != null) {
+            String notificationUID = getIntent().getStringExtra(Constants.NOTIFICATION_UID);
+            String societyServiceType = getIntent().getStringExtra(Constants.SOCIETY_SERVICE_TYPE);
 
             /*Getting the reference till 'notificationUID' in societyServices to set 'status' in Firebase*/
             DatabaseReference societyServiceReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID);
