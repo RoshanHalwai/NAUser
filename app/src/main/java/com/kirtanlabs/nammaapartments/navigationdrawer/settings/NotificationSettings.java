@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.widget.Switch;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 public class NotificationSettings extends BaseActivity {
 

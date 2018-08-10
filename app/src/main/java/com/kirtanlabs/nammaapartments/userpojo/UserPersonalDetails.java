@@ -6,7 +6,7 @@ import java.io.Serializable;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 6/17/2018
  */
-public class UserPersonalDetails implements Serializable{
+public class UserPersonalDetails implements Serializable {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -21,7 +21,8 @@ public class UserPersonalDetails implements Serializable{
      * Constructors
      * ------------------------------------------------------------- */
 
-    public UserPersonalDetails() {}
+    public UserPersonalDetails() {
+    }
 
     public UserPersonalDetails(String email, String fullName, String phoneNumber, String profilePhoto) {
         this.email = email;
@@ -38,32 +39,32 @@ public class UserPersonalDetails implements Serializable{
         return fullName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getProfilePhoto() {
-        return profilePhoto;
-    }
-
-    /* ------------------------------------------------------------- *
-     * Setters
-     * ------------------------------------------------------------- */
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
     }
 
     public void setProfilePhoto(String profilePhoto) {

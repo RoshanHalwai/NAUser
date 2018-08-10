@@ -8,11 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
-import static com.kirtanlabs.nammaapartments.Constants.EDIT_TEXT_EMPTY_LENGTH;
-import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EDIT_TEXT_EMPTY_LENGTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 
 public class SignIn extends BaseActivity implements View.OnClickListener {
 

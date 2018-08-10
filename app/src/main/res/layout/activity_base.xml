@@ -38,8 +38,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_weight="0.05"
-        android:src="@drawable/history"
         android:contentDescription="@string/history_button_description"
+        android:src="@drawable/history"
         android:visibility="gone" />
 
     <ImageView

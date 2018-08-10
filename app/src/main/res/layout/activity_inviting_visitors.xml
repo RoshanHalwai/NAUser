@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".nammaapartmentsservices.societyservices.digitalgate.invitevisitors.InvitingVisitors">
+    tools:context=".services.societyservices.digigate.invitevisitors.InvitingVisitors">
 
     <include layout="@layout/activity_base" />
 
@@ -21,13 +21,13 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/invitingVisitorsProfilePic"
                 android:layout_width="120dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:src="@drawable/team"
                 app:civ_border_color="@color/nmLightBlack"
-                android:layout_marginTop="5dp"
                 app:civ_border_width="1dp" />
 
             <TextView
@@ -39,6 +39,7 @@
                 android:text="@string/upload_image"
                 android:textColor="@android:color/holo_red_dark"
                 android:visibility="gone" />
+
             <TextView
                 android:id="@+id/textVisitorAndServiceName"
                 android:layout_width="match_parent"
@@ -209,6 +210,7 @@
                     android:visibility="gone" />
 
             </RelativeLayout>
+
             <Button
                 android:id="@+id/buttonInvite"
                 android:layout_width="match_parent"

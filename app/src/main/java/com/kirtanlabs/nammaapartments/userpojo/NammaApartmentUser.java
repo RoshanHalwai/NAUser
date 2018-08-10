@@ -10,11 +10,11 @@ public class NammaApartmentUser implements Serializable {
      * Private Members
      * ------------------------------------------------------------- */
 
+    private final Map<String, Boolean> familyMembers = new HashMap<>();
+    private final Map<String, Boolean> friends = new HashMap<>();
     private UserFlatDetails flatDetails;
     private UserPersonalDetails personalDetails;
     private UserPrivileges privileges;
-    private final Map<String, Boolean> familyMembers = new HashMap<>();
-    private final Map<String, Boolean> friends = new HashMap<>();
     private String uid;
 
     /* ------------------------------------------------------------- *

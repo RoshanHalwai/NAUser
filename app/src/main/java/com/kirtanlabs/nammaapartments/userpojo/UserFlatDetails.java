@@ -6,7 +6,7 @@ import java.io.Serializable;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 6/17/2018
  */
-public class UserFlatDetails implements Serializable{
+public class UserFlatDetails implements Serializable {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -22,7 +22,8 @@ public class UserFlatDetails implements Serializable{
      * Constructors
      * ------------------------------------------------------------- */
 
-    public UserFlatDetails() {}
+    public UserFlatDetails() {
+    }
 
     public UserFlatDetails(String apartmentName, String city, String flatNumber, String societyName, String tenantType) {
         this.apartmentName = apartmentName;

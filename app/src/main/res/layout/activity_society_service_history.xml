@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nammaapartmentsservices.societyservices.societyservices.SocietyServicesHistory">
+    tools:context=".services.societyservices.othersocietyservices.activities.SocietyServicesHistory">
 
     <include
         android:id="@+id/titleBar"
@@ -19,9 +19,9 @@
         android:visibility="invisible" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/titleBar"
         android:id="@+id/recyclerViewHistory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar" />
 
 </RelativeLayout>

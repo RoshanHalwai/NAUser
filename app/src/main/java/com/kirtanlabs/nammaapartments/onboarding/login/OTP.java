@@ -25,11 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.Constants;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.nammaapartmentshome.NammaApartmentsHome;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mydailyservices.AddDailyService;
-import com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.digitalgate.mysweethome.AddFamilyMember;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.AddDailyService;
+import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.AddFamilyMember;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Locale;
 import java.util.Objects;

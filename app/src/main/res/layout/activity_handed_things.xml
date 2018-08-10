@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nammaapartmentsservices.societyservices.digitalgate.notifydigitalgate.handedthings.HandedThings">
+    tools:context=".services.societyservices.digigate.notifydigitalgate.handedthings.HandedThings">
 
     <include
         android:id="@+id/titleBar"
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:visibility="gone"
         app:indicatorColor="@color/nmBlack"
-        app:indicatorName="BallSpinFadeLoaderIndicator"
-        android:visibility="gone"/>
+        app:indicatorName="BallSpinFadeLoaderIndicator" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

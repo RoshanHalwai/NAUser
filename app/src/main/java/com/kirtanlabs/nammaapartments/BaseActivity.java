@@ -12,12 +12,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,23 +24,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
-import static com.kirtanlabs.nammaapartments.Constants.CAMERA_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.GALLERY_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.PHONE_NUMBER_MAX_LENGTH;
-import static com.kirtanlabs.nammaapartments.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.Constants.setLatoItalicFont;
+import pl.aprilapps.easyphotopicker.EasyImage;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 
 /**
  * Root activity for most of the Activities of this project.
@@ -59,7 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static String imageFilePath = "";
     private ImageView infoButton;
     private ImageView backButton;
-    private Intent callIntent, msgIntent, readContactsIntent, cameraIntent, galleryIntent;
+    private Intent callIntent, msgIntent, readContactsIntent;
     private AVLoadingIndicatorView progressIndicator;
     private ProgressDialog progressDialog;
 
@@ -92,13 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void showBackButton() {
         backButton.setVisibility(View.VISIBLE);
-    }
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "IMG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
     /* ------------------------------------------------------------- *
@@ -138,12 +126,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
             case CAMERA_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST_CODE);
+                    EasyImage.openCamera(this, 0);
                 }
                 break;
             case GALLERY_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    startActivityForResult(galleryIntent, GALLERY_PERMISSION_REQUEST_CODE);
+                    EasyImage.openGallery(this, 0);
                 }
                 break;
         }
@@ -188,21 +176,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     //TODO:Change this method that it should work for Android API Level-27
     protected void launchCamera() {
-        cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photoFile;
-        try {
-            photoFile = createImageFile();
-            imageFilePath = photoFile.getAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         else {
-            startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST_CODE);
+            EasyImage.openCamera(this, 0);
         }
     }
 
@@ -212,14 +189,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     //TODO:Change this method that it should work for Android API Level-27
     protected void pickImageFromGallery() {
-        galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryIntent.setType("image/*");
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), GALLERY_PERMISSION_REQUEST_CODE);
-        else {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            EasyImage.openGallery(this, 0);
+        else
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_PERMISSION_REQUEST_CODE);
-        }
     }
 
     /**

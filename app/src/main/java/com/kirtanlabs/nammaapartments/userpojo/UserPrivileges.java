@@ -41,11 +41,11 @@ public class UserPrivileges implements Serializable {
         return grantedAccess;
     }
 
-    public boolean isVerified() {
-        return verified;
-    }
-
     public void setGrantedAccess(boolean grantedAccess) {
         this.grantedAccess = grantedAccess;
+    }
+
+    public boolean isVerified() {
+        return verified;
     }
 }
