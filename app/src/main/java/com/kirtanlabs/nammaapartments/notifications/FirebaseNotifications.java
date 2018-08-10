@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -81,7 +82,24 @@ public class FirebaseNotifications extends FirebaseMessagingService {
                 remoteViews.setImageViewBitmap(R.id.eIntercomProfilePic, getBitmapFromURL(profilePhoto));
             }
 
-            Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            String channelId;
+
+            /*To support Android Oreo Devices and higher*/
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel mChannel = new NotificationChannel(
+                        getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
+                Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
+                channelId = mChannel.getId();
+                IntentFilter actionIntents = new IntentFilter();
+                actionIntents.addAction(ACCEPT_BUTTON_CLICKED);
+                actionIntents.addAction(REJECT_BUTTON_CLICKED);
+                getApplicationContext().registerReceiver(new ActionButtonListener(), actionIntents);
+            } else {
+                channelId = getString(R.string.default_notification_channel_id);
+            }
+
+            Notification notification = new NotificationCompat.Builder(this, channelId)
                     .setSmallIcon(R.drawable.namma_apartment_notification)
                     .setContentTitle(NOTIFICATION_EXPAND_TITLE)
                     .setContentText(NOTIFICATION_EXPAND_MSG)
@@ -110,15 +128,6 @@ public class FirebaseNotifications extends FirebaseMessagingService {
             rejectButtonIntent.putExtra(VISITOR_TYPE, visitorType);
             PendingIntent rejectPendingIntent = PendingIntent.getBroadcast(this, 123, rejectButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.buttonReject, rejectPendingIntent);
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-            /*To support Android Oreo Devices and higher*/
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel mChannel = new NotificationChannel(
-                        getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
-                Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
-            }
 
             Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
         } else {
