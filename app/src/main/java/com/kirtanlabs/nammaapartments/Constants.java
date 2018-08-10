@@ -30,6 +30,7 @@ public class Constants {
     public static final String SOCIETY_SERVICE_PROBLEM = "society_service_problem";
     public static final String NOTIFICATION_UID = "notificationUID";
     public static final String NOTIFICATION_ID = "notificationID";
+    public static final String SOCIETY_SERVICE_TYPE = "societyServiceType";
     public static final String USER_UID = "userUID";
     public static final String VISITOR_TYPE = "visitorType";
     public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
@@ -65,6 +66,9 @@ public class Constants {
     public static final String NAMMA_APARTMENTS_PREFERENCE = "nammaApartmentsPreference";
     public static final String FIRST_TIME = "firstTime";
     public static final String LOGGED_IN = "loggedIn";
+    public static final String PLUMBER_SERVICE_NOTIFICATION_UID = "plumberServiceNotificationUid";
+    public static final String CARPENTER_SERVICE_NOTIFICATION_UID = "carpenterServiceNotificationUid";
+    public static final String ELECTRICIAN_SERVICE_NOTIFICATION_UID = "electricianServiceNotificationUid";
 
     /* ------------------------------------------------------------- *
      * Firebase objects
