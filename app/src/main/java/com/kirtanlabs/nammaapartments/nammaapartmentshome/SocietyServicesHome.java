@@ -27,6 +27,10 @@ import static com.kirtanlabs.nammaapartments.Constants.IN_PROGRESS;
 
 public class SocietyServicesHome extends Fragment implements AdapterView.OnItemClickListener {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private String notificationUID;
 
     /* ------------------------------------------------------------- *
