@@ -117,6 +117,7 @@ public class RetrievingGuestList {
     private void getGuestUIDList(GuestUIDListCallback guestUIDListCallback, String userUID) {
         DatabaseReference guestListReference = userDataReference.child(FIREBASE_CHILD_VISITORS)
                 .child(userUID);
+        guestListReference.keepSynced(true);
         guestListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -142,6 +143,7 @@ public class RetrievingGuestList {
      */
     private void getGuestDataByUID(GuestDataCallback guestDataCallback, String guestUID) {
         DatabaseReference guestDataReference = PRIVATE_VISITORS_REFERENCE.child(guestUID);
+        guestDataReference.keepSynced(true);
         guestDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -161,6 +163,7 @@ public class RetrievingGuestList {
      */
     private void isGuestReferenceExists(GuestsReferenceCallback guestsReferenceCallback) {
         DatabaseReference guestDataReference = userDataReference.child(FIREBASE_CHILD_VISITORS);
+        guestDataReference.keepSynced(true);
         guestDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

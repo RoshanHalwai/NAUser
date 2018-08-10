@@ -106,6 +106,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
 
     private void retrieveFamilyMembersDetailsFromFirebase() {
         DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
+        privateFlatReference.keepSynced(true);
         privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -116,6 +117,7 @@ public class MySweetHome extends BaseActivity implements View.OnClickListener {
                     for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
                         if (!flatSnapshot.getKey().equals(NammaApartmentsGlobal.userUID)) {
                             DatabaseReference userReference = PRIVATE_USERS_REFERENCE.child(flatSnapshot.getKey());
+                            userReference.keepSynced(true);
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
