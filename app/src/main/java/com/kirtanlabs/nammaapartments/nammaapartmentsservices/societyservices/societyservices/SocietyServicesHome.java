@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +39,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     private int screenTitle;
     private String problem;
     private String societyServiceType;
-    private Button selectedButton;
+    private Button selectedButton, buttonDryWaste, buttonWetWaste;
     private EditText editTextSelectProblem;
 
     /* ------------------------------------------------------------- *
@@ -68,7 +69,10 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
         Button buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
         Button buttonRequestService = findViewById(R.id.buttonRequestService);
+        buttonDryWaste = findViewById(R.id.buttonDryWaste);
+        buttonWetWaste = findViewById(R.id.buttonWetWaste);
         editTextSelectProblem = findViewById(R.id.editTextSelectProblem);
+        LinearLayout layoutGarbageType = findViewById(R.id.layoutGarbageType);
 
         /*Setting font for all the views*/
         textSelectProblem.setTypeface(setLatoBoldFont(this));
@@ -79,6 +83,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonNoonSlot.setTypeface(setLatoRegularFont(this));
         buttonEveningSlot.setTypeface(setLatoRegularFont(this));
         buttonRequestService.setTypeface(setLatoLightFont(this));
+        buttonDryWaste.setTypeface(setLatoRegularFont(this));
+        buttonWetWaste.setTypeface(setLatoRegularFont(this));
 
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
@@ -94,6 +100,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.electrician:
                 buttonRequestService.setText(R.string.request_electrician);
                 break;
+            case R.string.garbage_management:
+                buttonRequestService.setText(R.string.request);
+                textSelectProblem.setText(R.string.select_garbage_type);
+                editTextSelectProblem.setVisibility(View.GONE);
+                layoutGarbageType.setVisibility(View.VISIBLE);
         }
 
         societyServiceType = getString(screenTitle).toLowerCase();
@@ -111,6 +122,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonEveningSlot.setOnClickListener(this);
         buttonRequestService.setOnClickListener(this);
         historyButton.setOnClickListener(this);
+        buttonDryWaste.setOnClickListener(this);
+        buttonWetWaste.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -144,6 +157,14 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
                 societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
                 startActivity(societyServiceHistoryIntent);
+                break;
+            case R.id.buttonDryWaste:
+                buttonDryWaste.setBackgroundResource(R.drawable.selected_button_design);
+                buttonWetWaste.setBackgroundResource(R.drawable.valid_for_button_design);
+                break;
+            case R.id.buttonWetWaste:
+                buttonWetWaste.setBackgroundResource(R.drawable.selected_button_design);
+                buttonDryWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
         }
     }

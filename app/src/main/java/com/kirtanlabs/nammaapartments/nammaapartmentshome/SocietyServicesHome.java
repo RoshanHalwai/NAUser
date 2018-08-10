@@ -80,6 +80,11 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 /*To Check if User's previous request for that particular society service is completed or not.*/
                 checkPreviousRequestStatus(R.string.electrician);
                 break;
+            case 4:
+                Intent garbageManagementIntent = new Intent(getActivity(), com.kirtanlabs.nammaapartments.nammaapartmentsservices.societyservices.societyservices.SocietyServicesHome.class);
+                garbageManagementIntent.putExtra(Constants.SCREEN_TITLE, R.string.garbage_management);
+                startActivity(garbageManagementIntent);
+                break;
             case 5:
                 Intent medicalIntent = new Intent(getActivity(), RaiseAlarm.class);
                 medicalIntent.putExtra(Constants.ALARM_TYPE, R.string.medical_emergency);
