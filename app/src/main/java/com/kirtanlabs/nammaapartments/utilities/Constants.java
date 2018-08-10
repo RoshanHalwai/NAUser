@@ -11,6 +11,9 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by Roshan Halwai on 5/1/2018
  */
 
+                            /**------------------------------------------------------------- *
+                             *----------------DO NOT AUTO-FORMAT THIS FILE-------------------*
+                             *-------------------------------------------------------------- */
 public class Constants {
 
     /* ------------------------------------------------------------- *
@@ -57,7 +60,7 @@ public class Constants {
      * Login/OTP Constants
      * ------------------------------------------------------------- */
 
-    public static final int OTP_TIMER = 120;
+    public static final int OTP_TIMER = 60;
 
     /* ------------------------------------------------------------- *
      * Shared Preference Keys
@@ -71,7 +74,7 @@ public class Constants {
     public static final String ELECTRICIAN_SERVICE_NOTIFICATION_UID = "electricianServiceNotificationUid";
 
     /* ------------------------------------------------------------- *
-     * Firebase objects
+     * Firebase Values
      * ------------------------------------------------------------- */
 
     public static final String FIREBASE_CHILD_ALL = "all";
@@ -117,36 +120,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_GATE_NOTIFICATIONS = "gateNotifications";
     public static final String FIREBASE_CHILD_TIMESTAMP = "timestamp";
     public static final int FIREBASE_CHILD_RATING = 3;
-    public static final String ENTERED = "Entered";
-    public static final String NOT_ENTERED = "Not Entered";
     public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
     public static final String FIREBASE_CHILD_REJECTED = "Rejected";
-    public static final String REMOTE_MESSAGE = "message";
-    public static final String REMOTE_NOTIFICATION_UID = "notification_uid";
-    public static final String REMOTE_USER_UID = "user_uid";
-    public static final String REMOTE_VISITOR_TYPE = "visitor_type";
-    public static final String REMOTE_TYPE = "type";
-
-    /* ------------------------------------------------------------- *
-     * Firebase Values
-     * ------------------------------------------------------------- */
-    public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
-    public static final String ACCEPT_BUTTON_CLICKED = "accept_button_clicked";
-
-    /* ------------------------------------------------------------- *
-     * Firebase Database References
-     * ------------------------------------------------------------- */
-    public static final String REJECT_BUTTON_CLICKED = "reject_button_clicked";
-    public static final String FAMILY_MEMBER = "Family Member";
-    public static final String FRIEND = "Friend";
-    public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
-    public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
-    public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
-    public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
-    public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
-    public static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
-    public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
-    public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
     private static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     private static final String FIREBASE_CHILD_CITIES = "cities";
     private static final String FIREBASE_CHILD_CLIENTS = "clients";
@@ -154,6 +129,22 @@ public class Constants {
     private static final String FIREBASE_CHILD_PUBLIC = "public";
     private static final String FIREBASE_CHILD_SOCIETIES = "societies";
     private static final String FIREBASE_CHILD_SOCIETY_SERVICES = "societyServices";
+
+    /* ------------------------------------------------------------- *
+     * Remote Message Keys
+     * ------------------------------------------------------------- */
+
+    public static final String REMOTE_MESSAGE = "message";
+    public static final String REMOTE_NOTIFICATION_UID = "notification_uid";
+    public static final String REMOTE_USER_UID = "user_uid";
+    public static final String REMOTE_VISITOR_TYPE = "visitor_type";
+    public static final String REMOTE_TYPE = "type";
+    public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
+
+    /* ------------------------------------------------------------- *
+     * Firebase Database References
+     * ------------------------------------------------------------- */
+
     private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance();
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETY_SERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETY_SERVICES);
@@ -163,32 +154,12 @@ public class Constants {
     private static final DatabaseReference VISITORS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VISITORS);
     public static final DatabaseReference PRIVATE_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_VISITORS_REFERENCE = VISITORS_REFERENCE.child(FIREBASE_CHILD_ALL);
-
-    /* ------------------------------------------------------------- *
-     * Remote Message Keys
-     * ------------------------------------------------------------- */
     private static final DatabaseReference DAILYSERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DAILYSERVICES);
     private static final DatabaseReference CABS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CABS);
     public static final DatabaseReference PRIVATE_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference ALL_CABS_REFERENCE = CABS_REFERENCE.child(FIREBASE_CHILD_ALL);
     private static final DatabaseReference DELIVERIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DELIVERIES);
     public static final DatabaseReference PRIVATE_DELIVERIES_REFERENCE = DELIVERIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
-
-    /* ------------------------------------------------------------- *
-     * Receiver Action Keys
-     * ------------------------------------------------------------- */
-    public static final DatabaseReference ALL_DELIVERIES_REFERENCE = DELIVERIES_REFERENCE.child(FIREBASE_CHILD_ALL);
-    private static final DatabaseReference EMERGENCIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EMERGENCIES);
-
-    /* ------------------------------------------------------------- *
-     * Application Specific
-     * ------------------------------------------------------------- */
-    public static final DatabaseReference PRIVATE_EMERGENCY_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
-    public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
-
-    /* ------------------------------------------------------------- *
-     * Request Code
-     * ------------------------------------------------------------- */
     private static final DatabaseReference PRIVATE_CLIENTS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CLIENTS).child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference CITIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_CITIES);
     public static final DatabaseReference SOCIETIES_REFERENCE = PRIVATE_CLIENTS_REFERENCE.child(FIREBASE_CHILD_SOCIETIES);
@@ -197,6 +168,38 @@ public class Constants {
     private static final DatabaseReference ALL_DAILYSERVICES_REFERENCE = DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference PUBLIC_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference PRIVATE_DAILYSERVICES_REFERENCE = ALL_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+    public static final DatabaseReference ALL_DELIVERIES_REFERENCE = DELIVERIES_REFERENCE.child(FIREBASE_CHILD_ALL);
+    private static final DatabaseReference EMERGENCIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EMERGENCIES);
+    public static final DatabaseReference PRIVATE_EMERGENCY_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+    public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
+
+    /* ------------------------------------------------------------- *
+     * Receiver Action Keys
+     * ------------------------------------------------------------- */
+
+    public static final String ACCEPT_BUTTON_CLICKED = "accept_button_clicked";
+    public static final String REJECT_BUTTON_CLICKED = "reject_button_clicked";
+
+    /* ------------------------------------------------------------- *
+     * Application Specific
+     * ------------------------------------------------------------- */
+
+    public static final String ENTERED = "Entered";
+    public static final String NOT_ENTERED = "Not Entered";
+    public static final String FAMILY_MEMBER = "Family Member";
+    public static final String FRIEND = "Friend";
+
+    /* ------------------------------------------------------------- *
+     * Request Code
+     * ------------------------------------------------------------- */
+    public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
+    public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
+    public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
+    public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
+    public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
+    public static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
+    public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
+    public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
 
     /* ------------------------------------------------------------- *
      * Font Types

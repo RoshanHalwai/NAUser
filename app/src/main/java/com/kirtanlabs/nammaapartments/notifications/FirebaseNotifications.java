@@ -54,7 +54,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_TYPE;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/13/2018
  */
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class FirebaseNotifications extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
