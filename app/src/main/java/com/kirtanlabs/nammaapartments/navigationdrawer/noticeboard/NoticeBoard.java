@@ -9,7 +9,6 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
 public class NoticeBoard extends BaseActivity implements AdapterView.OnClickListener {
-    GridView gridViewNoticeBoard;
 
     @Override
     protected int getLayoutResourceId() {

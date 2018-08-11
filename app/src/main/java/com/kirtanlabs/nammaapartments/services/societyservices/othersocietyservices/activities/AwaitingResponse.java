@@ -68,6 +68,7 @@ public class AwaitingResponse extends BaseActivity {
         textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
         textSocietyServiceName.setTypeface(Constants.setLatoRegularFont(this));
         textMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
+        textEndOTP.setTypeface(Constants.setLatoRegularFont(this));
         textSocietyServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
         textMobileNumberValue.setTypeface(Constants.setLatoBoldFont(this));
         textEndOTPValue.setTypeface(Constants.setLatoBoldFont(this));
@@ -91,7 +92,7 @@ public class AwaitingResponse extends BaseActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     NammaApartmentSocietyServices nammaApartmentSocietyServices = dataSnapshot.getValue(NammaApartmentSocietyServices.class);
-                    if (nammaApartmentSocietyServices.getTakenBy() != null) {
+                    if (nammaApartmentSocietyServices.getTakenBy() != null && nammaApartmentSocietyServices.getEndOTP() != null) {
                         String societyServiceUID = nammaApartmentSocietyServices.getTakenBy();
                         String endOTP = nammaApartmentSocietyServices.getEndOTP();
                         DatabaseReference societyServiceDataReference = Constants.SOCIETY_SERVICES_REFERENCE
