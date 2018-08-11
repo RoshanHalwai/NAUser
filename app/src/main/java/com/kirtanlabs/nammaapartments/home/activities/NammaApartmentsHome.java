@@ -34,6 +34,7 @@ import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
@@ -163,6 +164,11 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
             case R.id.nav_myGuards: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyGuardsActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawers();
                 break;
             }
 
