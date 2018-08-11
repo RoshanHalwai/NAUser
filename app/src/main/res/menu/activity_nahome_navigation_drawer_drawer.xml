@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_group_black"
             android:title="@string/my_family_members" />
         <item
+            android:id="@+id/nav_myGuards"
+            android:icon="@drawable/ic_guard_black"
+            android:title="@string/my_guards" />
+        <item
             android:id="@+id/nav_myNoticeBoard"
             android:icon="@drawable/ic_dashboard_black"
             android:title="@string/notice_board" />

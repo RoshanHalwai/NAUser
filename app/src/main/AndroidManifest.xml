@@ -89,6 +89,9 @@
             android:name=".navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".navigationdrawer.myguards.MyGuardsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".navigationdrawer.noticeboard.NoticeBoard"
             android:screenOrientation="portrait" />
         <activity
@@ -149,12 +152,11 @@
         <activity
             android:name=".services.societyservices.digigate.myvisitorslist.packages.PackagesList"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".services.societyservices.digigate.notifydigitalgate.handedthings.history.HandedThingsHistory"
             android:screenOrientation="portrait" />
 
-        <!--Society Services Screen-->
+        <!-- Society Services Screen -->
         <activity
             android:name=".services.societyservices.othersocietyservices.activities.SocietyServicesHome"
             android:screenOrientation="portrait" />
@@ -168,7 +170,7 @@
             android:name=".services.societyservices.othersocietyservices.activities.SocietyServiceProblemList"
             android:screenOrientation="portrait" />
 
-        <!--Apartment Services Screen-->
+        <!-- Apartment Services Screen -->
         <activity
             android:name=".home.activities.ApartmentServices"
             android:screenOrientation="portrait" />
