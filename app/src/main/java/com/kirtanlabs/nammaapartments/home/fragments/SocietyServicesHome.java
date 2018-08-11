@@ -19,6 +19,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.digigate.emergenc
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.home.DigitalGateHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.RetrievingSocietyServiceHistoryList;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.AwaitingResponse;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.EventManagement;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
 public class SocietyServicesHome extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -91,6 +93,11 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 Intent medicalIntent = new Intent(getActivity(), RaiseAlarm.class);
                 medicalIntent.putExtra(Constants.ALARM_TYPE, R.string.medical_emergency);
                 startActivity(medicalIntent);
+                break;
+            case 6:
+                Intent eventManagementIntent = new Intent(getActivity(), EventManagement.class);
+                eventManagementIntent.putExtra(SCREEN_TITLE, R.string.event_management);
+                startActivity(eventManagementIntent);
                 break;
         }
     }
