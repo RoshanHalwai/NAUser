@@ -34,6 +34,7 @@ import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
@@ -57,7 +58,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     private SmoothActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private Dialog dialog;
-    private DatabaseReference userReference;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
@@ -97,6 +97,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         Boolean isLoggedIn = sharedPreferences.getBoolean(Constants.LOGGED_IN, false);
 
         /*If User is Logged In then take User Uid from Shared Preference*/
+        DatabaseReference userReference;
         if (isLoggedIn) {
             String userUid = sharedPreferences.getString(Constants.USER_UID, null);
             userReference = Constants.PRIVATE_USERS_REFERENCE.child(userUid);
@@ -162,6 +163,15 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+            case R.id.nav_myGuards: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyGuardsActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawers();
+                break;
+            }
+
             case R.id.nav_myNoticeBoard: {
                 toggle.runWhenIdle(() -> {
                     Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
@@ -212,6 +222,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
         }
         return true;
     }
@@ -292,7 +303,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
 
         private Runnable runnable;
 
-        public SmoothActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+        SmoothActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
         }
 
@@ -317,7 +328,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             }
         }
 
-        public void runWhenIdle(Runnable runnable) {
+        void runWhenIdle(Runnable runnable) {
             this.runnable = runnable;
         }
     }
