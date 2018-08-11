@@ -1,0 +1,188 @@
+package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.R;
+
+import java.text.DateFormatSymbols;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
+
+public class EventManagement extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
+    private final int[] buttonIds = new int[]{R.id.buttonMorningSlot,
+            R.id.buttonNoonSlot,
+            R.id.buttonEveningSlot,
+            R.id.buttonNightSlot,
+            R.id.buttonParties,
+            R.id.buttonConcerts,
+            R.id.buttonMeetings,
+            R.id.buttonSeminarsOrWorkshops};
+    private EditText editPickDate;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
+
+    @Override
+
+    protected int getLayoutResourceId() {
+        return R.layout.activity_event_management;
+    }
+
+    @Override
+    protected int getActivityTitle() {
+        return R.string.event_management;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /*Getting Id's for all the views*/
+        TextView textEventTitle = findViewById(R.id.textEventTitle);
+        TextView textChooseCategory = findViewById(R.id.textChooseCategory);
+        TextView textEventDate = findViewById(R.id.textEventDate);
+        TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
+        EditText editEventTitle = findViewById(R.id.editEventTitle);
+        editPickDate = findViewById(R.id.editPickDate);
+        Button buttonParties = findViewById(R.id.buttonParties);
+        Button buttonConcerts = findViewById(R.id.buttonConcerts);
+        Button buttonMeetings = findViewById(R.id.buttonMeetings);
+        Button buttonSeminarsOrWorkshops = findViewById(R.id.buttonSeminarsOrWorkshops);
+        Button buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
+        Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
+        Button buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
+        Button buttonNightSlot = findViewById(R.id.buttonNightSlot);
+        Button buttonBook = findViewById(R.id.buttonBook);
+
+        /*Setting Fonts for all the views*/
+        textEventTitle.setTypeface(setLatoBoldFont(this));
+        textChooseCategory.setTypeface(setLatoBoldFont(this));
+        textEventDate.setTypeface(setLatoBoldFont(this));
+        textChooseTimeSlot.setTypeface(setLatoBoldFont(this));
+        editPickDate.setTypeface(setLatoRegularFont(this));
+        editEventTitle.setTypeface(setLatoRegularFont(this));
+        buttonParties.setTypeface(setLatoRegularFont(this));
+        buttonConcerts.setTypeface(setLatoRegularFont(this));
+        buttonMeetings.setTypeface(setLatoRegularFont(this));
+        buttonSeminarsOrWorkshops.setTypeface(setLatoRegularFont(this));
+        buttonMorningSlot.setTypeface(setLatoRegularFont(this));
+        buttonNoonSlot.setTypeface(setLatoRegularFont(this));
+        buttonEveningSlot.setTypeface(setLatoRegularFont(this));
+        buttonNightSlot.setTypeface(setLatoRegularFont(this));
+        buttonBook.setTypeface(setLatoLightFont(this));
+
+        /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
+        editPickDate.setInputType(InputType.TYPE_NULL);
+
+        /*We want Button Parties should be selected on start of activity */
+        selectButton(R.id.buttonParties);
+
+        /*Setting event for views */
+        editPickDate.setOnClickListener(this);
+        editPickDate.setOnFocusChangeListener(this);
+        buttonParties.setOnClickListener(this);
+        buttonConcerts.setOnClickListener(this);
+        buttonMeetings.setOnClickListener(this);
+        buttonSeminarsOrWorkshops.setOnClickListener(this);
+        buttonMorningSlot.setOnClickListener(this);
+        buttonNoonSlot.setOnClickListener(this);
+        buttonEveningSlot.setOnClickListener(this);
+        buttonNightSlot.setOnClickListener(this);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnDateSet Listener
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        if (view.isShown()) {
+            String selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+            editPickDate.setText(selectedDate);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick  and FocusChange Listener Methods
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.editPickDateTime:
+                pickDate(this, this);
+                break;
+            case R.id.buttonMorningSlot:
+                selectButton(R.id.buttonMorningSlot);
+                break;
+            case R.id.buttonNoonSlot:
+                selectButton(R.id.buttonNoonSlot);
+                break;
+            case R.id.buttonEveningSlot:
+                selectButton(R.id.buttonEveningSlot);
+                break;
+            case R.id.buttonNightSlot:
+                selectButton(R.id.buttonNightSlot);
+                break;
+            case R.id.buttonParties:
+                selectButton(R.id.buttonParties);
+                break;
+            case R.id.buttonConcerts:
+                selectButton(R.id.buttonConcerts);
+                break;
+            case R.id.buttonMeetings:
+                selectButton(R.id.buttonMeetings);
+                break;
+            case R.id.buttonSeminarsOrWorkshops:
+                selectButton(R.id.buttonSeminarsOrWorkshops);
+                break;
+            case R.id.buttonBook:
+                /*TODO:To Discuss Book Functionality and to Implement the Logic Later */
+                break;
+        }
+
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            pickDate(this, this);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * Method to change colour of selected buttons
+     *
+     * @param id - of selected button
+     */
+    private void selectButton(int id) {
+        for (int buttonId : buttonIds) {
+            Button button = findViewById(buttonId);
+            if (buttonId == id) {
+                Button selectedButton = button;
+                button.setBackgroundResource(R.drawable.selected_button_design);
+            } else {
+                button.setBackgroundResource(R.drawable.valid_for_button_design);
+            }
+        }
+    }
+}

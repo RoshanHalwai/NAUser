@@ -337,12 +337,25 @@
     <string name="select_slot">Select Slot</string>
     <string name="select_problem">Select Problem</string>
     <string name="select_garbage_type">Select Garbage Type</string>
+    <string name="event_title">Event Title</string>
+    <string name="choose_category">Choose Category</string>
+    <string name="parties">Parties</string>
+    <string name="concerts">Concerts</string>
+    <string name="meetings">Meetings</string>
+    <string name="seminar_workshops">Seminars/WorkShops</string>
+    <string name="book">BOOK</string>
+    <string name="choose_time_slot">Choose Time Slot</string>
+    <string name="event_date">Event Date:</string>
     <string name="immediately">Immediately</string>
     <string name="morning_slot">9AM - 12PM</string>
     <string name="noon_slot">12PM - 3PM</string>
     <string name="evening_slot">3PM - 5PM</string>
     <string name="dry_waste">Dry Waste</string>
     <string name="wet_waste">Wet Waste</string>
+    <string name="morning">8AM - 12PM</string>
+    <string name="noon">12PM - 4PM</string>
+    <string name="evening">4PM - 8PM</string>
+    <string name="night">8PM - 12PM</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
     <string name="society_service_unavailable_message">Sorry you cannot use this feature since currently there has not been any Society Service at your flat so far.</string>
 

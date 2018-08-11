@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_base" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textEventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/event_title"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <EditText
+                android:id="@+id/editEventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:inputType="none"
+                android:textColor="@color/nmBlack"
+                android:textColorHint="@color/nmLightBlack"
+                android:textSize="@dimen/edit_text_default_size"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:id="@+id/textChooseCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/choose_category"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonParties"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/parties"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/buttonConcerts"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/concerts"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/buttonMeetings"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/meetings"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/buttonSeminarsOrWorkshops"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/seminar_workshops"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/textEventDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/event_date"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/editPickDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/textEventDate"
+                    android:layout_toRightOf="@id/textEventDate"
+                    android:cursorVisible="false"
+                    android:drawableEnd="@drawable/calendar_date"
+                    android:drawableRight="@drawable/calendar_date"
+                    android:gravity="center"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="18sp"
+                    tools:ignore="LabelFor,TextFields" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textChooseTimeSlot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/choose_time_slot"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonMorningSlot"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/morning"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/buttonNoonSlot"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/noon"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/buttonEveningSlot"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/evening"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/buttonNightSlot"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/night"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/button_margin"
+                android:background="@color/nmBlack"
+                android:text="@string/book"
+                android:textAllCaps="true"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

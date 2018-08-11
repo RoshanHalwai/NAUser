@@ -167,6 +167,9 @@
         <activity
             android:name=".services.societyservices.othersocietyservices.activities.SocietyServiceProblemList"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".services.societyservices.othersocietyservices.activities.EventManagement"
+            android:screenOrientation="portrait" />
 
         <!--Apartment Services Screen-->
         <activity
