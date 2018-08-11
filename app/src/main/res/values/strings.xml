@@ -103,6 +103,10 @@
     <string name="driver">Driver</string>
     <string name="groceries">Groceries</string>
     <string name="images_of_digital_gate_services">Images of Digital Gate Services</string>
+    <string name="refer_title">Refer via</string>
+    <string name="whatsapp_msg">Hey there! I would like to have your service at my Flat. Revert back so that we can schedule and sort things out quickly.</string>
+    <string name="message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading..</string>
+    <string name="message_name">sms_body</string>
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
