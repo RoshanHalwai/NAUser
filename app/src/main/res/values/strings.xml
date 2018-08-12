@@ -79,7 +79,6 @@
     <string name="garbage_management">Garbage Management</string>
     <string name="event_management">Event Management</string>
     <string name="medical_emergency">Medical Emergency</string>
-    <string name="water_services">Water Services</string>
 
     <!--Apartment Services Activity-->
     <string-array name="daily_services">

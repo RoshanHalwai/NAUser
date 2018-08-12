@@ -117,7 +117,6 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         societyServicesList.add(new NammaApartmentService(R.drawable.garbage_bin, getString(R.string.garbage_management)));
         societyServicesList.add(new NammaApartmentService(R.drawable.medical_emergency, getString(R.string.medical_emergency)));
         societyServicesList.add(new NammaApartmentService(R.drawable.event, getString(R.string.event_management)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.water_service, getString(R.string.water_services)));
 
         return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
     }
