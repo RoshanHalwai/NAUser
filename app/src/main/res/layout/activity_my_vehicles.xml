@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutFamilyMembers"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".navigationdrawer.myvehicles.activities.MyVehiclesActivity">
+
+    <include
+        android:id="@+id/layoutActivityBase"
+        layout="@layout/activity_base" />
+
+    <include
+        android:id="@+id/layoutFeatureUnavailable"
+        layout="@layout/layout_feature_unavailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutActivityBase"
+        android:visibility="gone" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/animationWaitingForCustomers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        app:indicatorColor="@color/nmBlack"
+        app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonAddFamilyMembers"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layoutActivityBase" />
+
+    <Button
+        android:id="@+id/buttonAddMyVehicles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/nmBlack"
+        android:text="@string/add_my_vehicles"
+        android:textAllCaps="false"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size" />
+
+</RelativeLayout>

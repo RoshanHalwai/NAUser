@@ -89,6 +89,12 @@
             android:name=".navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".navigationdrawer.myvehicles.activities.MyVehiclesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.myvehicles.activities.AddMyVehicleActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".navigationdrawer.myguards.MyGuardsActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -175,7 +181,7 @@
 
         <!-- Apartment Services Screen -->
         <activity
-            android:name=".home.activities.ApartmentServices"
+            android:name=".services.apartmentservices.activities.ApartmentServices"
             android:screenOrientation="portrait" />
 
     </application>

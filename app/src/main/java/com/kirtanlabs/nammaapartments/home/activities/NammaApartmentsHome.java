@@ -34,6 +34,7 @@ import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.NammaApartmentsHelp;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.MyGuardsActivity;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
@@ -106,6 +107,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
             case R.id.nav_myFamilyMembers: {
                 toggle.runWhenIdle(() -> {
                     Intent mySweetHomeIntent = new Intent(NammaApartmentsHome.this, MySweetHome.class);
@@ -116,6 +118,16 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
+            case R.id.nav_myVehicles: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyVehiclesActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawers();
+                break;
+            }
+
             case R.id.nav_myGuards: {
                 toggle.runWhenIdle(() -> {
                     Intent intent = new Intent(NammaApartmentsHome.this, MyGuardsActivity.class);
@@ -133,6 +145,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
             case R.id.nav_appSettings: {
                 toggle.runWhenIdle(() -> {
                     Intent settingsIntent = new Intent(NammaApartmentsHome.this, NammaApartmentSettings.class);
@@ -141,6 +154,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
             case R.id.nav_help: {
                 toggle.runWhenIdle(() -> {
                     Intent helpIntent = new Intent(NammaApartmentsHome.this, NammaApartmentsHelp.class);
@@ -149,6 +163,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
             case R.id.nav_rateUs: {
                 toggle.runWhenIdle(() -> {
                     showRateUsDialog();
@@ -157,6 +172,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 drawer.closeDrawers();
                 break;
             }
+
             case R.id.nav_logout: {
                 sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
                 editor = sharedPreferences.edit();
