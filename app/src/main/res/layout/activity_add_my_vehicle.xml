@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".navigationdrawer.myvehicles.activities.AddMyVehicleActivity">
+
+    <include layout="@layout/activity_base" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textVehicleType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/vehicle_type"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonBike"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/vehicle_type_bike"
+                    android:textAllCaps="false"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/buttonCar"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/valid_for_button_design"
+                    android:text="@string/vehicle_type_car"
+                    android:textAllCaps="false"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textVehicleNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/vehicle_number"
+                android:textColor="@color/nmBlack"
+                android:textSize="@dimen/text_view_default_size" />
+
+            <LinearLayout
+                android:id="@+id/cabNumberLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="4">
+
+                <EditText
+                    android:id="@+id/editCabStateCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.05"
+                    android:gravity="center"
+                    android:hint="@string/cab_state_code_hint"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="2"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_numbers_size"
+                    tools:ignore="LabelFor">
+
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    android:id="@+id/editCabRtoNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.05"
+                    android:gravity="center"
+                    android:hint="@string/cab_rto_number_hint"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_numbers_size"
+                    tools:ignore="LabelFor" />
+
+                <EditText
+                    android:id="@+id/editCabSerialNumberOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.05"
+                    android:gravity="center"
+                    android:hint="@string/cab_serial_number_one_hint"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="2"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_numbers_size"
+                    tools:ignore="LabelFor,TextFields" />
+
+                <EditText
+                    android:id="@+id/editCabSerialNumberTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.85"
+                    android:gravity="center"
+                    android:hint="@string/cab_serial_number_two_hint"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_numbers_size"
+                    tools:ignore="LabelFor" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonAddVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/button_margin"
+                android:background="@color/nmBlack"
+                android:text="@string/add_vehicle"
+                android:textAllCaps="true"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

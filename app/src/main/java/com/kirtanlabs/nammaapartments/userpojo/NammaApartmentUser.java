@@ -1,7 +1,11 @@
 package com.kirtanlabs.nammaapartments.userpojo;
 
+import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.pojo.Vehicle;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NammaApartmentUser implements Serializable {
@@ -58,4 +62,5 @@ public class NammaApartmentUser implements Serializable {
     public Map<String, Boolean> getFriends() {
         return friends;
     }
+
 }
