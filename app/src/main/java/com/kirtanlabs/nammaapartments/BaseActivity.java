@@ -51,7 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static String imageFilePath = "";
     private ImageView infoButton;
     private ImageView backButton;
     private Intent callIntent, msgIntent, readContactsIntent;
@@ -302,6 +301,23 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void sendTextMessage(String MobileNumber) {
         msgIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", MobileNumber, null));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION_REQUEST_CODE);
+        } else {
+            startActivity(msgIntent);
+        }
+    }
+
+    /**
+     * We check if permissions are granted to send SMS if granted then we directly start SMS Activity
+     * else we show Request permission dialog to allow users to give access.
+     *
+     * @param MobileNumber - to which message needs to be sent
+     * @param message - This is the message that would be displayed in the SMS application body
+     */
+    public void sendTextMessage(String MobileNumber, String message) {
+        msgIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", MobileNumber, null));
+        msgIntent.putExtra(getApplicationContext().getString(R.string.message_name), message);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION_REQUEST_CODE);
         } else {
