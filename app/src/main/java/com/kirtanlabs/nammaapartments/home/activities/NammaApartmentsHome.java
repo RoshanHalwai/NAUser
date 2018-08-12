@@ -40,12 +40,15 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSe
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -92,23 +95,25 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         toggle.syncState();
 
         /* At this point We came to know that user has Successfully Logged In and now its no need to show Splash Screen */
-        sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-
-        Boolean isLoggedIn = sharedPreferences.getBoolean(Constants.LOGGED_IN, false);
+        sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
 
         /*If User is Logged In then take User Uid from Shared Preference*/
         DatabaseReference userReference;
-        if (isLoggedIn) {
-            String userUid = sharedPreferences.getString(Constants.USER_UID, null);
-            userReference = Constants.PRIVATE_USERS_REFERENCE.child(userUid);
+        if (sharedPreferences.getBoolean(LOGGED_IN, false)) {
+
+            /*TODO: Change this dialog content with Splash Screen*/
+            showProgressDialog(this, "Loading Profile", "Please wait a moment.");
+
+            String userUid = sharedPreferences.getString(USER_UID, null);
+            userReference = PRIVATE_USERS_REFERENCE.child(userUid);
         } else {
-            userReference = Constants.PRIVATE_USERS_REFERENCE
+            userReference = PRIVATE_USERS_REFERENCE
                     .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
             editor = sharedPreferences.edit();
-            editor.putBoolean(Constants.FIRST_TIME, false);
-            editor.putBoolean(Constants.LOGGED_IN, true);
-            editor.putString(Constants.USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            editor.putBoolean(FIRST_TIME, false);
+            editor.putBoolean(LOGGED_IN, true);
+            editor.putString(USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             editor.apply();
         }
 
@@ -125,6 +130,9 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 /*Storing user token_id in firebase so Guard can send notification*/
                 String token_id = FirebaseInstanceId.getInstance().getToken();
                 PRIVATE_USERS_REFERENCE.child(userUID).child("tokenId").setValue(token_id);
+
+                /*TODO: Change this dialog content with Splash Screen*/
+                hideProgressDialog();
             }
 
             @Override
@@ -205,10 +213,10 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
             case R.id.nav_logout: {
-                sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
                 editor = sharedPreferences.edit();
-                editor.putBoolean(Constants.LOGGED_IN, false);
-                editor.putString(Constants.USER_UID, null);
+                editor.putBoolean(LOGGED_IN, false);
+                editor.putString(USER_UID, null);
                 editor.apply();
 
                 toggle.runWhenIdle(() -> {
