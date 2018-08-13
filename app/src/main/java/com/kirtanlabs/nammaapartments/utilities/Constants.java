@@ -72,6 +72,7 @@ public class Constants {
     public static final String PLUMBER_SERVICE_NOTIFICATION_UID = "plumberServiceNotificationUid";
     public static final String CARPENTER_SERVICE_NOTIFICATION_UID = "carpenterServiceNotificationUid";
     public static final String ELECTRICIAN_SERVICE_NOTIFICATION_UID = "electricianServiceNotificationUid";
+    public static final String GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID = "garbageManagementNotificationUid";
 
     /* ------------------------------------------------------------- *
      * Firebase Values

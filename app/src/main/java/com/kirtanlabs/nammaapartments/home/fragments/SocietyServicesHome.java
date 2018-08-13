@@ -85,9 +85,8 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 checkPreviousRequestStatus(R.string.electrician);
                 break;
             case 4:
-                Intent garbageManagementIntent = new Intent(getActivity(), com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.SocietyServicesHome.class);
-                garbageManagementIntent.putExtra(Constants.SCREEN_TITLE, R.string.garbage_management);
-                startActivity(garbageManagementIntent);
+                /*To Check if User's previous request for that particular society service is completed or not.*/
+                checkPreviousRequestStatus(R.string.garbage_management);
                 break;
             case 5:
                 Intent medicalIntent = new Intent(getActivity(), RaiseAlarm.class);
@@ -137,6 +136,8 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
             case R.string.electrician:
                 notificationUID = sharedPreferences.getString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
                 break;
+            case R.string.garbage_management:
+                notificationUID = sharedPreferences.getString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
         }
 
         if (notificationUID != null) {
@@ -160,6 +161,9 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                                     break;
                                 case R.string.electrician:
                                     editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
+                                    break;
+                                case R.string.garbage_management:
+                                    editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                                     break;
                             }
                             editor.apply();
