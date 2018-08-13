@@ -72,9 +72,6 @@ public class RetrievingGuardsList {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             NammaApartmentsGuard nammaApartmentsGuard = dataSnapshot.getValue(NammaApartmentsGuard.class);
                             guardDataList.add(nammaApartmentsGuard);
-                            if (guardDataList.size() == guardUIDList.size()) {
-                                guardDataListCallback.onCallBack(guardDataList);
-                            }
                         }
 
                         @Override
