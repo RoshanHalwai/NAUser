@@ -368,7 +368,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 /*We map daily service mobile number with their UID to avoid other users to add same daily service again*/
                 dailyServiceMobileNumberReference.setValue(dailyServiceUID);
 
-                /*Store UID with daily service type for access to NammaApartmentsGuard App*/
+                /*Store UID with daily service type for access to Guard App*/
                 DatabaseReference dailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE.child(FIREBASE_CHILD_DAILYSERVICE_TYPE);
                 dailyServiceTypeReference.child(dailyServiceUID).setValue(dailyServiceChild);
 
@@ -407,7 +407,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                     /*adding daily service data under Daily Service UID -> User UID*/
                     dailyServicePublicReference.child(dailyServiceUID).child(userUID).setValue(nammaApartmentDailyService);
 
-                        /* We add status directly under dailyService UID since NammaApartmentsGuard may change the status of the daily service
+                        /* We add status directly under dailyService UID since Guard may change the status of the daily service
                         and we would want all the users to know about it*/
                     dailyServicePublicReference.child(dailyServiceUID).child(FIREBASE_CHILD_STATUS).setValue(NOT_ENTERED);
 
