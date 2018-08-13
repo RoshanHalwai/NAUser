@@ -1,12 +1,14 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -14,6 +16,7 @@ import com.kirtanlabs.nammaapartments.R;
 
 import java.text.DateFormatSymbols;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -27,12 +30,11 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private final int[] buttonIds = new int[]{R.id.buttonMorningSlot,
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot,
-            R.id.buttonNightSlot,
-            R.id.buttonParties,
-            R.id.buttonConcerts,
-            R.id.buttonMeetings,
-            R.id.buttonSeminarsOrWorkshops};
+            R.id.buttonNightSlot};
     private EditText editPickDate;
+    private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops;
+    private String societyServiceType;
+    private int screenTitle;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -46,7 +48,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
     @Override
     protected int getActivityTitle() {
-        return R.string.event_management;
+        screenTitle = getIntent().getIntExtra(SCREEN_TITLE, 0);
+        return screenTitle;
     }
 
     @Override
@@ -58,12 +61,13 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textChooseCategory = findViewById(R.id.textChooseCategory);
         TextView textEventDate = findViewById(R.id.textEventDate);
         TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
+        TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
         EditText editEventTitle = findViewById(R.id.editEventTitle);
         editPickDate = findViewById(R.id.editPickDate);
-        Button buttonParties = findViewById(R.id.buttonParties);
-        Button buttonConcerts = findViewById(R.id.buttonConcerts);
-        Button buttonMeetings = findViewById(R.id.buttonMeetings);
-        Button buttonSeminarsOrWorkshops = findViewById(R.id.buttonSeminarsOrWorkshops);
+        buttonParties = findViewById(R.id.buttonParties);
+        buttonConcerts = findViewById(R.id.buttonConcerts);
+        buttonMeetings = findViewById(R.id.buttonMeetings);
+        buttonSeminarsOrWorkshops = findViewById(R.id.buttonSeminarsOrWorkshops);
         Button buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
         Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
         Button buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
@@ -75,6 +79,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         textChooseCategory.setTypeface(setLatoBoldFont(this));
         textEventDate.setTypeface(setLatoBoldFont(this));
         textChooseTimeSlot.setTypeface(setLatoBoldFont(this));
+        textTimeSlotQuery.setTypeface(setLatoBoldFont(this));
         editPickDate.setTypeface(setLatoRegularFont(this));
         editEventTitle.setTypeface(setLatoRegularFont(this));
         buttonParties.setTypeface(setLatoRegularFont(this));
@@ -90,8 +95,12 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDate.setInputType(InputType.TYPE_NULL);
 
-        /*We want Button Parties should be selected on start of activity */
-        selectButton(R.id.buttonParties);
+        societyServiceType = getString(screenTitle).toLowerCase();
+
+        /*Since we have History button here, we would want users to navigate to history and take a look at their
+         * History of that particular Society Service*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
 
         /*Setting event for views */
         editPickDate.setOnClickListener(this);
@@ -104,6 +113,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNoonSlot.setOnClickListener(this);
         buttonEveningSlot.setOnClickListener(this);
         buttonNightSlot.setOnClickListener(this);
+        historyButton.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -140,19 +150,36 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 selectButton(R.id.buttonNightSlot);
                 break;
             case R.id.buttonParties:
-                selectButton(R.id.buttonParties);
+                buttonParties.setBackgroundResource(R.drawable.selected_button_design);
+                buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonConcerts:
-                selectButton(R.id.buttonConcerts);
+                buttonConcerts.setBackgroundResource(R.drawable.selected_button_design);
+                buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonMeetings:
-                selectButton(R.id.buttonMeetings);
+                buttonMeetings.setBackgroundResource(R.drawable.selected_button_design);
+                buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonSeminarsOrWorkshops:
-                selectButton(R.id.buttonSeminarsOrWorkshops);
+                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.selected_button_design);
+                buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
+                buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonBook:
                 /*TODO:To Discuss Book Functionality and to Implement the Logic Later */
+                break;
+            case R.id.historyButton:
+                Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
+                societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
+                startActivity(societyServiceHistoryIntent);
                 break;
         }
 
