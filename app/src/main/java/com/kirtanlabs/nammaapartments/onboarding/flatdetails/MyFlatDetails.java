@@ -32,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.onboarding.login.SignUp;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
@@ -68,16 +69,9 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
     private List<String> itemsInList = new ArrayList<>();
     private Dialog dialog;
     private ListView listView;
-
     private ArrayAdapter<String> adapter;
-
-    private EditText editCity;
-    private EditText editSociety;
-    private EditText editApartment;
-    private EditText editFlat;
-    private EditText inputSearch;
-    private RadioButton radioButtonOwner;
-    private RadioButton radioButtonTenant;
+    private EditText editCity, editSociety, editApartment, editFlat, inputSearch;
+    private RadioButton radioButtonOwner, radioButtonTenant;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -110,7 +104,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         editFlat = findViewById(R.id.editFlat);
         radioButtonOwner = findViewById(R.id.radioButtonOwner);
         radioButtonTenant = findViewById(R.id.radioButtonTenant);
-        Button buttonContinue = findViewById(R.id.buttonContinue);
+        Button buttonCreateAccount = findViewById(R.id.buttonCreateAccount);
 
         /*Setting font for all the views*/
         textCity.setTypeface(Constants.setLatoBoldFont(this));
@@ -123,7 +117,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         editSociety.setTypeface(Constants.setLatoRegularFont(this));
         editApartment.setTypeface(Constants.setLatoRegularFont(this));
         editFlat.setTypeface(Constants.setLatoRegularFont(this));
-        buttonContinue.setTypeface(Constants.setLatoLightFont(this));
+        buttonCreateAccount.setTypeface(Constants.setLatoLightFont(this));
 
         /*Allow users to search for City, Society, Apartment and Flat*/
         initializeListWithSearchView();
@@ -149,7 +143,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         editFlat.setOnClickListener(this);
         radioButtonOwner.setOnClickListener(this);
         radioButtonTenant.setOnClickListener(this);
-        buttonContinue.setOnClickListener(this);
+        buttonCreateAccount.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -160,26 +154,26 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.editCity:
-                inputSearch.setHint("Search City");
+                inputSearch.setHint(getString(R.string.city_hint));
                 searchItemInList(R.id.editCity);
                 break;
             case R.id.editSociety:
-                inputSearch.setHint("Search Society");
+                inputSearch.setHint(getString(R.string.society_hint));
                 searchItemInList(R.id.editSociety);
                 break;
             case R.id.editApartment:
-                inputSearch.setHint("Search Apartment");
+                inputSearch.setHint(getString(R.string.apartment_hint));
                 searchItemInList(R.id.editApartment);
                 break;
             case R.id.editFlat:
-                inputSearch.setHint("Search Flat");
+                inputSearch.setHint(getString(R.string.flat_hint));
                 searchItemInList(R.id.editFlat);
                 break;
             case R.id.radioButtonOwner:
             case R.id.radioButtonTenant:
                 showViews(R.id.radioResidentType);
                 break;
-            case R.id.buttonContinue:
+            case R.id.buttonCreateAccount:
                 storeUserDetailsInFirebase();
         }
     }
@@ -326,7 +320,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 radioGroup.clearCheck();
             case R.id.radioResidentType:
                 findViewById(R.id.textVerificationMessage).setVisibility(View.INVISIBLE);
-                findViewById(R.id.buttonContinue).setVisibility(View.INVISIBLE);
+                findViewById(R.id.buttonCreateAccount).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -360,7 +354,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.radioResidentType:
                 findViewById(R.id.textVerificationMessage).setVisibility(View.VISIBLE);
-                findViewById(R.id.buttonContinue).setVisibility(View.VISIBLE);
+                findViewById(R.id.buttonCreateAccount).setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -472,6 +466,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
                         startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
                         finish();
+                        SignUp.getInstance().finish();
                     }).addOnFailureListener(exception -> {
                         hideProgressDialog();
                         Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();

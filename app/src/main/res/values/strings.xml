@@ -49,6 +49,10 @@
     <string name="create_account">Create Account</string>
     <string name="multiple_admin_restricted">Sorry, we already have an Admin from your Flat. Please ask admin to add you as a Family Member or Friend.</string>
     <string name="title_multiple_admin">Registration unsuccessful</string>
+    <string name="city_hint">Search City</string>
+    <string name="society_hint">Search Society</string>
+    <string name="apartment_hint">Search Apartment</string>
+    <string name="flat_hint">Search Flat</string>
 
     <!--SignUp Activity -->
     <string name="full_name">Full Name</string>
