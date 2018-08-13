@@ -34,7 +34,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private EditText editPickDate;
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops;
     private String societyServiceType;
-    private int screenTitle;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -48,8 +47,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
     @Override
     protected int getActivityTitle() {
-        screenTitle = getIntent().getIntExtra(SCREEN_TITLE, 0);
-        return screenTitle;
+        return R.string.event_management;
     }
 
     @Override
@@ -95,7 +93,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDate.setInputType(InputType.TYPE_NULL);
 
-        societyServiceType = getString(screenTitle).toLowerCase();
+        societyServiceType = getString(R.string.event_management).toLowerCase();
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
