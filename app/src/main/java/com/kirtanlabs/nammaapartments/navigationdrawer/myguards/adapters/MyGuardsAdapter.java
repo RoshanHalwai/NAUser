@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.myguards;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myguards.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,8 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pogo.NammaApartmentsGuard;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
+
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -22,13 +28,15 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
      * ------------------------------------------------------------- */
 
     private final Context mCtx;
+    private List<NammaApartmentsGuard> guardDataList;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    MyGuardsAdapter(Context mCtx) {
+    public MyGuardsAdapter(Context mCtx, List<NammaApartmentsGuard> guardDataList) {
         this.mCtx = mCtx;
+        this.guardDataList = guardDataList;
     }
 
     /* ------------------------------------------------------------- *
@@ -46,12 +54,16 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
 
     @Override
     public void onBindViewHolder(@NonNull MyGuardsAdapter.GuardViewHolder holder, int position) {
-
+        /*Creating an instance of NammaApartmentsGuard class and retrieving the values from Firebase*/
+        NammaApartmentsGuard nammaApartmentsGuard = guardDataList.get(position);
+        holder.textGuardNameValue.setText(nammaApartmentsGuard.getFullName());
+        holder.textGuardStatusValue.setText(nammaApartmentsGuard.getStatus().toUpperCase());
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentsGuard.getProfilePhoto()).into(holder.profileImage);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return guardDataList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -64,6 +76,7 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
          * Private Members
          * ------------------------------------------------------------- */
 
+        private final CircleImageView profileImage;
         private final TextView textGuardName;
         private final TextView textGateNumber;
         private final TextView textGuardStatus;
@@ -78,6 +91,7 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
             super(itemView);
 
             //Getting Id's for all the views on cardview
+            profileImage = itemView.findViewById(R.id.profileImage);
             textGuardName = itemView.findViewById(R.id.textGuardName);
             textGateNumber = itemView.findViewById(R.id.textGateNumber);
             textGuardStatus = itemView.findViewById(R.id.textGuardStatus);

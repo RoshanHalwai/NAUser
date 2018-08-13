@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.myguards;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -6,8 +6,14 @@ import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.adapters.MyGuardsAdapter;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.RetrievingGuardsList;
 
 public class MyGuardsActivity extends BaseActivity {
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -31,7 +37,13 @@ public class MyGuardsActivity extends BaseActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyGuardsAdapter(this));
+
+        /*Retrieving Details of all Guards of the society*/
+        new RetrievingGuardsList().getGuardDataList(guardDataList -> {
+            if (guardDataList != null) {
+                recyclerView.setAdapter(new MyGuardsAdapter(MyGuardsActivity.this, guardDataList));
+            }
+        });
     }
 
 }
