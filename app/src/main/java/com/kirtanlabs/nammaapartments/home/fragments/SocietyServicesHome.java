@@ -36,7 +36,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
      * Private Members
      * ------------------------------------------------------------- */
 
-    private String notificationUID;
+    private String notificationUID, societyServiceType;
 
     /* ------------------------------------------------------------- *
      * Overriding Fragment Objects
@@ -129,15 +129,20 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         switch (screenTitle) {
             case R.string.plumber:
                 notificationUID = sharedPreferences.getString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
+                societyServiceType = getString(R.string.plumber).toLowerCase();
                 break;
             case R.string.carpenter:
                 notificationUID = sharedPreferences.getString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
+                societyServiceType = getString(R.string.carpenter).toLowerCase();
                 break;
             case R.string.electrician:
                 notificationUID = sharedPreferences.getString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
+                societyServiceType = getString(R.string.electrician).toLowerCase();
                 break;
             case R.string.garbage_management:
                 notificationUID = sharedPreferences.getString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
+                societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+                break;
         }
 
         if (notificationUID != null) {
@@ -147,7 +152,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                         if (status.equals(IN_PROGRESS)) {
                             Intent awaitingResponseIntent = new Intent(getActivity(), AwaitingResponse.class);
                             awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
-                            awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, getString(screenTitle).toLowerCase());
+                            awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
                             startActivity(awaitingResponseIntent);
                         } else {
                             /*Updating previous user's society service request Uid to null*/

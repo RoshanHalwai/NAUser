@@ -96,6 +96,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
+    public static final String FIREBASE_CHILD_GARBAGE_MANAGEMENT = "garbageManagement";
     public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";

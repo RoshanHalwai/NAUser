@@ -18,6 +18,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
@@ -90,6 +91,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
 
+        societyServiceType = getString(screenTitle).toLowerCase();
+
         /* We set button text according to screen title */
         switch (screenTitle) {
             case R.string.plumber:
@@ -106,9 +109,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 textSelectProblem.setText(R.string.select_garbage_type);
                 editTextSelectProblem.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
+                societyServiceType = FIREBASE_CHILD_GARBAGE_MANAGEMENT;
         }
-
-        societyServiceType = getString(screenTitle).toLowerCase();
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
