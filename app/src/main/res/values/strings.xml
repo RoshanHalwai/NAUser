@@ -302,6 +302,7 @@
     <string name="enter_time">Please select time.</string>
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
+    <string name="vehicle_number_validation">Please Enter Vehicle Number</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -469,7 +470,7 @@
     <string name="vehicle_type_bike">Bike</string>
     <string name="vehicles_added_success_title">Vehicle Added Message</string>
     <string name="vehicles_added_success_message">You have successfully added your Vehicle.</string>
-    <string name="add_your_vehicle_message">Please add you vehicles for Hassle Free entry into the society.</string>
+    <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
 
 
     <!--Awaiting Response Activity-->
