@@ -29,10 +29,10 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
      * Private Members
      * ------------------------------------------------------------- */
 
+    public static SignUp signUp;
     private CircleImageView circleImageNewUserProfileImage;
     private TextView textErrorProfilePic;
-    private EditText editFullName;
-    private EditText editEmailId;
+    private EditText editFullName,editEmailId;
     private AlertDialog imageSelectionDialog;
     private File profilePhotoPath;
 
@@ -53,7 +53,13 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /* Since we wouldn't want the users to go back to previous screen,
+         * hence hiding the back button from the Title Bar*/
         hideBackButton();
+
+        /*Initialising the static variable with the current context.*/
+        signUp = this;
 
         /*Custom DialogBox with list of all image services*/
         createImageSelectionDialog();
@@ -88,10 +94,10 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //This condition checks for the resultCode value since if any photo got selected/captured
-        //either from camera and gallery its value will be equal to -1 and vice-versa its value is 0.
-        //So here if we checks if user has not selected any photo from gallery or he did'nt captured
-        //any photo its resultCode value will be equal to zero and we are displaying circular image view.
+        /*This condition checks for the resultCode value since if any photo got selected/captured
+         *either from camera and gallery its value will be equal to -1 and vice-versa its value is 0.
+         *So here if we checks if user has not selected any photo from gallery or he did'nt captured
+         *any photo its resultCode value will be equal to zero and we are displaying circular image view.*/
         if (resultCode == EDIT_TEXT_EMPTY_LENGTH) {
             circleImageNewUserProfileImage.setVisibility(View.VISIBLE);
         } else {
@@ -101,6 +107,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
                     if (source == EasyImage.ImageSource.GALLERY || source == EasyImage.ImageSource.CAMERA) {
                         circleImageNewUserProfileImage.setImageBitmap(getBitmapFromFile(SignUp.this, imageFile));
                         profilePhotoPath = imageFile;
+                        textErrorProfilePic.setVisibility(View.GONE);
                     }
                 }
             });
@@ -114,13 +121,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonSignUp:
-                //This condition checks for the string value if its null it will show appropriate
-                // error message.
-                if (profilePhotoPath == null) {
-                    textErrorProfilePic.setVisibility(View.VISIBLE);
-                    break;
-                }
-                //This method gets invoked to check all the validation fields such as editTexts name and email.
+                /*This method gets invoked to check all the validation fields such as editTexts name
+                 *and email and also profile photo.*/
                 validateFields();
                 break;
             case R.id.newUserProfileImage:
@@ -174,8 +176,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         String newUserName = editFullName.getText().toString().trim();
         String newUserEmail = editEmailId.getText().toString().trim();
         boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editFullName, editEmailId});
-        //This condition checks if any field is empty and then display proper error messages according
-        //to the requirement.
+        /*This condition checks if any field is empty and then display proper error messages according
+         *to the requirement.*/
         if (!fieldsFilled) {
             if (TextUtils.isEmpty(newUserName)) {
                 editFullName.setError(getString(R.string.name_validation));
@@ -184,7 +186,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
                 editEmailId.setError(getString(R.string.email_validation));
             }
         }
-        //This condition checks if any of the fields are filled and validates email and mobile number.
+        /*This condition checks if any of the fields are filled and validates email and mobile number.*/
         if (fieldsFilled) {
             if (isValidEmail(newUserEmail)) {
                 editEmailId.setError(getString(R.string.invalid_email));
@@ -193,16 +195,32 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
                 editFullName.setError(getString(R.string.accept_alphabets));
             }
         }
-        //This condition checks if name and email are properly validated and then
-        // navigate to proper screen according to its requirement.
-        if (!isValidEmail(newUserEmail) && !isValidPersonName(newUserName)) {
+        /*This condition checks if profile photo is uploaded or not else it will display appropriate
+         * error message.*/
+        if (profilePhotoPath == null) {
+            textErrorProfilePic.setVisibility(View.VISIBLE);
+        }
+        /*This condition checks if name and email are properly validated and then
+         *navigate to proper screen according to its requirement.*/
+        if (!isValidEmail(newUserEmail) && !isValidPersonName(newUserName) && profilePhotoPath!=null) {
             Intent intent = new Intent(this, MyFlatDetails.class);
             intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
             intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
             intent.putExtra(Constants.MOBILE_NUMBER, getIntent().getStringExtra(Constants.MOBILE_NUMBER));
             intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath.toString());
             startActivity(intent);
-            finish();
         }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Public Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method returns the Instance of this class
+     * @return static variable of this class instance.
+     */
+    public static SignUp getInstance() {
+        return signUp;
     }
 }
