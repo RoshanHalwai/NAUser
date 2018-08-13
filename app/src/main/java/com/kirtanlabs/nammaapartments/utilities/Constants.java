@@ -72,6 +72,7 @@ public class Constants {
     public static final String PLUMBER_SERVICE_NOTIFICATION_UID = "plumberServiceNotificationUid";
     public static final String CARPENTER_SERVICE_NOTIFICATION_UID = "carpenterServiceNotificationUid";
     public static final String ELECTRICIAN_SERVICE_NOTIFICATION_UID = "electricianServiceNotificationUid";
+    public static final String GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID = "garbageManagementNotificationUid";
 
     /* ------------------------------------------------------------- *
      * Firebase Values
@@ -95,6 +96,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
+    public static final String FIREBASE_CHILD_GARBAGE_MANAGEMENT = "garbageManagement";
     public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
