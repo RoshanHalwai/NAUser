@@ -173,7 +173,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * We check if permissions are granted to take photos using camera if already granted then we directly start Camera Activity with Result
      * else we show Request permission dialog to allow users to give access.
      */
-    //TODO:Change this method that it should work for Android API Level-27
     protected void launchCamera() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
@@ -186,7 +185,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * We check if permissions are granted to Pick Image from Gallery if already granted then or if API Level is lower than 15 we directly
      * start Gallery Activity with Result, else we show Request permission dialog to allow users to give access.
      */
-    //TODO:Change this method that it should work for Android API Level-27
     protected void pickImageFromGallery() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             EasyImage.openGallery(this, 0);
