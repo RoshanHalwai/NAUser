@@ -160,10 +160,12 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 startActivity(societyServiceHistoryIntent);
                 break;
             case R.id.buttonDryWaste:
+                problem = getString(R.string.dry_waste);
                 buttonDryWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonWetWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonWetWaste:
+                problem = getString(R.string.wet_waste);
                 buttonWetWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonDryWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
@@ -242,6 +244,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 break;
             case R.string.electrician:
                 editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, notificationUID);
+                break;
+            case R.string.garbage_management:
+                editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID);
                 break;
         }
         editor.apply();
