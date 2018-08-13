@@ -95,9 +95,12 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         initViewPager();
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding OnNavigationItemSelected Listener Method
+     * ------------------------------------------------------------- */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
+        /* Handle navigation view item clicks here.*/
         switch (item.getItemId()) {
             case R.id.nav_myProfile: {
                 toggle.runWhenIdle(() -> {
@@ -180,20 +183,22 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 editor.putString(USER_UID, null);
                 editor.apply();
 
-                toggle.runWhenIdle(() -> {
-                    FirebaseAuth.getInstance().signOut();
-                    Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                });
+                toggle.runWhenIdle(this::showLogOutDialog);
                 drawer.closeDrawers();
                 break;
             }
 
         }
         return true;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding onBackPressed Method
+     * ------------------------------------------------------------- */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     /* ------------------------------------------------------------- *
@@ -224,11 +229,24 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         buttonRemindLater.setOnClickListener(v -> dialog.cancel());
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    /**
+     * This dialog gets invoked when user clicks on Logout button.
+     */
+    private void showLogOutDialog() {
+        Runnable logoutUser = () ->
+        {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        };
+        String confirmDialogTitle = getString(R.string.logout_dialog_title);
+        String confirmDialogMessage = getString(R.string.logout_question);
+        showConfirmDialog(confirmDialogTitle, confirmDialogMessage, logoutUser);
     }
+
 
     private void initNavigationDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);

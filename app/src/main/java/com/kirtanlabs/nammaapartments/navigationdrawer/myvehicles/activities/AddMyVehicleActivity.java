@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -32,13 +33,18 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
 
 public class AddMyVehicleActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button buttonBike;
-    private Button buttonCar;
-    private EditText editCabStateCode;
-    private EditText editCabRtoNumber;
-    private EditText editCabSerialNumberOne;
-    private EditText editCabSerialNumberTwo;
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+    private Button buttonBike, buttonCar;
+    private EditText editVehicleStateCode, editVehicleRtoNumber, editVehicleSerialNumberOne, editVehicleSerialNumberTwo;
     private String vehicleType;
+    private TextView textErrorVehicleNumber, textErrorVehicleType;
+    private Boolean isVehicleSelected = false;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -54,48 +60,95 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*Getting Id's for all the views*/
         TextView textVehicleType = findViewById(R.id.textVehicleType);
         TextView textVehicleNumber = findViewById(R.id.textVehicleNumber);
-        editCabStateCode = findViewById(R.id.editCabStateCode);
-        editCabRtoNumber = findViewById(R.id.editCabRtoNumber);
-        editCabSerialNumberOne = findViewById(R.id.editCabSerialNumberOne);
-        editCabSerialNumberTwo = findViewById(R.id.editCabSerialNumberTwo);
+        textErrorVehicleType = findViewById(R.id.textErrorVehicleType);
+        textErrorVehicleNumber = findViewById(R.id.textErrorVehicleNumber);
+        editVehicleStateCode = findViewById(R.id.editVehicleStateCode);
+        editVehicleRtoNumber = findViewById(R.id.editVehicleRtoNumber);
+        editVehicleSerialNumberOne = findViewById(R.id.editVehicleSerialNumberOne);
+        editVehicleSerialNumberTwo = findViewById(R.id.editVehicleSerialNumberTwo);
         buttonBike = findViewById(R.id.buttonBike);
         buttonCar = findViewById(R.id.buttonCar);
         Button buttonAddVehicle = findViewById(R.id.buttonAddVehicle);
 
+        /*Setting Fonts for all the views*/
         textVehicleType.setTypeface(setLatoBoldFont(this));
         textVehicleNumber.setTypeface(setLatoBoldFont(this));
-        editCabStateCode.setTypeface(setLatoRegularFont(this));
-        editCabRtoNumber.setTypeface(setLatoRegularFont(this));
-        editCabSerialNumberOne.setTypeface(setLatoRegularFont(this));
-        editCabSerialNumberTwo.setTypeface(setLatoRegularFont(this));
+        textErrorVehicleType.setTypeface(setLatoRegularFont(this));
+        textErrorVehicleNumber.setTypeface(setLatoRegularFont(this));
+        editVehicleStateCode.setTypeface(setLatoRegularFont(this));
+        editVehicleRtoNumber.setTypeface(setLatoRegularFont(this));
+        editVehicleSerialNumberOne.setTypeface(setLatoRegularFont(this));
+        editVehicleSerialNumberTwo.setTypeface(setLatoRegularFont(this));
         buttonBike.setTypeface(setLatoRegularFont(this));
         buttonCar.setTypeface(setLatoRegularFont(this));
         buttonAddVehicle.setTypeface(setLatoLightFont(this));
 
+        /*Setting event for views */
         buttonBike.setOnClickListener(this);
         buttonCar.setOnClickListener(this);
         buttonAddVehicle.setOnClickListener(this);
+
+        /*Setting events for vehicle number edit texts*/
         setEventsForEditText();
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listener Methods
+     * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonBike:
+                isVehicleSelected = true;
                 vehicleType = getString(R.string.vehicle_type_bike);
                 buttonBike.setBackgroundResource(R.drawable.selected_button_design);
                 buttonCar.setBackgroundResource(R.drawable.valid_for_button_design);
+                textErrorVehicleType.setVisibility(View.GONE);
                 break;
             case R.id.buttonCar:
+                isVehicleSelected = true;
                 vehicleType = getString(R.string.vehicle_type_car);
                 buttonCar.setBackgroundResource(R.drawable.selected_button_design);
                 buttonBike.setBackgroundResource(R.drawable.valid_for_button_design);
+                textErrorVehicleType.setVisibility(View.GONE);
                 break;
             case R.id.buttonAddVehicle:
-                storeUserVehicleDetailsToFirebase();
+                /*This method gets invoked to check all the editText fields and button validations.*/
+                validateFields();
                 break;
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method gets invoked to check all the validation fields.
+     */
+    private void validateFields() {
+        boolean fieldsFilled;
+        String vehicleStateCode = editVehicleStateCode.getText().toString();
+        String vehicleRtoNumber = editVehicleRtoNumber.getText().toString();
+        String vehicleSerialNumberOne = editVehicleSerialNumberOne.getText().toString();
+        String vehicleSerialNumberTwo = editVehicleSerialNumberTwo.getText().toString();
+        fieldsFilled = isAllFieldsFilled(new EditText[]{editVehicleStateCode, editVehicleRtoNumber, editVehicleSerialNumberOne, editVehicleSerialNumberTwo}) && isVehicleSelected;
+        /*This condition checks if all fields are not filled and if user presses add my vehicle button it will then display proper error messages.*/
+        if (!fieldsFilled) {
+            if (!isVehicleSelected) {
+                textErrorVehicleType.setVisibility(View.VISIBLE);
+            }
+            if (TextUtils.isEmpty(vehicleStateCode) || TextUtils.isEmpty(vehicleRtoNumber) || TextUtils.isEmpty(vehicleSerialNumberOne) || TextUtils.isEmpty(vehicleSerialNumberTwo)) {
+                textErrorVehicleNumber.setVisibility(View.VISIBLE);
+            }
+        }
+        /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
+        if (fieldsFilled) {
+            /*This method stores user vehicle details in Firebase.*/
+            storeUserVehicleDetailsToFirebase();
         }
     }
 
@@ -104,7 +157,7 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
      * views as and when user types in.
      */
     private void setEventsForEditText() {
-        editCabStateCode.addTextChangedListener(new TextWatcher() {
+        editVehicleStateCode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -113,7 +166,8 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
-                    editCabRtoNumber.requestFocus();
+                    textErrorVehicleNumber.setVisibility(View.GONE);
+                    editVehicleRtoNumber.requestFocus();
                 }
             }
 
@@ -124,13 +178,13 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
                     to upper case*/
                 if (!s.equals(s.toUpperCase())) {
                     s = s.toUpperCase();
-                    editCabStateCode.setText(s);
-                    editCabStateCode.setSelection(editCabStateCode.getText().length());
+                    editVehicleStateCode.setText(s);
+                    editVehicleStateCode.setSelection(editVehicleStateCode.getText().length());
                 }
             }
         });
 
-        editCabRtoNumber.addTextChangedListener(new TextWatcher() {
+        editVehicleRtoNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -139,9 +193,10 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                    editCabStateCode.requestFocus();
+                    editVehicleStateCode.requestFocus();
                 } else if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
-                    editCabSerialNumberOne.requestFocus();
+                    textErrorVehicleNumber.setVisibility(View.GONE);
+                    editVehicleSerialNumberOne.requestFocus();
                 }
             }
 
@@ -150,7 +205,7 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             }
         });
 
-        editCabSerialNumberOne.addTextChangedListener(new TextWatcher() {
+        editVehicleSerialNumberOne.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -159,9 +214,10 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                    editCabRtoNumber.requestFocus();
+                    editVehicleRtoNumber.requestFocus();
                 } else if (s.length() == CAB_NUMBER_FIELD_LENGTH) {
-                    editCabSerialNumberTwo.requestFocus();
+                    textErrorVehicleNumber.setVisibility(View.GONE);
+                    editVehicleSerialNumberTwo.requestFocus();
                 }
             }
 
@@ -172,13 +228,13 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
                     to upper case*/
                 if (!s.equals(s.toUpperCase())) {
                     s = s.toUpperCase();
-                    editCabSerialNumberOne.setText(s);
-                    editCabSerialNumberOne.setSelection(editCabSerialNumberOne.getText().length());
+                    editVehicleSerialNumberOne.setText(s);
+                    editVehicleSerialNumberOne.setSelection(editVehicleSerialNumberOne.getText().length());
                 }
             }
         });
 
-        editCabSerialNumberTwo.addTextChangedListener(new TextWatcher() {
+        editVehicleSerialNumberTwo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -187,20 +243,24 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == EDIT_TEXT_EMPTY_LENGTH) {
-                    editCabSerialNumberOne.requestFocus();
+                    editVehicleSerialNumberOne.requestFocus();
                 }
             }
 
             @Override
             public void afterTextChanged(Editable et) {
+                textErrorVehicleNumber.setVisibility(View.GONE);
             }
         });
 
     }
 
+    /**
+     * This method stores the user vehicle details in Firebase.
+     */
     private void storeUserVehicleDetailsToFirebase() {
-        String vehicleNumber = editCabStateCode.getText().toString().trim() + HYPHEN + editCabRtoNumber.getText().toString().trim() + HYPHEN
-                + editCabSerialNumberOne.getText().toString().trim() + HYPHEN + editCabSerialNumberTwo.getText().toString().trim();
+        String vehicleNumber = editVehicleStateCode.getText().toString().trim() + HYPHEN + editVehicleRtoNumber.getText().toString().trim() + HYPHEN
+                + editVehicleSerialNumberOne.getText().toString().trim() + HYPHEN + editVehicleSerialNumberTwo.getText().toString().trim();
 
         /*Create instance of Vehicle Class*/
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();

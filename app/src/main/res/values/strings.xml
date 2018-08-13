@@ -70,6 +70,8 @@
     <string name="rate_us_dialog">Love using our App,then please rate us on PlayStore </string>
     <string name="rate_now">Rate Now</string>
     <string name="remind_later">Remind me later </string>
+    <string name="logout_question">Are you sure you want to logout?</string>
+    <string name="logout_dialog_title">Logout Message</string>
 
     <!--Society Services Activity-->
     <string name="digital_gate">Digi Gate</string>
@@ -304,6 +306,7 @@
     <string name="enter_time">Please select time.</string>
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
+    <string name="vehicle_number_validation">Please Enter Vehicle Number</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -343,25 +346,12 @@
     <string name="select_slot">Select Slot</string>
     <string name="select_problem">Select Problem</string>
     <string name="select_garbage_type">Select Garbage Type</string>
-    <string name="event_title">Event Title</string>
-    <string name="choose_category">Choose Category</string>
-    <string name="parties">Parties</string>
-    <string name="concerts">Concerts</string>
-    <string name="meetings">Meetings</string>
-    <string name="seminar_workshops">Seminars/WorkShops</string>
-    <string name="book">BOOK</string>
-    <string name="choose_time_slot">Choose Time Slot</string>
-    <string name="event_date">Event Date:</string>
     <string name="immediately">Immediately</string>
     <string name="morning_slot">9AM - 12PM</string>
     <string name="noon_slot">12PM - 3PM</string>
     <string name="evening_slot">3PM - 5PM</string>
     <string name="dry_waste">Dry Waste</string>
     <string name="wet_waste">Wet Waste</string>
-    <string name="morning">8AM - 12PM</string>
-    <string name="noon">12PM - 4PM</string>
-    <string name="evening">4PM - 8PM</string>
-    <string name="night">8PM - 12PM</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
     <string name="society_service_unavailable_message">Sorry you cannot use this feature since currently there has not been any Society Service at your flat so far.</string>
 
@@ -484,12 +474,28 @@
     <string name="vehicle_type_bike">Bike</string>
     <string name="vehicles_added_success_title">Vehicle Added Message</string>
     <string name="vehicles_added_success_message">You have successfully added your Vehicle.</string>
-    <string name="add_your_vehicle_message">Please add you vehicles for Hassle Free entry into the society.</string>
+    <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
 
 
     <!--Awaiting Response Activity-->
     <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
     <string name="no_response_yet">Plumber has not Responded Yet</string>
+
+    <!--Event Management Activity-->
+    <string name="event_title">Event Title</string>
+    <string name="choose_category">Choose Category</string>
+    <string name="parties">Parties</string>
+    <string name="concerts">Concerts</string>
+    <string name="meetings">Meetings</string>
+    <string name="seminar_workshops">Seminars/WorkShops</string>
+    <string name="book">BOOK</string>
+    <string name="choose_time_slot">Choose Time Slot</string>
+    <string name="event_date">Event Date:</string>
+    <string name="morning">8AM - 12PM</string>
+    <string name="noon">12PM - 4PM</string>
+    <string name="evening">4PM - 8PM</string>
+    <string name="night">8PM - 12PM</string>
+    <string name="query_time_slot">For any queries related to time slot, Contact Admin.</string>
 
 </resources>
