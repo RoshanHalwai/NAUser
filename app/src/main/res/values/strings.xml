@@ -70,6 +70,8 @@
     <string name="rate_us_dialog">Love using our App,then please rate us on PlayStore </string>
     <string name="rate_now">Rate Now</string>
     <string name="remind_later">Remind me later </string>
+    <string name="logout_question">Are you sure you want to logout?</string>
+    <string name="logout_dialog_title">Logout Message</string>
 
     <!--Society Services Activity-->
     <string name="digital_gate">Digi Gate</string>
