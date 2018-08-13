@@ -96,7 +96,7 @@ public class ActionButtonListener extends BroadcastReceiver {
                         .child(userFlatDetails.getApartmentName())
                         .child(userFlatDetails.getFlatNumber());
 
-                /*Here we are setting the notification status so that Guard gets notified and allow visitor to enter the society*/
+                /*Here we are setting the notification status so that NammaApartmentsGuard gets notified and allow visitor to enter the society*/
                 DatabaseReference currentUserNotificationReference = currentUserDataReference
                         .child(FIREBASE_CHILD_GATE_NOTIFICATIONS)
                         .child(currentUserID)

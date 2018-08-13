@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".navigationdrawer.myguards.MyGuardsActivity">
+    tools:context=".navigationdrawer.myguards.activities.MyGuardsActivity">
 
     <include
         android:id="@+id/titleBar"
