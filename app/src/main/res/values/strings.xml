@@ -179,6 +179,7 @@
     <string name="handed_things_to_my_daily_services">Handed Things To My Daily Services</string>
     <string name="raise_fire_alarm">Raise Fire Alarm</string>
     <string name="raise_theft_alarm">Raise Theft Alarm</string>
+    <string name="raise_water_alarm">Raise Water Alarm</string>
     <string name="notification_message">Arrival Notification has been sent to your Security Guard.</string>
     <string name="notification_title">Security Guard Notification</string>
     <string name="please_fill_details">Please fill details here</string>
@@ -253,6 +254,7 @@
     <string name="emergency_type_medical">Medical</string>
     <string name="emergency_type_fire_alarm">Fire</string>
     <string name="emergency_type_theft_alarm">Theft</string>
+    <string name="emergency_type_water_alarm">Water</string>
     <string name="emergency_dialog_message">Emergency notification will be sent to the Guard. Press OK to confirm.</string>
     <string name="dialog_button_ok">OK</string>
 

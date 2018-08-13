@@ -127,6 +127,10 @@ public class NotifyGateAndEmergencyAdapter extends RecyclerView.Adapter<NotifyGa
                         intent.putExtra(ALARM_TYPE, R.string.raise_theft_alarm);
                         break;
                     }
+                    case 3: {
+                        intent.putExtra(ALARM_TYPE, R.string.raise_water_alarm);
+                        break;
+                    }
                 }
                 mCtx.startActivity(intent);
             }
