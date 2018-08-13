@@ -71,7 +71,7 @@
                 android:gravity="center"
                 android:text="@string/valid_button"
                 android:textColor="@android:color/holo_red_dark"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textVehicleNumber"
@@ -157,7 +157,7 @@
                 android:gravity="center"
                 android:text="@string/vehicle_number_validation"
                 android:textColor="@android:color/holo_red_dark"
-                android:visibility="visible" />
+                android:visibility="gone" />
             <Button
                 android:id="@+id/buttonAddVehicle"
                 android:layout_width="match_parent"

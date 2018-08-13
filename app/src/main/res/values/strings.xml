@@ -483,8 +483,7 @@
     <string name="vehicle_type_bike">Bike</string>
     <string name="vehicles_added_success_title">Vehicle Added Message</string>
     <string name="vehicles_added_success_message">You have successfully added your Vehicle.</string>
-    <string name="add_your_vehicle_message">Please add you vehicles for Hassle Free entry into the society.</string>
-    <string name="select_vehicle_messsage">Please Select atle</string>
+    <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
 
 
     <!--Awaiting Response Activity-->
