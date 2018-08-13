@@ -95,7 +95,7 @@
             android:name=".navigationdrawer.myvehicles.activities.AddMyVehicleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.myguards.MyGuardsActivity"
+            android:name=".navigationdrawer.myguards.activities.MyGuardsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.noticeboard.NoticeBoard"
