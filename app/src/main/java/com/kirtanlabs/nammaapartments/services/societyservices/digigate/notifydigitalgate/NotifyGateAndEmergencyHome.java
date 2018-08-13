@@ -43,7 +43,7 @@ public class NotifyGateAndEmergencyHome extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //initializing the notificationServicesList
+        /*initializing the notificationServicesList*/
         List<NammaApartmentService> notificationServicesList = new ArrayList<>();
 
         /*Since we are using same layout for Notify Digital Cab and emergency we need to
@@ -66,6 +66,7 @@ public class NotifyGateAndEmergencyHome extends BaseActivity {
             notificationServicesList.add(new NammaApartmentService(R.drawable.medical_emergency_heart, getString(R.string.medical_emergency)));
             notificationServicesList.add(new NammaApartmentService(R.drawable.fire_alarm, getString(R.string.raise_fire_alarm)));
             notificationServicesList.add(new NammaApartmentService(R.drawable.theft_alarm, getString(R.string.raise_theft_alarm)));
+            notificationServicesList.add(new NammaApartmentService(R.drawable.water_alarm, getString(R.string.raise_water_alarm)));
 
             /*Creating the Adapter*/
             NotifyGateAndEmergencyAdapter adapter = new NotifyGateAndEmergencyAdapter(this, notificationServicesList, serviceType);
