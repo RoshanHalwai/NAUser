@@ -47,6 +47,14 @@ public class Constants {
     public static final String NOTIFICATION_EXPAND_TITLE = "Namma Apartments";
 
     /* ------------------------------------------------------------- *
+     * Society Service Keys
+     * ------------------------------------------------------------- */
+
+    public static final String PLUMBER="plumber";
+    public static final String CARPENTER="carpenter";
+    public static final String ELECTRICIAN="electrician";
+
+    /* ------------------------------------------------------------- *
      * Validation Keys
      * ------------------------------------------------------------- */
 
