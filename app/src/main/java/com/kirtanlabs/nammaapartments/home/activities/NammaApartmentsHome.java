@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -107,7 +108,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     Intent intent = new Intent(NammaApartmentsHome.this, UserProfile.class);
                     startActivity(intent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -118,7 +119,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     mySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(mySweetHomeIntent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -127,7 +128,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     Intent intent = new Intent(NammaApartmentsHome.this, MyVehiclesActivity.class);
                     startActivity(intent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -136,7 +137,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     Intent intent = new Intent(NammaApartmentsHome.this, MyGuardsActivity.class);
                     startActivity(intent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -145,7 +146,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
                     startActivity(noticeBoardIntent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -154,7 +155,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     Intent settingsIntent = new Intent(NammaApartmentsHome.this, NammaApartmentSettings.class);
                     startActivity(settingsIntent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -163,7 +164,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     Intent helpIntent = new Intent(NammaApartmentsHome.this, NammaApartmentsHelp.class);
                     startActivity(helpIntent);
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -172,7 +173,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                     showRateUsDialog();
                     dialog.show();
                 });
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
@@ -184,12 +185,12 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 editor.apply();
 
                 toggle.runWhenIdle(this::showLogOutDialog);
-                drawer.closeDrawers();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             }
 
         }
-        return true;
+        return false;
     }
 
     /* ------------------------------------------------------------- *
