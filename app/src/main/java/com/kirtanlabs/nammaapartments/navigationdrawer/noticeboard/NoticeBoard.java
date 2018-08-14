@@ -24,10 +24,13 @@ public class NoticeBoard extends BaseActivity implements AdapterView.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Info Button in this screen*/
+        showInfoButton();
+
         /*Getting for grid view*/
         GridView gridViewNoticeBoard = findViewById(R.id.gridViewNoticeBoard);
 
-        // Setting the imageAdapter
+        /* Setting the imageAdapter*/
         gridViewNoticeBoard.setAdapter(getAdapter());
     }
 
