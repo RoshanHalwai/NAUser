@@ -15,6 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -23,8 +24,6 @@
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:src="@drawable/add_member" />
 
             <TextView
@@ -56,15 +55,11 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:inputType="textCapWords"
-                android:selectAllOnFocus="false"
                 android:textColor="@color/nmBlack"
                 android:textSize="@dimen/edit_text_default_size"
                 tools:ignore="LabelFor">
 
-                <requestFocus />
             </EditText>
 
             <TextView
