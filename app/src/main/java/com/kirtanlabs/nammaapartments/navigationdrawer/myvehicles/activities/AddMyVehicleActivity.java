@@ -60,6 +60,9 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Info Button in this screen*/
+        showInfoButton();
+
         /*Getting Id's for all the views*/
         TextView textVehicleType = findViewById(R.id.textVehicleType);
         TextView textVehicleNumber = findViewById(R.id.textVehicleNumber);

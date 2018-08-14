@@ -58,6 +58,9 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
          * hence hiding the back button from the Title Bar*/
         hideBackButton();
 
+        /*Here we are hiding the keyboard on launch of screen since user has to see the UI first.*/
+        hideKeyboard();
+
         /*Initialising the static variable with the current context.*/
         signUp = this;
 
@@ -82,7 +85,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         editFullName.setTypeface(Constants.setLatoRegularFont(this));
         editEmailId.setTypeface(Constants.setLatoRegularFont(this));
         buttonSignUp.setTypeface(Constants.setLatoLightFont(this));
-        /*Setting event for  button*/
+
+        /*Setting event for views*/
         circleImageNewUserProfileImage.setOnClickListener(this);
         circleImageNewUserProfileImage.setOnFocusChangeListener(this);
         buttonSignUp.setOnClickListener(this);

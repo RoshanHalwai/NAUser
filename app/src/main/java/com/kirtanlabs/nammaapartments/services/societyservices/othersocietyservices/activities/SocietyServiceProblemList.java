@@ -44,6 +44,9 @@ public class SocietyServiceProblemList extends BaseActivity implements SearchVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*Here we are hiding the keyboard on launch of screen since user has to see the UI first.*/
+        hideKeyboard();
+
         /*Getting Id's for all the views*/
         SearchView searchProblem = findViewById(R.id.searchProblem);
         listView = findViewById(R.id.listView);
