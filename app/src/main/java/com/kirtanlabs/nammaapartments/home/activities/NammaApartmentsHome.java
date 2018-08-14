@@ -295,7 +295,9 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 PRIVATE_USERS_REFERENCE.child(userUID).child("tokenId").setValue(token_id);
                 addNavigationHeaderContent(Objects.requireNonNull(nammaApartmentUser));
                 /*TODO: Change this dialog content with Splash Screen*/
-                hideProgressDialog();
+                if (isProgressDialogShown()) {
+                    hideProgressDialog();
+                }
             }
 
             @Override
@@ -311,8 +313,9 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
      * @param nammaApartmentUser contains data of current user
      */
     private void addNavigationHeaderContent(NammaApartmentUser nammaApartmentUser) {
-        TextView textSocietyName = navigationView.findViewById(R.id.textSocietyName);
-        TextView textBlockAndFlat = navigationView.findViewById(R.id.textBlockAndFlat);
+        View v = navigationView.getHeaderView(0);
+        TextView textSocietyName = v.findViewById(R.id.textSocietyName);
+        TextView textBlockAndFlat = v.findViewById(R.id.textBlockAndFlat);
         textSocietyName.setTypeface(setLatoRegularFont(NammaApartmentsHome.this));
         textBlockAndFlat.setTypeface(setLatoRegularFont(NammaApartmentsHome.this));
         UserFlatDetails userFlatDetails = nammaApartmentUser.getFlatDetails();

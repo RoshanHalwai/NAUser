@@ -268,6 +268,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
+    protected boolean isProgressDialogShown() {
+        return progressDialog != null && progressDialog.isShowing();
+    }
+
     protected void hideProgressDialog() {
         progressDialog.dismiss();
     }
@@ -311,7 +315,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * else we show Request permission dialog to allow users to give access.
      *
      * @param MobileNumber - to which message needs to be sent
-     * @param message - This is the message that would be displayed in the SMS application body
+     * @param message      - This is the message that would be displayed in the SMS application body
      */
     public void sendTextMessage(String MobileNumber, String message) {
         msgIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", MobileNumber, null));
