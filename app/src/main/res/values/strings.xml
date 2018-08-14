@@ -71,9 +71,10 @@
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
-    <string name="rate_us_dialog">Love using our App,then please rate us on PlayStore </string>
+    <string name="rate_us_dialog_title">Enjoying Namma Apartments? </string>
     <string name="rate_now">Rate Now</string>
-    <string name="remind_later">Remind me later </string>
+    <string name="rate_us_dialog_message">Tap a star to rate it on the PlayStore.</string>
+    <string name="remind_later">Remind Later </string>
     <string name="logout_question">Are you sure you want to logout?</string>
     <string name="logout_dialog_title">Logout Message</string>
 
@@ -324,6 +325,7 @@
     <string name="help">Help</string>
     <string name="rate_us">Rate Us</string>
     <string name="notice_board">Notice Board</string>
+    <string name="image_which_shows_app_icon">Image which shows app icon</string>
 
     <!--Custom Notification -->
     <string name="accept">Accept</string>
@@ -501,5 +503,6 @@
     <string name="evening">4PM - 8PM</string>
     <string name="night">8PM - 12PM</string>
     <string name="query_time_slot">For any queries related to time slot, Contact Admin.</string>
+
 
 </resources>
