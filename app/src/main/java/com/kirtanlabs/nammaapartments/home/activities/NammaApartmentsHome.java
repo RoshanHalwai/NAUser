@@ -19,7 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +53,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENT
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentsHome extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -220,15 +219,15 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         TextView textRateDialogTitle = dialog.findViewById(R.id.textRateDialogTitle);
         TextView textRateDialogMessage = dialog.findViewById(R.id.textRateDialogMessage);
         Button buttonRateNow = dialog.findViewById(R.id.buttonRateNow);
-        Button buttonRemindLater = dialog.findViewById(R.id.buttonRemindLater);
-        ImageView imageNammaApartments = dialog.findViewById(R.id.imageNammaApartments);
+        Button buttonRemindLater = dialog.findViewById(R.id.buttonCancel);
+        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
 
         /*Setting Fonts for all the views*/
         textRateDialogTitle.setTypeface(setLatoBoldFont(this));
         textRateDialogMessage.setTypeface(setLatoRegularFont(this));
-        buttonRateNow.setTypeface(setLatoLightFont(this));
-        buttonRemindLater.setTypeface(setLatoLightFont(this));
-        imageNammaApartments.setImageResource(R.mipmap.ic_launcher);
+        buttonRateNow.setTypeface(setLatoBoldFont(this));
+        buttonRemindLater.setTypeface(setLatoBoldFont(this));
+        ratingBar.animate();
 
         /*Setting OnClick Listeners to the views*/
         //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.

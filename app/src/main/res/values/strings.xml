@@ -72,9 +72,9 @@
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
     <string name="rate_us_dialog_title">Enjoying Namma Apartments? </string>
-    <string name="rate_now">Rate Now</string>
+    <string name="submit">Submit</string>
     <string name="rate_us_dialog_message">Tap a star to rate it on the PlayStore.</string>
-    <string name="remind_later">Remind Later </string>
+    <string name="not_now">Not Now</string>
     <string name="logout_question">Are you sure you want to logout?</string>
     <string name="logout_dialog_title">Logout Message</string>
 
