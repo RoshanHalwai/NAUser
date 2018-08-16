@@ -17,9 +17,9 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.pojo.Vehicle;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_VEHICLES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CAB_NUMBER_FIELD_LENGTH;
@@ -36,6 +36,7 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
+
     private Button buttonBike, buttonCar;
     private EditText editVehicleStateCode, editVehicleRtoNumber, editVehicleSerialNumberOne, editVehicleSerialNumberTwo;
     private String vehicleType;
@@ -268,9 +269,8 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
         /*Create instance of Vehicle Class*/
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         String userName = nammaApartmentUser.getPersonalDetails().getFullName();
-        Timestamp timestamp = new Timestamp(new Date().getTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, YYY");
-        Vehicle vehicle = new Vehicle(userName, vehicleNumber, vehicleType, dateFormat.format(timestamp));
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+        Vehicle vehicle = new Vehicle(userName, vehicleNumber, vehicleType, dateFormat.format(new Date()));
 
         /*Get User Data Vehicle Reference*/
         DatabaseReference userVehiclesReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
