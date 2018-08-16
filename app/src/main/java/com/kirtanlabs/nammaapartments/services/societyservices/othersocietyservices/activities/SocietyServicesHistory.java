@@ -12,6 +12,8 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 
 /**
@@ -59,6 +61,12 @@ public class SocietyServicesHistory extends BaseActivity {
                                 break;
                             case ELECTRICIAN:
                                 showFeatureUnavailableLayout(R.string.electrician_service_unavailable_message);
+                                break;
+                            case GARBAGE_MANAGEMENT:
+                                showFeatureUnavailableLayout(R.string.garbage_service_unavailable_message);
+                                break;
+                            case EVENT_MANAGEMENT:
+                                showFeatureUnavailableLayout(R.string.event_service_unavailable_message);
                                 break;
                         }
                     } else {

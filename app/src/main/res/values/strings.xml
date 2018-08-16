@@ -362,10 +362,12 @@
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
     <string name="carpenter_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Carpenter requests from your flat yet.</string>
     <string name="electrician_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Electrician requests from your flat yet.</string>
+    <string name="garbage_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Garbage requests from your flat yet.</string>
+    <string name="event_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Event requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="history_mobile">Mobile Number:</string>
     <string name="history_problem">Problem:</string>
-    <string name="history_time_slot">Time Slot:</string>
+    <string name="time_slot">Time Slot:</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>
@@ -487,7 +489,6 @@
     <string name="vehicles_added_success_title">Vehicle Added Message</string>
     <string name="vehicles_added_success_message">You have successfully added your Vehicle.</string>
     <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
-
 
     <!--Awaiting Response Activity-->
     <string name="society_service_accepted_request">Your request has been accepted.</string>

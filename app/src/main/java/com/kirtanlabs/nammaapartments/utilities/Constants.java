@@ -53,6 +53,8 @@ public class Constants {
     public static final String PLUMBER="plumber";
     public static final String CARPENTER="carpenter";
     public static final String ELECTRICIAN="electrician";
+    public static final String GARBAGE_MANAGEMENT="garbageManagement";
+    public static final String EVENT_MANAGEMENT="event management";
 
     /* ------------------------------------------------------------- *
      * Validation Keys

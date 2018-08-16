@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/history_time_slot"
+                        android:text="@string/time_slot"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
