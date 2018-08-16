@@ -49,7 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Name:"
+                        android:text="@string/history_name"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -58,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Mobile Number:"
+                        android:text="@string/history_mobile"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -67,8 +67,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Problem:"
                         android:textColor="@color/nmBlack"
+                        android:text="@string/history_problem"
                         android:textSize="18sp" />
 
                     <TextView
@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Time Slot:"
+                        android:text="@string/time_slot"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -112,6 +112,8 @@
                         android:id="@+id/textProblemValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="2dp"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
