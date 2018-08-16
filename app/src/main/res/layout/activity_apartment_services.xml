@@ -66,7 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Name:"
+                        android:text="@string/history_name"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
@@ -75,7 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Rating:"
+                        android:text="@string/rating"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
@@ -84,7 +84,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Time Slot:"
+                        android:text="@string/time_slot"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="Flats:"
+                        android:text="@string/flats"
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
