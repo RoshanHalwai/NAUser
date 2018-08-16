@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -31,9 +32,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot,
             R.id.buttonNightSlot};
-    private EditText editPickDate;
+    private EditText editPickDate, editEventTitle;
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops;
     private String societyServiceType;
+    private TextView textErrorEventDate;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -60,7 +62,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textEventDate = findViewById(R.id.textEventDate);
         TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
         TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
-        EditText editEventTitle = findViewById(R.id.editEventTitle);
+        textErrorEventDate = findViewById(R.id.textErrorEventDate);
+        editEventTitle = findViewById(R.id.editEventTitle);
         editPickDate = findViewById(R.id.editPickDate);
         buttonParties = findViewById(R.id.buttonParties);
         buttonConcerts = findViewById(R.id.buttonConcerts);
@@ -78,6 +81,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         textEventDate.setTypeface(setLatoBoldFont(this));
         textChooseTimeSlot.setTypeface(setLatoBoldFont(this));
         textTimeSlotQuery.setTypeface(setLatoBoldFont(this));
+        textErrorEventDate.setTypeface(setLatoBoldFont(this));
         editPickDate.setTypeface(setLatoRegularFont(this));
         editEventTitle.setTypeface(setLatoRegularFont(this));
         buttonParties.setTypeface(setLatoRegularFont(this));
@@ -112,6 +116,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonEveningSlot.setOnClickListener(this);
         buttonNightSlot.setOnClickListener(this);
         historyButton.setOnClickListener(this);
+        buttonBook.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -123,6 +128,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         if (view.isShown()) {
             String selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
             editPickDate.setText(selectedDate);
+            textErrorEventDate.setVisibility(View.GONE);
         }
     }
 
@@ -172,6 +178,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonBook:
+                validateFields();
                 /*TODO:To Discuss Book Functionality and to Implement the Logic Later */
                 break;
             case R.id.historyButton:
@@ -210,4 +217,28 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             }
         }
     }
+
+    /**
+     * This method gets invoked to check all the validation fields.
+     */
+    private void validateFields() {
+        String problemValue = editEventTitle.getText().toString();
+        String eventDate = editPickDate.getText().toString().trim();
+        Boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editEventTitle, editPickDate});
+        /*This condition checks if all fields are not filled and if user presses book button it will
+         *then display proper error messages.*/
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(problemValue)) {
+                editEventTitle.setError(getString(R.string.event_title_error));
+            }
+            if (TextUtils.isEmpty(eventDate)) {
+                textErrorEventDate.setVisibility(View.VISIBLE);
+            }
+        }
+        /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
+        if (fieldsFilled) {
+            /*TODO:Discuss the Storage Part in Firebase for Event Management*/
+        }
+    }
+
 }

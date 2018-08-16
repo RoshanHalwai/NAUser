@@ -311,6 +311,9 @@
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
     <string name="vehicle_number_validation">Please Enter Vehicle Number</string>
+    <string name="choose_problem_validation">Please Select Your Problem</string>
+    <string name="enter_date">Please select date</string>
+    <string name="event_title_error">Please enter event title</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

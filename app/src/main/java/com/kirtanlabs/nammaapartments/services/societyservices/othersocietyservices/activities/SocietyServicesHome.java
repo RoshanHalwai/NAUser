@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +40,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
     private int screenTitle;
-    private String problem;
-    private String societyServiceType;
+    private String problem, societyServiceType;
     private Button selectedButton, buttonDryWaste, buttonWetWaste;
     private EditText editTextSelectProblem;
 
@@ -110,6 +110,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 editTextSelectProblem.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
                 societyServiceType = FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+                problem = getString(R.string.dry_waste);
         }
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
@@ -154,7 +155,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 selectButton(R.id.buttonEveningSlot);
                 break;
             case R.id.buttonRequestService:
-                storeSocietyServiceDetails();
+                /*This method gets invoked to check all the editText fields and button validations.*/
+                validateFields();
                 break;
             case R.id.historyButton:
                 Intent societyServiceHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
@@ -185,6 +187,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
             problem = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
             editTextSelectProblem.setText(problem);
+            editTextSelectProblem.setError(null);
         }
     }
 
@@ -260,6 +263,37 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
         startActivity(awaitingResponseIntent);
         finish();
+    }
+
+    /**
+     * This method gets invoked to check all the validation fields.
+     */
+    private void validateFields() {
+        boolean fieldsFilled;
+        switch (screenTitle) {
+            case R.string.plumber:
+            case R.string.carpenter:
+            case R.string.electrician:
+                String problemValue = editTextSelectProblem.getText().toString();
+                fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblem});
+                /*This condition checks if all fields are not filled and if user presses add my vehicle button it will then display proper error messages.*/
+                if (!fieldsFilled) {
+                    if (TextUtils.isEmpty(problemValue)) {
+                        editTextSelectProblem.setError(getString(R.string.choose_problem_validation));
+                        break;
+                    }
+                }
+                /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
+                if (fieldsFilled) {
+                    /*This method stores user selected society details in Firebase.*/
+                    storeSocietyServiceDetails();
+                }
+                break;
+            case R.string.garbage_management:
+                /*This method stores user selected society details in Firebase.*/
+                storeSocietyServiceDetails();
+                break;
+        }
     }
 
 }
