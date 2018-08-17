@@ -40,8 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:progressTint="@color/nmLightYellow"
         android:numStars="5"
+        android:progressTint="@color/nmLightYellow"
         android:rating="5"
         android:stepSize="1"
         tools:targetApi="lollipop" />
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/nmBlack"
-        android:text="@string/submit"
+        android:text="@string/submit_rate_service"
         android:textAllCaps="false"
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size" />
