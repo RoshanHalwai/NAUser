@@ -74,7 +74,6 @@
     <string name="rate_us_dialog_title">Enjoying Namma Apartments? </string>
     <string name="submit">Submit</string>
     <string name="rate_us_dialog_message">Tap a star to rate it on the Play Store.</string>
-    <string name="not_now">Not Now</string>
     <string name="logout_question">Are you sure you want to logout?</string>
     <string name="logout_dialog_title">Logout Message</string>
 
@@ -519,6 +518,5 @@
     <string name="query_time_slot">For any queries related to time slot, Contact Admin.</string>
     <string name="event_management_dialog_title">Event Message</string>
     <string name="event_management_dialog_message">You have successfully booked your event.</string>
-
 
 </resources>
