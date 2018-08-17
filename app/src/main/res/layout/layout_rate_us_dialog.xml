@@ -6,46 +6,91 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textRateDialog"
+        android:id="@+id/textRateDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:text="@string/rate_us_dialog"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/rate_us_dialog_title"
         android:textColor="@color/nmBlack"
+        android:drawableTop="@mipmap/ic_launcher"
         android:textSize="@dimen/text_view_default_size" />
+
+    <TextView
+        android:id="@+id/textRateDialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/rate_us_dialog_message"
+        android:textColor="@color/nmBlack"
+        android:padding="10dp"
+        android:textSize="@dimen/text_view_default_size" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/nmGrey" />
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
         android:numStars="5"
         android:progressTint="@color/nmLightYellow"
-        android:rating="5"
+        android:minHeight="@dimen/text_view_default_size"
+        android:rating="0"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
         android:stepSize="1"
         tools:targetApi="lollipop" />
 
-    <Button
-        android:id="@+id/buttonRateNow"
+    <View
+        android:id="@+id/rateDialogLine"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/button_margin"
-        android:background="@color/nmBlack"
-        android:text="@string/rate_now"
-        android:textAllCaps="false"
-        android:textColor="@color/nmLightYellow"
-        android:textSize="@dimen/button_default_size" />
+        android:layout_height="1dp"
+        android:background="@color/nmGrey" />
 
-    <Button
-        android:id="@+id/buttonRemindLater"
+    <LinearLayout
+        android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/button_margin"
-        android:background="@color/nmBlack"
-        android:text="@string/remind_later"
-        android:textAllCaps="false"
-        android:textColor="@color/nmLightYellow"
-        android:textSize="@dimen/button_default_size" />
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:text="@string/cancel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="@dimen/text_view_default_size"
+            android:textColor="@color/nmLightYellow"
+            android:background="@color/nmBlack"
+            tools:ignore="ButtonStyle" />
+
+        <View
+            android:id="@+id/rateDialogButtonsLine"
+            android:layout_width="5dp"
+            android:layout_height="45dp"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:background="@color/nmBlack"
+            android:textSize="@dimen/text_view_default_size"
+            android:textColor="@color/nmLightYellow"
+            tools:ignore="ButtonStyle" />
+
+    </LinearLayout>
+
 </LinearLayout>

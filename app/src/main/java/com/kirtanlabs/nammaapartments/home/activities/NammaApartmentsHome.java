@@ -51,7 +51,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentsHome extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -215,19 +215,21 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         dialog.setContentView(R.layout.layout_rate_us_dialog);
 
         /*Getting Id's for all the views*/
-        TextView textRateDialog = dialog.findViewById(R.id.textRateDialog);
-        Button buttonRateNow = dialog.findViewById(R.id.buttonRateNow);
-        Button buttonRemindLater = dialog.findViewById(R.id.buttonRemindLater);
+        TextView textRateDialogTitle = dialog.findViewById(R.id.textRateDialogTitle);
+        TextView textRateDialogMessage = dialog.findViewById(R.id.textRateDialogMessage);
+        Button buttonSubmit = dialog.findViewById(R.id.buttonSubmit);
+        Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
         /*Setting Fonts for all the views*/
-        textRateDialog.setTypeface(setLatoRegularFont(this));
-        buttonRateNow.setTypeface(setLatoLightFont(this));
-        buttonRemindLater.setTypeface(setLatoLightFont(this));
+        textRateDialogTitle.setTypeface(setLatoBoldFont(this));
+        textRateDialogMessage.setTypeface(setLatoRegularFont(this));
+        buttonSubmit.setTypeface(setLatoRegularFont(this));
+        buttonCancel.setTypeface(setLatoRegularFont(this));
 
         /*Setting OnClick Listeners to the views*/
-        //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.
-        buttonRateNow.setOnClickListener(v -> dialog.cancel());
-        buttonRemindLater.setOnClickListener(v -> dialog.cancel());
+        /*TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.*/
+        buttonSubmit.setOnClickListener(v -> dialog.cancel());
+        buttonCancel.setOnClickListener(v -> dialog.cancel());
     }
 
     /**
