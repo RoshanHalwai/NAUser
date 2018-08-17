@@ -18,13 +18,13 @@
 
     <TextView
         android:id="@+id/textRateDialogMessage"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/rate_us_dialog_message"
         android:textColor="@color/nmBlack"
         android:padding="10dp"
-        android:textSize="12sp" />
+        android:textSize="@dimen/text_view_default_size" />
 
     <View
         android:id="@+id/line"
@@ -44,7 +44,7 @@
         android:rating="0"
         android:scaleX="0.7"
         android:scaleY="0.7"
-        android:secondaryProgressTint="@color/nmBlack"
+        android:secondaryProgressTint="@color/nmLightYellow"
         android:stepSize="1"
         tools:targetApi="lollipop" />
 
@@ -55,7 +55,7 @@
         android:background="@color/nmGrey" />
 
     <LinearLayout
-        android:id="@+id/buttonsRateDialog"
+        android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -75,12 +75,10 @@
             tools:ignore="ButtonStyle" />
 
         <View
-            android:id="@+id/rateDialogLineValue"
-            android:layout_width="1dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/nmGrey" />
+            android:id="@+id/rateDialogButtonsLine"
+            android:layout_width="5dp"
+            android:layout_height="45dp"
+            android:background="@android:color/white" />
 
         <Button
             android:id="@+id/buttonSubmit"

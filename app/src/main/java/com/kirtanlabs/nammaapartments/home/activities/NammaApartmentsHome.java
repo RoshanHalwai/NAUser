@@ -19,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -220,17 +219,15 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         TextView textRateDialogMessage = dialog.findViewById(R.id.textRateDialogMessage);
         Button buttonSubmit = dialog.findViewById(R.id.buttonSubmit);
         Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
-        RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
 
         /*Setting Fonts for all the views*/
         textRateDialogTitle.setTypeface(setLatoBoldFont(this));
         textRateDialogMessage.setTypeface(setLatoRegularFont(this));
         buttonSubmit.setTypeface(setLatoRegularFont(this));
         buttonCancel.setTypeface(setLatoRegularFont(this));
-        ratingBar.animate();
 
         /*Setting OnClick Listeners to the views*/
-        //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.
+        /*TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.*/
         buttonSubmit.setOnClickListener(v -> dialog.cancel());
         buttonCancel.setOnClickListener(v -> dialog.cancel());
     }
