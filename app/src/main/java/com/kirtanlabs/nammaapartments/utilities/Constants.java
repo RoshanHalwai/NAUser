@@ -54,7 +54,7 @@ public class Constants {
     public static final String CARPENTER="carpenter";
     public static final String ELECTRICIAN="electrician";
     public static final String GARBAGE_MANAGEMENT="garbageManagement";
-    public static final String EVENT_MANAGEMENT="event management";
+    public static final String EVENT_MANAGEMENT="eventManagement";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -102,6 +102,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_DRIVERS = "drivers";
     public static final String FIREBASE_CHILD_EMAIL = "email";
     public static final String FIREBASE_CHILD_EMERGENCIES = "emergencies";
+    public static final String FIREBASE_CHILD_EVENT_MANAGEMENT="eventManagement";
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
