@@ -12,11 +12,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentEventManagement;
 
 import java.text.DateFormatSymbols;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -33,8 +42,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             R.id.buttonEveningSlot,
             R.id.buttonNightSlot};
     private EditText editPickDate, editEventTitle;
-    private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops;
+    private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
     private String societyServiceType;
+    private String category;
     private TextView textErrorEventDate;
 
     /* ------------------------------------------------------------- *
@@ -97,7 +107,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDate.setInputType(InputType.TYPE_NULL);
 
-        societyServiceType = getString(R.string.event_management).toLowerCase();
+        societyServiceType = FIREBASE_CHILD_EVENT_MANAGEMENT;
+        /*Getting the values for highlighted buttons*/
+        category = getString(R.string.parties);
+        selectButton(R.id.buttonMorningSlot);
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
@@ -154,32 +167,36 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 selectButton(R.id.buttonNightSlot);
                 break;
             case R.id.buttonParties:
+                category = getString(R.string.parties);
                 buttonParties.setBackgroundResource(R.drawable.selected_button_design);
                 buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonConcerts:
+                category = getString(R.string.concerts);
                 buttonConcerts.setBackgroundResource(R.drawable.selected_button_design);
                 buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonMeetings:
+                category = getString(R.string.meetings);
                 buttonMeetings.setBackgroundResource(R.drawable.selected_button_design);
                 buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonSeminarsOrWorkshops:
+                category = getString(R.string.seminar_workshops);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.selected_button_design);
                 buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonBook:
+                /* This method gets invoked to check all the editText fields for validations.*/
                 validateFields();
-                /*TODO:To Discuss Book Functionality and to Implement the Logic Later */
                 break;
             case R.id.historyButton:
                 Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
@@ -210,7 +227,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
-                Button selectedButton = button;
+                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
@@ -237,8 +254,44 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         }
         /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
         if (fieldsFilled) {
-            /*TODO:Discuss the Storage Part in Firebase for Event Management*/
+            /*This method stores event details given by user to firebase*/
+            storeEventManagementDetailsInFirebase();
         }
+    }
+
+    /**
+     * Store the details of Event Management Notifications to Firebase
+     */
+    private void storeEventManagementDetailsInFirebase() {
+        /*Generating the societyServiceUID*/
+        DatabaseReference eventManagementNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+        String notificationUID = eventManagementNotificationReference.push().getKey();
+
+        /*Getting the data entered by user while booking the Society Service */
+        String userUID = NammaApartmentsGlobal.userUID;
+        String timeSlot = selectedButton.getText().toString();
+        String eventTitle = editEventTitle.getText().toString();
+        String eventDate = editPickDate.getText().toString();
+
+        /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+        NammaApartmentEventManagement nammaApartmentEventManagement = new NammaApartmentEventManagement(eventTitle, category,
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, timeSlot, eventDate);
+        eventManagementNotificationReference.child(notificationUID).setValue(nammaApartmentEventManagement);
+
+        /*Storing time stamp to keep track of notifications*/
+        eventManagementNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
+
+        /*Mapping Society Service UID with value in userData under Flat Number*/
+        DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
+        societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
+
+        /*Notify users that they have successfully booked their event details in firebase*/
+        Intent nammaApartmentHomeIntent = new Intent(EventManagement.this, NammaApartmentsHome.class);
+        showNotificationDialog(getResources().getString(R.string.event_management_dialog_title),
+                getResources().getString(R.string.event_management_dialog_message),
+                nammaApartmentHomeIntent);
     }
 
 }
