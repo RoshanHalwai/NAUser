@@ -38,6 +38,7 @@ public class Constants {
     public static final String VISITOR_TYPE = "visitorType";
     public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
     public static final String MESSAGE = "message";
+    public static final String COMPLETED = "Completed";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -144,6 +145,7 @@ public class Constants {
     private static final String FIREBASE_CHILD_SOCIETIES = "societies";
     private static final String FIREBASE_CHILD_SOCIETY_SERVICES = "societyServices";
     public static final String FIREBASE_CHILD_VEHICLES = "vehicles";
+    public static final String RATING = "rating";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textRateExperience"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/rate_your_recent_service_experience"
+        android:textColor="@color/nmBlack"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageRecentSocietyService"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/plumbing" />
+
+    <TextView
+        android:id="@+id/textRecentSocietyService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/plumber"
+        android:textColor="@color/nmBlack"
+        android:textSize="18sp" />
+
+    <RatingBar
+        android:id="@+id/ratingBarSocietyService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:progressTint="@color/nmLightYellow"
+        android:numStars="5"
+        android:rating="5"
+        android:stepSize="1"
+        tools:targetApi="lollipop" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nmBlack"
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size" />
+
+</LinearLayout>

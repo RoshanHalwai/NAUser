@@ -500,6 +500,8 @@
     <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
     <string name="no_response_yet">Plumber has not Responded Yet</string>
+    <string name="rate_your_recent_service_experience">Rate your recent service experience</string>
+    <string name="submit">SUBMIT</string>
 
     <!--Event Management Activity-->
     <string name="event_title">Event Title</string>
