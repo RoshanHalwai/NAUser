@@ -218,21 +218,21 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         /*Getting Id's for all the views*/
         TextView textRateDialogTitle = dialog.findViewById(R.id.textRateDialogTitle);
         TextView textRateDialogMessage = dialog.findViewById(R.id.textRateDialogMessage);
-        Button buttonRateNow = dialog.findViewById(R.id.buttonRateNow);
-        Button buttonRemindLater = dialog.findViewById(R.id.buttonCancel);
+        Button buttonSubmit = dialog.findViewById(R.id.buttonSubmit);
+        Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
         RatingBar ratingBar = dialog.findViewById(R.id.ratingBar);
 
         /*Setting Fonts for all the views*/
         textRateDialogTitle.setTypeface(setLatoBoldFont(this));
         textRateDialogMessage.setTypeface(setLatoRegularFont(this));
-        buttonRateNow.setTypeface(setLatoBoldFont(this));
-        buttonRemindLater.setTypeface(setLatoBoldFont(this));
+        buttonSubmit.setTypeface(setLatoRegularFont(this));
+        buttonCancel.setTypeface(setLatoRegularFont(this));
         ratingBar.animate();
 
         /*Setting OnClick Listeners to the views*/
         //TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.
-        buttonRateNow.setOnClickListener(v -> dialog.cancel());
-        buttonRemindLater.setOnClickListener(v -> dialog.cancel());
+        buttonSubmit.setOnClickListener(v -> dialog.cancel());
+        buttonCancel.setOnClickListener(v -> dialog.cancel());
     }
 
     /**
