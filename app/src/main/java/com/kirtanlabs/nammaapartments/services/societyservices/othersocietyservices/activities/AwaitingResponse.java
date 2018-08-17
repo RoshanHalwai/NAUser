@@ -129,7 +129,7 @@ public class AwaitingResponse extends BaseActivity {
                             checkSocietyServiceResponse();
                             break;
                         case COMPLETED:
-                            openRateSocietyServiceDialog();
+                            rateSocietyService();
                             break;
                     }
                 }
@@ -189,16 +189,16 @@ public class AwaitingResponse extends BaseActivity {
     }
 
     /**
-     * This method is invoked to open rate Society service dialog just after user request is completed.
+     * This method is invoked to rate Society service just after user's request for is completed.
      */
-    private void openRateSocietyServiceDialog() {
+    private void rateSocietyService() {
         DatabaseReference rateReference = societyServiceNotificationReference.child(Constants.RATING);
         rateReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     layoutAcceptedResponse.setVisibility(View.GONE);
-                    openRatingDialog();
+                    openRateSocietyServiceDialog();
                 }
             }
 
@@ -210,9 +210,9 @@ public class AwaitingResponse extends BaseActivity {
     }
 
     /**
-     * This method is used to create openRatingDialog
+     * This method is used to Open Dialog box which is used to rate society service and Store that rating in firebase which is given by user.
      */
-    private void openRatingDialog() {
+    private void openRateSocietyServiceDialog() {
         View rateServiceDialog = View.inflate(this, R.layout.layout_rate_society_service, null);
 
         /*Getting Id's for all the views*/
@@ -227,6 +227,7 @@ public class AwaitingResponse extends BaseActivity {
         textRecentSocietyService.setTypeface(setLatoBoldFont(this));
         buttonSubmit.setTypeface(setLatoRegularFont(this));
 
+        /*Setting SocietyService text and Image of societyServiceType according to user society service Request*/
         switch (societyServiceType) {
             case PLUMBER:
                 imageRecentSocietyService.setImageResource(R.drawable.plumbing);
@@ -260,6 +261,7 @@ public class AwaitingResponse extends BaseActivity {
             /*Setting the rating given by the user in (societyServiceNotification->NotificationUID) in firebase*/
             societyServiceNotificationReference.child(Constants.RATING).setValue(rating);
 
+            //TODO: To store average rating of that society service.
             /*Setting the rating given by the user in (societyService->societyServiceType->societyServiceUID) in firebase*/
             SOCIETY_SERVICES_REFERENCE.child(societyServiceType)
                     .child(FIREBASE_CHILD_PRIVATE)
