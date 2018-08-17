@@ -78,7 +78,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     private RadioButton radioButtonFriend, radioButtonFamilyMember;
     private AlertDialog imageSelectionDialog;
     private boolean grantedAccess;
-    private String mobileNumber;
+    private String mobileNumber, relationValue;
     private CircleImageView circleImageView;
     private File profilePhotoPath;
 
@@ -218,12 +218,14 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
             case R.id.radioButtonFamilyMember:
                 /*This line hides the relation error message if it was shown on if any of the fields are not filled.*/
                 textErrorRelation.setVisibility(View.GONE);
+                relationValue = getString(R.string.family_member);
                 textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_family_member));
                 textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                 break;
             case R.id.radioButtonFriend:
                 /*This line hides the relation error message if it was shown on if any of the fields are not filled.*/
                 textErrorRelation.setVisibility(View.GONE);
+                relationValue = getString(R.string.friend);
                 textOtpDescriptionFamilyMemberOrFriend.setText(getResources().getString(R.string.otp_message_friend));
                 textOtpDescriptionFamilyMemberOrFriend.setVisibility(View.VISIBLE);
                 break;
@@ -315,9 +317,15 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
      */
     private void storeFamilyMembersDetails() {
         /*displaying progress dialog while image is uploading*/
-        showProgressDialog(this,
-                getString(R.string.adding_your_family_member),
-                getString(R.string.please_wait_a_moment));
+        if (relationValue.equals(getString(R.string.family_member))) {
+            showProgressDialog(this,
+                    getString(R.string.adding_your_family_member),
+                    getString(R.string.please_wait_a_moment));
+        } else {
+            showProgressDialog(this,
+                    getString(R.string.adding_your_friend),
+                    getString(R.string.please_wait_a_moment));
+        }
 
         /*Map family member's mobile number with uid in users->all*/
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
@@ -397,9 +405,16 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     Intent MySweetHomeIntent = new Intent(AddFamilyMember.this, MySweetHome.class);
                     MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     MySweetHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    showNotificationDialog(getString(R.string.family_member_success_title),
-                            getString(R.string.family_member_success_message),
-                            MySweetHomeIntent);
+                    if (relationValue.equals(getString(R.string.family_member))) {
+                        showNotificationDialog(getString(R.string.flat_member_success_title),
+                                getString(R.string.family_member_success_message),
+                                MySweetHomeIntent);
+                    } else {
+                        showNotificationDialog(getString(R.string.flat_member_success_title),
+                                getString(R.string.friend_success_message),
+                                MySweetHomeIntent);
+                    }
+
                 }).addOnFailureListener(exception -> {
                     hideProgressDialog();
                     Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
