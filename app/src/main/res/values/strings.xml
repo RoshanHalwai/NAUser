@@ -278,8 +278,10 @@
     <string name="granted_access">Access:</string>
     <string name="family_member_unavailable_message">Please add your Family Members to approve visitors on your behalf.</string>
     <string name="adding_your_family_member">Adding your Family Member</string>
-    <string name="family_member_success_title">Family Member Message</string>
+    <string name="adding_your_friend">Adding your Friend</string>
+    <string name="flat_member_success_title">Flat Member Message</string>
     <string name="family_member_success_message">You have successfully added your Family Member.</string>
+    <string name="friend_success_message">You have successfully added your Friend.</string>
     <string name="non_admin_add_family_members_title">Add Family Members Message</string>
     <string name="non_admin_add_family_members_message">Sorry you cannot add family members to this flat since you are not the admin for this flat.</string>
     <string name="non_admin_edit_message">Sorry you cannot edit this family member since you are not the admin of this flat.</string>
