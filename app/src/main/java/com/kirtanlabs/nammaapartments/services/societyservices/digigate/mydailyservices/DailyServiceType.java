@@ -23,7 +23,7 @@ public class DailyServiceType {
         dailyServiceLookup.put("cooks", "Cook");
         dailyServiceLookup.put("maids", "Maid");
         dailyServiceLookup.put("childDayCares", "Child Day Care");
-        dailyServiceLookup.put("dailyNewsPapers", "Daily Newspaper");
+        dailyServiceLookup.put("dailyNewspapers", "Daily Newspaper");
         dailyServiceLookup.put("carBikeCleaners", "Car/Bike Cleaner");
         dailyServiceLookup.put("drivers", "Driver");
         dailyServiceLookup.put("laundries", "Laundry");
