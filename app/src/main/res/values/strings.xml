@@ -60,7 +60,7 @@
     <string name="phone_number">Mobile Number</string>
     <string name="email_id">Email-Id</string>
     <string name="sign_up">Sign Up</string>
-    <string name="i_agree_to_terms_and_conditions">By clicking signup you agree to our Terms &amp; Conditions and Privacy Policy.</string>
+    <string name="i_agree_to_terms_and_conditions">By clicking on Sign Up, I agree to Namma Apartments Privacy Policy and Terms &amp; Conditions.</string>
     <string name="i_already_have_an_account">I already have an Account</string>
 
     <!--SignIn Activity-->
