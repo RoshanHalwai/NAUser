@@ -148,6 +148,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonVerifyOTP) {
+            hideKeyboard();
             /*displaying progress dialog while OTP is being validated*/
             showProgressDialog(this,
                     getResources().getString(R.string.verifying_account),
