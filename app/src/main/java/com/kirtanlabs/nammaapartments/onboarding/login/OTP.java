@@ -115,7 +115,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         textChangeNumberOrTimer.setTypeface(Constants.setLatoRegularFont(this));
         buttonVerifyOTP.setTypeface(Constants.setLatoLightFont(this));
         editFirstOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editSecondOTPDigit. setTypeface(Constants.setLatoRegularFont(this));
+        editSecondOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editThirdOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editFourthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
         editFifthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
