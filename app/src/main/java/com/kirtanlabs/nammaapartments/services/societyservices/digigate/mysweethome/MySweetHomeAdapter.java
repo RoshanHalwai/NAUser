@@ -1,6 +1,5 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -37,6 +36,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
+
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private final List<NammaApartmentUser> nammaApartmentUserList;
@@ -62,7 +62,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     @NonNull
     @Override
     public MySweetHomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_visitors_and_my_daily_services_list, parent, false);
         return new MySweetHomeHolder(view);
@@ -70,38 +70,44 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MySweetHomeHolder holder, int position) {
-        String stringMemberName = mCtx.getResources().getString(R.string.name) + ":";
+        String stringMemberName = mCtx.getResources().getString(R.string.history_name);
         String stringMemberRelation = mCtx.getResources().getString(R.string.relation) + ":";
         String stringMemberRelationValue = FAMILY_MEMBER;
 
         holder.textMemberName.setText(stringMemberName);
         holder.textMemberRelation.setText(stringMemberRelation);
-        holder.textGrantedAccess.setText(R.string.granted_access);
+        holder.textGrantedAccess.setText(R.string.access);
 
-        //Creating an instance of NammaApartmentFamilyMembers class and retrieving the values from Firebase.
+        /*Creating an instance of NammaApartmentUser class and retrieving the values from Firebase.*/
         NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
         holder.textMemberNameValue.setText(nammaApartmentUser.getPersonalDetails().getFullName());
 
-        //Checking how two UIDs/people are related with each other (Family Member/Friend)
+        /*Checking how two UIDs/people are related with each other (Family Member/Friend)*/
         if (nammaApartmentUser.getFriends() != null) {
             if (nammaApartmentUser.getFriends().containsKey(NammaApartmentsGlobal.userUID)) {
                 stringMemberRelationValue = FRIEND;
             }
         }
 
-        //Setting the value of Relation to display in the My Sweet Home screen
+        /*Setting the value of Relation to display in the My Sweet Home screen*/
         holder.textMemberRelationValue.setText(stringMemberRelationValue);
         grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
-        String grantedAccessValue = String.valueOf(grantedAccess);
-        String accessValue = grantedAccessValue.substring(0, 1).toUpperCase() + grantedAccessValue.substring(1);
-        holder.textGrantedAccessValue.setText(accessValue);
+        String accessValue;
+        if (grantedAccess) {
+            accessValue = mCtx.getString(R.string.yes);
+            holder.textGrantedAccessValue.setText(accessValue);
+        } else {
+            accessValue = mCtx.getString(R.string.no);
+            holder.textGrantedAccessValue.setText(accessValue);
+        }
+
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentUser.getPersonalDetails().getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         holder.textEdit.setText(R.string.edit);
         holder.textCancel.setText(R.string.remove);
 
-        // Making these views Visibility GONE , as they are not required here
+        /* Making these views Visibility GONE , as they are not required here*/
         holder.textInvitationDateOrServiceRating.setVisibility(View.GONE);
         holder.textInvitedByOrNumberOfFlats.setVisibility(View.GONE);
         holder.textInvitationDateOrServiceRatingValue.setVisibility(View.GONE);
@@ -171,7 +177,7 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         buttonCancel.setTypeface(setLatoRegularFont(mCtx));
 
         grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
-        //Based on the Granted Access Value From Card View we are displaying proper Granted Access buttons.
+        /*Based on the Access Value From Card View we are displaying proper Granted Access buttons.*/
         if (grantedAccess) {
             buttonYes.setBackgroundResource(R.drawable.button_guest_selected);
             buttonNo.setBackgroundResource(R.drawable.button_guest_not_selected);
@@ -207,37 +213,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         dialog = alertAccessDialog.create();
         new Dialog(mCtx);
         dialog.show();
-    }
-
-    /**
-     * This method is invoked when user clicks on 'Remove' icon to remove a Family Member or Friend
-     * from the 'My Sweet Home' list
-     */
-    private void removeDialog() {
-        AlertDialog.Builder alertRemoveDialog = new AlertDialog.Builder(mCtx);
-        View removeDialog = View.inflate(mCtx, R.layout.layout_emergency_dialog, null);
-
-        /*Getting Id's for all the views*/
-        TextView textRemoveMessage = removeDialog.findViewById(R.id.textEmergencyMessage);
-        TextView buttonOk = removeDialog.findViewById(R.id.buttonOk);
-        TextView buttonCancel = removeDialog.findViewById(R.id.buttonCancel);
-
-        buttonCancel.setVisibility(View.INVISIBLE);
-
-        /*Setting Fonts for all the views*/
-        textRemoveMessage.setTypeface(setLatoBoldFont(mCtx));
-        buttonOk.setTypeface(setLatoRegularFont(mCtx));
-
-        textRemoveMessage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.danger, 0, 0);
-        textRemoveMessage.setText(R.string.remove_dialog);
-
-        alertRemoveDialog.setView(removeDialog);
-        Dialog dialog = alertRemoveDialog.create();
-        new Dialog(mCtx);
-        dialog.show();
-
-        buttonOk.setOnClickListener(v -> dialog.cancel());
-
     }
 
     /**
@@ -331,18 +306,21 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textEdit.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
 
-            //Setting events for items in card view
+            /*Setting events for items in card view*/
             textCall.setOnClickListener(this);
             textMessage.setOnClickListener(this);
             textEdit.setOnClickListener(this);
             textCancel.setOnClickListener(this);
         }
 
+        /* ------------------------------------------------------------- *
+         * Overriding OnClick Listeners
+         * ------------------------------------------------------------- */
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
             NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
-            //Here first we are getting current user admin value based on the NammaApartment class.
+            /*Here first we are getting current user admin value based on the NammaApartment User class.*/
             NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
             boolean isAdmin = currentNammaApartmentUser.getPrivileges().isAdmin();
             switch (v.getId()) {
@@ -353,21 +331,24 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
                     baseActivity.sendTextMessage(nammaApartmentUser.getPersonalDetails().getPhoneNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    //Here we are checking if the value is true i.e if the user is admin and can edit other
-                    //non admin family members.
+                    /*Here we are checking if the value is true i.e if the user is admin and can edit other
+                     *non admin family members.*/
                     if (isAdmin) {
-                        //Create an Access Dialog in which user can change access of other family members.
+                        /*Create an Access Dialog in which user can change access of other family members.*/
                         openAccessDialog(nammaApartmentUser, position);
                     } else {
-                        //Here we are showing users a dialog box since they are not admin of that particular flat.
+                        /*Here we are showing users a dialog box since they are not admin of that particular flat.*/
                         baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.non_admin_edit_title_message),
                                 mCtx.getResources().getString(R.string.non_admin_edit_message), null);
                     }
                     break;
                 case R.id.textCancel:
-                    removeDialog();
+                    /*Here we are showing a notification dialog to users that remove feature is not yet implemented*/
+                    baseActivity.showNotificationDialog(mCtx.getString(R.string.remove_dialog_title),
+                            mCtx.getString(R.string.remove_dialog_message), null);
                     break;
             }
         }
     }
+
 }
