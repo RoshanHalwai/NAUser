@@ -182,13 +182,14 @@ public class HandedThings extends BaseActivity {
                             /*Iterate over each of them and add listener to each of them*/
                             for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
                                 String dailyServiceUID = childSnapshot.getKey();
+                                boolean isDailyServicePresent = (boolean) childSnapshot.getValue();
                                 DatabaseReference reference = PUBLIC_DAILYSERVICES_REFERENCE
                                         .child(dailyServiceUIDSnapshot.getKey())    // Daily Service Type
                                         .child(dailyServiceUID);                    // Daily Service UID
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED)) {
+                                        if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED) && isDailyServicePresent) {
                                             if (dataSnapshot.hasChild(userUID)) {
                                                 numberOfFlats.put(dailyServiceUID, dataSnapshot.getChildrenCount() - 1);
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
