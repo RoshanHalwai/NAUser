@@ -454,9 +454,11 @@
     <!-- General settings -->
     <string name="general">General Settings</string>
     <string name="choose_language">Choose Language</string>
+    <string name="sounds">Sounds</string>
     <string name="app_version">App Version 1.0</string>
     <string name="report_bug">Report A Bug</string>
     <string name="location_services">Location Services</string>
+    <string name="about">About</string>
 
     <string-array name="change_languages_list">
         <item>@string/english</item>
