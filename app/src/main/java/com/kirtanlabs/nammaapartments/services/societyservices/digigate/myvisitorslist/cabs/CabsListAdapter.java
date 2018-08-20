@@ -22,6 +22,7 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 
 public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsViewHolder> {
@@ -57,6 +58,9 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
     public void onBindViewHolder(@NonNull CabsListAdapter.CabsViewHolder holder, int position) {
         //Creating an instance of NammaApartmentArrival class and retrieving the values from Firebase
         NammaApartmentArrival nammaApartmentArrival = nammaApartmentArrivalList.get(position);
+        if(nammaApartmentArrival.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)){
+          holder.textInviter.setText(R.string.approver);
+        }
         holder.textCabValue.setText(nammaApartmentArrival.getReference());
         holder.textCabStatusValue.setText(nammaApartmentArrival.getStatus());
         String dateAndTime = nammaApartmentArrival.getDateAndTimeOfArrival();
