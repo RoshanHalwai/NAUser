@@ -58,8 +58,9 @@ public class CabsListAdapter extends RecyclerView.Adapter<CabsListAdapter.CabsVi
     public void onBindViewHolder(@NonNull CabsListAdapter.CabsViewHolder holder, int position) {
         //Creating an instance of NammaApartmentArrival class and retrieving the values from Firebase
         NammaApartmentArrival nammaApartmentArrival = nammaApartmentArrivalList.get(position);
-        if(nammaApartmentArrival.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)){
-          holder.textInviter.setText(R.string.approver);
+        /*If the approval type of Cab is 'post approved', then we change the text 'Inviter' to 'Approver'*/
+        if (nammaApartmentArrival.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
+            holder.textInviter.setText(R.string.approver);
         }
         holder.textCabValue.setText(nammaApartmentArrival.getReference());
         holder.textCabStatusValue.setText(nammaApartmentArrival.getStatus());
