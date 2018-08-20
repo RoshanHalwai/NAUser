@@ -178,12 +178,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             }
 
             case R.id.nav_logout: {
-                sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putBoolean(LOGGED_IN, false);
-                editor.putString(USER_UID, null);
-                editor.apply();
-
                 toggle.runWhenIdle(this::showLogOutDialog);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
@@ -238,6 +232,12 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     private void showLogOutDialog() {
         Runnable logoutUser = () ->
         {
+            sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putBoolean(LOGGED_IN, false);
+            editor.putString(USER_UID, null);
+            editor.apply();
+
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

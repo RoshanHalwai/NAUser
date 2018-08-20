@@ -60,7 +60,7 @@
     <string name="phone_number">Mobile Number</string>
     <string name="email_id">Email-Id</string>
     <string name="sign_up">Sign Up</string>
-    <string name="i_agree_to_terms_and_conditions">By clicking on SignUp I agree to NammaApartments Privacy Policy and Terms &amp; Conditions</string>
+    <string name="i_agree_to_terms_and_conditions">By clicking on Sign Up, I agree to Namma Apartments Privacy Policy and Terms &amp; Conditions.</string>
     <string name="i_already_have_an_account">I already have an Account</string>
 
     <!--SignIn Activity-->
@@ -274,9 +274,9 @@
     <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
     <string name="notification_alert">Notification Alert</string>
-    <string name="granted_access">Access:</string>
+    <string name="access">Access:</string>
     <string name="family_member_unavailable_message">Please add your Family Members to approve visitors on your behalf.</string>
-    <string name="adding_your_family_member">Adding your Family Member</string>
+    <string name="adding_your_family_member">Adding Family Member</string>
     <string name="adding_your_friend">Adding your Friend</string>
     <string name="flat_member_success_title">Flat Member Message</string>
     <string name="family_member_success_message">You have successfully added your Family Member.</string>
@@ -288,7 +288,8 @@
     <string name="non_admin_edit_title_message">Edit Message</string>
     <string name="non_admin_remove_title_message">Delete Message</string>
     <string name="change_access">Change Access</string>
-    <string name="remove_dialog">This feature is currently unavailable</string>
+    <string name="remove_dialog_message">This feature is currently unavailable</string>
+    <string name="remove_dialog_title">Remove Flat Member Message</string>
 
     <!--Edit My Daily Service and Family Members Details-->
     <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>

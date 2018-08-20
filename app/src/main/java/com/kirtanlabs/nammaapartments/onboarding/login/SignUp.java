@@ -30,7 +30,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
      * ------------------------------------------------------------- */
 
     public static SignUp signUp;
-    private CircleImageView circleImageNewUserProfileImage;
+    private CircleImageView newUserProfileImage;
     private TextView textErrorProfilePic;
     private EditText editFullName,editEmailId;
     private AlertDialog imageSelectionDialog;
@@ -68,7 +68,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         createImageSelectionDialog();
 
         /*Getting Id's for all the views*/
-        circleImageNewUserProfileImage = findViewById(R.id.newUserProfileImage);
+        newUserProfileImage = findViewById(R.id.newUserProfileImage);
         textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         TextView textFullName = findViewById(R.id.textFullName);
         TextView textEmailId = findViewById(R.id.textEmailId);
@@ -87,8 +87,8 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         buttonSignUp.setTypeface(Constants.setLatoLightFont(this));
 
         /*Setting event for views*/
-        circleImageNewUserProfileImage.setOnClickListener(this);
-        circleImageNewUserProfileImage.setOnFocusChangeListener(this);
+        newUserProfileImage.setOnClickListener(this);
+        newUserProfileImage.setOnFocusChangeListener(this);
         buttonSignUp.setOnClickListener(this);
     }
 
@@ -103,13 +103,13 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
          *So here if we checks if user has not selected any photo from gallery or he did'nt captured
          *any photo its resultCode value will be equal to zero and we are displaying circular image view.*/
         if (resultCode == EDIT_TEXT_EMPTY_LENGTH) {
-            circleImageNewUserProfileImage.setVisibility(View.VISIBLE);
+            newUserProfileImage.setVisibility(View.VISIBLE);
         } else {
             EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
                 @Override
                 public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
                     if (source == EasyImage.ImageSource.GALLERY || source == EasyImage.ImageSource.CAMERA) {
-                        circleImageNewUserProfileImage.setImageBitmap(getBitmapFromFile(SignUp.this, imageFile));
+                        newUserProfileImage.setImageBitmap(getBitmapFromFile(SignUp.this, imageFile));
                         profilePhotoPath = imageFile;
                         textErrorProfilePic.setVisibility(View.GONE);
                     }
@@ -130,7 +130,6 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
                 validateFields();
                 break;
             case R.id.newUserProfileImage:
-                hideKeyboard();
                 imageSelectionDialog.show();
                 break;
         }
@@ -138,7 +137,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (v == circleImageNewUserProfileImage && hasFocus) {
+        if (v == newUserProfileImage && hasFocus) {
             onClick(v);
         }
     }
@@ -152,6 +151,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
      * imageSelectionDialog is displayed when user clicks on profile image which is on top of the screen.
      */
     private void createImageSelectionDialog() {
+        hideKeyboard();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] selectionOptions = {
                 getResources().getString(R.string.gallery),
