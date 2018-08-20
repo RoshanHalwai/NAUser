@@ -115,7 +115,7 @@
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
-    <string name="invite_visitors">Invite Visitors</string>
+    <string name="invite_visitors">Invite Guests</string>
     <string name="my_visitors_list">My Visitors List</string>
     <string name="my_daily_services">My Daily Services</string>
     <string name="my_family_members">My Family Members</string>
@@ -125,11 +125,11 @@
     <string name="emergency">Emergency</string>
 
     <!--Inviting Visitors Activity-->
-    <string name="visitor_name">Visitor Name</string>
-    <string name="visitor_mobile">Visitor Mobile</string>
+    <string name="visitor_name">Guest Name</string>
+    <string name="visitor_mobile">Guest Mobile</string>
     <string name="select_from_contact">Select From Contact</string>
     <string name="calendar_image" tools:keep="@string/calendar_image">Calendar Image</string>
-    <string name="inviting_visitors">Inviting Visitors</string>
+    <string name="inviting_visitors">Invite Guests</string>
     <string name="invite">INVITE</string>
     <string name="or">OR</string>
     <string name="contacts_information" tools:keep="@string/contacts_information">Contacts Information</string>
@@ -263,7 +263,7 @@
     <string name="dialog_button_ok">OK</string>
 
     <!--MySweetHome Activity-->
-    <string name="add_my_family_members">Add My Family Members</string>
+    <string name="add_my_family_members">Add Flat Member</string>
     <string name="add_family_members_details_screen">Add Family Members Details Screen</string>
     <string name="grant_access">Grant Access</string>
     <string name="relation">Relation</string>
