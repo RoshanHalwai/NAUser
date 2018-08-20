@@ -44,6 +44,7 @@ public class HandedThingsHistory extends BaseActivity {
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHistoryAdapter dailyServicesHistoryAdapter;
     private int index = 0;
+    private boolean isUserHandedThingsToDailyService = false;
 
     @Override
     protected int getLayoutResourceId() {
@@ -193,6 +194,7 @@ public class HandedThingsHistory extends BaseActivity {
                                                 DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
                                                 //We display only those daily service details who has handed things has one of its child
                                                 if (dailyServiceDataSnapshot.hasChild(FIREBASE_CHILD_HANDED_THINGS)) {
+                                                    isUserHandedThingsToDailyService = true;
                                                     DatabaseReference handedThingsReference = reference.child(userUID).child(FIREBASE_CHILD_HANDED_THINGS);
                                                     handedThingsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
@@ -224,8 +226,10 @@ public class HandedThingsHistory extends BaseActivity {
 
                                                         }
                                                     });
+                                                }
+                                                if (isUserHandedThingsToDailyService) {
+                                                    hideFeatureUnavailableLayout();
                                                 } else {
-                                                    hideProgressIndicator();
                                                     showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
                                                 }
                                             }
