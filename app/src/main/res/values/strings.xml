@@ -470,6 +470,29 @@ Disputes:\n
 Any dispute related in any way to your visit to this website or to products you purchase from us shall be arbitrated by state or federal court of Government of India and you consent to exclusive jurisdiction and venue of such courts. Comments, Reviews, and Emails Visitors may post content as long as it is not obscene, illegal, defamatory, threatening, infringing.\n\n
 User Account:\n
 If you are an owner of an account on this application, you are solely responsible for maintaining the confidentiality of your private user details. You are responsible for all activities that occur under your account or password. We reserve all rights to terminate accounts, edit or remove content and cancel orders in their sole discretion. Create your own professional terms and conditions tailored to your website or app.</string>
+
+    <!-- Frequently Asked Questions Activity -->
+    <string name="account_related">Account</string>
+    <string name="account_delete_query">How do I delete My Account?</string>
+    <string name="account_deactivate_query">I am moving out of my current place.How can I DeActivate my Account?</string>
+    <string name="visitor_related">Visitors</string>
+    <string name="invite_visitor_query">I faced an issue during inviting my visitor.How can I raise a complaint?</string>
+    <string name="visitor_cancel_query">How can I cancel my Invited Visitor?</string>
+    <string name="visitor_reschedule_query">How can I change my Visitor Arrival Date or Time?</string>
+    <string name="visitor_notification_query">I am getting notification for a visitor(e.g.Cab,Packages,Guests) that I did not Expect.What should I do?</string>
+    <string name="daily_services_related">Daily Services</string>
+    <string name="daily_service_remove_query">How can I remove my Daily Services?</string>
+    <string name="daily_services_reschedule_query">How can I change my Daily Service Arrival Time?</string>
+    <string name="flat_members_related">Flat Members</string>
+    <string name="flat_members_query">One of my present flat member moving out from my flat.How can I delete his data?</string>
+    <string name="flat_members_friend_query">Unfortunately I added Friend as my Family Member.What should I do?</string>
+    <string name="handed_things_related">Handed Things</string>
+    <string name="handed_things_query">What Things can be handed to Daily Service/Guests?</string>
+    <string name="emergency_related">Emergency</string>
+    <string name="emergency_related_query">How can I raise an Emergency alarm?</string>
+    <string name="emergency_alarm_query">What actions will take place once an Emergency Alarm is raised?</string>
+    <string name="emergency_alarm_response_query">How much estimated time will it take for the Guard to take necessary action?</string>
+
     <!-- Strings related to Settings -->
 
     <!-- General settings -->

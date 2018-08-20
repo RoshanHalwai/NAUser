@@ -73,6 +73,10 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
+            case 0:
+                Intent faqIntent = new Intent(NammaApartmentsHelp.this, FrequentlyAskedQuestionsActivity.class);
+                startActivity(faqIntent);
+                break;
             case 2:
                 Intent contactIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
                 contactIntent.putExtra(SCREEN_TITLE, R.string.contact_us);
