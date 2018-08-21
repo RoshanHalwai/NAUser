@@ -137,8 +137,8 @@
     <string name="select_future_time">Please select future time.</string>
     <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your society.</string>
     <string name="invitation_success_title">Invitation Message</string>
-    <string name="invitation_success_message">You have successfully invited your visitor.</string>
-    <string name="inviting_your_visitor">Inviting your visitor</string>
+    <string name="invitation_success_message">You have successfully invited your Guest.</string>
+    <string name="inviting_your_visitor">Inviting your Guest</string>
 
     <!--Visitors List Activity-->
     <string name="guests">Guests</string>
@@ -149,6 +149,7 @@
     <!--Guests List Activity-->
     <string name="my_guests">Guests</string>
     <string name="visitor">Visitor:</string>
+<string name="guest_name">Guest:</string>
     <string name="status">Status:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
