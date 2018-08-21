@@ -16,8 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentEventManagement;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.text.DateFormatSymbols;
 
@@ -287,11 +287,13 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
         societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
 
-        /*Notify users that they have successfully booked their event details in firebase*/
-        Intent nammaApartmentHomeIntent = new Intent(EventManagement.this, NammaApartmentsHome.class);
-        showNotificationDialog(getResources().getString(R.string.event_management_dialog_title),
-                getResources().getString(R.string.event_management_dialog_message),
-                nammaApartmentHomeIntent);
+        /*Call AwaitingResponse activity, by this time Admin should have received the Notification
+         * Since, cloud functions would have been triggered*/
+        Intent awaitingResponseIntent = new Intent(EventManagement.this, AwaitingResponse.class);
+        awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
+        awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
+        startActivity(awaitingResponseIntent);
+        finish();
     }
 
 }

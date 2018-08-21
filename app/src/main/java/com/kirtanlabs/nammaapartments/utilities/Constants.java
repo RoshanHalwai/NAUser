@@ -146,6 +146,9 @@ public class Constants {
     private static final String FIREBASE_CHILD_SOCIETY_SERVICES = "societyServices";
     public static final String FIREBASE_CHILD_VEHICLES = "vehicles";
     public static final String RATING = "rating";
+    public static final String FIREBASE_CHILD_CATEGORY = "category";
+    public static final String FIREBASE_CHILD_EVENT_DATE = "eventDate";
+    public static final String FIREBASE_CHILD_TIME_SLOT = "timeSlot";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
