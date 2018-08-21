@@ -509,6 +509,8 @@
     <string name="choose_category">Choose Category</string>
     <string name="parties">Parties</string>
     <string name="concerts">Concerts</string>
+    <string name="choose_valid_category">Please Choose Category</string>
+    <string name="choose_valid_time_slot">Please Choose TimeSlot</string>
     <string name="meetings">Meetings</string>
     <string name="seminar_workshops">Seminars/WorkShops</string>
     <string name="book">BOOK</string>

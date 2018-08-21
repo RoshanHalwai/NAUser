@@ -176,6 +176,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".services.societyservices.othersocietyservices.activities.EventManagement"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
 
         <!-- Apartment Services Screen -->

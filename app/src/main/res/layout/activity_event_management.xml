@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/selected_button_design"
+                    android:background="@drawable/valid_for_button_design"
                     android:text="@string/parties"
                     android:textAllCaps="false" />
 
@@ -111,6 +111,15 @@
                     android:textAllCaps="false" />
 
             </LinearLayout>
+            <TextView
+                android:id="@+id/textErrorValidForButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/choose_valid_category"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutDate"
@@ -180,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/selected_button_design"
+                    android:background="@drawable/valid_for_button_design"
                     android:text="@string/morning"
                     android:textAllCaps="false" />
 
@@ -227,6 +236,15 @@
                     android:textAllCaps="false" />
 
             </LinearLayout>
+            <TextView
+                android:id="@+id/textErrorValidForButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/choose_valid_time_slot"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textTimeSlotQuery"
