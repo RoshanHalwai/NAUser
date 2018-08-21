@@ -45,7 +45,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
     private String societyServiceType;
     private String category;
-    private TextView textErrorEventDate;
+    private TextView textErrorEventDate,textErrorValidForCategory,textErrorValidForTimeSlot;
+    private Boolean isValidForButtons=false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -73,6 +74,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
         TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
         textErrorEventDate = findViewById(R.id.textErrorEventDate);
+        textErrorValidForCategory = findViewById(R.id.textErrorValidForButton);
+        textErrorValidForTimeSlot = findViewById(R.id.textErrorValidForButton2);
         editEventTitle = findViewById(R.id.editEventTitle);
         editPickDate = findViewById(R.id.editPickDate);
         buttonParties = findViewById(R.id.buttonParties);
@@ -91,7 +94,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         textEventDate.setTypeface(setLatoBoldFont(this));
         textChooseTimeSlot.setTypeface(setLatoBoldFont(this));
         textTimeSlotQuery.setTypeface(setLatoBoldFont(this));
-        textErrorEventDate.setTypeface(setLatoBoldFont(this));
+        textErrorValidForCategory.setTypeface(setLatoRegularFont(this));
+        textErrorValidForTimeSlot.setTypeface(setLatoRegularFont(this));
         editPickDate.setTypeface(setLatoRegularFont(this));
         editEventTitle.setTypeface(setLatoRegularFont(this));
         buttonParties.setTypeface(setLatoRegularFont(this));
@@ -110,7 +114,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         societyServiceType = FIREBASE_CHILD_EVENT_MANAGEMENT;
         /*Getting the values for highlighted buttons*/
         category = getString(R.string.parties);
-        selectButton(R.id.buttonMorningSlot);
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
@@ -172,6 +175,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
+                textErrorValidForCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonConcerts:
                 category = getString(R.string.concerts);
@@ -179,6 +183,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
+                textErrorValidForCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonMeetings:
                 category = getString(R.string.meetings);
@@ -186,6 +191,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
+                textErrorValidForCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonSeminarsOrWorkshops:
                 category = getString(R.string.seminar_workshops);
@@ -193,6 +199,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
+                textErrorValidForCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonBook:
                 /* This method gets invoked to check all the editText fields for validations.*/
@@ -224,11 +231,13 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * @param id - of selected button
      */
     private void selectButton(int id) {
+        isValidForButtons = true;
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
                 selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
+                textErrorValidForTimeSlot.setVisibility(View.GONE);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
@@ -241,7 +250,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private void validateFields() {
         String problemValue = editEventTitle.getText().toString();
         String eventDate = editPickDate.getText().toString().trim();
-        Boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editEventTitle, editPickDate});
+        Boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editEventTitle, editPickDate})&& isValidForButtons;
         /*This condition checks if all fields are not filled and if user presses book button it will
          *then display proper error messages.*/
         if (!fieldsFilled) {
@@ -250,6 +259,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             }
             if (TextUtils.isEmpty(eventDate)) {
                 textErrorEventDate.setVisibility(View.VISIBLE);
+            }
+            if (!isValidForButtons) {
+                textErrorValidForCategory.setVisibility(View.VISIBLE);
+                textErrorValidForTimeSlot.setVisibility(View.VISIBLE);
             }
         }
         /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
