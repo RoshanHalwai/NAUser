@@ -75,7 +75,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
         textErrorEventDate = findViewById(R.id.textErrorEventDate);
         textErrorValidForCategory = findViewById(R.id.textErrorValidForButton);
-
         textErrorValidForTimeSlot = findViewById(R.id.textErrorValidForButton2);
         editEventTitle = findViewById(R.id.editEventTitle);
         editPickDate = findViewById(R.id.editPickDate);
@@ -95,8 +94,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         textEventDate.setTypeface(setLatoBoldFont(this));
         textChooseTimeSlot.setTypeface(setLatoBoldFont(this));
         textTimeSlotQuery.setTypeface(setLatoBoldFont(this));
-        textErrorValidForCategory.setTypeface(setLatoBoldFont(this));
-        textErrorValidForTimeSlot.setTypeface(setLatoBoldFont(this));
+        textErrorValidForCategory.setTypeface(setLatoRegularFont(this));
+        textErrorValidForTimeSlot.setTypeface(setLatoRegularFont(this));
         editPickDate.setTypeface(setLatoRegularFont(this));
         editEventTitle.setTypeface(setLatoRegularFont(this));
         buttonParties.setTypeface(setLatoRegularFont(this));
@@ -115,7 +114,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         societyServiceType = FIREBASE_CHILD_EVENT_MANAGEMENT;
         /*Getting the values for highlighted buttons*/
         category = getString(R.string.parties);
-       //i selectButton(R.id.buttonMorningSlot);
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
@@ -155,8 +153,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
-        int id=v.getId();
-        switch (id) {
+        switch (v.getId()) {
             case R.id.editPickDateTime:
                 pickDate(this, this);
                 break;
@@ -213,8 +210,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
                 startActivity(societyServiceHistoryIntent);
                 break;
-            default:
-                break;
         }
 
     }
@@ -242,7 +237,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             if (buttonId == id) {
                 selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
-
                 textErrorValidForTimeSlot.setVisibility(View.GONE);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
