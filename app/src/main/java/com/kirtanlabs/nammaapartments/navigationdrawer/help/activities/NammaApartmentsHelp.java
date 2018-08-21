@@ -77,6 +77,9 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
                 Intent faqIntent = new Intent(NammaApartmentsHelp.this, FrequentlyAskedQuestionsActivity.class);
                 startActivity(faqIntent);
                 break;
+            case 1:
+                /*TODO:Rethink about the Using Namma Apartments Functionality Later*/
+                break;
             case 2:
                 Intent contactIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
                 contactIntent.putExtra(SCREEN_TITLE, R.string.contact_us);
