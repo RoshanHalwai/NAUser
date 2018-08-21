@@ -446,8 +446,99 @@
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="using_na_app">Using Namma Apartments App</string>
     <string name="contact_us">Contact Us</string>
-    <string name="Terms_and_conditions">Terms and Conditions</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
+
+    <!--Namma Apartments Help UI Functionality Activity-->
+    <string name="contact_address"> For any queries, contact:\n\n Full Address:\n#59/2,\nKirtan Labs, \n9th Cross, Tulasi Theatre Road, Marathahalli, \nBengaluru - 560037,\nKarnataka.\n\n
+    Landmark: Behind Innovative Multiplex\n\nContact Info.:\nAshish Jha\nMob No: +91-9986553474\nE-mail: iamashishjha@gmail.com</string>
+    <string name="policy_statement">Namma Apartments respects the privacy of our users and has developed this Privacy Policy to demonstrate its commitment to protecting your privacy.\n\n
+    These privacy policies (the \'Privacy Policy\') are intended to describe for you, as an individual who is a user of Namma Apartments or any of our related sites, mobile and connected applications,
+    or other online services, the information we collect, how that information may be used, with whom it may be shared, and your choices about such uses and disclosures.\n\n
+    We encourage you to read this Privacy Policy carefully when using our website or services or transacting business with us.
+    By using our websites or any of our applications, you are accepting the practices described in this Privacy Policy.</string>
+    <string name="terms_of_use">Terms and Conditions\n\n
+    Please read these terms and conditions carefully before using Namma Apartments Mobile Application, operated by Kirtan Labs.\n\n
+    Conditions of Use:\n
+    We will provide their services to you, which are subject to the conditions stated below in this document.
+    Every time you visit this application, use its services or make a purchase, you accept the following conditions.
+    This is why we urge you to read them carefully.\n\n
+    Privacy Policy:\n
+    Before you continue using our application, we advise you to read our privacy policy regarding our user data collection.
+    It will help you better understand our practices.
+    Copyright Content published on this website (digital downloads, images, texts, graphics, logos) is the property of Kirtan Labs and/or its content creators and protected by international copyright laws.
+    The entire compilation of the content found on this website is the exclusive property of Kirtan Labs, with copyright authorship for this compilation by Kirtan Labs.\n\n
+    Communications:\n
+    The entire communication with us is electronic. Every time you send us an email or visit our application, you are going to be communicating with us.
+    You hereby consent to receive communications from us. If you subscribe to the news on our website, you are going to receive regular emails from us.
+    We will continue to communicate with you by posting news and notices on our application and by sending you emails.
+    You also agree that all notices, disclosures, agreements and other communications we provide to you electronically meet the legal requirements that such communications be in writing.\n\n
+    Law:\n
+    By visiting this website, you agree that the laws of the Government of India, without regard to principles of conflict laws,
+    will govern these terms and conditions, or any dispute of any sort that might come between Kirtan Labs and you, or its business partners and associates.\n\n
+    Disputes:\n
+    Any dispute related in any way to your visit to this website or to products you purchase from us shall be arbitrated by state or federal court of Government of India
+    and you consent to exclusive jurisdiction and venue of such courts.
+    Comments, Reviews, and Emails Visitors may post content as long as it is not obscene, illegal, defamatory, threatening, infringing.\n\n
+    User Account:\n
+    If you are an owner of an account on this application, you are solely responsible for maintaining the confidentiality of your private user details.
+    You are responsible for all activities that occur under your account or password. We reserve all rights to terminate accounts, edit or remove content and cancel orders in their sole discretion.
+    Create your own professional terms and conditions tailored to your website or app.</string>
+
+    <!-- Frequently Asked Questions Activity -->
+    <string name="general_related">General</string>
+    <string name="general_query">How frequently I would get updates?</string>
+    <string name="change_language_query">Does Namma Apartments support multiple languages?</string>
+    <string name="change_name_query">How do I change my Username?</string>
+    <string name="change_email_address_query">How do I change my Email Address?</string>
+    <string name="change_mobile_number_query">How do I change my registered Mobile Number?</string>
+    <string name="account_related">Account</string>
+    <string name="account_delete_query">How do I delete My Account?</string>
+    <string name="account_deactivate_query">I am moving out of my current place. How can I Deactivate my Account?</string>
+    <string name="visitor_related">Visitors</string>
+    <string name="invite_visitor_query">I faced an issue during inviting my Visitor. How can I raise a complaint?</string>
+    <string name="visitor_cancel_query">How can I cancel my Invited Visitor?</string>
+    <string name="visitor_reschedule_query">How can I change my Visitor Arrival Date or Time?</string>
+    <string name="visitor_notification_query">I am getting a notification for a visitor (e.g.Cab,Package,Guest) that I did not expect. What should I do?</string>
+    <string name="valid_for_query">What is \'Valid For\' about?</string>
+    <string name="daily_services_related">Daily Services</string>
+    <string name="daily_service_query">I faced an issue during adding my Daily Service. How can I raise a complaint?</string>
+    <string name="daily_service_remove_query">How can I remove my Daily Services?</string>
+    <string name="daily_services_reschedule_query">How can I change my Daily Service Arrival Time?</string>
+    <string name="flat_members_related">Flat Members</string>
+    <string name="flat_members_query">One of my present flat member is moving out from my flat. How can I delete his/her data?</string>
+    <string name="flat_members_friend_query">Unfortunately, I added Friend as my Family Member. What should I do?</string>
+    <string name="grant_access_query">What is Grant Access when I am trying to add my flat members?</string>
+    <string name="flat_member_admin_query">I want to give my Admin Access to one of my Flat Member. What should I do?</string>
+    <string name="handed_things_related">Handed Things</string>
+    <string name="handed_things_query">What things can be handed to Daily Service/Guest?</string>
+    <string name="handed_things_description">What is the concept of handed things to Daily Service/Guest?</string>
+    <string name="guard_handed_things_query">How Guard will get notified when I handed things to Daily Service/Guest?</string>
+    <string name="emergency_related">Emergency</string>
+    <string name="emergency_related_query">How can I raise an Emergency alarm?</string>
+    <string name="emergency_alarm_query">What actions will take place once an Emergency Alarm is raised?</string>
+    <string name="emergency_alarm_response_query">How much estimated time will it take for the Guard to take necessary action?</string>
+    <string name="plumber_related">Plumber</string>
+    <string name="plumber_query">I requested for a Plumber service, but I did not get any approval yet. What should I do?</string>
+    <string name="plumber_late_arrive_query">What should I do if the Plumber does not arrive within the expected time slot?</string>
+    <string name="carpenter_related">Carpenter</string>
+    <string name="carpenter_query">I requested for a Carpenter service, but I did not get any approval yet. What should I do?</string>
+    <string name="carpenter_late_arrive_query">What should I do if the Carpenter does not arrive within the expected time slot?</string>
+    <string name="electrician_related">Electrician</string>
+    <string name="electrician_query">I requested for an Electrician service, but I did not get any approval yet. What should I do?</string>
+    <string name="electrician_late_arrive_query">What should I do if the Electrician does not arrive within the expected time slot?</string>
+    <string name="garbage_management_related">Garbage Management</string>
+    <string name="garbage_management_query">I requested for a Garbage Management service, but I did not get any approval yet. What should I do?</string>
+    <string name="garbage_query">What should I do if the Garbage Management does not arrive within the expected time slot?</string>
+    <string name="event_management_related">Event Management</string>
+    <string name="event_management_query">I requested for an Event Management service, but I did not get any approval yet. What should I do?</string>
+    <string name="event_reschedule_query">I want to reschedule my event.What should I do?</string>
+    <string name="notifications_related">Notifications</string>
+    <string name="notifications_query">I am not getting any notifications?</string>
+    <string name="internet_connectivity_query">Why is the app showing no internet connection?</string>
+    <string name="notification_issue">My internet connectivity is fine, still I am not receiving any notifications, what could be the issue?</string>
+    <string name="notification_settings_query">My notification settings are \‘ON\', but still I am not getting any notifications?</string>
+    <string name="notifications_delay_query">I am receiving notifications but with small delay. What is the reason for delay?</string>
 
     <!-- Strings related to Settings -->
 
