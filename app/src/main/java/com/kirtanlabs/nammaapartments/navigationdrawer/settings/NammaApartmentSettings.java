@@ -8,7 +8,7 @@ import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.HelpAndSettingsAdapter;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.adapters.HelpAndSettingsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -110,7 +110,13 @@
             android:name=".navigationdrawer.settings.NotificationSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.help.NammaApartmentsHelp"
+            android:name=".navigationdrawer.help.activities.NammaApartmentsHelp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.help.activities.NammaApartmentsHelpUIFunctionality"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity"
             android:screenOrientation="portrait" />
 
         <!-- Digital Gate Screens -->
