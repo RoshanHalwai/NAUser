@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments.home.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
@@ -74,13 +72,13 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
 
         try {
             //TODO: Mobile Number has been hardcoded. Will be replaced later.
-            String url = "https://api.whatsapp.com/send?phone="+ "+919885665744" +"&text=" + URLEncoder.encode(message, "UTF-8");
+            String url = "https://api.whatsapp.com/send?phone=" + "+919885665744" + "&text=" + URLEncoder.encode(message, "UTF-8");
             whatsappIntent.setPackage("com.whatsapp");
             whatsappIntent.setData(Uri.parse(url));
             if (whatsappIntent.resolveActivity(pm) != null) {
                 mCtx.startActivity(whatsappIntent);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -149,7 +149,7 @@
     <!--Guests List Activity-->
     <string name="my_guests">Guests</string>
     <string name="visitor">Visitor:</string>
-<string name="guest_name">Guest:</string>
+    <string name="guest_name">Guest:</string>
     <string name="status">Status:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
@@ -334,6 +334,7 @@
     <string name="image_which_shows_app_icon">Image which shows app icon</string>
 
     <!--Custom Notification -->
+    <string name="e_intercom_profile_desc">Profile photo of Daily Service or Guest</string>
     <string name="accept">Accept</string>
     <string name="reject">Reject</string>
 
@@ -597,6 +598,7 @@
     <string name="no_response_yet">Plumber has not Responded Yet</string>
     <string name="rate_your_recent_service_experience">Rate your recent service experience</string>
     <string name="submit_rate_service">SUBMIT</string>
+    <string name="request_accepted_desc">Request Accepted</string>
 
     <!--Event Management Activity-->
     <string name="event_title">Event Title</string>

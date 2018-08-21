@@ -12,8 +12,8 @@
         android:id="@+id/searchProblem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:iconifiedByDefault="false"
         android:focusable="false"
+        android:iconifiedByDefault="false"
         android:inputType="textVisiblePassword"
         android:queryHint="@string/search" />
 
