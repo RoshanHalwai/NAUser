@@ -206,6 +206,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * This Method is used to Hide Feature Unavailable layout from the activity whenever it is called
+     */
+    public void hideFeatureUnavailableLayout() {
+        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
+        featureUnavailableLayout.setVisibility(View.GONE);
+    }
+
+    /**
      * This method checks if all the editTexts are filled or not.
      *
      * @param fields consists of array of EditTexts.

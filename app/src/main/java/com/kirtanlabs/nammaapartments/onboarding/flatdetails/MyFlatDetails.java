@@ -280,6 +280,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                itemsInList.clear();
                 for (DataSnapshot keys : dataSnapshot.getChildren()) {
                     itemsInList.add(keys.getKey());
                 }
