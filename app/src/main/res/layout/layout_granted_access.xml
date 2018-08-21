@@ -16,9 +16,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/grant_access"
             android:textColor="@color/nmBlack"
-            android:gravity="center"
             android:textSize="@dimen/text_view_default_size" />
 
         <Button

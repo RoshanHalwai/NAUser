@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.adapters.MyGuardsAdapter;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.RetrievingGuardsList;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.adapters.MyGuardsAdapter;
 
 public class MyGuardsActivity extends BaseActivity {
 

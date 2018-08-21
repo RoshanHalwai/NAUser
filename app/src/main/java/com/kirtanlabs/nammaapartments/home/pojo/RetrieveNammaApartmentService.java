@@ -35,11 +35,17 @@ public class RetrieveNammaApartmentService {
         return fullName;
     }
 
-    public int getRating() { return rating; }
+    public int getRating() {
+        return rating;
+    }
 
-    public String getTimeSlot() { return timeSlot; }
+    public String getTimeSlot() {
+        return timeSlot;
+    }
 
-    public String getNoOfFlats() { return noOfFlats; }
+    public String getNoOfFlats() {
+        return noOfFlats;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
