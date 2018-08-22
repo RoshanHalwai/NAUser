@@ -598,6 +598,11 @@
     <string name="no_response_yet">Plumber has not Responded Yet</string>
     <string name="rate_your_recent_service_experience">Rate your recent service experience</string>
     <string name="submit_rate_service">SUBMIT</string>
+    <string name="otp">OTP:</string>
+    <string name="request_initiated">Your request for the below event has been initiated</string>
+    <string name="please_wait_while_admin_get_back_to_you">You will be notified once the \'Status\' of your request changes.</string>
+    <string name="requestStatus">Request Status:</string>
+    <string name="in_process">In Process</string>
     <string name="request_accepted_desc">Request Accepted</string>
 
     <!--Event Management Activity-->
