@@ -186,8 +186,7 @@ public class ActionButtonListener extends BroadcastReceiver {
                     }
                 }
             }
-
-
+             
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
