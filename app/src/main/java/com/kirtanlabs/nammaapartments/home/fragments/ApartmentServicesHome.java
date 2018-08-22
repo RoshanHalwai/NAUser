@@ -12,9 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.services.apartmentservices.activities.ApartmentServices;
 import com.kirtanlabs.nammaapartments.home.adapters.NammaApartmentServiceAdapter;
 import com.kirtanlabs.nammaapartments.home.pojo.NammaApartmentService;
+import com.kirtanlabs.nammaapartments.services.apartmentservices.activities.ApartmentServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;

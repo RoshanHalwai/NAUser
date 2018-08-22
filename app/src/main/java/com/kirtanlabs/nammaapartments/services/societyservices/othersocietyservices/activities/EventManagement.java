@@ -45,8 +45,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
     private String societyServiceType;
     private String category;
-    private TextView textErrorEventDate,textErrorValidForCategory,textErrorValidForTimeSlot;
-    private Boolean isValidForButtons=false;
+    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot;
+    private Boolean isValidForButtons = false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -250,7 +250,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private void validateFields() {
         String problemValue = editEventTitle.getText().toString();
         String eventDate = editPickDate.getText().toString().trim();
-        Boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editEventTitle, editPickDate})&& isValidForButtons;
+        Boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editEventTitle, editPickDate}) && isValidForButtons;
         /*This condition checks if all fields are not filled and if user presses book button it will
          *then display proper error messages.*/
         if (!fieldsFilled) {

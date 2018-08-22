@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:contentDescription="@string/image_society_service_status_description"
+                    android:contentDescription="@string/request_accepted_desc"
                     android:src="@drawable/request_accepted" />
 
                 <TextView

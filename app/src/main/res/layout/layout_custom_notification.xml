@@ -17,6 +17,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            android:contentDescription="@string/e_intercom_profile_desc"
             android:src="@drawable/add_member" />
 
         <LinearLayout
