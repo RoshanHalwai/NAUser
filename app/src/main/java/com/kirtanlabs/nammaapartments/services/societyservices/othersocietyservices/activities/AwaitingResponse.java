@@ -65,7 +65,7 @@ public class AwaitingResponse extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.society_services;
+        return R.string.awaiting_response_title;
     }
 
     @Override

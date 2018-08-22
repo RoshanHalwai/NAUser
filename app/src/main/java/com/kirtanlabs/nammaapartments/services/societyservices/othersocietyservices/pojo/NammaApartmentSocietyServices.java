@@ -19,6 +19,7 @@ public class NammaApartmentSocietyServices {
     private String status;
     private String takenBy;
     private String endOTP;
+    private Long timestamp;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -73,6 +74,10 @@ public class NammaApartmentSocietyServices {
 
     public String getEndOTP() {
         return endOTP;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
     }
 
 }

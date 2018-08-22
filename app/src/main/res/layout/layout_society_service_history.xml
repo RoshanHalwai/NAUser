@@ -15,119 +15,62 @@
             android:id="@+id/layoutValidationSuccessful"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/imageSuccess"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/image_success"
-                android:src="@drawable/request_accepted" />
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
 
             <LinearLayout
-                android:id="@+id/row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:layout_weight="0.4">
 
-                <LinearLayout
-                    android:id="@+id/layoutTitle"
+                <ImageView
+                    android:id="@+id/societyServiceIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:contentDescription="@string/image_success" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textDateAndTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.9"
-                    android:orientation="vertical">
+                    android:layout_margin="5dp"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/textName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/history_name"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/textMobileNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/history_mobile"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/textProblem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/history_problem"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/textTimeSlot"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/time_slot"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layoutTitleValues"
+                <TextView
+                    android:id="@+id/textProblem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.8"
-                    android:orientation="vertical">
+                    android:layout_margin="5dp"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/textNameValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:padding="2dp"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textMobileNumberValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.4">
 
-                    <TextView
-                        android:id="@+id/textProblemValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:padding="2dp"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/textTimeSlotValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="18sp" />
-
-
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageSuccess"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:contentDescription="@string/image_success"
+                    android:src="@drawable/request_accepted" />
 
             </LinearLayout>
 
