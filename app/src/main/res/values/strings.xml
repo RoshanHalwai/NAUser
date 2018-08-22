@@ -593,6 +593,7 @@
     <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
 
     <!--Awaiting Response Activity-->
+    <string name="awaiting_response_title">Awaiting Response</string>
     <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
     <string name="no_response_yet">Plumber has not Responded Yet</string>
