@@ -331,6 +331,20 @@
     <string name="rate_us">Rate Us</string>
     <string name="notice_board">Notice Board</string>
     <string name="image_which_shows_app_icon">Image which shows app icon</string>
+    <string name="my_wallet_title">NAMMA APARTMENTS E-WALLET</string>
+    <string name="my_wallet_content">Hola! Now we provide you an option to make online payments, for your Society and Flat related things, through your Namma Apartments Mobile Wallet.</string>
+    <string name="make_payment">START MAKING PAYMENTS</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="maintenance">Maintenance Services</string>
+    <string name="pay_for">PAY FOR</string>
+    <string name="my_apartment_services">Apartment Services</string>
+    <string name="parties_get_togethers">Parties and Get Together</string>
+    <string name="festivals">Festival Celebrations</string>
+    <string name="donations">Fundraising and Donations</string>
+    <string name="extras">Other Society Services</string>
+    <string name="maintenance_description_message">Please select the services for which you want to pay for:</string>
+    <string name="my_account">MY ACCOUNT</string>
+    <string name="my_transactions">My Transactions</string>
 
     <!--Custom Notification -->
     <string name="accept">Accept</string>
