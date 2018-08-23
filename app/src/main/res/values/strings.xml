@@ -149,7 +149,7 @@
     <!--Guests List Activity-->
     <string name="my_guests">Guests</string>
     <string name="visitor">Visitor:</string>
-<string name="guest_name">Guest:</string>
+    <string name="guest_name">Guest:</string>
     <string name="status">Status:</string>
     <string name="type">Type:</string>
     <string name="date">Date:</string>
