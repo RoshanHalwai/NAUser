@@ -6,11 +6,6 @@ import android.graphics.Typeface;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * KirtanLabs Pvt. Ltd.
- * Created by Roshan Halwai on 5/1/2018
- */
-
                             /**------------------------------------------------------------- *
                              *----------------DO NOT AUTO-FORMAT THIS FILE-------------------*
                              *-------------------------------------------------------------- */
@@ -51,11 +46,11 @@ public class Constants {
      * Society Service Keys
      * ------------------------------------------------------------- */
 
-    public static final String PLUMBER="plumber";
-    public static final String CARPENTER="carpenter";
-    public static final String ELECTRICIAN="electrician";
-    public static final String GARBAGE_MANAGEMENT="garbageManagement";
-    public static final String EVENT_MANAGEMENT="eventManagement";
+    public static final String PLUMBER = "plumber";
+    public static final String CARPENTER = "carpenter";
+    public static final String ELECTRICIAN = "electrician";
+    public static final String GARBAGE_MANAGEMENT = "garbageManagement";
+    public static final String EVENT_MANAGEMENT = "eventManagement";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -111,7 +106,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_GARBAGE_MANAGEMENT = "garbageManagement";
     public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
-    public static final String FIREBASE_CHILD_GUARD = "guard";
+    private static final String FIREBASE_CHILD_GUARD = "guard";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
@@ -146,6 +141,9 @@ public class Constants {
     private static final String FIREBASE_CHILD_SOCIETY_SERVICES = "societyServices";
     public static final String FIREBASE_CHILD_VEHICLES = "vehicles";
     public static final String RATING = "rating";
+    public static final String FIREBASE_CHILD_CATEGORY = "category";
+    public static final String FIREBASE_CHILD_EVENT_DATE = "eventDate";
+    public static final String FIREBASE_CHILD_TIME_SLOT = "timeSlot";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys

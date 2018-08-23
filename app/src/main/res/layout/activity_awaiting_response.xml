@@ -28,7 +28,6 @@
             android:id="@+id/animationWaitingForCustomers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_gravity="center"
             app:indicatorColor="@color/nmBlack"
             app:indicatorName="BallSpinFadeLoaderIndicator" />
@@ -62,9 +61,11 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imageSocietyServiceStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:contentDescription="@string/request_accepted_desc"
                     android:src="@drawable/request_accepted" />
 
                 <TextView
@@ -119,9 +120,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="2dp"
-                            android:text="OTP:"
+                            android:text="@string/otp"
                             android:textColor="@color/nmBlack"
                             android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/textRequestStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/requestStatus"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -163,9 +174,32 @@
                             android:textColor="@color/nmBlack"
                             android:textSize="18sp" />
 
+                        <TextView
+                            android:id="@+id/textRequestStatusValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="2dp"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="18sp"
+                            android:visibility="gone" />
+
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textEventManagementNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/please_wait_while_admin_get_back_to_you"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

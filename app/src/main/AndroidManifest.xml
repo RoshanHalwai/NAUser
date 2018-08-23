@@ -104,7 +104,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.settings.NammaApartmentSettings"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".navigationdrawer.settings.GeneralSettings"
             android:screenOrientation="portrait" />
@@ -112,7 +113,13 @@
             android:name=".navigationdrawer.settings.NotificationSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.help.NammaApartmentsHelp"
+            android:name=".navigationdrawer.help.activities.NammaApartmentsHelp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.help.activities.NammaApartmentsHelpUIFunctionality"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity"
             android:screenOrientation="portrait" />
 
         <!-- Digital Gate Screens -->
@@ -178,7 +185,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".services.societyservices.othersocietyservices.activities.EventManagement"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- Apartment Services Screen -->
         <activity

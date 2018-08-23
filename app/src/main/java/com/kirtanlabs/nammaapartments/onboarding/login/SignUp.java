@@ -32,13 +32,22 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     public static SignUp signUp;
     private CircleImageView newUserProfileImage;
     private TextView textErrorProfilePic;
-    private EditText editFullName,editEmailId;
+    private EditText editFullName, editEmailId;
     private AlertDialog imageSelectionDialog;
     private File profilePhotoPath;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
+
+    /**
+     * This method returns the Instance of this class
+     *
+     * @return static variable of this class instance.
+     */
+    public static SignUp getInstance() {
+        return signUp;
+    }
 
     @Override
     protected int getLayoutResourceId() {
@@ -49,6 +58,10 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
     protected int getActivityTitle() {
         return R.string.sign_up;
     }
+
+    /*-------------------------------------------------------------------------------
+     *Overriding onActivityResult
+     *-----------------------------------------------------------------------------*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +105,6 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         buttonSignUp.setOnClickListener(this);
     }
 
-    /*-------------------------------------------------------------------------------
-     *Overriding onActivityResult
-     *-----------------------------------------------------------------------------*/
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         /*This condition checks for the resultCode value since if any photo got selected/captured
@@ -135,16 +144,16 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         }
     }
 
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (v == newUserProfileImage && hasFocus) {
             onClick(v);
         }
     }
-
-    /* ------------------------------------------------------------- *
-     * Private Methods
-     * ------------------------------------------------------------- */
 
     /**
      * Creates a custom dialog with a list view which contains the list of inbuilt apps such as Camera and Gallery. This
@@ -172,6 +181,10 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         });
         imageSelectionDialog = builder.create();
     }
+
+    /* ------------------------------------------------------------- *
+     * Public Methods
+     * ------------------------------------------------------------- */
 
     /**
      * This method gets invoked to check all the validation fields such as editTexts name and email.
@@ -206,7 +219,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
         }
         /*This condition checks if name and email are properly validated and then
          *navigate to proper screen according to its requirement.*/
-        if (!isValidEmail(newUserEmail) && !isValidPersonName(newUserName) && profilePhotoPath!=null) {
+        if (!isValidEmail(newUserEmail) && !isValidPersonName(newUserName) && profilePhotoPath != null) {
             Intent intent = new Intent(this, MyFlatDetails.class);
             intent.putExtra(Constants.FULL_NAME, editFullName.getText().toString());
             intent.putExtra(Constants.EMAIL_ID, editEmailId.getText().toString());
@@ -214,17 +227,5 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
             intent.putExtra(Constants.PROFILE_PHOTO, profilePhotoPath.toString());
             startActivity(intent);
         }
-    }
-
-    /* ------------------------------------------------------------- *
-     * Public Methods
-     * ------------------------------------------------------------- */
-
-    /**
-     * This method returns the Instance of this class
-     * @return static variable of this class instance.
-     */
-    public static SignUp getInstance() {
-        return signUp;
     }
 }

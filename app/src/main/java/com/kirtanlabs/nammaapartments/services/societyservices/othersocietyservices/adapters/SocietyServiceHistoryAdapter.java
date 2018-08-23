@@ -6,18 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -56,27 +58,10 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
     public void onBindViewHolder(@NonNull SocietyServiceViewHolder holder, int position) {
         /*Creating an instance of NammaApartmentSocietyServices class and retrieving the values from Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = nammaApartmentSocietyServiceList.get(position);
-        holder.textProblemValue.setText(nammaApartmentSocietyServices.getProblem());
-        holder.textTimeSlotValue.setText(nammaApartmentSocietyServices.getTimeSlot());
-
-        /*Retrieving Society Service Details*/
-        DatabaseReference societyServiceReference = Constants.SOCIETY_SERVICES_REFERENCE
-                .child(nammaApartmentSocietyServices.getSocietyServiceType())
-                .child(Constants.FIREBASE_CHILD_PRIVATE)
-                .child(Constants.FIREBASE_CHILD_DATA)
-                .child(nammaApartmentSocietyServices.getTakenBy());
-        societyServiceReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                holder.textNameValue.setText(dataSnapshot.child(Constants.FIREBASE_CHILD_FULLNAME).getValue(String.class));
-                holder.textMobileNumberValue.setText(dataSnapshot.child(Constants.FIREBASE_CHILD_MOBILE_NUMBER).getValue(String.class));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm");
+        String formattedDateAndTime = sfd.format(new Date(nammaApartmentSocietyServices.getTimestamp()));
+        holder.textProblem.setText(nammaApartmentSocietyServices.getProblem());
+        holder.textDateAndTime.setText(formattedDateAndTime);
     }
 
     @Override
@@ -90,14 +75,9 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
          * Private Members
          * ------------------------------------------------------------- */
 
-        private final TextView textName;
-        private final TextView textNameValue;
-        private final TextView textMobileNumber;
-        private final TextView textMobileNumberValue;
         private final TextView textProblem;
-        private final TextView textProblemValue;
-        private final TextView textTimeSlot;
-        private final TextView textTimeSlotValue;
+        private final TextView textDateAndTime;
+        private final ImageView societyServiceIcon;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -106,24 +86,28 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
         SocietyServiceViewHolder(View itemView) {
             super(itemView);
             /*Getting Id's for all the views*/
-            textName = itemView.findViewById(R.id.textName);
-            textMobileNumber = itemView.findViewById(R.id.textMobileNumber);
+            textDateAndTime = itemView.findViewById(R.id.textDateAndTime);
             textProblem = itemView.findViewById(R.id.textProblem);
-            textTimeSlot = itemView.findViewById(R.id.textTimeSlot);
-            textNameValue = itemView.findViewById(R.id.textNameValue);
-            textMobileNumberValue = itemView.findViewById(R.id.textMobileNumberValue);
-            textProblemValue = itemView.findViewById(R.id.textProblemValue);
-            textTimeSlotValue = itemView.findViewById(R.id.textTimeSlotValue);
+            societyServiceIcon = itemView.findViewById(R.id.societyServiceIcon);
 
             /*Setting Fonts for all the views on cardView*/
-            textName.setTypeface(setLatoRegularFont(mCtx));
-            textMobileNumber.setTypeface(setLatoRegularFont(mCtx));
+            textDateAndTime.setTypeface(setLatoBoldFont(mCtx));
             textProblem.setTypeface(setLatoRegularFont(mCtx));
-            textTimeSlot.setTypeface(setLatoRegularFont(mCtx));
-            textNameValue.setTypeface(setLatoBoldFont(mCtx));
-            textMobileNumberValue.setTypeface(setLatoBoldFont(mCtx));
-            textProblemValue.setTypeface(setLatoBoldFont(mCtx));
-            textTimeSlotValue.setTypeface(setLatoBoldFont(mCtx));
+
+            switch (nammaApartmentSocietyServiceList.get(0).getSocietyServiceType()) {
+                case PLUMBER:
+                    societyServiceIcon.setImageResource(R.drawable.plumbing);
+                    break;
+                case CARPENTER:
+                    societyServiceIcon.setImageResource(R.drawable.carpenter_service);
+                    break;
+                case ELECTRICIAN:
+                    societyServiceIcon.setImageResource(R.drawable.electrician);
+                    break;
+                case GARBAGE_MANAGEMENT:
+                    societyServiceIcon.setImageResource(R.drawable.garbage_bin);
+                    break;
+            }
         }
     }
 }
