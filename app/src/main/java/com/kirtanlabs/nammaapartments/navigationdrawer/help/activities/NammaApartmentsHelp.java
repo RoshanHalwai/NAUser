@@ -51,7 +51,6 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
 
         /*Adding items in the list*/
         helpList.add((getString(R.string.frequently_asked_questions)));
-        helpList.add((getString(R.string.using_na_app)));
         helpList.add((getString(R.string.contact_us)));
         helpList.add(getString(R.string.terms_and_conditions));
         helpList.add(getString(R.string.privacy_policy));
@@ -78,19 +77,16 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
                 startActivity(faqIntent);
                 break;
             case 1:
-                /*TODO:Rethink about the Using Namma Apartments Functionality Later*/
-                break;
-            case 2:
                 Intent contactIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
                 contactIntent.putExtra(SCREEN_TITLE, R.string.contact_us);
                 startActivity(contactIntent);
                 break;
-            case 3:
+            case 2:
                 Intent termsIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
                 termsIntent.putExtra(SCREEN_TITLE, R.string.terms_and_conditions);
                 startActivity(termsIntent);
                 break;
-            case 4:
+            case 3:
                 Intent policyIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
                 policyIntent.putExtra(SCREEN_TITLE, R.string.privacy_policy);
                 startActivity(policyIntent);

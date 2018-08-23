@@ -15,8 +15,8 @@ import android.widget.ListView;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.adapters.NammaApartmentServiceAdapter;
 import com.kirtanlabs.nammaapartments.home.pojo.NammaApartmentService;
-import com.kirtanlabs.nammaapartments.services.societyservices.digigate.emergency.RaiseAlarm;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.home.DigitalGateHome;
+import com.kirtanlabs.nammaapartments.services.societyservices.digigate.notifydigitalgate.NotifyGateAndEmergencyHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.RetrievingSocietyServiceHistoryList;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.AwaitingResponse;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.EventManagement;
@@ -29,6 +29,7 @@ import java.util.Objects;
 import static android.content.Context.MODE_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 
 public class SocietyServicesHome extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -89,8 +90,8 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 checkPreviousRequestStatus(R.string.garbage_management);
                 break;
             case 5:
-                Intent medicalIntent = new Intent(getActivity(), RaiseAlarm.class);
-                medicalIntent.putExtra(Constants.ALARM_TYPE, R.string.medical_emergency);
+                Intent medicalIntent = new Intent(getActivity(), NotifyGateAndEmergencyHome.class);
+                medicalIntent.putExtra(SERVICE_TYPE, R.string.emergency);
                 startActivity(medicalIntent);
                 break;
             case 6:
@@ -114,7 +115,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_service, getString(R.string.carpenter)));
         societyServicesList.add(new NammaApartmentService(R.drawable.electrician, getString(R.string.electrician)));
         societyServicesList.add(new NammaApartmentService(R.drawable.garbage_bin, getString(R.string.garbage_management)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.medical_emergency, getString(R.string.medical_emergency)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.medical_emergency, getString(R.string.emergency)));
         societyServicesList.add(new NammaApartmentService(R.drawable.event, getString(R.string.event_management)));
 
         return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
