@@ -9,13 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.services.apartmentservices.activities.ApartmentServices;
+import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -28,15 +33,17 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
 
     private final Context mCtx;
     private final BaseActivity baseActivity;
+    private final List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
 
-    public ApartmentServiceAdapter(Context mCtx) {
+    public ApartmentServiceAdapter(Context mCtx, List<NammaApartmentDailyService> nammaApartmentDailyServiceList) {
         this.mCtx = mCtx;
         baseActivity = (BaseActivity) mCtx;
+        this.nammaApartmentDailyServiceList = nammaApartmentDailyServiceList;
     }
 
     @NonNull
     @Override
-    public ApartmentServiceAdapter.ApartmentServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ApartmentServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.activity_apartment_services, parent, false);
@@ -45,16 +52,20 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
 
     @Override
     public void onBindViewHolder(@NonNull ApartmentServiceAdapter.ApartmentServiceViewHolder holder, int position) {
-        //TODO: Data is hardcoded for now. Will be replaced by actual data once it's available.
-        holder.textApartmentServiceNameValue.setText("Ashish Jha");
-        holder.textApartmentServiceRatingValue.setText("3");
-        holder.textApartmentServiceTimeSlotValue.setText("11 AM");
-        holder.textApartmentServiceNoOfFlatsSlotValue.setText("5");
+        /*Creating an instance of NammaApartmentDailyService class and retrieving the values from Firebase.*/
+        NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
+        holder.textApartmentServiceNameValue.setText(nammaApartmentDailyService.getFullName());
+        holder.textApartmentServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
+        /*TODO:Rethink About the Time Slot Value In CardView*/
+        holder.textApartmentServiceTimeSlotValue.setText(nammaApartmentDailyService.getTimeOfVisit());
+        holder.textApartmentServiceNoOfFlatsSlotValue.setText(String.valueOf(ApartmentServices.numberOfFlats.get(nammaApartmentDailyService.getUID())));
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
+                .into(holder.visitorOrDailyServiceProfilePic);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return nammaApartmentDailyServiceList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -65,14 +76,14 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
      * This method is invoked when user presses on the 'WhatsApp' icon in Card View. User will then be able
      * to contact the Apartment Service via WhatsApp
      */
-    private void redirectUserToWhatsApp() {
+    private void redirectUserToWhatsApp(int position) {
         PackageManager pm = mCtx.getPackageManager();
         Intent whatsappIntent = new Intent(Intent.ACTION_VIEW);
         String message = mCtx.getString(R.string.whatsapp_msg);
-
+        NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
+        String serviceMobileNumber = nammaApartmentDailyService.getPhoneNumber();
         try {
-            //TODO: Mobile Number has been hardcoded. Will be replaced later.
-            String url = "https://api.whatsapp.com/send?phone=" + "+919885665744" + "&text=" + URLEncoder.encode(message, "UTF-8");
+            String url = "https://api.whatsapp.com/send?phone=" + "+91" + serviceMobileNumber + "&text=" + URLEncoder.encode(message, "UTF-8");
             whatsappIntent.setPackage("com.whatsapp");
             whatsappIntent.setData(Uri.parse(url));
             if (whatsappIntent.resolveActivity(pm) != null) {
@@ -115,6 +126,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
         private final TextView textMessage;
         private final TextView textWhatsapp;
         private final TextView textRefer;
+        private final ImageView visitorOrDailyServiceProfilePic;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -135,16 +147,17 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
             textMessage = itemView.findViewById(R.id.textMessage);
             textWhatsapp = itemView.findViewById(R.id.textWhatsapp);
             textRefer = itemView.findViewById(R.id.textRefer);
+            visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
             /*Setting font for all the views*/
-            textApartmentServiceName.setTypeface(setLatoBoldFont(mCtx));
-            textApartmentServiceRating.setTypeface(setLatoBoldFont(mCtx));
-            textApartmentServiceTimeSlot.setTypeface(setLatoBoldFont(mCtx));
-            textApartmentServiceNoOfFlats.setTypeface(setLatoBoldFont(mCtx));
-            textApartmentServiceNameValue.setTypeface(setLatoRegularFont(mCtx));
-            textApartmentServiceRatingValue.setTypeface(setLatoRegularFont(mCtx));
-            textApartmentServiceTimeSlotValue.setTypeface(setLatoRegularFont(mCtx));
-            textApartmentServiceNoOfFlatsSlotValue.setTypeface(setLatoRegularFont(mCtx));
+            textApartmentServiceName.setTypeface(setLatoRegularFont(mCtx));
+            textApartmentServiceRating.setTypeface(setLatoRegularFont(mCtx));
+            textApartmentServiceTimeSlot.setTypeface(setLatoRegularFont(mCtx));
+            textApartmentServiceNoOfFlats.setTypeface(setLatoRegularFont(mCtx));
+            textApartmentServiceNameValue.setTypeface(setLatoBoldFont(mCtx));
+            textApartmentServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
+            textApartmentServiceTimeSlotValue.setTypeface(setLatoBoldFont(mCtx));
+            textApartmentServiceNoOfFlatsSlotValue.setTypeface(setLatoBoldFont(mCtx));
             textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textWhatsapp.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
@@ -160,16 +173,17 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
 
         @Override
         public void onClick(View v) {
+            int position = getLayoutPosition();
+            NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
             switch (v.getId()) {
-                //TODO: Mobile Number has been hardcoded. Will be replaced later.
                 case R.id.textCall:
-                    baseActivity.makePhoneCall("9986553474");
+                    baseActivity.makePhoneCall(nammaApartmentDailyService.getPhoneNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage("9986553474", mCtx.getString(R.string.message_body));
+                    baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber(), mCtx.getString(R.string.message_body));
                     break;
                 case R.id.textWhatsapp:
-                    redirectUserToWhatsApp();
+                    redirectUserToWhatsApp(position);
                     break;
                 case R.id.textRefer:
                     redirectUserToShareWith();

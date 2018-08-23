@@ -112,6 +112,15 @@
     <string name="whatsapp_msg">Hey there! I would like to have your service at my Flat. Revert back so that we can schedule and sort things out quickly.</string>
     <string name="message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading..</string>
     <string name="message_name">sms_body</string>
+    <string name="cook_unavailable">Sorry you cannot use this feature since currently there is no cook service available at your Society.</string>
+    <string name="maid_unavailable">Sorry you cannot use this feature since currently there is no maid service available at your Society.</string>
+    <string name="car_bike_cleaner_unavailable">Sorry you cannot use this feature since currently there is no car/bike cleaner service available at your Society.</string>
+    <string name="child_day_care_unavailable">Sorry you cannot use this feature since currently there is no child day care service available at your Society.</string>
+    <string name="daily_newspaper_unavailable">Sorry you cannot use this feature since currently there is no daily newspaper service available at your Society.</string>
+    <string name="milk_man_unavailable">Sorry you cannot use this feature since currently there is no milkman service available at your Society.</string>
+    <string name="laundry_unavailable">Sorry you cannot use this feature since currently there is no laundry service available at your Society.</string>
+    <string name="driver_unavailable">Sorry you cannot use this feature since currently there is no driver service available at your Society.</string>
+    <string name="groceries_unavailable">Sorry you cannot use this feature since this feature is yet to be implemented.</string>
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
