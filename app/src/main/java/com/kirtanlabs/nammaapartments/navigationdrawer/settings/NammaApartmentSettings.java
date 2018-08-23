@@ -40,7 +40,6 @@ public class NammaApartmentSettings extends BaseActivity {
         TextView textNotificationSettings = findViewById(R.id.textNotificationSettings);
         TextView textChooseLanguage = findViewById(R.id.textChooseLanguage);
         TextView textReportABug = findViewById(R.id.textReportABug);
-        TextView textAbout = findViewById(R.id.textAbout);
         Spinner spinnerChooseLanguage = findViewById(R.id.spinnerChooseLanguage);
         Switch switchSounds = findViewById(R.id.switchSounds);
         Switch switchLocationServices = findViewById(R.id.switchLocationServices);
@@ -56,7 +55,6 @@ public class NammaApartmentSettings extends BaseActivity {
         textNotificationSettings.setTypeface(Constants.setLatoBoldFont(this));
         textChooseLanguage.setTypeface(Constants.setLatoBoldFont(this));
         textReportABug.setTypeface(Constants.setLatoBoldFont(this));
-        textAbout.setTypeface(Constants.setLatoBoldFont(this));
         switchSounds.setTypeface(Constants.setLatoBoldFont(this));
         switchLocationServices.setTypeface(Constants.setLatoBoldFont(this));
         switchNewMessageNotification.setTypeface(Constants.setLatoBoldFont(this));
