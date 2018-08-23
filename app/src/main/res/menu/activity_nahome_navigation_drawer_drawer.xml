@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_account_box"
             android:title="@string/my_profile" />
         <item
+            android:id="@+id/nav_myWallet"
+            android:icon="@drawable/ic_account_balance_wallet_black"
+            android:title="@string/my_wallet" />
+        <item
             android:id="@+id/nav_myFamilyMembers"
             android:icon="@drawable/ic_group_black"
             android:title="@string/my_family_members" />
