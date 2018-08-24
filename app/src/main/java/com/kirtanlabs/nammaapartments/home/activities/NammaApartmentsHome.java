@@ -26,7 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
@@ -46,8 +45,6 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 
 import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -288,7 +285,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             userReference = PRIVATE_USERS_REFERENCE
                     .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             editor = sharedPreferences.edit();
-            editor.putBoolean(FIRST_TIME, false);
             editor.putBoolean(LOGGED_IN, true);
             editor.putString(USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             editor.apply();
@@ -304,8 +300,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             public void onDataChange(DataSnapshot dataSnapshot) {
                 NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
                 ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(nammaApartmentUser);
-                String token_id = FirebaseInstanceId.getInstance().getToken();
-                PRIVATE_USERS_REFERENCE.child(userUID).child("tokenId").setValue(token_id);
                 addNavigationHeaderContent(Objects.requireNonNull(nammaApartmentUser));
                 /*TODO: Change this dialog content with Splash Screen*/
                 if (isProgressDialogShown()) {

@@ -25,13 +25,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignUp;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
@@ -45,6 +46,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
@@ -52,7 +54,9 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getByteArrayFromFile;
 
 /**
@@ -462,10 +466,17 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         /*Mapping Admin with user UID under Flats->FlatNumber*/
                         flatsReference.child(FIREBASE_ADMIN).setValue(userUID);
 
+                        /*Storing token Id so user gets notified when their account gets activated by Society Admin*/
+                        String token_id = FirebaseInstanceId.getInstance().getToken();
+                        PRIVATE_USERS_REFERENCE.child(userUID).child("tokenId").setValue(token_id);
+
                         //dismissing the progress dialog
                         hideProgressDialog();
 
-                        startActivity(new Intent(MyFlatDetails.this, NammaApartmentsHome.class));
+                        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(ACCOUNT_CREATED, true).apply();
+                        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putString(USER_UID, userUID).apply();
+
+                        startActivity(new Intent(MyFlatDetails.this, ActivationRequired.class));
                         finish();
                         SignUp.getInstance().finish();
                     }).addOnFailureListener(exception -> {
