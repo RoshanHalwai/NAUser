@@ -41,7 +41,6 @@ public class ApartmentServices extends BaseActivity {
     private ApartmentServiceAdapter apartmentServiceAdapter;
     private int index = 0;
     private int screenTitle;
-    private String updatedDescription;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -211,6 +210,7 @@ public class ApartmentServices extends BaseActivity {
     private void changeLayoutMessages() {
         String messageDescription = getString(R.string.apartment_service_unavailable);
         String textReplacement = getString(R.string.apartment);
+        String updatedDescription = null;
         switch (screenTitle) {
             case R.string.cook: {
                 updatedDescription = messageDescription.replace(textReplacement, getString(R.string.cook));
