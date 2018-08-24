@@ -336,7 +336,8 @@
     <string name="notice_board">Notice Board</string>
     <string name="image_which_shows_app_icon">Image which shows app icon</string>
     <string name="my_wallet_title">NAMMA APARTMENTS E-WALLET</string>
-    <string name="my_wallet_content">Hola! Now we provide you an option to make online payments, for your Society and Flat related things, through your Namma Apartments Mobile Wallet.</string>
+    <string name="my_wallet_content">Hola! Now we provide you an option to make online payments, for your Society and Flat related things,
+        through your Namma Apartments Mobile Wallet.</string>
     <string name="make_payment">START MAKING PAYMENTS</string>
     <string name="my_wallet">My Wallet</string>
     <string name="maintenance">Maintenance Services</string>
@@ -349,6 +350,8 @@
     <string name="maintenance_description_message">Please select the services for which you want to pay for:</string>
     <string name="my_account">MY ACCOUNT</string>
     <string name="my_transactions">My Transactions</string>
+    <string name="maintenance_text">All the payments related to maintenance, repairs and reconstruction of the common infrastructure of your housing society
+        is now in our hands. You can directly pay the fixed amount for Maintenance Services through your Namma Apartments Mobile Wallet.</string>
 
     <!--Custom Notification -->
     <string name="e_intercom_profile_desc">Profile photo of Daily Service or Guest</string>

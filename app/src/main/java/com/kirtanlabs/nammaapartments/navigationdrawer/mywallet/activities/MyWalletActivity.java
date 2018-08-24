@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,6 +62,8 @@ public class MyWalletActivity extends BaseActivity implements AdapterView.OnClic
         switch (position) {
             //TODO: Implementation of all items in the grid view
             case 0:
+                Intent maintenanceIntent = new Intent(MyWalletActivity.this, ServicesPaymentActivity.class);
+                startActivity(maintenanceIntent);
                 break;
             case 1:
                 break;
