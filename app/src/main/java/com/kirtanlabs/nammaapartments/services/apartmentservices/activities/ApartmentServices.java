@@ -41,6 +41,7 @@ public class ApartmentServices extends BaseActivity {
     private ApartmentServiceAdapter apartmentServiceAdapter;
     private int index = 0;
     private int screenTitle;
+    private String updatedDescription;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -142,6 +143,7 @@ public class ApartmentServices extends BaseActivity {
     private void retrieveApartmentServices(String dailyServiceType) {
 
         /*We first check if this society has any apartmentServices*/
+        DAILYSERVICES_REFERENCE.keepSynced(true);
         DAILYSERVICES_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -152,6 +154,7 @@ public class ApartmentServices extends BaseActivity {
                     hideProgressIndicator();
                     DatabaseReference publicDailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE
                             .child(dailyServiceType);
+                    publicDailyServiceTypeReference.keepSynced(true);
                     publicDailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -161,6 +164,7 @@ public class ApartmentServices extends BaseActivity {
                             for (DataSnapshot dailyServiceTypeUID : dataSnapshot.getChildren()) {
                                 String serviceTypeUID = dailyServiceTypeUID.getKey();
                                 DatabaseReference serviceOwnerUIDReference = publicDailyServiceTypeReference.child(serviceTypeUID);
+                                serviceOwnerUIDReference.keepSynced(true);
                                 serviceOwnerUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot serviceOwnerUIDSnapshot) {
@@ -209,46 +213,39 @@ public class ApartmentServices extends BaseActivity {
         String textReplacement = getString(R.string.apartment);
         switch (screenTitle) {
             case R.string.cook: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.cook));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.cook));
                 break;
             }
             case R.string.maid: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.maid));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.maid));
                 break;
             }
             case R.string.car_bike_cleaning: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.car_bike_cleaning));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.car_bike_cleaning));
                 break;
             }
             case R.string.child_day_care: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.child_day_care));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.child_day_care));
                 break;
             }
             case R.string.daily_newspaper: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.daily_newspaper));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.daily_newspaper));
                 break;
             }
             case R.string.milk_man: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.milk_man));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.milk_man));
                 break;
             }
             case R.string.laundry: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.laundry));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.laundry));
                 break;
             }
             case R.string.driver: {
-                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.driver));
-                showFeatureUnAvailableLayout(updatedDescription);
+                updatedDescription = messageDescription.replace(textReplacement, getString(R.string.driver));
                 break;
             }
         }
+        showFeatureUnAvailableLayout(updatedDescription);
     }
 
 }
