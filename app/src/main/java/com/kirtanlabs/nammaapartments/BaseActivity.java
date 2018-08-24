@@ -206,6 +206,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * Displays Feature Unavailable Layout along with message passed by the activity.
+     *
+     * @param text contains message passed based on the context.
+     */
+    public void showFeatureUnAvailableLayout(String text) {
+        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
+        featureUnavailableLayout.setVisibility(View.VISIBLE);
+        TextView textView = findViewById(R.id.textFeatureUnavailable);
+        textView.setTypeface(setLatoItalicFont(this));
+        textView.setText(text);
+    }
+    /**
      * This Method is used to Hide Feature Unavailable layout from the activity whenever it is called
      */
     public void hideFeatureUnavailableLayout() {

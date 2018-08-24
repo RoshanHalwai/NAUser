@@ -112,6 +112,9 @@
     <string name="whatsapp_msg">Hey there! I would like to have your service at my Flat. Revert back so that we can schedule and sort things out quickly.</string>
     <string name="message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading..</string>
     <string name="message_name">sms_body</string>
+    <string name="apartment_service_unavailable">Sorry you cannot use this feature since currently there is no apartment service available at your Society.</string>
+    <string name="apartment">apartment</string>
+    <string name="groceries_unavailable">Sorry you cannot use this feature since this feature is yet to be implemented.</string>
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
