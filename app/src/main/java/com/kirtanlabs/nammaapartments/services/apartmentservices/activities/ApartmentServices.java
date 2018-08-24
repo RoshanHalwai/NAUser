@@ -210,7 +210,7 @@ public class ApartmentServices extends BaseActivity {
     private void changeLayoutMessages() {
         String messageDescription = getString(R.string.apartment_service_unavailable);
         String textReplacement = getString(R.string.apartment);
-        String updatedDescription = null;
+        String updatedDescription = "";
         switch (screenTitle) {
             case R.string.cook: {
                 updatedDescription = messageDescription.replace(textReplacement, getString(R.string.cook));
