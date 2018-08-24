@@ -73,7 +73,7 @@ public class SplashScreen extends AppCompatActivity {
                     String userUID = sharedPreferences.getString(USER_UID, "");
                     DatabaseReference database = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_PRIVILEGES)
                             .child(VERIFIED);
-                    database.addValueEventListener(new ValueEventListener() {
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists() && dataSnapshot.getValue(Boolean.class)) {
