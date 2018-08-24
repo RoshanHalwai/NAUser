@@ -205,37 +205,47 @@ public class ApartmentServices extends BaseActivity {
      * This method gets invoked when society service has not added any apartment services.
      */
     private void changeLayoutMessages() {
+        String messageDescription = getString(R.string.apartment_service_unavailable);
+        String textReplacement = getString(R.string.apartment);
         switch (screenTitle) {
             case R.string.cook: {
-                showFeatureUnavailableLayout(R.string.cook_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.cook));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.maid: {
-                showFeatureUnavailableLayout(R.string.maid_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.maid));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.car_bike_cleaning: {
-                showFeatureUnavailableLayout(R.string.car_bike_cleaner_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.car_bike_cleaning));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.child_day_care: {
-                showFeatureUnavailableLayout(R.string.child_day_care_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.child_day_care));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.daily_newspaper: {
-                showFeatureUnavailableLayout(R.string.daily_newspaper_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.daily_newspaper));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.milk_man: {
-                showFeatureUnavailableLayout(R.string.milk_man_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.milk_man));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.laundry: {
-                showFeatureUnavailableLayout(R.string.laundry_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.laundry));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
             case R.string.driver: {
-                showFeatureUnavailableLayout(R.string.driver_unavailable);
+                String updatedDescription = messageDescription.replace(textReplacement, getString(R.string.driver));
+                showFeatureUnAvailableLayout(updatedDescription);
                 break;
             }
         }
