@@ -78,6 +78,9 @@
         <activity
             android:name=".onboarding.flatdetails.MyFlatDetails"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".onboarding.ActivationRequired"
+            android:screenOrientation="portrait" />
 
         <!-- Namma Apartments NammaApartmentsHome Screen -->
         <activity
@@ -88,7 +91,8 @@
         <activity
             android:name=".navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
-        <activity android:name=".navigationdrawer.mywallet.activities.MyWalletActivity"
+        <activity
+            android:name=".navigationdrawer.mywallet.activities.MyWalletActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.myvehicles.activities.MyVehiclesActivity"
@@ -121,7 +125,8 @@
         <activity
             android:name=".navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".navigationdrawer.mywallet.activities.ServicesPaymentActivity"
+        <activity
+            android:name=".navigationdrawer.mywallet.activities.ServicesPaymentActivity"
             android:screenOrientation="portrait" />
 
         <!-- Digital Gate Screens -->
@@ -194,7 +199,6 @@
         <activity
             android:name=".services.apartmentservices.activities.ApartmentServices"
             android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

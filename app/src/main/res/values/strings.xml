@@ -646,4 +646,8 @@
     <string name="event_management_dialog_title">Event Message</string>
     <string name="event_management_dialog_message">You have successfully booked your event.</string>
 
+    <!--Activation Required Activity-->
+    <string name="activation_required_title">Account Created</string>
+    <string name="activation_message">Thank you for Registering with Namma Apartments. Your flat details has been sent to Society Admin. We will notify you once your account gets Activated.</string>
+
 </resources>
