@@ -146,6 +146,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_CATEGORY = "category";
     public static final String FIREBASE_CHILD_EVENT_DATE = "eventDate";
     public static final String FIREBASE_CHILD_TIME_SLOT = "timeSlot";
+    private static final String FIREBASE_CHILD_NOTICE_BOARD = "noticeBoard";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -193,6 +194,7 @@ public class Constants {
     public static final DatabaseReference PRIVATE_EMERGENCY_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference GUARD_REFERENCE = SOCIETY_SERVICES_REFERENCE.child(FIREBASE_CHILD_GUARD);
+    public static final DatabaseReference NOTICE_BOARD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_NOTICE_BOARD);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
