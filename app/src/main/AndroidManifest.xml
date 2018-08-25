@@ -104,7 +104,7 @@
             android:name=".navigationdrawer.myguards.activities.MyGuardsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.noticeboard.NoticeBoard"
+            android:name=".navigationdrawer.noticeboard.activities.NoticeBoard"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.settings.NammaApartmentSettings"

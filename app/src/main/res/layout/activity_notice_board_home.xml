@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
 
-    tools:context=".navigationdrawer.noticeboard.NoticeBoard">
+    tools:context=".navigationdrawer.noticeboard.activities.NoticeBoard">
 
-    <include layout="@layout/activity_base" />
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/activity_base" />
 
-    <GridView
-        android:id="@+id/gridViewNoticeBoard"
+    <include
+        android:id="@+id/layoutFeatureUnavailable"
+        layout="@layout/layout_feature_unavailable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:layout_marginTop="20dp"
-        android:columnWidth="100dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+        android:layout_below="@+id/titleBar"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/animationWaitingForCustomers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        app:indicatorColor="@color/nmBlack"
+        app:indicatorName="BallSpinFadeLoaderIndicator" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/titleBar" />
+
+</RelativeLayout>
