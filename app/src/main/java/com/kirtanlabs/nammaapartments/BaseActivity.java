@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ENABLE_LOCATION_PERMISSION_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
@@ -131,6 +132,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             case GALLERY_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     EasyImage.openGallery(this, 0);
+                }
+                break;
+            case ENABLE_LOCATION_PERMISSION_CODE:
+                if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    //TODO: Get the Latitude and Longitude of the User and store it in Firebase
                 }
                 break;
         }
@@ -312,6 +318,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, PLACE_CALL_PERMISSION_REQUEST_CODE);
         } else {
             startActivity(callIntent);
+        }
+    }
+
+    /**
+     * We check if permissions are granted to access location of the user, if granted user's loatitude and longitude can be fetched
+     * else we show Request permission dialog to allow users to give access.
+     */
+    public void enableLocationService() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ENABLE_LOCATION_PERMISSION_CODE);
         }
     }
 

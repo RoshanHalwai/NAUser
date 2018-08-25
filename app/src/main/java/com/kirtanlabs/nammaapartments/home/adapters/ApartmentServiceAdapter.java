@@ -62,6 +62,8 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
         holder.textApartmentServiceNoOfFlatsSlotValue.setText(String.valueOf(ApartmentServices.numberOfFlats.get(nammaApartmentDailyService.getUID())));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
+        /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+        baseActivity.enableLocationService();
     }
 
     @Override
