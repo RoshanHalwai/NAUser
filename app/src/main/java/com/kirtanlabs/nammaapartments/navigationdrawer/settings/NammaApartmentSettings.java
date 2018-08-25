@@ -1,21 +1,28 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.settings;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
+import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.LANGUAGE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_LANGUAGE_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentSettings extends BaseActivity {
+
+    private Button buttonLanguage;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -35,50 +42,73 @@ public class NammaApartmentSettings extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*Getting Id's for all the views*/
         TextView textGeneralSettings = findViewById(R.id.textGeneralSettings);
-        TextView textNotificationSettings = findViewById(R.id.textNotificationSettings);
-        TextView textChooseLanguage = findViewById(R.id.textChooseLanguage);
-        TextView textReportABug = findViewById(R.id.textReportABug);
-        Spinner spinnerChooseLanguage = findViewById(R.id.spinnerChooseLanguage);
-        Switch switchSounds = findViewById(R.id.switchSounds);
-        Switch switchLocationServices = findViewById(R.id.switchLocationServices);
-        Switch switchNewMessageNotification = findViewById(R.id.switchNewMessageNotification);
-        Switch switchEmailNotification = findViewById(R.id.switchEmailNotification);
-        Switch switchVibrate = findViewById(R.id.switchVibrate);
-        Switch switchInAppSoundNotification = findViewById(R.id.switchInAppSoundNotification);
-        Switch switchProductUpdates = findViewById(R.id.switchProductUpdates);
-        EditText editReportABug = findViewById(R.id.editReportABug);
+        TextView textLanguage = findViewById(R.id.textLanguage);
+        TextView textSoundSettings = findViewById(R.id.textSoundSettings);
+        buttonLanguage = findViewById(R.id.buttonLanguage);
+        Button buttonSignOut = findViewById(R.id.buttonSignOut);
+        Switch eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
+        Switch switchGuestNotification = findViewById(R.id.switchGuestNotification);
+        Switch switchDailyServiceNotification = findViewById(R.id.switchDailyServiceNotification);
+        Switch switchCabNotification = findViewById(R.id.switchCabNotification);
+        Switch switchPackageNotification = findViewById(R.id.switchPackageNotification);
 
-        /*Setting font for all the views*/
-        textGeneralSettings.setTypeface(Constants.setLatoBoldFont(this));
-        textNotificationSettings.setTypeface(Constants.setLatoBoldFont(this));
-        textChooseLanguage.setTypeface(Constants.setLatoBoldFont(this));
-        textReportABug.setTypeface(Constants.setLatoBoldFont(this));
-        switchSounds.setTypeface(Constants.setLatoBoldFont(this));
-        switchLocationServices.setTypeface(Constants.setLatoBoldFont(this));
-        switchNewMessageNotification.setTypeface(Constants.setLatoBoldFont(this));
-        switchEmailNotification.setTypeface(Constants.setLatoBoldFont(this));
-        switchVibrate.setTypeface(Constants.setLatoBoldFont(this));
-        switchInAppSoundNotification.setTypeface(Constants.setLatoBoldFont(this));
-        switchProductUpdates.setTypeface(Constants.setLatoBoldFont(this));
-        editReportABug.setTypeface(Constants.setLatoRegularFont(this));
+        textGeneralSettings.setTypeface(setLatoBoldFont(this));
+        textSoundSettings.setTypeface(setLatoBoldFont(this));
+        textLanguage.setTypeface(setLatoRegularFont(this));
+        buttonLanguage.setTypeface(setLatoRegularFont(this));
+        buttonSignOut.setTypeface(setLatoRegularFont(this));
+        eIntercomNotifications.setTypeface(setLatoRegularFont(this));
+        switchGuestNotification.setTypeface(setLatoRegularFont(this));
+        switchDailyServiceNotification.setTypeface(setLatoRegularFont(this));
+        switchCabNotification.setTypeface(setLatoRegularFont(this));
+        switchPackageNotification.setTypeface(setLatoRegularFont(this));
 
-        /*Initialising an Adapter*/
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, getResources().getStringArray(R.array.change_languages_list)) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textLanguage = view.findViewById(android.R.id.text1);
-                textLanguage.setTypeface(Constants.setLatoRegularFont(NammaApartmentSettings.this));
-                return view;
-            }
+        buttonSignOut.setOnClickListener(v -> showLogOutDialog());
+        buttonLanguage.setOnClickListener(v -> startActivityForResult(new Intent(NammaApartmentSettings.this, LanguageList.class), SELECT_LANGUAGE_REQUEST_CODE));
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding On Activity Result
+     * ------------------------------------------------------------- */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == SELECT_LANGUAGE_REQUEST_CODE) {
+            String language = data.getStringExtra(LANGUAGE);
+            buttonLanguage.setText(language);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This dialog gets invoked when user clicks on Logout button.
+     */
+    private void showLogOutDialog() {
+        Runnable logoutUser = () ->
+        {
+            SharedPreferences sharedPreferences;
+            SharedPreferences.Editor editor;
+            sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putBoolean(LOGGED_IN, false);
+            editor.putString(USER_UID, null);
+            editor.apply();
+
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(NammaApartmentSettings.this, SignIn.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         };
-
-        /*Setting Adapter to a Spinner*/
-        spinnerChooseLanguage.setAdapter(arrayAdapter);
+        String confirmDialogTitle = getString(R.string.logout_dialog_title);
+        String confirmDialogMessage = getString(R.string.logout_question);
+        showConfirmDialog(confirmDialogTitle, confirmDialogMessage, logoutUser);
     }
 
 }

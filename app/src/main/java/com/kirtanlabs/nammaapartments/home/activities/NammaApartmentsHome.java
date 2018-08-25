@@ -38,7 +38,6 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyV
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyWalletActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.activities.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
-import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
@@ -61,9 +60,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     private SmoothActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
     private Dialog dialog;
-    private SharedPreferences sharedPreferences;
     private DatabaseReference userReference;
-    private SharedPreferences.Editor editor;
     private NavigationView navigationView;
 
     /* ------------------------------------------------------------- *
@@ -184,12 +181,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
 
-            case R.id.nav_logout: {
-                toggle.runWhenIdle(this::showLogOutDialog);
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            }
-
         }
         return false;
     }
@@ -233,31 +224,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         buttonCancel.setOnClickListener(v -> dialog.cancel());
     }
 
-    /**
-     * This dialog gets invoked when user clicks on Logout button.
-     */
-    private void showLogOutDialog() {
-        Runnable logoutUser = () ->
-        {
-            sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-            editor = sharedPreferences.edit();
-            editor.putBoolean(LOGGED_IN, false);
-            editor.putString(USER_UID, null);
-            editor.apply();
-
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(NammaApartmentsHome.this, SignIn.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        };
-        String confirmDialogTitle = getString(R.string.logout_dialog_title);
-        String confirmDialogMessage = getString(R.string.logout_question);
-        showConfirmDialog(confirmDialogTitle, confirmDialogMessage, logoutUser);
-    }
-
-
     private void initNavigationDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -275,7 +241,8 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
      * if the user has already logged
      */
     private void checkSharedPreferences() {
-        sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor;
         if (sharedPreferences.getBoolean(LOGGED_IN, false)) {
             /*TODO: Change this dialog content with Splash Screen*/
             showProgressDialog(this, "Loading Profile", getString(R.string.please_wait_a_moment));

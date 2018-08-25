@@ -568,11 +568,8 @@
     <!-- General settings -->
     <string name="general">General Settings</string>
     <string name="choose_language">Choose Language</string>
-    <string name="sounds">Sounds</string>
-    <string name="app_version">App Version 1.0</string>
-    <string name="report_bug">Report A Bug</string>
-    <string name="location_services">Location Services</string>
-    <string name="about">About</string>
+    <string name="language">Language</string>
+    <string name="sign_out">Sign Out</string>
 
     <string-array name="change_languages_list">
         <item>@string/english</item>
@@ -588,13 +585,13 @@
     <string name="kannada">Kannada</string>
     <string name="telugu">Telugu</string>
 
-    <!-- Notification settings -->
-    <string name="notifications">Notification Settings</string>
-    <string name="new_message_notifications">New Message Notifications</string>
-    <string name="email_notifications">Email Notifications</string>
-    <string name="vibrate">Vibrate</string>
-    <string name="in_app_sound_notification">Enable in-app sound Notifications</string>
-    <string name="product_updates">Product Updates</string>
+    <!-- Sound settings -->
+    <string name="sound_settings">Sound Settings</string>
+    <string name="e_intercom_notifications">E-Intercom Notifications</string>
+    <string name="guest_notifications">Guest Notifications</string>
+    <string name="daily_service_notifications">Daily Service Notifications</string>
+    <string name="cab_notifications">Cab Notifications</string>
+    <string name="package_notifications">Package Notifications</string>
 
     <!--NoticeBoard -->
     <string name="notice_unavailable">Currently there is no notice for your Society.</string>
