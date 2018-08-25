@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,9 +100,11 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
      * to share the Apartment Service with his Contacts
      */
     private void redirectUserToShareWith() {
-        Intent referIntent = new Intent(android.content.Intent.ACTION_SEND);
+        Intent referIntent = new Intent();
+        referIntent.setAction(Intent.ACTION_SEND);
+        referIntent.putExtra(Intent.EXTRA_TEXT, mCtx.getString(R.string.message_body));
         referIntent.setType("text/plain");
-        mCtx.startActivity(Intent.createChooser(referIntent, mCtx.getString(R.string.refer_title)));
+        mCtx.startActivity(referIntent);
     }
 
     /* ------------------------------------------------------------- *
@@ -180,7 +183,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
                     baseActivity.makePhoneCall(nammaApartmentDailyService.getPhoneNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber(), mCtx.getString(R.string.message_body));
+                    baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber(), mCtx.getString(R.string.whatsapp_msg));
                     break;
                 case R.id.textWhatsapp:
                     redirectUserToWhatsApp(position);
