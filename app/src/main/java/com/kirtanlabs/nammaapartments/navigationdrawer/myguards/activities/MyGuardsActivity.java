@@ -38,9 +38,12 @@ public class MyGuardsActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        showProgressIndicator();
+
         /*Retrieving Details of all Guards of the society*/
         new RetrievingGuardsList().getGuardDataList(guardDataList -> {
             if (guardDataList != null) {
+                hideProgressIndicator();
                 recyclerView.setAdapter(new MyGuardsAdapter(MyGuardsActivity.this, guardDataList));
             }
         });
