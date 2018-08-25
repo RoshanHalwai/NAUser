@@ -29,49 +29,4 @@
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/edit_text_default_size" />
 
-    <Switch
-        android:id="@+id/switchLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:checked="true"
-        android:text="@string/location_services"
-        android:textColor="@color/nmBlack"
-        android:textSize="@dimen/text_view_default_size" />
-
-    <TextView
-        android:id="@+id/textReportABug"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/report_bug"
-        android:textColor="@color/nmBlack"
-        android:textSize="@dimen/text_view_default_size" />
-
-    <EditText
-        android:id="@+id/editReportABug"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:inputType="textMultiLine"
-        android:textColor="@color/nmBlack"
-        android:textSize="@dimen/edit_text_default_size"
-        tools:ignore="LabelFor" />
-
-    <TextView
-        android:id="@+id/textAppVersionName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/app_version"
-        android:textColor="@color/nmBlack"
-        android:textSize="@dimen/text_view_default_size" />
 </LinearLayout>

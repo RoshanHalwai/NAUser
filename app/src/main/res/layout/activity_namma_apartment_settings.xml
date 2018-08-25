@@ -31,84 +31,38 @@
                         android:id="@+id/textGeneralSettings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_margin="5dp"
                         android:background="@color/nmSettingsHeader"
                         android:padding="10dp"
                         android:text="@string/general"
                         android:textColor="@color/nmBlack"
-                        android:textSize="22sp" />
+                        android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/textChooseLanguage"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/choose_language"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                    <Spinner
-                        android:id="@+id/spinnerChooseLanguage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/edit_text_default_size" />
+                        <TextView
+                            android:id="@+id/textLanguage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="@string/language"
+                            android:textColor="@color/nmBlack"
+                            android:textSize="@dimen/text_view_default_size" />
 
-                    <Switch
-                        android:id="@+id/switchSounds"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:checked="true"
-                        android:text="@string/sounds"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
+                        <Button
+                            android:id="@+id/buttonLanguage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="@string/english"
+                            android:textAllCaps="false" />
 
-                    <Switch
-                        android:id="@+id/switchLocationServices"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/location_services"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
-
-                    <TextView
-                        android:id="@+id/textReportABug"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/report_bug"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
-
-                    <EditText
-                        android:id="@+id/editReportABug"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="10dp"
-                        android:inputType="textCapWords"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/edit_text_default_size"
-                        tools:ignore="LabelFor" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -126,84 +80,95 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textNotificationSettings"
+                        android:id="@+id/textSoundSettings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_margin="5dp"
                         android:background="@color/nmSettingsHeader"
                         android:padding="10dp"
-                        android:text="@string/notifications"
+                        android:text="@string/sound_settings"
                         android:textColor="@color/nmBlack"
-                        android:textSize="22sp" />
+                        android:textSize="18sp" />
 
                     <Switch
-                        android:id="@+id/switchNewMessageNotification"
+                        android:id="@+id/eIntercomNotifications"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/new_message_notifications"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="@dimen/text_view_default_size" />
-
-                    <Switch
-                        android:id="@+id/switchEmailNotification"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/email_notifications"
+                        android:checked="true"
+                        android:text="@string/e_intercom_notifications"
                         android:textColor="@color/nmBlack"
                         android:textSize="@dimen/text_view_default_size" />
 
                     <Switch
-                        android:id="@+id/switchVibrate"
+                        android:id="@+id/switchGuestNotification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/vibrate"
+                        android:checked="true"
+                        android:text="@string/guest_notifications"
                         android:textColor="@color/nmBlack"
                         android:textSize="@dimen/text_view_default_size" />
 
-
                     <Switch
-                        android:id="@+id/switchInAppSoundNotification"
+                        android:id="@+id/switchDailyServiceNotification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/in_app_sound_notification"
+                        android:checked="true"
+                        android:text="@string/daily_service_notifications"
                         android:textColor="@color/nmBlack"
                         android:textSize="@dimen/text_view_default_size" />
 
 
                     <Switch
-                        android:id="@+id/switchProductUpdates"
+                        android:id="@+id/switchCabNotification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/product_updates"
+                        android:checked="true"
+                        android:text="@string/cab_notifications"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+
+                    <Switch
+                        android:id="@+id/switchPackageNotification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:checked="true"
+                        android:text="@string/package_notifications"
                         android:textColor="@color/nmBlack"
                         android:textSize="@dimen/text_view_default_size" />
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/buttonSignOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/valid_for_button_design"
+                android:text="@string/sign_out"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
