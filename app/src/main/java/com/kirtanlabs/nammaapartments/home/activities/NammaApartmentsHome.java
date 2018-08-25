@@ -35,7 +35,7 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.NammaApartmentsHelp;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
-import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyWalletActivity;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.activities.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.MySweetHome;
@@ -109,7 +109,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
 
             case R.id.nav_myWallet: {
                 toggle.runWhenIdle(() -> {
-                    Intent intent = new Intent(NammaApartmentsHome.this, MyWalletActivity.class);
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyPaymentsActivity.class);
                     startActivity(intent);
                 });
                 drawer.closeDrawer(GravityCompat.START);

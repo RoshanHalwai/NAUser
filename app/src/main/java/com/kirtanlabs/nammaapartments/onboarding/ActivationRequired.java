@@ -14,6 +14,7 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
@@ -48,6 +49,7 @@ public class ActivationRequired extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getValue(Boolean.class)) {
+                    getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(VERIFIED, true).apply();
                     startActivity(new Intent(ActivationRequired.this, NammaApartmentsHome.class));
                     finish();
                 }
