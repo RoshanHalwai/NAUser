@@ -598,8 +598,6 @@
 
     <!--NoticeBoard -->
     <string name="notice_unavailable">Currently there is no notice for your Society.</string>
-    <string name="notice_board_message"></string>
-    <string name="in_charge"></string>
 
     <!--My Vehicles Activity-->
     <string name="my_vehicles">My Vehicles</string>
