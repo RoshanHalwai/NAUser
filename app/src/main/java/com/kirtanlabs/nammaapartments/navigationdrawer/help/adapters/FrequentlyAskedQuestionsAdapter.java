@@ -9,20 +9,35 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.pojo.FrequentlyAskedQuestionsList;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;
 
 public class FrequentlyAskedQuestionsAdapter extends BaseAdapter {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private static final int QUESTION_ITEM = 0;
     private static final int HEADER_TITLE = 1;
     private ArrayList<Object> list;
     private LayoutInflater layoutInflater;
+    private Context context;
+
+    /* ------------------------------------------------------------- *
+     * Constructor
+     * ------------------------------------------------------------- */
 
     public FrequentlyAskedQuestionsAdapter(Context context, ArrayList<Object> list) {
         this.list = list;
+        this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding Base Adapter Objects
+     * ------------------------------------------------------------- */
 
     @Override
     public int getItemViewType(int position) {
@@ -68,11 +83,21 @@ public class FrequentlyAskedQuestionsAdapter extends BaseAdapter {
         if (convertView != null) {
             switch (getItemViewType(position)) {
                 case QUESTION_ITEM:
+                    /*Getting Id's for the view*/
                     TextView textModuleQuestions = convertView.findViewById(R.id.textModuleQuestions);
+
+                    /*Setting font for  the view*/
+                    textModuleQuestions.setTypeface(Constants.setLatoRegularFont(context));
+
                     textModuleQuestions.setText(((FrequentlyAskedQuestionsList) list.get(position)).getQuestionName());
                     break;
                 case HEADER_TITLE:
+                    /*Getting Id's for the view*/
                     TextView textModuleTitle = convertView.findViewById(R.id.textModuleTitle);
+
+                    /*Setting font for the view*/
+                    textModuleTitle.setTypeface(Constants.setLatoBoldFont(context));
+
                     textModuleTitle.setText(((String) list.get(position)));
                     break;
             }

@@ -466,6 +466,7 @@
 
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="faq">FAQs</string>
     <string name="using_na_app">Using Namma Apartments App</string>
     <string name="contact_us">Contact Us</string>
     <string name="terms_and_conditions">Terms and Conditions</string>

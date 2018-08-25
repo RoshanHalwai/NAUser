@@ -23,7 +23,7 @@ public class FrequentlyAskedQuestionsActivity extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.frequently_asked_questions;
+        return R.string.faq;
     }
 
     @Override

@@ -12,6 +12,6 @@
         android:background="#f7f7f7"
         android:padding="10dp"
         android:textColor="@color/nmBlack"
-        android:textSize="@dimen/text_view_numbers_size" />
+        android:textSize="18sp" />
 
 </LinearLayout>
