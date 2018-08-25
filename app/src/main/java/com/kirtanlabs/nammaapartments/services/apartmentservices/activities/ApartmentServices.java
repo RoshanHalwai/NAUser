@@ -148,7 +148,7 @@ public class ApartmentServices extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
+                    changeLayoutMessages();
                 } else {
                     hideProgressIndicator();
                     DatabaseReference publicDailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE
