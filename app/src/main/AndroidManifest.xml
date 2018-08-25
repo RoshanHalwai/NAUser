@@ -94,7 +94,7 @@
             android:name=".navigationdrawer.UserProfile"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.mywallet.activities.MyWalletActivity"
+            android:name=".navigationdrawer.mywallet.activities.MyPaymentsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.myvehicles.activities.MyVehiclesActivity"
