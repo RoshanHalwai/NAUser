@@ -29,7 +29,7 @@ public class MyPaymentsActivity extends BaseActivity {
 
     @Override
     protected int getActivityTitle() {
-        return R.string.my_payment;
+        return R.string.payments;
     }
 
     @Override
