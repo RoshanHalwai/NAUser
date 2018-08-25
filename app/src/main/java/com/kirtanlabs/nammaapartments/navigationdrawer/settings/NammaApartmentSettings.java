@@ -12,13 +12,17 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.LANGUAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_LANGUAGE_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentSettings extends BaseActivity {
+
+    private Button buttonLanguage;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -41,7 +45,7 @@ public class NammaApartmentSettings extends BaseActivity {
         TextView textGeneralSettings = findViewById(R.id.textGeneralSettings);
         TextView textLanguage = findViewById(R.id.textLanguage);
         TextView textSoundSettings = findViewById(R.id.textSoundSettings);
-        Button buttonLanguage = findViewById(R.id.buttonLanguage);
+        buttonLanguage = findViewById(R.id.buttonLanguage);
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
         Switch eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
         Switch switchGuestNotification = findViewById(R.id.switchGuestNotification);
@@ -61,7 +65,25 @@ public class NammaApartmentSettings extends BaseActivity {
         switchPackageNotification.setTypeface(setLatoRegularFont(this));
 
         buttonSignOut.setOnClickListener(v -> showLogOutDialog());
+        buttonLanguage.setOnClickListener(v -> startActivityForResult(new Intent(NammaApartmentSettings.this, LanguageList.class), SELECT_LANGUAGE_REQUEST_CODE));
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding On Activity Result
+     * ------------------------------------------------------------- */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == SELECT_LANGUAGE_REQUEST_CODE) {
+            String language = data.getStringExtra(LANGUAGE);
+            buttonLanguage.setText(language);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
 
     /**
      * This dialog gets invoked when user clicks on Logout button.

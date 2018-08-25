@@ -34,6 +34,7 @@ public class Constants {
     public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
     public static final String MESSAGE = "message";
     public static final String COMPLETED = "Completed";
+    public static final String LANGUAGE = "language";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -224,6 +225,7 @@ public class Constants {
     public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
     public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
     public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
+    public static final int SELECT_LANGUAGE_REQUEST_CODE = 10;
 
     /* ------------------------------------------------------------- *
      * Font Types
