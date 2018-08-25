@@ -72,6 +72,7 @@ public class RetrievingGuardsList {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             NammaApartmentsGuard nammaApartmentsGuard = dataSnapshot.getValue(NammaApartmentsGuard.class);
                             guardDataList.add(nammaApartmentsGuard);
+                            guardDataListCallback.onCallBack(guardDataList);
                         }
 
                         @Override

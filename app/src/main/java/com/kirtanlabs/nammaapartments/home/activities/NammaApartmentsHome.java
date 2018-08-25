@@ -36,7 +36,7 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.NammaApar
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyWalletActivity;
-import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.NoticeBoard;
+import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.activities.NoticeBoard;
 import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
