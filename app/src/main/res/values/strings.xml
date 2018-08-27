@@ -643,6 +643,12 @@
     <string name="query_time_slot">For any queries related to time slot, Contact Admin.</string>
     <string name="event_management_dialog_title">Event Message</string>
     <string name="event_management_dialog_message">You have successfully booked your event.</string>
+    <string name="slot_one">Slot 1</string>
+    <string name="slot_two">Slot 2</string>
+    <string name="slot_three">Slot 3</string>
+    <string name="slot_four">Slot 4</string>
+    <string name="available_slots">Available</string>
+    <string name="unavailable_slots">Unavailable</string>
 
     <!--Activation Required Activity-->
     <string name="activation_required_title">Account Created</string>
