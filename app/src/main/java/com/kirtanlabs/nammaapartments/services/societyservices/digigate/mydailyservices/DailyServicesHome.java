@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +72,7 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         /*Getting Id's for all the views*/
         Button buttonAddDailyServices = findViewById(R.id.buttonAddDailyServices);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for button*/
         buttonAddDailyServices.setTypeface(setLatoLightFont(this));
@@ -77,30 +80,40 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Creating recycler view adapter
+        /*Creating recycler view adapter*/
         nammaApartmentDailyServiceList = new ArrayList<>();
         dailyServicesHomeAdapter = new DailyServicesHomeAdapter(nammaApartmentDailyServiceList, this);
 
-        //Setting adapter to recycler view
+        /*Setting adapter to recycler view*/
         recyclerView.setAdapter(dailyServicesHomeAdapter);
 
         createDailyServicesListDialog();
 
-        /*Setting event views */
+        /*Setting event for views */
         buttonAddDailyServices.setOnClickListener(this);
         dailyServicesListDialog.setOnCancelListener(this);
+        infoButton.setOnClickListener(this);
 
-        //To retrieve DailyServicesList from firebase.
+        /*To retrieve DailyServicesList from firebase.*/
         checkAndRetrieveDailyServices();
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding Event Listener Objects
+     * Overriding OnClick Listener Objects
      * ------------------------------------------------------------- */
 
     @Override
     public void onClick(View v) {
-        dailyServicesListDialog.show();
+        switch (v.getId()) {
+            case R.id.infoButton:
+                Intent infoIntent = new Intent(DailyServicesHome.this, FrequentlyAskedQuestionsActivity.class);
+                infoIntent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
+                startActivity(infoIntent);
+                break;
+            case R.id.buttonAddDailyServices:
+                dailyServicesListDialog.show();
+                break;
+        }
     }
 
     @Override

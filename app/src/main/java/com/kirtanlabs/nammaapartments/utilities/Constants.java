@@ -213,6 +213,21 @@ public class Constants {
     public static final String FAMILY_MEMBER = "Family Member";
     public static final String FRIEND = "Friend";
 
+   /* ------------------------------------------------------------- *
+   * Frequently Asked Questions Sections
+   * ------------------------------------------------------------- */
+
+   public static final int VISITOR_SECTION=9;
+   public static final int DAILY_SERVICE_SECTION =15;
+   public static final int HANDED_THINGS_SECTION=23;
+   public static final int FLAT_MEMBER_SECTION=19;
+   public static final int EMERGENCY_SECTION =27;
+   public static final int PLUMBER_SECTION=31;
+   public static final int CARPENTER_SECTION=34;
+   public static final int ELECTRICIAN_SECTION=37;
+   public static final int GARBAGE_MANAGEMENT_SECTION=40;
+   public static final int EVENT_MANAGEMENT_SECTION=43;
+
     /* ------------------------------------------------------------- *
      * Request Code
      * ------------------------------------------------------------- */

@@ -1,8 +1,11 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.digigate.notifydigitalgate.handedthings.history;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
@@ -34,7 +38,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
-public class HandedThingsHistory extends BaseActivity {
+public class HandedThingsHistory extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -72,6 +76,9 @@ public class HandedThingsHistory extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        ImageView infoButton = findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(this);
+
         /*Based on the previous screen title we decide whose history of handed things can be displayed
          * User can give things to either Daily Services or their Guests*/
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.my_guests) {
@@ -104,6 +111,18 @@ public class HandedThingsHistory extends BaseActivity {
             checkAndRetrieveDailyServices();
         }
 
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listeners
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.infoButton) {
+            Intent infoIntent = new Intent(HandedThingsHistory.this, FrequentlyAskedQuestionsActivity.class);
+            infoIntent.putExtra(SCREEN_TITLE, R.string.history);
+            startActivity(infoIntent);
+        }
     }
 
     /* ------------------------------------------------------------- *

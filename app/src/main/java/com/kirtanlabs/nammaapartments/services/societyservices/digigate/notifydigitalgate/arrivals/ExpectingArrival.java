@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.myvisitorslist.cabs.CabsList;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.myvisitorslist.packages.PackagesList;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
@@ -123,6 +125,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         Button button16hr = findViewById(R.id.button16Hr);
         Button button24hr = findViewById(R.id.button24Hr);
         Button buttonNotifyGate = findViewById(R.id.buttonNotifyGate);
+        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for all the views*/
         textCabOrVendorTitle.setTypeface(setLatoBoldFont(this));
@@ -170,6 +173,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         editPickDateTime.setOnFocusChangeListener(this);
         editPickDateTime.setOnClickListener(this);
         buttonNotifyGate.setOnClickListener(this);
+        infoButton.setOnClickListener(this);
 
     }
 
@@ -180,6 +184,15 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.infoButton:
+                Intent infoIntent = new Intent(ExpectingArrival.this, FrequentlyAskedQuestionsActivity.class);
+                if (arrivalType == R.string.expecting_cab_arrival) {
+                    infoIntent.putExtra(SCREEN_TITLE, R.string.expecting_cab_arrival);
+                } else {
+                    infoIntent.putExtra(SCREEN_TITLE, R.string.expecting_package_arrival);
+                }
+                startActivity(infoIntent);
+                break;
             case R.id.button1Hr:
                 selectButton(R.id.button1Hr);
                 break;

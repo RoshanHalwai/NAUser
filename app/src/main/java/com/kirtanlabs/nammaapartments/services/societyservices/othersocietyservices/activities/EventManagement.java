@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentEventManagement;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -43,8 +44,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             R.id.buttonNightSlot};
     private EditText editPickDate, editEventTitle;
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
-    private String societyServiceType;
-    private String category;
+    private String societyServiceType, category;
     private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot;
     private Boolean isValidForButtons = false;
 
@@ -67,6 +67,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Info Button in this screen*/
+        showInfoButton();
+
         /*Getting Id's for all the views*/
         TextView textEventTitle = findViewById(R.id.textEventTitle);
         TextView textChooseCategory = findViewById(R.id.textChooseCategory);
@@ -87,6 +90,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         Button buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
         Button buttonNightSlot = findViewById(R.id.buttonNightSlot);
         Button buttonBook = findViewById(R.id.buttonBook);
+        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting Fonts for all the views*/
         textEventTitle.setTypeface(setLatoBoldFont(this));
@@ -112,8 +116,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         editPickDate.setInputType(InputType.TYPE_NULL);
 
         societyServiceType = FIREBASE_CHILD_EVENT_MANAGEMENT;
-        /*Getting the values for highlighted buttons*/
-        category = getString(R.string.parties);
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
          * History of that particular Society Service*/
@@ -133,6 +135,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNightSlot.setOnClickListener(this);
         historyButton.setOnClickListener(this);
         buttonBook.setOnClickListener(this);
+        infoButton.setOnClickListener(this);
+
     }
 
     /* ------------------------------------------------------------- *
@@ -209,6 +213,11 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
                 societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
                 startActivity(societyServiceHistoryIntent);
+                break;
+            case R.id.infoButton:
+                Intent infoIntent = new Intent(EventManagement.this, FrequentlyAskedQuestionsActivity.class);
+                infoIntent.putExtra(SCREEN_TITLE, R.string.event_management);
+                startActivity(infoIntent);
                 break;
         }
 
