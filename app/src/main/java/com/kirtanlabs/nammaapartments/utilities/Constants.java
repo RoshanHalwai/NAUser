@@ -103,6 +103,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_EMERGENCIES = "emergencies";
     public static final String FIREBASE_CHILD_EVENT_MANAGEMENT="eventManagement";
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
+    public static final String FIREBASE_CHILD_FLATDETAILS = "flatDetails";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
