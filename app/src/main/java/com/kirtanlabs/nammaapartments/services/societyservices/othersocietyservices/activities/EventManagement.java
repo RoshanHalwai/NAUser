@@ -154,7 +154,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.editPickDateTime:
+            case R.id.editPickDate:
                 pickDate(this, this);
                 break;
             case R.id.buttonMorningSlot:
