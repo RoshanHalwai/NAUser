@@ -164,7 +164,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             buttonNoonSlot.setEnabled(true);
             buttonEveningSlot.setEnabled(true);
             buttonNightSlot.setEnabled(true);
-            /*Disabling Time slot which are already book in particular Date*/
+            /*Disabling Time slot which are already booked for particular Date*/
             disableBookedSlots(selectedEventDate);
         }
     }
