@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
@@ -34,7 +35,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.HANDED_THINGS_T
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
-public class HandedThings extends BaseActivity {
+public class HandedThings extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -108,13 +109,31 @@ public class HandedThings extends BaseActivity {
         /*Since we have History button here, we would want to users to navigate to Handed Things history
          * and display data based on the screen title*/
         ImageView historyButton = findViewById(R.id.historyButton);
+        ImageView infoButton = findViewById(R.id.infoButton);
         historyButton.setVisibility(View.VISIBLE);
-        historyButton.setOnClickListener(v -> {
-            Intent handedThingsHistoryIntent = new Intent(HandedThings.this, HandedThingsHistory.class);
-            handedThingsHistoryIntent.putExtra(SCREEN_TITLE, getIntent().getIntExtra(HANDED_THINGS_TO, 0));
-            startActivity(handedThingsHistoryIntent);
-        });
 
+        /*Setting events for the views */
+        historyButton.setOnClickListener(this);
+        infoButton.setOnClickListener(this);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listeners
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.historyButton:
+                Intent handedThingsHistoryIntent = new Intent(HandedThings.this, HandedThingsHistory.class);
+                handedThingsHistoryIntent.putExtra(SCREEN_TITLE, getIntent().getIntExtra(HANDED_THINGS_TO, 0));
+                startActivity(handedThingsHistoryIntent);
+                break;
+            case R.id.infoButton:
+                Intent infoIntent = new Intent(HandedThings.this, FrequentlyAskedQuestionsActivity.class);
+                infoIntent.putExtra(SCREEN_TITLE, R.string.given_things);
+                startActivity(infoIntent);
+                break;
+        }
     }
 
     /* ------------------------------------------------------------- *
@@ -227,5 +246,6 @@ public class HandedThings extends BaseActivity {
             }
         });
     }
+
 
 }
