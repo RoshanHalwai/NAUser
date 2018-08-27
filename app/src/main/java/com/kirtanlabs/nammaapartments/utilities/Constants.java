@@ -62,6 +62,11 @@ public class Constants {
     public static final int CAB_NUMBER_FIELD_LENGTH = 2;
     public static final String COUNTRY_CODE_IN = "+91";
     public static final String HYPHEN = "-";
+    public static final String SLOT_ONE = "Slot 1";
+    public static final String SLOT_TWO = "Slot 2";
+    public static final String SLOT_THREE = "Slot 3";
+    public static final String SLOT_FOUR = "Slot 4";
+
 
     /* ------------------------------------------------------------- *
      * Login/OTP Constants
@@ -196,6 +201,7 @@ public class Constants {
     public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
     public static final DatabaseReference GUARD_REFERENCE = SOCIETY_SERVICES_REFERENCE.child(FIREBASE_CHILD_GUARD);
     public static final DatabaseReference NOTICE_BOARD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_NOTICE_BOARD);
+    public static final DatabaseReference EVENT_MANAGEMENT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EVENT_MANAGEMENT);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
