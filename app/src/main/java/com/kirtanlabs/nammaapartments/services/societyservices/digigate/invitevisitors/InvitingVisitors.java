@@ -30,6 +30,7 @@ import com.kirtanlabs.nammaapartments.utilities.ContactPicker;
 
 import java.io.File;
 import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -64,6 +65,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     private String selectedDate, mobileNumber;
     private CircleImageView circleImageView;
     private File profilePhotoPath;
+    private Calendar calendar;
+    private boolean isTodayDateSelected;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -177,6 +180,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.editPickDateTime:
                 pickDate(this, this);
+                editPickDateTime.setText("");
                 break;
             case R.id.buttonInvite:
                 /* This method gets invoked to check all the editText fields for validations.*/
@@ -200,6 +204,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (view.isShown()) {
+            calendar = Calendar.getInstance();
+            int currentMonth = calendar.get(Calendar.MONTH);
+            int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+            isTodayDateSelected = month == currentMonth && dayOfMonth == currentDay;
             selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
             pickTime(this, this);
         }
@@ -208,6 +216,17 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = calendar.get(Calendar.MINUTE);
+            if (isTodayDateSelected) {
+                if (hourOfDay < currentHour) {
+                    Toast.makeText(this, "Please select Future Time", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (hourOfDay == currentHour && minute < currentMinute) {
+                    Toast.makeText(this, "Please select Future Time", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
