@@ -4,17 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.home.DigitalGateHome;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
-public class CabsList extends BaseActivity {
+public class CabsList extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -51,6 +53,9 @@ public class CabsList extends BaseActivity {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
 
+        ImageView infoButton = findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(this);
+
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -86,5 +91,18 @@ public class CabsList extends BaseActivity {
             super.onBackPressed();
         }
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listeners
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.infoButton) {
+            Intent infoIntent = new Intent(CabsList.this, FrequentlyAskedQuestionsActivity.class);
+            infoIntent.putExtra(SCREEN_TITLE, R.string.cab_arrivals);
+            startActivity(infoIntent);
+        }
+    }
+
 }
 

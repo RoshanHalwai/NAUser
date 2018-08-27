@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.home.DigitalGateHome;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -18,7 +20,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 6/28/2018
  */
-public class PackagesList extends BaseActivity {
+public class PackagesList extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -55,6 +57,9 @@ public class PackagesList extends BaseActivity {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
 
+        ImageView infoButton = findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(this);
+
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -90,6 +95,18 @@ public class PackagesList extends BaseActivity {
             startActivity(PackagesListIntent);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listeners
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.infoButton) {
+            Intent infoIntent = new Intent(PackagesList.this, FrequentlyAskedQuestionsActivity.class);
+            infoIntent.putExtra(SCREEN_TITLE, R.string.package_arrivals);
+            startActivity(infoIntent);
         }
     }
 }

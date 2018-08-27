@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -63,6 +64,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Info Button in this screen*/
+        showInfoButton();
+
         /*Getting Id's for all the views*/
         TextView textSelectSlot = findViewById(R.id.textSelectSlot);
         TextView textSelectProblem = findViewById(R.id.textSelectProblem);
@@ -75,6 +79,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonWetWaste = findViewById(R.id.buttonWetWaste);
         editTextSelectProblem = findViewById(R.id.editTextSelectProblem);
         LinearLayout layoutGarbageType = findViewById(R.id.layoutGarbageType);
+        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for all the views*/
         textSelectProblem.setTypeface(setLatoBoldFont(this));
@@ -119,6 +124,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         historyButton.setVisibility(View.VISIBLE);
 
         /*Setting event for views*/
+        infoButton.setOnClickListener(this);
         editTextSelectProblem.setOnClickListener(this);
         buttonImmediately.setOnClickListener(this);
         buttonMorningSlot.setOnClickListener(this);
@@ -131,12 +137,31 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding OnClick Listener
+     * Overriding OnClick Listener Method
      * ------------------------------------------------------------- */
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.infoButton:
+                Intent infoIntent = new Intent(SocietyServicesHome.this, FrequentlyAskedQuestionsActivity.class);
+                /*Here Based on the screen title we are sending appropriate screen title to next screen.*/
+                switch (screenTitle) {
+                    case R.string.plumber:
+                        infoIntent.putExtra(SCREEN_TITLE, R.string.plumber);
+                        break;
+                    case R.string.carpenter:
+                        infoIntent.putExtra(SCREEN_TITLE, R.string.carpenter);
+                        break;
+                    case R.string.electrician:
+                        infoIntent.putExtra(SCREEN_TITLE, R.string.electrician);
+                        break;
+                    case R.string.garbage_management:
+                        infoIntent.putExtra(SCREEN_TITLE, R.string.garbage_management);
+                        break;
+                }
+                startActivity(infoIntent);
+                break;
             case R.id.editTextSelectProblem:
                 Intent intent = new Intent(SocietyServicesHome.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
