@@ -50,6 +50,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getBitmapFromFile;
@@ -63,6 +64,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
+    private TextView textEIntercomNumber;
     private EditText editUserName, editUserEmail, editFlatAdmin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
@@ -103,6 +105,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
 
         /*Getting Id's for all the views*/
         currentUserProfilePic = findViewById(R.id.currentUserProfilePic);
+        TextView textEIntercom = findViewById(R.id.textEIntercom);
+        textEIntercomNumber = findViewById(R.id.textEIntercomNumber);
         TextView textName = findViewById(R.id.textName);
         TextView textEmail = findViewById(R.id.textEmail);
         TextView textFlatAdmin = findViewById(R.id.textFlatAdmin);
@@ -112,6 +116,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         Button buttonUpdate = findViewById(R.id.buttonUpdate);
 
         /*Setting font for all the views*/
+        textEIntercom.setTypeface(setLatoBoldFont(this));
+        textEIntercomNumber.setTypeface(setLatoItalicFont(this));
         textName.setTypeface(setLatoBoldFont(this));
         textEmail.setTypeface(setLatoBoldFont(this));
         textFlatAdmin.setTypeface(setLatoBoldFont(this));
@@ -312,6 +318,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private void retrieveUserDetails() {
         userName = currentNammaApartmentUser.getPersonalDetails().getFullName();
         userEmail = currentNammaApartmentUser.getPersonalDetails().getEmail();
+        String EIntercomNumber = Constants.COUNTRY_CODE_IN + " " + currentNammaApartmentUser.getPersonalDetails().getPhoneNumber();
+        textEIntercomNumber.setText(EIntercomNumber);
         editUserName.setText(userName);
         editUserEmail.setText(userEmail);
         Glide.with(this.getApplicationContext()).load(currentNammaApartmentUser.getPersonalDetails().getProfilePhoto()).into(currentUserProfilePic);
