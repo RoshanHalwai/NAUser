@@ -9,6 +9,9 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,19 +27,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ENABLE_LOCATION_PERMISSION_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLATDETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
@@ -46,7 +54,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFo
  * Responsible for creating toolbar by getting title from the activity
  * and implementing events on back button.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements LocationListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -87,6 +95,39 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void showBackButton() {
         backButton.setVisibility(View.VISIBLE);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding Location Listener Methods
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
+        /*Getting the reference till the flatDetails under users->private*/
+        DatabaseReference usersFlatDetailsReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
+                .child(FIREBASE_CHILD_FLATDETAILS);
+        /*Setting the value of Latitude and Longitude under flatDetails*/
+        usersFlatDetailsReference.child("latitude").setValue(latitude);
+        usersFlatDetailsReference.child("longitude").setValue(longitude);
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
     }
 
     /* ------------------------------------------------------------- *
@@ -136,7 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
             case ENABLE_LOCATION_PERMISSION_CODE:
                 if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //TODO: Get the Latitude and Longitude of the User and store it in Firebase
+                    getLocation();
                 }
                 break;
         }
@@ -223,6 +264,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         textView.setTypeface(setLatoItalicFont(this));
         textView.setText(text);
     }
+
     /**
      * This Method is used to Hide Feature Unavailable layout from the activity whenever it is called
      */
@@ -329,6 +371,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ENABLE_LOCATION_PERMISSION_CODE);
+        } else {
+            getLocation();
+        }
+    }
+
+    /**
+     * We are using the Location Manager class to get the latitude and longitude coordinates of the user
+     */
+    private void getLocation() {
+        try {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Objects.requireNonNull(locationManager).requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
     }
 
