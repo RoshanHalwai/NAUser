@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -51,11 +52,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private EditText editPickDate, editEventTitle;
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
     private Button buttonMorningSlot, buttonNoonSlot, buttonEveningSlot, buttonNightSlot;
-    private String societyServiceType;
-    private String category;
-    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot;
+    private String societyServiceType, category, selectedEventDate, slotNumber;
+    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot, textTimeSlotQuery, textChooseTimeSlot;
     private Boolean isValidForButtons = false;
-    private String selectedEventDate, slotNumber;
+    private LinearLayout daySlotLayout, nightSlotLayout, layoutLegend;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -83,8 +83,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textEventTitle = findViewById(R.id.textEventTitle);
         TextView textChooseCategory = findViewById(R.id.textChooseCategory);
         TextView textEventDate = findViewById(R.id.textEventDate);
-        TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
-        TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
+        textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
+        textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
         textErrorEventDate = findViewById(R.id.textErrorEventDate);
         textErrorValidForCategory = findViewById(R.id.textErrorValidForButton);
         textErrorValidForTimeSlot = findViewById(R.id.textErrorValidForButton2);
@@ -102,6 +102,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNightSlot = findViewById(R.id.buttonNightSlot);
         Button buttonBook = findViewById(R.id.buttonBook);
         ImageView infoButton = findViewById(R.id.infoButton);
+        daySlotLayout = findViewById(R.id.daySlotLayout);
+        nightSlotLayout = findViewById(R.id.nightSlotLayout);
+        layoutLegend = findViewById(R.id.layoutLegend);
 
         /*Setting Fonts for all the views*/
         textEventTitle.setTypeface(setLatoBoldFont(this));
@@ -160,6 +163,13 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (view.isShown()) {
             String selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+            if (!TextUtils.isEmpty(selectedDate)) {
+                daySlotLayout.setVisibility(View.VISIBLE);
+                nightSlotLayout.setVisibility(View.VISIBLE);
+                layoutLegend.setVisibility(View.VISIBLE);
+                textChooseTimeSlot.setVisibility(View.VISIBLE);
+                textTimeSlotQuery.setVisibility(View.VISIBLE);
+            }
             editPickDate.setText(selectedDate);
             textErrorEventDate.setVisibility(View.GONE);
 
