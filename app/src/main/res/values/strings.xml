@@ -644,7 +644,7 @@
     <string name="night">8PM - 12PM</string>
     <string name="query_time_slot">For any queries related to time slot, Contact Admin.</string>
     <string name="event_management_dialog_title">Event Message</string>
-    <string name="event_management_dialog_message">You have successfully booked your event.</string>
+    <string name="event_management_dialog_message">Searching for booked slots</string>
     <string name="slot_one">Slot 1</string>
     <string name="slot_two">Slot 2</string>
     <string name="slot_three">Slot 3</string>
