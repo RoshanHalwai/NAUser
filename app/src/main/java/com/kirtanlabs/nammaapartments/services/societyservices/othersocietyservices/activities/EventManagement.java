@@ -29,12 +29,15 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -354,14 +357,14 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         eventManagementReference.child(notificationUID).setValue(true);
 
         /*Mapping Time Slot with value in eventManagement under selected Event Date */
-        DatabaseReference eventTimeSlotReference = Constants.EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
+        DatabaseReference eventTimeSlotReference = EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
         eventTimeSlotReference.setValue(true);
 
         /*Call AwaitingResponse activity, by this time Admin should have received the Notification
          * Since, cloud functions would have been triggered*/
         Intent awaitingResponseIntent = new Intent(EventManagement.this, AwaitingResponse.class);
-        awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
-        awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
+        awaitingResponseIntent.putExtra(NOTIFICATION_UID, notificationUID);
+        awaitingResponseIntent.putExtra(SOCIETY_SERVICE_TYPE, societyServiceType);
         startActivity(awaitingResponseIntent);
         finish();
     }
@@ -372,7 +375,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * @param date selected by the user.
      */
     private void disableBookedSlots(String date) {
-        DatabaseReference eventBookingReference = Constants.EVENT_MANAGEMENT_REFERENCE.child(date);
+        DatabaseReference eventBookingReference = EVENT_MANAGEMENT_REFERENCE.child(date);
 
         /*Retrieving Booked Time slot of particular date from (eventManagement->selectedDate->timeSlot) in firebase*/
         eventBookingReference.addListenerForSingleValueEvent(new ValueEventListener() {
