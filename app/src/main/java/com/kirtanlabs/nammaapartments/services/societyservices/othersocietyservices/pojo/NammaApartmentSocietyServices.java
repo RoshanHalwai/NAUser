@@ -87,8 +87,8 @@ public class NammaApartmentSocietyServices {
         return eventTitle;
     }
 
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
+    public String getEventDate() {
+        return eventDate;
     }
 
     public String getCategory() {
@@ -103,8 +103,8 @@ public class NammaApartmentSocietyServices {
         this.category = category;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public void setEventTitle(String eventTitle) {
+        this.eventTitle = eventTitle;
     }
 
     public void setEventDate(String eventDate) {
