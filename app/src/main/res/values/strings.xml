@@ -372,6 +372,8 @@
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
     <string name="admin_notification">You are the Administrator</string>
+    <string name="e_intercom">E-Intercom</string>
+    <string name="flat_admin">Flat Admin</string>
 
     <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>

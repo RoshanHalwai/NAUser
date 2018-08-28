@@ -34,6 +34,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -347,6 +348,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 .getUserDataReference()
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
         societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
+
+        /*Creating new key under societyServicesNotifications->eventManagement->notificationUid->true*/
+        DatabaseReference eventManagementReference = SOCIETYSERVICENOTIFICATION_REFERENCE.child(FIREBASE_CHILD_EVENT_MANAGEMENT);
+        eventManagementReference.child(notificationUID).setValue(true);
 
         /*Mapping Time Slot with value in eventManagement under selected Event Date */
         DatabaseReference eventTimeSlotReference = Constants.EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
