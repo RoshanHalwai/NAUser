@@ -20,7 +20,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
-import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentEventManagement;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.text.DateFormatSymbols;
@@ -324,9 +324,20 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         String eventDate = editPickDate.getText().toString();
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-        NammaApartmentEventManagement nammaApartmentEventManagement = new NammaApartmentEventManagement(eventTitle, category,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS, timeSlot, eventDate);
-        eventManagementNotificationReference.child(notificationUID).setValue(nammaApartmentEventManagement);
+        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, timeSlot,
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+
+        /*Setting Event Title Entered By User*/
+        nammaApartmentSocietyServices.setEventTitle(eventTitle);
+
+        /*Setting Event Date Entered By User*/
+        nammaApartmentSocietyServices.setEventDate(eventDate);
+
+        /*Setting Event Category Entered By User*/
+        nammaApartmentSocietyServices.setCategory(category);
+
+        /*adding event data under ALL_SOCIETYSERVICENOTIFICATION_REFERENCE->Notification UID*/
+        eventManagementNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
 
         /*Storing time stamp to keep track of notifications*/
         eventManagementNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
