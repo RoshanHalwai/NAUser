@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -55,11 +56,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private EditText editPickDate, editEventTitle;
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
     private Button buttonMorningSlot, buttonNoonSlot, buttonEveningSlot, buttonNightSlot;
-    private String societyServiceType;
-    private String category;
-    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot;
+    private String societyServiceType, category, selectedEventDate, slotNumber;
+    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot, textTimeSlotQuery, textChooseTimeSlot;
     private Boolean isValidForButtons = false;
-    private String selectedEventDate, slotNumber;
+    private LinearLayout daySlotLayout, nightSlotLayout, layoutLegend;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -87,8 +87,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textEventTitle = findViewById(R.id.textEventTitle);
         TextView textChooseCategory = findViewById(R.id.textChooseCategory);
         TextView textEventDate = findViewById(R.id.textEventDate);
-        TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
-        TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
+        textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
+        textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
         textErrorEventDate = findViewById(R.id.textErrorEventDate);
         textErrorValidForCategory = findViewById(R.id.textErrorValidForButton);
         textErrorValidForTimeSlot = findViewById(R.id.textErrorValidForButton2);
@@ -106,6 +106,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNightSlot = findViewById(R.id.buttonNightSlot);
         Button buttonBook = findViewById(R.id.buttonBook);
         ImageView infoButton = findViewById(R.id.infoButton);
+        daySlotLayout = findViewById(R.id.daySlotLayout);
+        nightSlotLayout = findViewById(R.id.nightSlotLayout);
+        layoutLegend = findViewById(R.id.layoutLegend);
 
         /*Setting Fonts for all the views*/
         textEventTitle.setTypeface(setLatoBoldFont(this));
@@ -170,13 +173,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
             selectedEventDate = new SimpleDateFormat("dd-MM-yyyy", Locale.UK).format(calendar.getTime());
-
-            buttonMorningSlot.setEnabled(true);
-            buttonNoonSlot.setEnabled(true);
-            buttonEveningSlot.setEnabled(true);
-            buttonNightSlot.setEnabled(true);
-            /*Disabling Time slot which are already booked for particular Date*/
-            disableBookedSlots(selectedEventDate);
+            showSlotLayout(selectedDate);
         }
     }
 
@@ -369,6 +366,37 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         finish();
     }
 
+
+    /**
+     * This method invokes to check whether there are any slots booked or not.
+     *
+     * @param selectedDate contains the user selected date
+     */
+    private void showSlotLayout(String selectedDate) {
+        showProgressDialog(this,
+                getString(R.string.event_management_dialog_title),
+                getString(R.string.event_management_dialog_message));
+
+        if (!TextUtils.isEmpty(selectedDate)) {
+            daySlotLayout.setVisibility(View.VISIBLE);
+            nightSlotLayout.setVisibility(View.VISIBLE);
+            layoutLegend.setVisibility(View.VISIBLE);
+            textChooseTimeSlot.setVisibility(View.VISIBLE);
+            textTimeSlotQuery.setVisibility(View.VISIBLE);
+        }
+        buttonMorningSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonNoonSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonEveningSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonNightSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonMorningSlot.setEnabled(true);
+        buttonNoonSlot.setEnabled(true);
+        buttonEveningSlot.setEnabled(true);
+        buttonNightSlot.setEnabled(true);
+
+        /*Disabling Time slot which are already booked for particular Date*/
+        disableBookedSlots(selectedEventDate);
+
+    }
     /**
      * This method is invoked to disable Time slot which are already booked by another user of that particular selected date
      *
@@ -400,6 +428,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                         }
                     }
                 }
+                hideProgressDialog();
             }
 
             @Override
