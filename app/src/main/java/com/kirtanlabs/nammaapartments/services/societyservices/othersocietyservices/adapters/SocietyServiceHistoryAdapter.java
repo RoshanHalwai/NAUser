@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
@@ -56,11 +57,18 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
 
     @Override
     public void onBindViewHolder(@NonNull SocietyServiceViewHolder holder, int position) {
+        /*Getting the societyservice type based on the society type history. */
+        String societyServiceType = nammaApartmentSocietyServiceList.get(0).getSocietyServiceType();
         /*Creating an instance of NammaApartmentSocietyServices class and retrieving the values from Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = nammaApartmentSocietyServiceList.get(position);
         SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm");
         String formattedDateAndTime = sfd.format(new Date(nammaApartmentSocietyServices.getTimestamp()));
-        holder.textProblem.setText(nammaApartmentSocietyServices.getProblem());
+        /*If the society service type is event management display time slot instead of problem*/
+        if (societyServiceType.equals(EVENT_MANAGEMENT)) {
+            holder.textProblem.setText(nammaApartmentSocietyServices.getTimeSlot());
+        } else {
+            holder.textProblem.setText(nammaApartmentSocietyServices.getProblem());
+        }
         holder.textDateAndTime.setText(formattedDateAndTime);
     }
 
@@ -85,6 +93,7 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
 
         SocietyServiceViewHolder(View itemView) {
             super(itemView);
+
             /*Getting Id's for all the views*/
             textDateAndTime = itemView.findViewById(R.id.textDateAndTime);
             textProblem = itemView.findViewById(R.id.textProblem);
@@ -107,7 +116,11 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
                 case GARBAGE_MANAGEMENT:
                     societyServiceIcon.setImageResource(R.drawable.garbage_bin);
                     break;
+                case EVENT_MANAGEMENT:
+                    societyServiceIcon.setImageResource(R.drawable.event);
+                    break;
             }
         }
     }
+
 }

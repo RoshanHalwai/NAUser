@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +21,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
-import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentEventManagement;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.text.DateFormatSymbols;
@@ -29,11 +30,15 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -51,11 +56,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private EditText editPickDate, editEventTitle;
     private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
     private Button buttonMorningSlot, buttonNoonSlot, buttonEveningSlot, buttonNightSlot;
-    private String societyServiceType;
-    private String category;
-    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot;
+    private String societyServiceType, category, selectedEventDate, slotNumber;
+    private TextView textErrorEventDate, textErrorValidForCategory, textErrorValidForTimeSlot, textTimeSlotQuery, textChooseTimeSlot;
     private Boolean isValidForButtons = false;
-    private String selectedEventDate, slotNumber;
+    private LinearLayout daySlotLayout, nightSlotLayout, layoutLegend;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -83,8 +87,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textEventTitle = findViewById(R.id.textEventTitle);
         TextView textChooseCategory = findViewById(R.id.textChooseCategory);
         TextView textEventDate = findViewById(R.id.textEventDate);
-        TextView textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
-        TextView textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
+        textChooseTimeSlot = findViewById(R.id.textChooseTimeSlot);
+        textTimeSlotQuery = findViewById(R.id.textTimeSlotQuery);
         textErrorEventDate = findViewById(R.id.textErrorEventDate);
         textErrorValidForCategory = findViewById(R.id.textErrorValidForButton);
         textErrorValidForTimeSlot = findViewById(R.id.textErrorValidForButton2);
@@ -102,6 +106,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNightSlot = findViewById(R.id.buttonNightSlot);
         Button buttonBook = findViewById(R.id.buttonBook);
         ImageView infoButton = findViewById(R.id.infoButton);
+        daySlotLayout = findViewById(R.id.daySlotLayout);
+        nightSlotLayout = findViewById(R.id.nightSlotLayout);
+        layoutLegend = findViewById(R.id.layoutLegend);
 
         /*Setting Fonts for all the views*/
         textEventTitle.setTypeface(setLatoBoldFont(this));
@@ -166,13 +173,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
             selectedEventDate = new SimpleDateFormat("dd-MM-yyyy", Locale.UK).format(calendar.getTime());
-
-            buttonMorningSlot.setEnabled(true);
-            buttonNoonSlot.setEnabled(true);
-            buttonEveningSlot.setEnabled(true);
-            buttonNightSlot.setEnabled(true);
-            /*Disabling Time slot which are already booked for particular Date*/
-            disableBookedSlots(selectedEventDate);
+            showSlotLayout(selectedDate);
         }
     }
 
@@ -324,9 +325,20 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         String eventDate = editPickDate.getText().toString();
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-        NammaApartmentEventManagement nammaApartmentEventManagement = new NammaApartmentEventManagement(eventTitle, category,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS, timeSlot, eventDate);
-        eventManagementNotificationReference.child(notificationUID).setValue(nammaApartmentEventManagement);
+        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, timeSlot,
+                userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+
+        /*Setting Event Title Entered By User*/
+        nammaApartmentSocietyServices.setEventTitle(eventTitle);
+
+        /*Setting Event Date Entered By User*/
+        nammaApartmentSocietyServices.setEventDate(eventDate);
+
+        /*Setting Event Category Entered By User*/
+        nammaApartmentSocietyServices.setCategory(category);
+
+        /*adding event data under ALL_SOCIETYSERVICENOTIFICATION_REFERENCE->Notification UID*/
+        eventManagementNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
 
         /*Storing time stamp to keep track of notifications*/
         eventManagementNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
@@ -337,26 +349,61 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
         societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
 
+        /*Creating new key under societyServicesNotifications->eventManagement->notificationUid->true*/
+        DatabaseReference eventManagementReference = SOCIETYSERVICENOTIFICATION_REFERENCE.child(FIREBASE_CHILD_EVENT_MANAGEMENT);
+        eventManagementReference.child(notificationUID).setValue(true);
+
         /*Mapping Time Slot with value in eventManagement under selected Event Date */
-        DatabaseReference eventTimeSlotReference = Constants.EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
+        DatabaseReference eventTimeSlotReference = EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
         eventTimeSlotReference.setValue(true);
 
         /*Call AwaitingResponse activity, by this time Admin should have received the Notification
          * Since, cloud functions would have been triggered*/
         Intent awaitingResponseIntent = new Intent(EventManagement.this, AwaitingResponse.class);
-        awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
-        awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
+        awaitingResponseIntent.putExtra(NOTIFICATION_UID, notificationUID);
+        awaitingResponseIntent.putExtra(SOCIETY_SERVICE_TYPE, societyServiceType);
         startActivity(awaitingResponseIntent);
         finish();
     }
 
+
+    /**
+     * This method invokes to check whether there are any slots booked or not.
+     *
+     * @param selectedDate contains the user selected date
+     */
+    private void showSlotLayout(String selectedDate) {
+        showProgressDialog(this,
+                getString(R.string.event_management_dialog_title),
+                getString(R.string.event_management_dialog_message));
+
+        if (!TextUtils.isEmpty(selectedDate)) {
+            daySlotLayout.setVisibility(View.VISIBLE);
+            nightSlotLayout.setVisibility(View.VISIBLE);
+            layoutLegend.setVisibility(View.VISIBLE);
+            textChooseTimeSlot.setVisibility(View.VISIBLE);
+            textTimeSlotQuery.setVisibility(View.VISIBLE);
+        }
+        buttonMorningSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonNoonSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonEveningSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonNightSlot.setBackgroundResource(R.drawable.valid_for_button_design);
+        buttonMorningSlot.setEnabled(true);
+        buttonNoonSlot.setEnabled(true);
+        buttonEveningSlot.setEnabled(true);
+        buttonNightSlot.setEnabled(true);
+
+        /*Disabling Time slot which are already booked for particular Date*/
+        disableBookedSlots(selectedEventDate);
+
+    }
     /**
      * This method is invoked to disable Time slot which are already booked by another user of that particular selected date
      *
      * @param date selected by the user.
      */
     private void disableBookedSlots(String date) {
-        DatabaseReference eventBookingReference = Constants.EVENT_MANAGEMENT_REFERENCE.child(date);
+        DatabaseReference eventBookingReference = EVENT_MANAGEMENT_REFERENCE.child(date);
 
         /*Retrieving Booked Time slot of particular date from (eventManagement->selectedDate->timeSlot) in firebase*/
         eventBookingReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -381,6 +428,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                         }
                     }
                 }
+                hideProgressDialog();
             }
 
             @Override

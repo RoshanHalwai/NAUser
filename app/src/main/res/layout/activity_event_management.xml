@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:inputType="none"
+                android:inputType="textCapWords"
                 android:textColor="@color/nmBlack"
                 android:textColorHint="@color/nmLightBlack"
                 android:textSize="@dimen/edit_text_default_size"
@@ -173,15 +173,18 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/choose_time_slot"
                 android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:textSize="@dimen/text_view_default_size"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/daySlotLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/buttonMorningSlot"
@@ -208,11 +211,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/nightSlotLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/buttonEveningSlot"
@@ -239,12 +244,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutLegend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="10dp"
@@ -303,7 +310,8 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/query_time_slot"
                 android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:textSize="@dimen/text_view_default_size"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/buttonBook"

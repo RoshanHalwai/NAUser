@@ -20,6 +20,9 @@ public class NammaApartmentSocietyServices {
     private String takenBy;
     private String endOTP;
     private Long timestamp;
+    private String eventTitle;
+    private String category;
+    private String eventDate;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -78,6 +81,34 @@ public class NammaApartmentSocietyServices {
 
     public Long getTimestamp() {
         return timestamp;
+    }
+
+    public String getEventTitle() {
+        return eventTitle;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setEventTitle(String eventTitle) {
+        this.eventTitle = eventTitle;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
     }
 
 }
