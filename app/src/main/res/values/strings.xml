@@ -321,6 +321,7 @@
     <string name="choose_problem_validation">Please Select Your Problem</string>
     <string name="enter_date">Please select date</string>
     <string name="event_title_error">Please enter event title</string>
+    <string name="enter_other_problem_desc">Please Enter Your Problem</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -390,6 +391,7 @@
     <string name="dry_waste">Dry Waste</string>
     <string name="wet_waste">Wet Waste</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
+    <string name="description_others">Description</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>

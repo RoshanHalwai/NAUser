@@ -52,6 +52,7 @@ public class Constants {
     public static final String ELECTRICIAN = "electrician";
     public static final String GARBAGE_MANAGEMENT = "garbageManagement";
     public static final String EVENT_MANAGEMENT = "eventManagement";
+    public static final String SOCIETY_SERVICE_PROBLEM_OTHERS="Others";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
