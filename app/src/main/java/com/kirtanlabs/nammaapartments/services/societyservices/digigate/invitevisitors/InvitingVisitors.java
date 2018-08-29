@@ -229,10 +229,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             int currentMinute = calendar.get(Calendar.MINUTE);
             if (isTodayDateSelected) {
                 if (hourOfDay < currentHour) {
-                    Toast.makeText(this, "Please select Future Time", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
                     return;
                 } else if (hourOfDay == currentHour && minute < currentMinute) {
-                    Toast.makeText(this, "Please select Future Time", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
                     return;
                 }
             }

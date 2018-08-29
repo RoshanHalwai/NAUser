@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -28,6 +29,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.digigate.myvisito
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_CABS_REFERENCE;
@@ -73,6 +75,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     private boolean isValidForSelected;
     private Button selectedButton;
     private LinearLayout cabNumberLayout;
+    private Calendar calendar;
+    private boolean isTodayDateSelected;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -219,11 +223,13 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.editPickDateTime:
                 pickDate(this, this);
-                //Hide the keyboard.
+                /*Hide the keyboard.*/
                 editPickDateTime.setInputType(InputType.TYPE_NULL);
+                /*Clearing the EditText Value*/
+                editPickDateTime.setText("");
                 break;
             case R.id.buttonNotifyGate:
-                // This method gets invoked to check all the editText fields and button validations.
+                /* This method gets invoked to check all the editText fields and button validations.*/
                 validateFields();
                 break;
         }
@@ -243,6 +249,10 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (view.isShown()) {
+            calendar = Calendar.getInstance();
+            int currentMonth = calendar.get(Calendar.MONTH);
+            int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+            isTodayDateSelected = month == currentMonth && dayOfMonth == currentDay;
             selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
             pickTime(this, this);
         }
@@ -251,6 +261,17 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = calendar.get(Calendar.MINUTE);
+            if (isTodayDateSelected) {
+                if (hourOfDay < currentHour) {
+                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                    return;
+                } else if (hourOfDay == currentHour && minute < currentMinute) {
+                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
