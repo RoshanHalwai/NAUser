@@ -114,7 +114,7 @@
     <string name="message_name">sms_body</string>
     <string name="apartment_service_unavailable">Sorry you cannot use this feature since currently there is no apartment service available at your Society.</string>
     <string name="apartment">apartment</string>
-    <string name="groceries_unavailable">We are setting up soon in your Society. We will notify you when once we are there.</string>
+    <string name="groceries_unavailable">We are setting up soon in your Society. We will notify you once we are there.</string>
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
