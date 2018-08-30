@@ -360,7 +360,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
                     UserPersonalDetails userPersonalDetails = new UserPersonalDetails(email, fullName, phoneNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
                     UserFlatDetails userFlatDetails = currentNammaApartmentUser.getFlatDetails();
-                    UserPrivileges userPrivileges = new UserPrivileges(false, grantedAccess, false);
+                    UserPrivileges userPrivileges = new UserPrivileges(false, grantedAccess, true);
 
                     NammaApartmentUser familyMember = new NammaApartmentUser(
                             familyMemberUID,
