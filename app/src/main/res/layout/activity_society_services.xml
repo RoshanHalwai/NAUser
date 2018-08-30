@@ -42,6 +42,38 @@
                 tools:ignore="LabelFor" />
 
             <LinearLayout
+                android:id="@+id/layoutProblemOthers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/description_others"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <EditText
+                    android:id="@+id/editTextDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:cursorVisible="false"
+                    android:inputType="textCapWords"
+                    android:textColor="@color/nmBlack"
+                    android:textColorHint="@color/nmLightBlack"
+                    android:textSize="@dimen/edit_text_default_size"
+                    tools:ignore="LabelFor" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layoutGarbageType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
