@@ -134,9 +134,6 @@ public class ApartmentServices extends BaseActivity {
 
     }
 
-
-
-
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
@@ -211,10 +208,10 @@ public class ApartmentServices extends BaseActivity {
         });
     }
 
+
     /**
-     * Displays Groceries Feature Unavailable Layout along with message passed by the activity.
-     *
-     * @param text contains message passed based on the context.
+     *This method invokes to inflate show a new layout for users that this feature will be implemented later.
+     * @param text contains feature unavailable message.
      */
     private void showGroceriesFeatureUnavailableLayout(int text) {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutGroceriesUnavailable);
