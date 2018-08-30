@@ -47,7 +47,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
  * KirtanLabs Pvt. Ltd.
  * Created by Roshan Halwai on 5/5/2018
  */
-public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.GuestViewHolder> implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.GuestViewHolder> implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -78,7 +78,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     @NonNull
     @Override
     public GuestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_visitors_and_my_daily_services_list, parent, false);
         return new GuestViewHolder(view);
@@ -86,7 +86,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
 
     @Override
     public void onBindViewHolder(@NonNull GuestViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        /*Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase*/
         NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
 
         /*If Guest has not arrived we change cancel text with appropriate text */
@@ -94,6 +94,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             holder.textCancel.setText(mCtx.getString(R.string.cancel));
         }
 
+        /*If Guest is PostApproved then change inviter text to approver */
         if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
             holder.textInvitedBy.setText(R.string.approver);
         }
@@ -140,7 +141,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
+     * Overriding OnClick and OnFocus Change Listeners
      * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
@@ -154,6 +155,13 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             case R.id.buttonCancel:
                 dialog.cancel();
                 break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            onClick(v);
         }
     }
 
@@ -214,7 +222,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
 
         /*Setting OnClick Listeners to the views*/
         editPickDate.setOnClickListener(this);
+        editPickDate.setOnFocusChangeListener(this);
         editPickTime.setOnClickListener(this);
+        editPickTime.setOnFocusChangeListener(this);
         buttonCancel.setOnClickListener(this);
         buttonReschedule.setOnClickListener(v -> {
             updateGuestDataInFirebase(position);
@@ -263,7 +273,6 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             /*Runnable Interface which gets invoked once user presses OK button in Confirmation Dialog*/
             Runnable removeVisitor = () -> {
                 String visitorUID = nammaApartmentGuest.getUid();
-                String approvalType = nammaApartmentGuest.getApprovalType();
                 nammaApartmentGuestList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, nammaApartmentGuestList.size());
@@ -325,6 +334,8 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
 
         GuestViewHolder(View itemView) {
             super(itemView);
+
+            /*Getting Id's for all the views on cardview*/
             textGuestName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textGuestStatus = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDate = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
@@ -341,7 +352,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             textCancel = itemView.findViewById(R.id.textCancel);
             visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
-            //Setting Fonts for all the views on cardview
+            /*Setting Fonts for all the views on cardview*/
             textGuestName.setTypeface(setLatoRegularFont(mCtx));
             textGuestStatus.setTypeface(setLatoRegularFont(mCtx));
             textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
@@ -361,7 +372,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             /*Since this is Guests list we would want to show Status instead of Type*/
             textGuestStatus.setText(mCtx.getString(R.string.status));
 
-            //Setting events for items in card view
+            /*Setting events for items in card view*/
             textCall.setOnClickListener(this);
             textMessage.setOnClickListener(this);
             textReschedule.setOnClickListener(this);

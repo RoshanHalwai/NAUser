@@ -321,6 +321,7 @@
     <string name="choose_problem_validation">Please Select Your Problem</string>
     <string name="enter_date">Please select date</string>
     <string name="event_title_error">Please enter event title</string>
+    <string name="future_time_message">Please Select Future Time</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
