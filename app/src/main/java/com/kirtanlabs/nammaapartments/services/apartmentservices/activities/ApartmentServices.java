@@ -3,6 +3,9 @@ package com.kirtanlabs.nammaapartments.services.apartmentservices.activities;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +32,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_MILKMEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 
 public class ApartmentServices extends BaseActivity {
 
@@ -124,7 +128,7 @@ public class ApartmentServices extends BaseActivity {
             }
             case R.string.groceries:
                 hideProgressIndicator();
-                showFeatureUnavailableLayout(R.string.groceries_unavailable);
+                showGroceriesFeatureUnavailableLayout(R.string.groceries_unavailable);
                 break;
         }
 
@@ -204,6 +208,19 @@ public class ApartmentServices extends BaseActivity {
         });
     }
 
+
+    /**
+     *This method invokes to inflate show a new layout for users that this feature will be implemented later.
+     * @param text contains feature unavailable message.
+     */
+    private void showGroceriesFeatureUnavailableLayout(int text) {
+        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutGroceriesUnavailable);
+        featureUnavailableLayout.setVisibility(View.VISIBLE);
+        TextView textView = findViewById(R.id.textGroceryFeatureUnavailable);
+        textView.setTypeface(setLatoItalicFont(this));
+        textView.setText(text);
+    }
+
     /**
      * This method gets invoked when society service has not added any apartment services.
      */
@@ -245,7 +262,8 @@ public class ApartmentServices extends BaseActivity {
                 break;
             }
         }
-        showFeatureUnAvailableLayout(updatedDescription);
+      showFeatureUnAvailableLayout(updatedDescription);
+
     }
 
 }
