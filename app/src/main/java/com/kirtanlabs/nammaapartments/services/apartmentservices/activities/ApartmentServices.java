@@ -134,13 +134,7 @@ public class ApartmentServices extends BaseActivity {
 
     }
 
-    private void showGroceriesFeatureUnavailableLayout(int text) {
-        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutGroceriesUnavailable);
-        featureUnavailableLayout.setVisibility(View.VISIBLE);
-        TextView textView = findViewById(R.id.textGroceryFeatureUnavailable);
-        textView.setTypeface(setLatoItalicFont(this));
-        textView.setText(text);
-    }
+
 
 
     /* ------------------------------------------------------------- *
@@ -218,6 +212,19 @@ public class ApartmentServices extends BaseActivity {
     }
 
     /**
+     * Displays Groceries Feature Unavailable Layout along with message passed by the activity.
+     *
+     * @param text contains message passed based on the context.
+     */
+    private void showGroceriesFeatureUnavailableLayout(int text) {
+        LinearLayout featureUnavailableLayout = findViewById(R.id.layoutGroceriesUnavailable);
+        featureUnavailableLayout.setVisibility(View.VISIBLE);
+        TextView textView = findViewById(R.id.textGroceryFeatureUnavailable);
+        textView.setTypeface(setLatoItalicFont(this));
+        textView.setText(text);
+    }
+
+    /**
      * This method gets invoked when society service has not added any apartment services.
      */
     private void changeLayoutMessages() {
@@ -259,7 +266,6 @@ public class ApartmentServices extends BaseActivity {
             }
         }
       showFeatureUnAvailableLayout(updatedDescription);
-
 
     }
 
