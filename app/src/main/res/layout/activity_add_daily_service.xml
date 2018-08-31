@@ -25,7 +25,7 @@
                 android:layout_marginTop="5dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:src="@drawable/add_member" />
+                android:src="@drawable/team" />
 
             <TextView
                 android:id="@+id/textErrorProfilePic"
@@ -186,11 +186,11 @@
                     android:id="@+id/editPickTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/textTime"
-                    android:layout_toRightOf="@id/textTime"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
                     android:cursorVisible="false"
-                    android:drawableEnd="@drawable/clock"
-                    android:drawableRight="@drawable/clock"
+                    android:drawableEnd="@drawable/clock_na"
+                    android:drawableRight="@drawable/clock_na"
                     android:gravity="center"
                     android:textColor="@color/nmBlack"
                     android:textSize="18sp"

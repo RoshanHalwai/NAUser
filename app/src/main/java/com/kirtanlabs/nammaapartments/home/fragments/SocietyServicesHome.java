@@ -108,13 +108,13 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         List<NammaApartmentService> societyServicesList = new ArrayList<>();
 
         /*Adding Society Services to the list*/
-        societyServicesList.add(new NammaApartmentService(R.drawable.digital_gate_services, getString(R.string.digital_gate)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.plumbing, getString(R.string.plumber)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_service, getString(R.string.carpenter)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.electrician, getString(R.string.electrician)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_bin, getString(R.string.garbage_management)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.medical_emergency, getString(R.string.emergency)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.event, getString(R.string.event_management)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.digi_gate_na, getString(R.string.digital_gate)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.plumbers_na, getString(R.string.plumber)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_na, getString(R.string.carpenter)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.electrician_na, getString(R.string.electrician)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_na, getString(R.string.garbage_management)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.emergency_na, getString(R.string.emergency)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.event_na, getString(R.string.event_management)));
 
         return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), societyServicesList);
     }
