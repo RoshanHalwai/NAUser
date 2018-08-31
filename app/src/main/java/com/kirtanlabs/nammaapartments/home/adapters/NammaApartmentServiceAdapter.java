@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.pojo.NammaApartmentService;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class NammaApartmentServiceAdapter extends ArrayAdapter<NammaApartmentSer
             TextView textServiceName = convertView.findViewById(R.id.textServiceName);
             NammaApartmentService nammaApartmentService = servicesList.get(position);
             imageServiceIcon.setImageDrawable(context.getResources().getDrawable(nammaApartmentService.getServiceImage()));
+            textServiceName.setTypeface(Constants.setLatoRegularFont(context));
             textServiceName.setText(nammaApartmentService.getServiceName());
         }
         return convertView;
