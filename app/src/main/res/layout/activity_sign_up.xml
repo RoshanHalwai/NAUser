@@ -24,7 +24,7 @@
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/add_member" />
+                android:src="@drawable/users_na" />
 
             <TextView
                 android:id="@+id/textErrorProfilePic"

@@ -63,10 +63,10 @@ public class NotifyGateAndEmergencyHome extends BaseActivity {
             recyclerView.setAdapter(adapter);
 
         } else {
-            notificationServicesList.add(new NammaApartmentService(R.drawable.medical_emergency_heart, getString(R.string.medical_emergency)));
-            notificationServicesList.add(new NammaApartmentService(R.drawable.fire_alarm, getString(R.string.raise_fire_alarm)));
-            notificationServicesList.add(new NammaApartmentService(R.drawable.theft_alarm, getString(R.string.raise_theft_alarm)));
-            notificationServicesList.add(new NammaApartmentService(R.drawable.water_alarm, getString(R.string.raise_water_alarm)));
+            notificationServicesList.add(new NammaApartmentService(R.drawable.medical_emergency_na, getString(R.string.medical_emergency)));
+            notificationServicesList.add(new NammaApartmentService(R.drawable.fire_emergency_na, getString(R.string.raise_fire_alarm)));
+            notificationServicesList.add(new NammaApartmentService(R.drawable.theft_emergency_na, getString(R.string.raise_theft_alarm)));
+            notificationServicesList.add(new NammaApartmentService(R.drawable.water_emergency_na, getString(R.string.raise_water_alarm)));
 
             /*Creating the Adapter*/
             NotifyGateAndEmergencyAdapter adapter = new NotifyGateAndEmergencyAdapter(this, notificationServicesList, serviceType);
