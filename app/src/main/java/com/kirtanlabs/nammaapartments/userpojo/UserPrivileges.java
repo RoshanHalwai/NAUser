@@ -14,7 +14,7 @@ public class UserPrivileges implements Serializable {
 
     private boolean admin;
     private boolean grantedAccess;
-    private boolean verified;
+    private int verified;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -23,7 +23,7 @@ public class UserPrivileges implements Serializable {
     public UserPrivileges() {
     }
 
-    public UserPrivileges(boolean admin, boolean grantedAccess, boolean verified) {
+    public UserPrivileges(boolean admin, boolean grantedAccess, int verified) {
         this.admin = admin;
         this.grantedAccess = grantedAccess;
         this.verified = verified;
@@ -41,11 +41,18 @@ public class UserPrivileges implements Serializable {
         return grantedAccess;
     }
 
+    public int getUserVerifiedStatus() {
+        return verified;
+    }
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
+
     public void setGrantedAccess(boolean grantedAccess) {
         this.grantedAccess = grantedAccess;
     }
 
-    public boolean isVerified() {
-        return verified;
+    public void setVerified(int verified) {
+        this.verified = verified;
     }
 }

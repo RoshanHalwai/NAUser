@@ -21,6 +21,8 @@ import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -76,10 +78,18 @@ public class SplashScreen extends AppCompatActivity {
                     database.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists() && dataSnapshot.getValue(Boolean.class)) {
-                                sharedPreferences.edit().putBoolean(VERIFIED, true).apply();
-                                startActivity(new Intent(SplashScreen.this, NammaApartmentsHome.class));
-                                finish();
+                            if (dataSnapshot.exists()) {
+                                int verifiedValue = dataSnapshot.getValue(Integer.class);
+                                if (verifiedValue == FIREBASE_CHILD_VERIFIED_APPROVED) {
+                                    sharedPreferences.edit().putBoolean(VERIFIED, true).apply();
+                                    startActivity(new Intent(SplashScreen.this, NammaApartmentsHome.class));
+                                    finish();
+                                }
+                                if (verifiedValue == FIREBASE_CHILD_VERIFIED_PENDING) {
+                                    sharedPreferences.edit().putBoolean(VERIFIED, true).apply();
+                                    startActivity(new Intent(SplashScreen.this, ActivationRequired.class));
+                                    finish();
+                                }
                             } else {
                                 startActivity(new Intent(SplashScreen.this, ActivationRequired.class));
                                 finish();
