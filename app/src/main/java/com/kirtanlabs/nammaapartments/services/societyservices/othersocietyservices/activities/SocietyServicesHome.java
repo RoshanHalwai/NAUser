@@ -46,6 +46,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     private Button selectedButton, buttonDryWaste, buttonWetWaste;
     private EditText editTextSelectProblem, editTextDescription;
     private LinearLayout otherProblemLayout;
+    private Boolean otherProblemSelected = false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -221,6 +222,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             editTextSelectProblem.setText(problem);
             if (problem.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
                 otherProblemLayout.setVisibility(View.VISIBLE);
+                otherProblemSelected = true;
             }
             editTextSelectProblem.setError(null);
         }
@@ -319,17 +321,18 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.electrician:
                 String problemValue = editTextSelectProblem.getText().toString();
                 descriptionValue = editTextDescription.getText().toString();
-                fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblem, editTextDescription});
+                fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblem});
                 /*This condition checks if all fields are not filled and if user presses request button it will then display proper error messages.*/
                 if (!fieldsFilled) {
                     if (TextUtils.isEmpty(problemValue)) {
                         editTextSelectProblem.setError(getString(R.string.choose_problem_validation));
                         break;
                     }
-                    if (TextUtils.isEmpty(descriptionValue)) {
-                        editTextDescription.setError(getString(R.string.enter_other_problem_desc));
-                        break;
-                    }
+                }
+                if (otherProblemSelected && TextUtils.isEmpty(descriptionValue)) {
+                    editTextDescription.setError(getString(R.string.enter_other_problem_desc));
+                    editTextDescription.requestFocus();
+                    break;
                 }
                 /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
                 if (fieldsFilled) {
