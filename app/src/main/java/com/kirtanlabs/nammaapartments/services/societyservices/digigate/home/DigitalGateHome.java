@@ -85,12 +85,12 @@ public class DigitalGateHome extends BaseActivity implements AdapterView.OnItemC
 
     private DigitalGateHomeAdapter getAdapter() {
         int[] imageDigitalServices = {
-                R.drawable.invite_visitors,
-                R.drawable.my_visitors_list,
-                R.drawable.my_daily_services,
-                R.drawable.notify_digital_gate,
-                R.drawable.my_sweet_home,
-                R.drawable.emergency
+                R.drawable.invite_visitors_na,
+                R.drawable.my_visitor_list_na,
+                R.drawable.daily_service_na,
+                R.drawable.notify_digi_gate_na,
+                R.drawable.my_sweet_home_na,
+                R.drawable.emergency_na
         };
         String[] stringDigitalGateServices = {
                 getString(R.string.invite_visitors),

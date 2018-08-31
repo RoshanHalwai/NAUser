@@ -105,16 +105,16 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
 
             switch (nammaApartmentSocietyServiceList.get(0).getSocietyServiceType()) {
                 case PLUMBER:
-                    societyServiceIcon.setImageResource(R.drawable.plumbing);
+                    societyServiceIcon.setImageResource(R.drawable.plumbers_na);
                     break;
                 case CARPENTER:
-                    societyServiceIcon.setImageResource(R.drawable.carpenter_service);
+                    societyServiceIcon.setImageResource(R.drawable.carpenter_na);
                     break;
                 case ELECTRICIAN:
-                    societyServiceIcon.setImageResource(R.drawable.electrician);
+                    societyServiceIcon.setImageResource(R.drawable.electrician_na);
                     break;
                 case GARBAGE_MANAGEMENT:
-                    societyServiceIcon.setImageResource(R.drawable.garbage_bin);
+                    societyServiceIcon.setImageResource(R.drawable.garbage_na);
                     break;
                 case EVENT_MANAGEMENT:
                     societyServiceIcon.setImageResource(R.drawable.event);

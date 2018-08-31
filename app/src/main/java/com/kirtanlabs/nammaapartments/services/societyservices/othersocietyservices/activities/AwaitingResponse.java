@@ -236,19 +236,19 @@ public class AwaitingResponse extends BaseActivity {
         /*Setting SocietyService text and Image of societyServiceType according to user society service Request*/
         switch (societyServiceType) {
             case PLUMBER:
-                imageRecentSocietyService.setImageResource(R.drawable.plumbing);
+                imageRecentSocietyService.setImageResource(R.drawable.plumbers_na);
                 textRecentSocietyService.setText(R.string.plumber);
                 break;
             case CARPENTER:
-                imageRecentSocietyService.setImageResource(R.drawable.carpenter_service);
+                imageRecentSocietyService.setImageResource(R.drawable.carpenter_na);
                 textRecentSocietyService.setText(R.string.carpenter);
                 break;
             case ELECTRICIAN:
-                imageRecentSocietyService.setImageResource(R.drawable.electrician);
+                imageRecentSocietyService.setImageResource(R.drawable.electrician_na);
                 textRecentSocietyService.setText(R.string.electrician);
                 break;
             case GARBAGE_MANAGEMENT:
-                imageRecentSocietyService.setImageResource(R.drawable.garbage_bin);
+                imageRecentSocietyService.setImageResource(R.drawable.garbage_na);
                 textRecentSocietyService.setText(R.string.garbage_management);
                 break;
         }

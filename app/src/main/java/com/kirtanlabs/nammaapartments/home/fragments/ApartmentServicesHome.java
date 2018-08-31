@@ -110,15 +110,15 @@ public class ApartmentServicesHome extends Fragment implements AdapterView.OnIte
         List<NammaApartmentService> apartmentServicesList = new ArrayList<>();
 
         /*Adding apartment services to the list*/
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.cook_service, getString(R.string.cook)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.maid, getString(R.string.maid)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.car_cleaning, getString(R.string.car_bike_cleaning)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.child_care, getString(R.string.child_day_care)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.newspaper, getString(R.string.daily_newspaper)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.milk, getString(R.string.milk_man)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.laundry_service, getString(R.string.laundry)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.driving, getString(R.string.driver)));
-        apartmentServicesList.add(new NammaApartmentService(R.drawable.groceries, getString(R.string.groceries)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.cook_na, getString(R.string.cook)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.maid_na, getString(R.string.maid)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.car_bike_clean_na, getString(R.string.car_bike_cleaning)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.child_day_care_na, getString(R.string.child_day_care)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.newspaper_na, getString(R.string.daily_newspaper)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.milkman_na, getString(R.string.milk_man)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.laundry_na, getString(R.string.laundry)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.driver_na, getString(R.string.driver)));
+        apartmentServicesList.add(new NammaApartmentService(R.drawable.grocery_na, getString(R.string.groceries)));
 
         return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);
     }

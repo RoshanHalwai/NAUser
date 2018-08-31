@@ -25,7 +25,7 @@
                 android:layout_marginTop="5dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:src="@drawable/add_member" />
+                android:src="@drawable/team" />
 
             <TextView
                 android:id="@+id/textErrorProfilePic"
