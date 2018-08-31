@@ -114,7 +114,7 @@
     <string name="message_name">sms_body</string>
     <string name="apartment_service_unavailable">Sorry you cannot use this feature since currently there is no apartment service available at your Society.</string>
     <string name="apartment">apartment</string>
-    <string name="groceries_unavailable">Sorry you cannot use this feature since this feature is yet to be implemented.</string>
+    <string name="groceries_unavailable">We are setting up soon in your Society. We will notify you once we are there.</string>
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
@@ -322,6 +322,7 @@
     <string name="enter_date">Please select date</string>
     <string name="event_title_error">Please enter event title</string>
     <string name="future_time_message">Please Select Future Time</string>
+    <string name="enter_other_problem_desc">Please Enter Your Problem</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -391,6 +392,7 @@
     <string name="dry_waste">Dry Waste</string>
     <string name="wet_waste">Wet Waste</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
+    <string name="description_others">Description</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
@@ -418,16 +420,16 @@
     </string-array>
     <string name="search">Search</string>
     <string name="select_from_here">Select</string>
-    <string name="dripping_faucets">Dripping faucets</string>
-    <string name="slow_draining_sink">Slow draining sink</string>
-    <string name="clogged_bath_or_shower_drain">Clogged bath or shower drain</string>
-    <string name="clogged_toilet">Clogged toilet</string>
-    <string name="running_toilet">Running toilet</string>
-    <string name="faulty_water_heater">Faulty water heater</string>
-    <string name="low_water_pressure">Low water pressure</string>
-    <string name="jammed_garbage_disposal">Jammed garbage disposal</string>
-    <string name="leaky_pipes">Leaky pipes</string>
-    <string name="sewer_system_backup">Sewer system backup</string>
+    <string name="dripping_faucets">Installation of underground Drainage Pipes</string>
+    <string name="slow_draining_sink">Bathtub repair and replacement</string>
+    <string name="clogged_bath_or_shower_drain">Toilet repair and replacement</string>
+    <string name="clogged_toilet">Water heater</string>
+    <string name="running_toilet">Drain cleaning</string>
+    <string name="faulty_water_heater">Leak repair</string>
+    <string name="low_water_pressure">Clearing/cleaning clogged pipes</string>
+    <string name="jammed_garbage_disposal"> Water filter installation</string>
+    <string name="leaky_pipes">Burst pipe repair, leaks and other faults</string>
+    <string name="sewer_system_backup">Fitting of valves and couplings </string>
     <string name="others">Others</string>
 
     <string-array name="electrical_issues_list">
@@ -443,16 +445,16 @@
         <item>@string/recessed_light_goes_out_and_comes_back_on</item>
         <item>@string/others</item>
     </string-array>
-    <string name="frequent_electrical_surge">Frequent Electrical Surge</string>
-    <string name="sags_and_dips_in_power">Sags and Dips in Power</string>
-    <string name="light_switches_not_working_properly">Light Switches not working properly</string>
-    <string name="circuit_breaker_tripping_frequently">Circuit Breaker Tripping Frequently</string>
-    <string name="circuit_overload">Circuit Overload</string>
-    <string name="lights_too_bright_or_dim">Lights too Bright or Dim</string>
-    <string name="electrical_shocks">Electrical Shocks</string>
-    <string name="high_electrical_bill">High Electrical Bill</string>
-    <string name="light_bulbs_burning_out_too_often">Light Bulbs burning out too often</string>
-    <string name="recessed_light_goes_out_and_comes_back_on">Recessed Light ‘Goes Out’ and comes back on</string>
+    <string name="frequent_electrical_surge">Circuit Overload</string>
+    <string name="sags_and_dips_in_power"> Lightening connections</string>
+    <string name="light_switches_not_working_properly">Electrical short circuit</string>
+    <string name="circuit_breaker_tripping_frequently">Wiring issues</string>
+    <string name="circuit_overload"> Ceiling Fan upgrade</string>
+    <string name="lights_too_bright_or_dim">Circuit breaker installation</string>
+    <string name="electrical_shocks">Switches are not working</string>
+    <string name="high_electrical_bill">Recessed lighting</string>
+    <string name="light_bulbs_burning_out_too_often">Microwave issue</string>
+    <string name="recessed_light_goes_out_and_comes_back_on">Water Heater repair</string>
 
     <string-array name="carpentry_issues_list">
         <item>@string/carpentry_finish_appears_uneven</item>
@@ -460,14 +462,23 @@
         <item>@string/weak_joints</item>
         <item>@string/dents_in_wood</item>
         <item>@string/glue_stuck</item>
+        <item>@string/wood_flooring</item>
+        <item>@string/damage_burns</item>
+        <item>@string/sofa_door</item>
+        <item>@string/window_frame</item>
         <item>@string/others</item>
     </string-array>
-    <string name="unable_to_open_drawers_and_doors">Unable to open drawers and doors</string>
-    <string name="carpentry_finish_appears_uneven">Carpentry finish appears uneven</string>
-    <string name="split_in_the_wood">Split in the wood</string>
-    <string name="weak_joints">Weak joints</string>
-    <string name="dents_in_wood">Dents in wood</string>
-    <string name="glue_stuck">Glue stuck</string>
+    <string name="unable_to_open_drawers_and_doors">Installation of Cabinets and Molding</string>
+    <string name="carpentry_finish_appears_uneven">Wooden Mesh</string>
+    <string name="split_in_the_wood">Wood partition</string>
+    <string name="weak_joints">Bolt, Latch and Handle work</string>
+    <string name="dents_in_wood">Polishing and Repair</string>
+    <string name="glue_stuck">Furniture installation and assembly</string>
+    <string name="wood_flooring">Build Stairs</string>
+    <string name="damage_burns">Window Frame repair</string>
+    <string name="sofa_door">Wood Flooring repair</string>
+    <string name="window_frame">Unable to open doors/drawers</string>
+
 
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>

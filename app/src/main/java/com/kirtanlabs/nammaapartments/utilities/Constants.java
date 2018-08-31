@@ -52,6 +52,7 @@ public class Constants {
     public static final String ELECTRICIAN = "electrician";
     public static final String GARBAGE_MANAGEMENT = "garbageManagement";
     public static final String EVENT_MANAGEMENT = "eventManagement";
+    public static final String SOCIETY_SERVICE_PROBLEM_OTHERS="Others";
 
     /* ------------------------------------------------------------- *
      * Validation Keys
@@ -87,6 +88,7 @@ public class Constants {
     public static final String CARPENTER_SERVICE_NOTIFICATION_UID = "carpenterServiceNotificationUid";
     public static final String ELECTRICIAN_SERVICE_NOTIFICATION_UID = "electricianServiceNotificationUid";
     public static final String GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID = "garbageManagementNotificationUid";
+    public static final String EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID = "eventManagementNotificationUid";
 
     /* ------------------------------------------------------------- *
      * Firebase Values
@@ -139,6 +141,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_GATE_NOTIFICATIONS = "gateNotifications";
     public static final String FIREBASE_CHILD_TIMESTAMP = "timestamp";
     public static final int FIREBASE_CHILD_RATING = 3;
+    public static final int FIREBASE_CHILD_VERIFIED_PENDING = 0;
+    public static final int FIREBASE_CHILD_VERIFIED_APPROVED = 1;
     public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
     public static final String FIREBASE_CHILD_REJECTED = "Rejected";
     private static final String FIREBASE_CHILD_APARTMENTS = "apartments";

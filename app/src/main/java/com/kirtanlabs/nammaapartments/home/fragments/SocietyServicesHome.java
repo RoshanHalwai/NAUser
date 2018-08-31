@@ -28,7 +28,6 @@ import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 
 public class SocietyServicesHome extends Fragment implements AdapterView.OnItemClickListener {
@@ -95,9 +94,8 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 startActivity(medicalIntent);
                 break;
             case 6:
-                Intent eventManagementIntent = new Intent(getActivity(), EventManagement.class);
-                eventManagementIntent.putExtra(SCREEN_TITLE, R.string.event_management);
-                startActivity(eventManagementIntent);
+                /*To Check if User's previous request for that particular society service is completed or not.*/
+                checkPreviousRequestStatus(R.string.event_management);
                 break;
         }
     }
@@ -144,6 +142,10 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 notificationUID = sharedPreferences.getString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
                 break;
+            case R.string.event_management:
+                notificationUID = sharedPreferences.getString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
+                societyServiceType = Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
+                break;
         }
 
         if (notificationUID != null) {
@@ -171,6 +173,9 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                                 case R.string.garbage_management:
                                     editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                                     break;
+                                case R.string.event_management:
+                                    editor.putString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
+                                    break;
                             }
                             editor.apply();
                             /*Navigating user to Society Service Home Screen where user can request for society services*/
@@ -189,8 +194,12 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
      * @param screenTitle - type of society service user needs.
      */
     private void makeSocietyServiceRequest(int screenTitle) {
-        Intent intent = new Intent(getActivity(), com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.SocietyServicesHome.class);
-        intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
-        startActivity(intent);
+        if (screenTitle == R.string.event_management) {
+            startActivity(new Intent(getActivity(), EventManagement.class));
+        } else {
+            Intent intent = new Intent(getActivity(), com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.SocietyServicesHome.class);
+            intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
+            startActivity(intent);
+        }
     }
 }

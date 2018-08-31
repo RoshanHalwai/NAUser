@@ -397,6 +397,23 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                         .child(dailyServiceChild);
                 userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
 
+                  /* We add status directly under dailyService UID since Guard may change the status of the daily service
+                        and we would want all the users to know about it*/
+                DatabaseReference dailyServiceStatusReference = dailyServicePublicReference.child(dailyServiceUID);
+                dailyServiceStatusReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            dailyServiceStatusReference.child(FIREBASE_CHILD_STATUS).setValue(NOT_ENTERED);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 /*getting the storage reference*/
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_DAILYSERVICES)
                         .child(FIREBASE_CHILD_PRIVATE)
@@ -416,10 +433,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
 
                     /*adding daily service data under Daily Service UID -> User UID*/
                     dailyServicePublicReference.child(dailyServiceUID).child(userUID).setValue(nammaApartmentDailyService);
-
-                        /* We add status directly under dailyService UID since Guard may change the status of the daily service
-                        and we would want all the users to know about it*/
-                    dailyServicePublicReference.child(dailyServiceUID).child(FIREBASE_CHILD_STATUS).setValue(NOT_ENTERED);
 
                     /*dismissing the progress dialog*/
                     hideProgressDialog();

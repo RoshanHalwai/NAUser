@@ -54,6 +54,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
@@ -450,7 +451,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         /*Create an instance of NammaApartmentUser class*/
                         UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());
                         UserFlatDetails userFlatDetails = new UserFlatDetails(apartmentName, city, flatNumber, societyName, tenantType);
-                        UserPrivileges userPrivileges = new UserPrivileges(true, true, false);
+                        UserPrivileges userPrivileges = new UserPrivileges(true, true, FIREBASE_CHILD_VERIFIED_PENDING);
                         NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
 
                         /*Mapping Mobile Number to UID in firebase under users->all*/

@@ -26,6 +26,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_PROBLEM_OTHERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -41,9 +42,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             R.id.buttonNoonSlot,
             R.id.buttonEveningSlot};
     private int screenTitle;
-    private String problem, societyServiceType;
+    private String problem, societyServiceType, descriptionValue;
     private Button selectedButton, buttonDryWaste, buttonWetWaste;
-    private EditText editTextSelectProblem;
+    private EditText editTextSelectProblem, editTextDescription;
+    private LinearLayout otherProblemLayout;
+    private Boolean otherProblemSelected = false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -70,6 +73,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         /*Getting Id's for all the views*/
         TextView textSelectSlot = findViewById(R.id.textSelectSlot);
         TextView textSelectProblem = findViewById(R.id.textSelectProblem);
+        TextView textDescription = findViewById(R.id.textDescription);
         Button buttonImmediately = findViewById(R.id.buttonImmediately);
         Button buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
         Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
@@ -78,13 +82,17 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonDryWaste = findViewById(R.id.buttonDryWaste);
         buttonWetWaste = findViewById(R.id.buttonWetWaste);
         editTextSelectProblem = findViewById(R.id.editTextSelectProblem);
+        editTextDescription = findViewById(R.id.editTextDescription);
         LinearLayout layoutGarbageType = findViewById(R.id.layoutGarbageType);
+        otherProblemLayout = findViewById(R.id.layoutProblemOthers);
         ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for all the views*/
         textSelectProblem.setTypeface(setLatoBoldFont(this));
         textSelectSlot.setTypeface(setLatoBoldFont(this));
+        textDescription.setTypeface(setLatoBoldFont(this));
         editTextSelectProblem.setTypeface(setLatoRegularFont(this));
+        editTextDescription.setTypeface(setLatoRegularFont(this));
         buttonImmediately.setTypeface(setLatoRegularFont(this));
         buttonMorningSlot.setTypeface(setLatoRegularFont(this));
         buttonNoonSlot.setTypeface(setLatoRegularFont(this));
@@ -212,6 +220,10 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
             problem = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
             editTextSelectProblem.setText(problem);
+            if (problem.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
+                otherProblemLayout.setVisibility(View.VISIBLE);
+                otherProblemSelected = true;
+            }
             editTextSelectProblem.setError(null);
         }
     }
@@ -249,10 +261,18 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         String userUID = NammaApartmentsGlobal.userUID;
         String timeSlot = selectedButton.getText().toString();
 
-        /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
-        societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+        /*If the user selected problem is others then we display the description entered by the user as problem*/
+        if (problem.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
+            /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+            NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(descriptionValue, timeSlot,
+                    userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+            societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+        } else {
+            /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+            NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
+                    userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+            societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+        }
 
         /*Storing time stamp to keep track of notifications*/
         societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
@@ -300,13 +320,19 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.carpenter:
             case R.string.electrician:
                 String problemValue = editTextSelectProblem.getText().toString();
+                descriptionValue = editTextDescription.getText().toString();
                 fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblem});
-                /*This condition checks if all fields are not filled and if user presses add my vehicle button it will then display proper error messages.*/
+                /*This condition checks if all fields are not filled and if user presses request button it will then display proper error messages.*/
                 if (!fieldsFilled) {
                     if (TextUtils.isEmpty(problemValue)) {
                         editTextSelectProblem.setError(getString(R.string.choose_problem_validation));
                         break;
                     }
+                }
+                if (otherProblemSelected && TextUtils.isEmpty(descriptionValue)) {
+                    editTextDescription.setError(getString(R.string.enter_other_problem_desc));
+                    editTextDescription.requestFocus();
+                    break;
                 }
                 /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
                 if (fieldsFilled) {
