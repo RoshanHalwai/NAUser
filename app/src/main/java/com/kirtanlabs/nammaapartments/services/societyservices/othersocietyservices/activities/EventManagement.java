@@ -2,6 +2,7 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -357,6 +358,11 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         DatabaseReference eventTimeSlotReference = EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
         eventTimeSlotReference.setValue(true);
 
+        /*Storing Event Management Notification UID to check if the status of event has changed from 'in progress' to 'confirmed/rejected'*/
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID).apply();
+
         /*Call AwaitingResponse activity, by this time Admin should have received the Notification
          * Since, cloud functions would have been triggered*/
         Intent awaitingResponseIntent = new Intent(EventManagement.this, AwaitingResponse.class);
@@ -397,6 +403,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         disableBookedSlots(selectedEventDate);
 
     }
+
     /**
      * This method is invoked to disable Time slot which are already booked by another user of that particular selected date
      *
