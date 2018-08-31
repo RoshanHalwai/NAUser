@@ -41,9 +41,10 @@ public class UserPrivileges implements Serializable {
         return grantedAccess;
     }
 
-    public int getUserVerifiedStatus() {
+    public int getVerified() {
         return verified;
     }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -52,7 +53,4 @@ public class UserPrivileges implements Serializable {
         this.grantedAccess = grantedAccess;
     }
 
-    public void setVerified(int verified) {
-        this.verified = verified;
-    }
 }
