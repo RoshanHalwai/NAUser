@@ -41,7 +41,7 @@ public class UserPrivileges implements Serializable {
         return grantedAccess;
     }
 
-    public int getVerified() {
+    public int getUserVerifiedStatus() {
         return verified;
     }
     /* ------------------------------------------------------------- *
