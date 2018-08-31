@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -44,6 +45,8 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_VERSION;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -256,6 +259,9 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             editor.putString(USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             editor.apply();
         }
+        
+        /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
+        userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
     }
 
     /**

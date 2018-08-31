@@ -51,7 +51,9 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFER
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FULLNAME;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
@@ -459,6 +461,9 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
 
                         /*Storing user details in firebase under users->private->uid*/
                         PRIVATE_USERS_REFERENCE.child(userUID).setValue(nammaApartmentUser);
+
+                        /*Storing time stamp so that Society Admin will be able to know when user has created their account*/
+                        PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
                         /*Adding user UID under Flats->FlatNumber*/
                         flatsReference.child(FIREBASE_CHILD_FLAT_MEMBERS).child(userUID).setValue(true);

@@ -156,6 +156,10 @@ public class Constants {
     public static final String FIREBASE_CHILD_EVENT_DATE = "eventDate";
     public static final String FIREBASE_CHILD_TIME_SLOT = "timeSlot";
     private static final String FIREBASE_CHILD_NOTICE_BOARD = "noticeBoard";
+    public static final String FIREBASE_CHILD_OTHER_DETAILS = "otherDetails";
+    public static final String FIREBASE_CHILD_LATITUDE = "latitude";
+    public static final String FIREBASE_CHILD_LONGITUDE = "longitude";
+    public static final String FIREBASE_CHILD_DEVICE_VERSION = "deviceVersion";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys

@@ -49,6 +49,8 @@ import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.AFM_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -371,6 +373,9 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
 
                     /*Storing new family member details in firebase under users->private->family member uid*/
                     PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
+
+                    /*Storing time stamp in firebase under (users->private->familyMember/friendUid->otherDetails->timestamp)*/
+                    PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
                     /*dismissing the progress dialog*/
                     hideProgressDialog();

@@ -40,7 +40,9 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ENABLE_LOCATION_PERMISSION_CODE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLATDETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_LATITUDE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_LONGITUDE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GALLERY_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
@@ -109,10 +111,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         /*Getting the reference till the flatDetails under users->private*/
         DatabaseReference usersFlatDetailsReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
-                .child(FIREBASE_CHILD_FLATDETAILS);
+                .child(FIREBASE_CHILD_OTHER_DETAILS);
         /*Setting the value of Latitude and Longitude under flatDetails*/
-        usersFlatDetailsReference.child("latitude").setValue(latitude);
-        usersFlatDetailsReference.child("longitude").setValue(longitude);
+        usersFlatDetailsReference.child(FIREBASE_CHILD_LATITUDE).setValue(latitude);
+        usersFlatDetailsReference.child(FIREBASE_CHILD_LONGITUDE).setValue(longitude);
     }
 
     @Override
