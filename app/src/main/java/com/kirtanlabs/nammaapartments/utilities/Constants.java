@@ -15,6 +15,7 @@ public class Constants {
      * Intent Keys
      * ------------------------------------------------------------- */
 
+    public static final String ACTIVATION_STATUS = "activation_status";
     public static final String ALARM_TYPE = "alarm_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
     public static final String EMAIL_ID = "email_id";
