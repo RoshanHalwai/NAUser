@@ -20,6 +20,7 @@ import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ACTIVATION_STATUS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
@@ -47,7 +48,7 @@ public class SplashScreen extends AppCompatActivity {
      * Start corresponding activity based on shared preference data
      */
     //TODO: Logic seems to be correct but can be written in a efficient way and startActivity API can be reused
-    private void startCorrespondingActivity() {
+    public void startCorrespondingActivity() {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
         Boolean firstTime = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
         Boolean accountCreated = sharedPreferences.getBoolean(Constants.ACCOUNT_CREATED, false);
@@ -72,35 +73,8 @@ public class SplashScreen extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    String userUID = sharedPreferences.getString(USER_UID, "");
-                    DatabaseReference database = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_PRIVILEGES)
-                            .child(VERIFIED);
-                    database.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                int verifiedValue = dataSnapshot.getValue(Integer.class);
-                                if (verifiedValue == FIREBASE_CHILD_VERIFIED_APPROVED) {
-                                    sharedPreferences.edit().putBoolean(VERIFIED, true).apply();
-                                    startActivity(new Intent(SplashScreen.this, NammaApartmentsHome.class));
-                                    finish();
-                                }
-                                if (verifiedValue == FIREBASE_CHILD_VERIFIED_PENDING) {
-                                    sharedPreferences.edit().putBoolean(VERIFIED, true).apply();
-                                    startActivity(new Intent(SplashScreen.this, ActivationRequired.class));
-                                    finish();
-                                }
-                            } else {
-                                startActivity(new Intent(SplashScreen.this, ActivationRequired.class));
-                                finish();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    startActivity(new Intent(SplashScreen.this, ActivationRequired.class));
+                    finish();
                 }
             } else {
                 startActivity(new Intent(this, SignIn.class));

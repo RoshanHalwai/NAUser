@@ -16,12 +16,12 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/imageActivation"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:contentDescription="@string/feature_unavailable_image_desc"
-            android:src="@drawable/doormat" />
+            android:contentDescription="@string/feature_unavailable_image_desc" />
 
         <TextView
             android:id="@+id/textActivationRequiredMessage"
@@ -30,7 +30,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="@string/activation_message"
             android:textColor="@color/nmBlack"
             android:textSize="18sp" />
 

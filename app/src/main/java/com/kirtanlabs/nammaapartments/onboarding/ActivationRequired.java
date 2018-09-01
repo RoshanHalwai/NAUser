@@ -2,6 +2,7 @@ package com.kirtanlabs.nammaapartments.onboarding;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,6 +16,7 @@ import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
@@ -39,9 +41,10 @@ public class ActivationRequired extends BaseActivity {
         hideBackButton();
 
         TextView textActivationRequiredMessage = findViewById(R.id.textActivationRequiredMessage);
+        ImageView imageActivation = findViewById(R.id.imageActivation);
         textActivationRequiredMessage.setTypeface(setLatoItalicFont(this));
 
-        /*Keep Track of Verified Key in Firebase; As soon as Admin changes the value to 'true'
+        /*Keep Track of Verified Key in Firebase; As soon as Admin changes the value to '1'
             we change the UI in User App*/
         String userUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference database = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_PRIVILEGES)
@@ -50,11 +53,19 @@ public class ActivationRequired extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    int verifiedValue = dataSnapshot.getValue(Integer.class);
-                    if (verifiedValue == FIREBASE_CHILD_VERIFIED_APPROVED) {
-                        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(VERIFIED, true).apply();
-                        startActivity(new Intent(ActivationRequired.this, NammaApartmentsHome.class));
-                        finish();
+                    Integer verifiedValue = dataSnapshot.getValue(Integer.class);
+                    if (verifiedValue != null) {
+                        if (verifiedValue == FIREBASE_CHILD_VERIFIED_APPROVED) {
+                            getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(VERIFIED, true).apply();
+                            startActivity(new Intent(ActivationRequired.this, NammaApartmentsHome.class));
+                            finish();
+                        } else if (verifiedValue == FIREBASE_CHILD_VERIFIED_PENDING) {
+                            imageActivation.setImageResource(R.drawable.doormat);
+                            textActivationRequiredMessage.setText(R.string.activation_pending_message);
+                        } else {
+                            imageActivation.setImageResource(R.drawable.feature_unavailable);
+                            textActivationRequiredMessage.setText(R.string.activation_rejection_message);
+                        }
                     }
                 }
             }

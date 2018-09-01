@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.AddDailyService;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.AddFamilyMember;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
@@ -36,6 +37,8 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
 
 public class OTP extends BaseActivity implements View.OnClickListener, View.OnKeyListener {
 
@@ -278,7 +281,11 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     /* Check if User mobile number is found in database */
                                     if (dataSnapshot.exists()) {
-                                        startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                                        if (getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
+                                            startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                                        } else {
+                                            startActivity(new Intent(OTP.this, ActivationRequired.class));
+                                        }
                                     }
                                     /* User record was not found in firebase hence we navigate them to Sign Up page*/
                                     else {
