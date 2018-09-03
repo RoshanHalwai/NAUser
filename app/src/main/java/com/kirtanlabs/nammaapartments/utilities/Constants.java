@@ -118,7 +118,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_GARBAGE_MANAGEMENT = "garbageManagement";
     public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
-    private static final String FIREBASE_CHILD_GUARD = "guard";
+    private static final String FIREBASE_CHILD_GUARDS = "guards";
     public static final String FIREBASE_CHILD_HANDED_THINGS = "handedThings";
     public static final String FIREBASE_CHILD_LAUNDRIES = "laundries";
     public static final String FIREBASE_CHILD_MAIDS = "maids";
@@ -210,7 +210,7 @@ public class Constants {
     private static final DatabaseReference EMERGENCIES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EMERGENCIES);
     public static final DatabaseReference PRIVATE_EMERGENCY_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference PUBLIC_EMERGENCIES_REFERENCE = EMERGENCIES_REFERENCE.child(FIREBASE_CHILD_PUBLIC);
-    public static final DatabaseReference GUARD_REFERENCE = SOCIETY_SERVICES_REFERENCE.child(FIREBASE_CHILD_GUARD);
+    public static final DatabaseReference GUARDS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_GUARDS);
     public static final DatabaseReference NOTICE_BOARD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_NOTICE_BOARD);
     public static final DatabaseReference EVENT_MANAGEMENT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EVENT_MANAGEMENT);
 
