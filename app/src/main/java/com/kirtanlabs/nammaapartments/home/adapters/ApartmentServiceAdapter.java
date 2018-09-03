@@ -45,6 +45,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
     @NonNull
     @Override
     public ApartmentServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.activity_apartment_services, parent, false);
@@ -62,8 +63,6 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
         holder.textApartmentServiceNoOfFlatsSlotValue.setText(String.valueOf(ApartmentServices.numberOfFlats.get(nammaApartmentDailyService.getUID())));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
-        /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
-        baseActivity.enableLocationService();
     }
 
     @Override

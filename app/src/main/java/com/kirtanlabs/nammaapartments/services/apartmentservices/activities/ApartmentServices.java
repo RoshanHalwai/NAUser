@@ -86,42 +86,59 @@ public class ApartmentServices extends BaseActivity {
         recyclerView.setAdapter(apartmentServiceAdapter);
 
         switch (screenTitle) {
+
             case R.string.cook: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_COOKS);
                 break;
             }
             case R.string.maid: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_MAIDS);
                 break;
             }
             case R.string.car_bike_cleaning: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_CARBIKECLEANERS);
                 break;
             }
             case R.string.child_day_care: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_CHILDDAYCARES);
                 break;
             }
             case R.string.daily_newspaper: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_DAILYNEWSPAPERS);
                 break;
             }
             case R.string.milk_man: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_MILKMEN);
                 break;
             }
             case R.string.laundry: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_LAUNDRIES);
                 break;
             }
             case R.string.driver: {
+                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_DRIVERS);
                 break;
