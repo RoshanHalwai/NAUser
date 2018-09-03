@@ -258,6 +258,7 @@ public class Constants {
     public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
     public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
     public static final int SELECT_LANGUAGE_REQUEST_CODE = 10;
+    public static final int NEW_NOTICE_CODE = 11;
 
     /* ------------------------------------------------------------- *
      * Font Types

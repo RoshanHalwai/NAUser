@@ -23,6 +23,8 @@ import android.widget.RemoteViews;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.activities.NoticeBoard;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,19 +134,12 @@ public class FirebaseNotifications extends FirebaseMessagingService {
             Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
         } else {
 
-            //General Notification - These do not require any user actions
+            /*General Notification - These do not require any user actions*/
             String message = remoteMessageData.get("message");
 
-            Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
-                    .setSmallIcon(R.drawable.namma_apartment_notification)
-                    .setAutoCancel(true)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText(message)
-                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                    .setPriority(PRIORITY_DEFAULT)
-                    .build();
-
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            int mNotificationID = (int) System.currentTimeMillis();
 
             /*To support Android Oreo Devices and higher*/
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -152,9 +147,37 @@ public class FirebaseNotifications extends FirebaseMessagingService {
                         getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
                 Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
             }
+            /*After the Admin adds a notice and user receives notification, making sure user is navigated
+             * to 'Notice Board' screen on press of notification in notification panel*/
+            if (remoteMessageType.equals("Notice_Board_Notification")) {
+                Intent noticeBoardIntent = new Intent(this, NoticeBoard.class);
 
-            int mNotificationID = (int) System.currentTimeMillis();
-            Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, Constants.NEW_NOTICE_CODE,
+                        noticeBoardIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                Notification noticeBoardNotification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                        .setSmallIcon(R.drawable.namma_apartment_notification)
+                        .setAutoCancel(true)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(message)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setPriority(PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .build();
+
+                Objects.requireNonNull(notificationManager).notify(mNotificationID, noticeBoardNotification);
+            } else {
+                Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                        .setSmallIcon(R.drawable.namma_apartment_notification)
+                        .setAutoCancel(true)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(message)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setPriority(PRIORITY_DEFAULT)
+                        .build();
+
+                Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
+            }
         }
     }
 
