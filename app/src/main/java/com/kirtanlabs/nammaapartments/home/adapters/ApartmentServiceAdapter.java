@@ -45,7 +45,6 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
     @NonNull
     @Override
     public ApartmentServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.activity_apartment_services, parent, false);
