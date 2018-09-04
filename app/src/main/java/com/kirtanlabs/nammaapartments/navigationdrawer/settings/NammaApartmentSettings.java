@@ -3,7 +3,9 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.settings;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -20,9 +22,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class NammaApartmentSettings extends BaseActivity {
+public class NammaApartmentSettings extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private Button buttonLanguage;
+    private Switch eIntercomNotifications, switchGuestNotification, switchDailyServiceNotification, switchCabNotification, switchPackageNotification;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -47,11 +50,11 @@ public class NammaApartmentSettings extends BaseActivity {
         TextView textSoundSettings = findViewById(R.id.textSoundSettings);
         buttonLanguage = findViewById(R.id.buttonLanguage);
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
-        Switch eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
-        Switch switchGuestNotification = findViewById(R.id.switchGuestNotification);
-        Switch switchDailyServiceNotification = findViewById(R.id.switchDailyServiceNotification);
-        Switch switchCabNotification = findViewById(R.id.switchCabNotification);
-        Switch switchPackageNotification = findViewById(R.id.switchPackageNotification);
+        eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
+        switchGuestNotification = findViewById(R.id.switchGuestNotification);
+        switchDailyServiceNotification = findViewById(R.id.switchDailyServiceNotification);
+        switchCabNotification = findViewById(R.id.switchCabNotification);
+        switchPackageNotification = findViewById(R.id.switchPackageNotification);
 
         textGeneralSettings.setTypeface(setLatoBoldFont(this));
         textSoundSettings.setTypeface(setLatoBoldFont(this));
@@ -64,8 +67,14 @@ public class NammaApartmentSettings extends BaseActivity {
         switchCabNotification.setTypeface(setLatoRegularFont(this));
         switchPackageNotification.setTypeface(setLatoRegularFont(this));
 
-        buttonSignOut.setOnClickListener(v -> showLogOutDialog());
-        buttonLanguage.setOnClickListener(v -> startActivityForResult(new Intent(NammaApartmentSettings.this, LanguageList.class), SELECT_LANGUAGE_REQUEST_CODE));
+        buttonSignOut.setOnClickListener(this);
+        buttonLanguage.setOnClickListener(this);
+        eIntercomNotifications.setOnCheckedChangeListener(this);
+        switchGuestNotification.setOnCheckedChangeListener(this);
+        switchDailyServiceNotification.setOnCheckedChangeListener(this);
+        switchCabNotification.setOnCheckedChangeListener(this);
+        switchPackageNotification.setOnCheckedChangeListener(this);
+
     }
 
     /* ------------------------------------------------------------- *
@@ -81,6 +90,20 @@ public class NammaApartmentSettings extends BaseActivity {
         }
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding On Click Listener Method
+     * ------------------------------------------------------------- */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonLanguage:
+                startActivityForResult(new Intent(NammaApartmentSettings.this, LanguageList.class), SELECT_LANGUAGE_REQUEST_CODE);
+                break;
+            case R.id.buttonSignOut:
+                showLogOutDialog();
+                break;
+        }
+    }
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
@@ -110,4 +133,11 @@ public class NammaApartmentSettings extends BaseActivity {
         showConfirmDialog(confirmDialogTitle, confirmDialogMessage, logoutUser);
     }
 
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (eIntercomNotifications.isChecked()) {
+
+        }
+    }
 }

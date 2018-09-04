@@ -46,6 +46,12 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_VERSION;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
@@ -262,6 +268,14 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         
         /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
         userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
+
+        /*Storing Notification Sound Keys as default values in firebase when user successfully logs in*/
+        DatabaseReference userNotificationSoundReference = userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_NOTIFICATION_SOUND);
+        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(true);
+        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(true);
+        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(true);
+        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(true);
+        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(true);
     }
 
     /**
