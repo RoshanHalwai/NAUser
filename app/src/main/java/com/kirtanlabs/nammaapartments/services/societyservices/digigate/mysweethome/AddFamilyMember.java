@@ -376,7 +376,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     PRIVATE_USERS_REFERENCE.child(familyMemberUID).setValue(familyMember);
 
                     /*Storing time stamp in firebase under (users->private->familyMember/friendUid->otherDetails->timestamp)*/
-                    PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
+                    PRIVATE_USERS_REFERENCE.child(familyMemberUID).child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
                     /*dismissing the progress dialog*/
                     hideProgressDialog();

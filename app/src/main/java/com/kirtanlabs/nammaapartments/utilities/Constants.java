@@ -69,7 +69,7 @@ public class Constants {
     public static final String SLOT_TWO = "Slot 2";
     public static final String SLOT_THREE = "Slot 3";
     public static final String SLOT_FOUR = "Slot 4";
-
+    public static final int LAUNCH_SCREEN_TIME_DURATION = 3000;
 
     /* ------------------------------------------------------------- *
      * Login/OTP Constants
@@ -135,6 +135,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
     public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
     public static final String FIREBASE_CHILD_STATUS = "status";
+    public static final String FIREBASE_CHILD_TOKENID = "tokenId";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_USER_DATA = "userData";
