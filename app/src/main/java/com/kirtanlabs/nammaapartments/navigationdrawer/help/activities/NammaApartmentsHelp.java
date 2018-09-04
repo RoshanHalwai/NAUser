@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.help.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,7 +74,7 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                Intent faqIntent = new Intent(NammaApartmentsHelp.this, FrequentlyAskedQuestionsActivity.class);
+                Intent faqIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nammaapartments.com/faq-template-master/index.html"));
                 startActivity(faqIntent);
                 break;
             case 1:
