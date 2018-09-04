@@ -36,6 +36,7 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String COMPLETED = "Completed";
     public static final String LANGUAGE = "language";
+    public static final String VISITOR_MOBILE_NUMBER="visitorMobileNumber";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -174,6 +175,7 @@ public class Constants {
     public static final String REMOTE_VISITOR_TYPE = "visitor_type";
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
+    public static final String REMOTE_VISITOR_MOBILE_NUMBER="mobile_number";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References

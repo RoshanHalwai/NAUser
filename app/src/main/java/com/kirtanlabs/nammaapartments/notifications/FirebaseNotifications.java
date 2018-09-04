@@ -48,8 +48,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_NOTIFICA
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_USER_UID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_VISITOR_MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_VISITOR_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_TYPE;
 
@@ -65,13 +67,14 @@ public class FirebaseNotifications extends FirebaseMessagingService {
 
         String remoteMessageType = remoteMessageData.get(REMOTE_TYPE);
 
-        //E-Intercom Notification requires Users Action
+        /*E-Intercom Notification requires Users Action*/
         if (remoteMessageType.equals("E-Intercom")) {
             String message = remoteMessageData.get(REMOTE_MESSAGE);
             String profilePhoto = remoteMessageData.get(REMOTE_PROFILE_PHOTO);
             String notificationUID = remoteMessageData.get(REMOTE_NOTIFICATION_UID);
             String userUID = remoteMessageData.get(REMOTE_USER_UID);
             String visitorType = remoteMessageData.get(REMOTE_VISITOR_TYPE);
+            String visitorMobileNumber = remoteMessageData.get(REMOTE_VISITOR_MOBILE_NUMBER);
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_custom_notification);
 
@@ -120,6 +123,7 @@ public class FirebaseNotifications extends FirebaseMessagingService {
             acceptButtonIntent.putExtra(MESSAGE, message);
             acceptButtonIntent.putExtra(VISITOR_TYPE, visitorType);
             acceptButtonIntent.putExtra(VISITOR_PROFILE_PHOTO, profilePhoto);
+            acceptButtonIntent.putExtra(VISITOR_MOBILE_NUMBER, visitorMobileNumber);
             PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(this, 123, acceptButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.buttonAccept, acceptPendingIntent);
 
