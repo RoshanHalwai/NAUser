@@ -672,4 +672,8 @@
     <!--Launch Screen Activity-->
     <string name="launch_screen_image_desc">Image of Launch Screen</string>
 
+    <!--Firebase Notifications  & Action Button Listener Activity-->
+    <string name="namma_apartments_channel">Namma Apartments Channel</string>
+    <string name="notice_board_notification">Notice_Board_Notification</string>
+
 </resources>
