@@ -94,7 +94,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         checkSharedPreferences();
         setApplicationContextData();
         initViewPager();
-
     }
 
     /* ------------------------------------------------------------- *
@@ -262,16 +261,14 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             editor.putString(USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             editor.apply();
         }
-
         /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
         userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
-
+        
         /*Generating token id for Family Member/Friend on launch of Home Screen, and making sure a refreshed token is generated when
          * user logs in from a different device*/
         String token_id = FirebaseInstanceId.getInstance().getToken();
         DatabaseReference userTokenIdReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         userTokenIdReference.child(FIREBASE_CHILD_TOKENID).setValue(token_id);
-
     }
 
     /**
