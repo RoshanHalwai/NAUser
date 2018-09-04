@@ -249,8 +249,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor;
         if (sharedPreferences.getBoolean(LOGGED_IN, false)) {
-            /*TODO: Change this dialog content with Splash Screen*/
-            showProgressDialog(this, "Loading Profile", getString(R.string.please_wait_a_moment));
             String userUid = sharedPreferences.getString(USER_UID, null);
             userReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(userUid));
         } else {
@@ -281,10 +279,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
                 ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(nammaApartmentUser);
                 addNavigationHeaderContent(Objects.requireNonNull(nammaApartmentUser));
-                /*TODO: Change this dialog content with Splash Screen*/
-                if (isProgressDialogShown()) {
-                    hideProgressDialog();
-                }
             }
 
             @Override

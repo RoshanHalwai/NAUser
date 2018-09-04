@@ -49,18 +49,23 @@
             </intent-filter>
         </receiver>
 
-        <!-- Splash Screens -->
+        <!--Launch Screen-->
         <activity
-            android:name=".onboarding.splashscreen.SplashScreen"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/NammaApartmentsTheme">
+            android:name=".onboarding.launchscreen.LaunchScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Splash Screens -->
+        <activity
+            android:name=".onboarding.splashscreen.SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/NammaApartmentsTheme" />
 
         <!-- Login Screens -->
         <activity

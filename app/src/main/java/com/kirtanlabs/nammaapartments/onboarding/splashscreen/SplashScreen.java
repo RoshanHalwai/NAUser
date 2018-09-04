@@ -1,7 +1,5 @@
 package com.kirtanlabs.nammaapartments.onboarding.splashscreen;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,25 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
-import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
-import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.ACTIVATION_STATUS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -41,46 +24,19 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        startCorrespondingActivity();
-    }
 
-    /**
-     * Start corresponding activity based on shared preference data
-     */
-    //TODO: Logic seems to be correct but can be written in a efficient way and startActivity API can be reused
-    public void startCorrespondingActivity() {
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        Boolean firstTime = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
-        Boolean accountCreated = sharedPreferences.getBoolean(Constants.ACCOUNT_CREATED, false);
-        Boolean isLoggedIn = sharedPreferences.getBoolean(LOGGED_IN, false);
-        Boolean isUserVerified = sharedPreferences.getBoolean(VERIFIED, false);
+        /*Getting Id's for all the views*/
+        ViewPager mViewPager = findViewById(R.id.container);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
 
-        if (firstTime) {
-            sharedPreferences.edit().putBoolean(FIRST_TIME, false).apply();
-            SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            ViewPager mViewPager = findViewById(R.id.container);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            TabLayout tabLayout = findViewById(R.id.tab_layout);
-            tabLayout.setupWithViewPager(mViewPager, true);
-        } else {
-            if (accountCreated) {
-                if (isUserVerified) {
-                    if (isLoggedIn) {
-                        startActivity(new Intent(this, NammaApartmentsHome.class));
-                        finish();
-                    } else {
-                        startActivity(new Intent(this, SignIn.class));
-                        finish();
-                    }
-                } else {
-                    startActivity(new Intent(SplashScreen.this, ActivationRequired.class));
-                    finish();
-                }
-            } else {
-                startActivity(new Intent(this, SignIn.class));
-                finish();
-            }
-        }
+        /*Setting adapter to view pager*/
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        /*Setting tab layout with view pager*/
+        tabLayout.setupWithViewPager(mViewPager, true);
+
+        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(FIRST_TIME, false).apply();
     }
 
     /**
