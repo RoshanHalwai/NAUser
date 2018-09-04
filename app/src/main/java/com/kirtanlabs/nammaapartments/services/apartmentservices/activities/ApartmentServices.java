@@ -85,39 +85,46 @@ public class ApartmentServices extends BaseActivity {
         /*Setting adapter to recycler view*/
         recyclerView.setAdapter(apartmentServiceAdapter);
 
+        /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
+        enableLocationService();
+
         switch (screenTitle) {
             case R.string.cook: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_COOKS);
+                break;
             }
             case R.string.maid: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_MAIDS);
-
+                break;
             }
             case R.string.car_bike_cleaning: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_CARBIKECLEANERS);
+                break;
             }
             case R.string.child_day_care: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_CHILDDAYCARES);
+                break;
             }
             case R.string.daily_newspaper: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_DAILYNEWSPAPERS);
+                break;
             }
             case R.string.milk_man: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_MILKMEN);
+                break;
             }
             case R.string.laundry: {
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_LAUNDRIES);
+                break;
             }
             case R.string.driver: {
-                /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
-                enableLocationService();
                 /*To retrieve ApartmentServicesList from firebase.*/
                 retrieveApartmentServices(FIREBASE_CHILD_DRIVERS);
                 break;
@@ -205,7 +212,8 @@ public class ApartmentServices extends BaseActivity {
 
 
     /**
-     *This method invokes to inflate show a new layout for users that this feature will be implemented later.
+     * This method invokes to inflate show a new layout for users that this feature will be implemented later.
+     *
      * @param text contains feature unavailable message.
      */
     private void showGroceriesFeatureUnavailableLayout(int text) {
@@ -257,7 +265,7 @@ public class ApartmentServices extends BaseActivity {
                 break;
             }
         }
-      showFeatureUnAvailableLayout(updatedDescription);
+        showFeatureUnAvailableLayout(updatedDescription);
 
     }
 
