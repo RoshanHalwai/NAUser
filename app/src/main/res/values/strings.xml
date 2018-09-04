@@ -669,4 +669,7 @@
     <string name="activation_pending_message">Thank you for Registering with Namma Apartments. Your flat details has been sent to Society Admin. We will notify you once your account gets Activated.</string>
     <string name="activation_rejection_message">Sorry, Your Account activation has been rejected by the Admin.</string>
 
+    <!--Launch Screen Activity-->
+    <string name="launch_screen_image_desc">Image of Launch Screen</string>
+
 </resources>
