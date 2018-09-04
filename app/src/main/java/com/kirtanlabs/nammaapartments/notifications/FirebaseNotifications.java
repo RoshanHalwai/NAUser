@@ -68,7 +68,7 @@ public class FirebaseNotifications extends FirebaseMessagingService {
         String remoteMessageType = remoteMessageData.get(REMOTE_TYPE);
 
         /*E-Intercom Notification requires Users Action*/
-        if (remoteMessageType.equals("E-Intercom")) {
+        if (remoteMessageType.equals(getString(R.string.e_intercom))) {
             String message = remoteMessageData.get(REMOTE_MESSAGE);
             String profilePhoto = remoteMessageData.get(REMOTE_PROFILE_PHOTO);
             String notificationUID = remoteMessageData.get(REMOTE_NOTIFICATION_UID);
@@ -93,7 +93,7 @@ public class FirebaseNotifications extends FirebaseMessagingService {
             /*To support Android Oreo Devices and higher*/
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel mChannel = new NotificationChannel(
-                        getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
+                        getString(R.string.default_notification_channel_id), getString(R.string.namma_apartments_channel), NotificationManager.IMPORTANCE_HIGH);
                 Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
                 channelId = mChannel.getId();
                 IntentFilter actionIntents = new IntentFilter();
@@ -139,7 +139,7 @@ public class FirebaseNotifications extends FirebaseMessagingService {
         } else {
 
             /*General Notification - These do not require any user actions*/
-            String message = remoteMessageData.get("message");
+            String message = remoteMessageData.get(REMOTE_MESSAGE);
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -148,12 +148,12 @@ public class FirebaseNotifications extends FirebaseMessagingService {
             /*To support Android Oreo Devices and higher*/
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel mChannel = new NotificationChannel(
-                        getString(R.string.default_notification_channel_id), "Namma Apartments Channel", NotificationManager.IMPORTANCE_HIGH);
+                        getString(R.string.default_notification_channel_id), getString(R.string.namma_apartments_channel), NotificationManager.IMPORTANCE_HIGH);
                 Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
             }
             /*After the Admin adds a notice and user receives notification, making sure user is navigated
              * to 'Notice Board' screen on press of notification in notification panel*/
-            if (remoteMessageType.equals("Notice_Board_Notification")) {
+            if (remoteMessageType.equals(getString(R.string.notice_board_notification))) {
                 Intent noticeBoardIntent = new Intent(this, NoticeBoard.class);
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, Constants.NEW_NOTICE_CODE,

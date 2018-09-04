@@ -26,7 +26,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCEPT_BUTTON_C
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_ACCEPTED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CABS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DAILYSERVICES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GUESTS;
@@ -134,7 +133,6 @@ public class ActionButtonListener extends BroadcastReceiver {
 
                 /*We do not create new UID for post approved visitors instead we use the notification UID to
                  * identify each visitor*/
-                if (!visitorType.equals(FIREBASE_CHILD_DAILYSERVICES)) {
                     String postApprovedVisitorUID = notificationUID;
                     currentUserVisitorReference.child(postApprovedVisitorUID).setValue(true);
 
@@ -155,8 +153,10 @@ public class ActionButtonListener extends BroadcastReceiver {
                             String postApprovedVisitorName = getValueFromMessage(message, 2);
                             String postApprovedVisitorMobileNumber = visitorMobileNumber;
 
+                            /*Mapping Post Approved Visitor Mobile Number with visitor's UID*/
                             DatabaseReference allVisitorsReference = Constants.ALL_VISITORS_REFERENCE;
                             allVisitorsReference.child(postApprovedVisitorMobileNumber).setValue(postApprovedVisitorUID);
+                            /*Adding Post Approved Visitor data under PRIVATE_VISITORS_REFERENCE->Visitor UID*/
                             DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
                             /*Creating instance of Namma Apartment Guest*/
                             NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
@@ -189,7 +189,6 @@ public class ActionButtonListener extends BroadcastReceiver {
                             break;
                         }
                     }
-                }
             }
              
             @Override
