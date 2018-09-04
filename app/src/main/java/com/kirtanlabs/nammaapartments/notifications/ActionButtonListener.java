@@ -29,6 +29,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GUESTS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PACKAGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_REJECTED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
@@ -124,7 +125,7 @@ public class ActionButtonListener extends BroadcastReceiver {
                                 .child(FIREBASE_CHILD_CABS)
                                 .child(currentUserID);
                         break;
-                    case FIREBASE_CHILD_DELIVERIES:
+                    case FIREBASE_CHILD_PACKAGES:
                         currentUserVisitorReference = currentUserDataReference
                                 .child(FIREBASE_CHILD_DELIVERIES)
                                 .child(currentUserID);
@@ -169,7 +170,10 @@ public class ActionButtonListener extends BroadcastReceiver {
                         case FIREBASE_CHILD_CABS: {
                             String cabNumber = TextUtils.split(message, " ")[3];
 
-                            /*Creating instance of Namma Apartment Cab*/
+                            /*Mapping Post Approved Cab Number with visitor's UID*/
+                            DatabaseReference cabNumberReference = Constants.ALL_CABS_REFERENCE;
+                            cabNumberReference.child(cabNumber).setValue(postApprovedVisitorUID);
+                            /*Creating instance of Namma Apartment Arrival*/
                             DatabaseReference postApprovedVisitorData = PRIVATE_CABS_REFERENCE.child(postApprovedVisitorUID);
                             NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
                                     cabNumber, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
@@ -177,10 +181,10 @@ public class ActionButtonListener extends BroadcastReceiver {
                             postApprovedVisitorData.setValue(nammaApartmentArrival);
                             break;
                         }
-                        case FIREBASE_CHILD_DELIVERIES: {
+                        case FIREBASE_CHILD_PACKAGES: {
                             String packageVendor = getValueFromMessage(message, 3);
 
-                            /*Creating instance of Namma Apartment Cab*/
+                            /*Creating instance of Namma Apartment Arrival*/
                             DatabaseReference postApprovedVisitorData = PRIVATE_DELIVERIES_REFERENCE.child(postApprovedVisitorUID);
                             NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
                                     packageVendor, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
