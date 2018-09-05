@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +56,6 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textApartmentServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textApartmentServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        /*TODO:Rethink About the Time Slot Value In CardView*/
-        holder.textApartmentServiceTimeSlotValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textApartmentServiceNoOfFlatsSlotValue.setText(String.valueOf(ApartmentServices.numberOfFlats.get(nammaApartmentDailyService.getUID())));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.visitorOrDailyServiceProfilePic);
@@ -121,8 +118,6 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
         private final TextView textApartmentServiceNameValue;
         private final TextView textApartmentServiceRating;
         private final TextView textApartmentServiceRatingValue;
-        private final TextView textApartmentServiceTimeSlot;
-        private final TextView textApartmentServiceTimeSlotValue;
         private final TextView textApartmentServiceNoOfFlats;
         private final TextView textApartmentServiceNoOfFlatsSlotValue;
         private final TextView textCall;
@@ -140,11 +135,9 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
             /*Getting Id's for all the views*/
             textApartmentServiceName = itemView.findViewById(R.id.textApartmentServiceName);
             textApartmentServiceRating = itemView.findViewById(R.id.textApartmentServiceRating);
-            textApartmentServiceTimeSlot = itemView.findViewById(R.id.textApartmentServiceTimeSlot);
             textApartmentServiceNoOfFlats = itemView.findViewById(R.id.textApartmentServiceFlats);
             textApartmentServiceNameValue = itemView.findViewById(R.id.textApartmentServiceNameValue);
             textApartmentServiceRatingValue = itemView.findViewById(R.id.textApartmentServiceRatingValue);
-            textApartmentServiceTimeSlotValue = itemView.findViewById(R.id.textApartmentServiceTimeSlotValue);
             textApartmentServiceNoOfFlatsSlotValue = itemView.findViewById(R.id.textApartmentServiceFlatsValue);
             textCall = itemView.findViewById(R.id.textCall);
             textMessage = itemView.findViewById(R.id.textMessage);
@@ -155,11 +148,9 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
             /*Setting font for all the views*/
             textApartmentServiceName.setTypeface(setLatoRegularFont(mCtx));
             textApartmentServiceRating.setTypeface(setLatoRegularFont(mCtx));
-            textApartmentServiceTimeSlot.setTypeface(setLatoRegularFont(mCtx));
             textApartmentServiceNoOfFlats.setTypeface(setLatoRegularFont(mCtx));
             textApartmentServiceNameValue.setTypeface(setLatoBoldFont(mCtx));
             textApartmentServiceRatingValue.setTypeface(setLatoBoldFont(mCtx));
-            textApartmentServiceTimeSlotValue.setTypeface(setLatoBoldFont(mCtx));
             textApartmentServiceNoOfFlatsSlotValue.setTypeface(setLatoBoldFont(mCtx));
             textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));

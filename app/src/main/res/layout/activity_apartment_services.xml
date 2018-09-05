@@ -57,7 +57,7 @@
                     android:id="@+id/layoutTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="1.15"
                     android:orientation="vertical">
 
@@ -80,15 +80,6 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textApartmentServiceTimeSlot"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/time_slot"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
-
-                    <TextView
                         android:id="@+id/textApartmentServiceFlats"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,7 +94,7 @@
                     android:id="@+id/layoutTitleValues"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="0.85"
                     android:orientation="vertical">
 
@@ -125,13 +116,6 @@
                         android:textColor="@color/nmBlack"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/textApartmentServiceTimeSlotValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textApartmentServiceFlatsValue"
@@ -189,7 +173,7 @@
                     android:layout_weight="1"
                     android:drawableTop="@drawable/whatsapp_intent"
                     android:gravity="center"
-                    android:text="Whatsapp"
+                    android:text="@string/whatsapp"
                     android:textColor="@color/nmBlack" />
 
                 <TextView
@@ -199,7 +183,7 @@
                     android:layout_weight="1"
                     android:drawableTop="@drawable/refer_others"
                     android:gravity="center"
-                    android:text="Refer"
+                    android:text="@string/refer"
                     android:textColor="@color/nmBlack" />
 
             </LinearLayout>
