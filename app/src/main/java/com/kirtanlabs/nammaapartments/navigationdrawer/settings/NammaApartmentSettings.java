@@ -112,39 +112,19 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
                 showLogOutDialog();
                 break;
             case R.id.eIntercomNotifications:
-                if (!eIntercomNotifications.isChecked()) {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(false);
-                } else {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(true);
-                }
+                userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(eIntercomNotifications.isChecked());
                 break;
             case R.id.switchGuestNotification:
-                if (!switchGuestNotification.isChecked()) {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(false);
-                } else {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(true);
-                }
+                userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(switchGuestNotification.isChecked());
                 break;
             case R.id.switchDailyServiceNotification:
-                if (!switchDailyServiceNotification.isChecked()) {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(false);
-                } else {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(true);
-                }
+                userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(switchDailyServiceNotification.isChecked());
                 break;
             case R.id.switchCabNotification:
-                if (!switchCabNotification.isChecked()) {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(false);
-                } else {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(true);
-                }
+                userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(switchCabNotification.isChecked());
                 break;
             case R.id.switchPackageNotification:
-                if (!switchPackageNotification.isChecked()) {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(false);
-                } else {
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(true);
-                }
+                userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(switchPackageNotification.isChecked());
                 break;
         }
     }
