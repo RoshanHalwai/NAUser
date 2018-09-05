@@ -194,6 +194,9 @@
                     android:gravity="center"
                     android:textColor="@color/nmBlack"
                     android:textSize="18sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_toEndOf="@id/textTime"
+                    android:layout_toRightOf="@id/textTime"
                     tools:ignore="LabelFor,TextFields" />
 
                 <TextView
