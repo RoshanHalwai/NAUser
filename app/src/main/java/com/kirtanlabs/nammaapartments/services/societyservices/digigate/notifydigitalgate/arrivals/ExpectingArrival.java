@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -68,7 +67,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             R.id.button16Hr,
             R.id.button24Hr};
     private EditText editPickDateTime, editCabStateCode, editCabRtoNumber, editCabSerialNumberOne, editCabSerialNumberTwo, editVendorValue;
-    private TextView textErrorCabNumber, textErrorDateTime, textErrorValidForButton;
+    private TextView textErrorCabNumber, textErrorDateTime, textErrorValidForButton, textErrorFutureTime;
     private int arrivalType;
     private String selectedDate;
     private String packageVendorName;
@@ -113,6 +112,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         textErrorCabNumber = findViewById(R.id.textErrorCabNumber);
         textErrorDateTime = findViewById(R.id.textErrorDateTime);
         textErrorValidForButton = findViewById(R.id.textErrorValidForButton);
+        textErrorFutureTime = findViewById(R.id.textErrorFutureTime);
         TextView textValidFor = findViewById(R.id.textValidFor);
         editCabStateCode = findViewById(R.id.editCabStateCode);
         editCabRtoNumber = findViewById(R.id.editCabRtoNumber);
@@ -137,6 +137,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         textErrorCabNumber.setTypeface(setLatoRegularFont(this));
         textErrorDateTime.setTypeface(setLatoRegularFont(this));
         textErrorValidForButton.setTypeface(setLatoRegularFont(this));
+        textErrorFutureTime.setTypeface(setLatoBoldFont(this));
         textValidFor.setTypeface(setLatoBoldFont(this));
         editCabStateCode.setTypeface(setLatoRegularFont(this));
         editCabRtoNumber.setTypeface(setLatoRegularFont(this));
@@ -265,10 +266,10 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             int currentMinute = calendar.get(Calendar.MINUTE);
             if (isTodayDateSelected) {
                 if (hourOfDay < currentHour) {
-                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                    textErrorFutureTime.setVisibility(View.VISIBLE);
                     return;
                 } else if (hourOfDay == currentHour && minute < currentMinute) {
-                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                    textErrorFutureTime.setVisibility(View.VISIBLE);
                     return;
                 }
             }
@@ -276,6 +277,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
             textErrorDateTime.setVisibility(View.GONE);
+            textErrorFutureTime.setVisibility(View.GONE);
         }
     }
 

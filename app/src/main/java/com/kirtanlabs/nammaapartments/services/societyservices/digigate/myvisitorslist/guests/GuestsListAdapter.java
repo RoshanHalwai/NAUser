@@ -16,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +61,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     private AlertDialog dialog;
     private EditText editPickDate;
     private EditText editPickTime;
+    private TextView textErrorFutureTime;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -186,14 +186,15 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
             int currentMinute = calendar.get(Calendar.MINUTE);
             if (hourOfDay < currentHour) {
-                Toast.makeText(mCtx, mCtx.getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                textErrorFutureTime.setVisibility(View.VISIBLE);
                 return;
             } else if (hourOfDay == currentHour && minute < currentMinute) {
-                Toast.makeText(mCtx, mCtx.getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                textErrorFutureTime.setVisibility(View.VISIBLE);
                 return;
             }
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             editPickTime.setText(selectedTime);
+            textErrorFutureTime.setVisibility(View.GONE);
         }
     }
 
@@ -214,10 +215,12 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         TextView textPickTime = rescheduleDialog.findViewById(R.id.textPickTime);
         TextView buttonReschedule = rescheduleDialog.findViewById(R.id.buttonReschedule);
         TextView buttonCancel = rescheduleDialog.findViewById(R.id.buttonCancel);
+        textErrorFutureTime = rescheduleDialog.findViewById(R.id.textErrorFutureTime);
 
         /*Setting Fonts for all the views*/
         textPickDate.setTypeface(setLatoRegularFont(mCtx));
         textPickTime.setTypeface(setLatoRegularFont(mCtx));
+        textErrorFutureTime.setTypeface(setLatoBoldFont(mCtx));
         buttonReschedule.setTypeface(setLatoRegularFont(mCtx));
         buttonCancel.setTypeface(setLatoRegularFont(mCtx));
 
