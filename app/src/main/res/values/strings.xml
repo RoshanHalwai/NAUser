@@ -85,6 +85,7 @@
     <string name="garbage_management">Garbage Management</string>
     <string name="event_management">Event Management</string>
     <string name="medical_emergency">Medical Emergency</string>
+    <string name="enjoy_free_service">Enjoy the free Service</string>
 
     <!--Apartment Services Activity-->
     <string-array name="daily_services">
@@ -395,6 +396,7 @@
     <string name="wet_waste">Wet Waste</string>
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
     <string name="description_others">Description</string>
+    <string name="request_service">Request Service</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
