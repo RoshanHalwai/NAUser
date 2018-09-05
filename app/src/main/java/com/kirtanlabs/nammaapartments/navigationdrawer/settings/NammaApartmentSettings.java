@@ -101,43 +101,44 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
      * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
+        userNotificationSoundReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_NOTIFICATION_SOUND);
         switch (v.getId()) {
             case R.id.buttonSignOut:
                 showLogOutDialog();
                 break;
             case R.id.eIntercomNotifications:
                 if (!eIntercomNotifications.isChecked()) {
-                    changeNotificationSoundValues(R.id.eIntercomNotifications, false);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(false);
                 } else {
-                    changeNotificationSoundValues(R.id.eIntercomNotifications, true);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(true);
                 }
                 break;
             case R.id.switchGuestNotification:
                 if (!switchGuestNotification.isChecked()) {
-                    changeNotificationSoundValues(R.id.switchGuestNotification, false);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(false);
                 } else {
-                    changeNotificationSoundValues(R.id.switchGuestNotification, true);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(true);
                 }
                 break;
             case R.id.switchDailyServiceNotification:
                 if (!switchDailyServiceNotification.isChecked()) {
-                    changeNotificationSoundValues(R.id.switchDailyServiceNotification, false);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(false);
                 } else {
-                    changeNotificationSoundValues(R.id.switchDailyServiceNotification, true);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(true);
                 }
                 break;
             case R.id.switchCabNotification:
                 if (!switchCabNotification.isChecked()) {
-                    changeNotificationSoundValues(R.id.switchCabNotification, false);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(false);
                 } else {
-                    changeNotificationSoundValues(R.id.switchCabNotification, true);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(true);
                 }
                 break;
             case R.id.switchPackageNotification:
                 if (!switchPackageNotification.isChecked()) {
-                    changeNotificationSoundValues(R.id.switchPackageNotification, false);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(false);
                 } else {
-                    changeNotificationSoundValues(R.id.switchPackageNotification, true);
+                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(true);
                 }
                 break;
         }
@@ -169,53 +170,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         String confirmDialogTitle = getString(R.string.logout_dialog_title);
         String confirmDialogMessage = getString(R.string.logout_question);
         showConfirmDialog(confirmDialogTitle, confirmDialogMessage, logoutUser);
-    }
-
-    /**
-     * This method changes the notification sound values according to the switch checked values.
-     *
-     * @param switchId  contains id of that particular integer
-     * @param isChecked contains boolean value based on the switch state.
-     */
-    private void changeNotificationSoundValues(int switchId, boolean isChecked) {
-        userNotificationSoundReference = PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_NOTIFICATION_SOUND);
-        if (!isChecked) {
-            switch (switchId) {
-                case R.id.eIntercomNotifications:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(false);
-                    break;
-                case R.id.switchGuestNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(false);
-                    break;
-                case R.id.switchDailyServiceNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(false);
-                    break;
-                case R.id.switchCabNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(false);
-                    break;
-                case R.id.switchPackageNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(false);
-                    break;
-            }
-        } else {
-            switch (switchId) {
-                case R.id.eIntercomNotifications:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(true);
-                    break;
-                case R.id.switchGuestNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(true);
-                    break;
-                case R.id.switchDailyServiceNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(true);
-                    break;
-                case R.id.switchCabNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(true);
-                    break;
-                case R.id.switchPackageNotification:
-                    userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(true);
-                    break;
-            }
-        }
     }
 
     /**
