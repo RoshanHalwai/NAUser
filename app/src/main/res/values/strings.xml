@@ -580,26 +580,7 @@
     <string name="notifications_delay_query">I am receiving notifications but with small delay. What is the reason for delay?</string>
 
     <!-- Strings related to Settings -->
-
-    <!-- General settings -->
-    <string name="general">General Settings</string>
-    <string name="choose_language">Choose Language</string>
-    <string name="language">Language</string>
     <string name="sign_out">Sign Out</string>
-
-    <string-array name="change_languages_list">
-        <item>@string/english</item>
-        <item>@string/hindi</item>
-        <item>@string/tamil</item>
-        <item>@string/kannada</item>
-        <item>@string/telugu</item>
-    </string-array>
-
-    <string name="english">English</string>
-    <string name="hindi">Hindi</string>
-    <string name="tamil">Tamil</string>
-    <string name="kannada">Kannada</string>
-    <string name="telugu">Telugu</string>
 
     <!-- Sound settings -->
     <string name="sound_settings">Sound Settings</string>
