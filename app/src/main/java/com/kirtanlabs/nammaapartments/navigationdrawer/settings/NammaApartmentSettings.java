@@ -12,17 +12,13 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.LANGUAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_LANGUAGE_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentSettings extends BaseActivity {
-
-    private Button buttonLanguage;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -42,10 +38,8 @@ public class NammaApartmentSettings extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TextView textGeneralSettings = findViewById(R.id.textGeneralSettings);
-        TextView textLanguage = findViewById(R.id.textLanguage);
+        /*Getting Id's for all the views*/
         TextView textSoundSettings = findViewById(R.id.textSoundSettings);
-        buttonLanguage = findViewById(R.id.buttonLanguage);
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
         Switch eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
         Switch switchGuestNotification = findViewById(R.id.switchGuestNotification);
@@ -53,10 +47,8 @@ public class NammaApartmentSettings extends BaseActivity {
         Switch switchCabNotification = findViewById(R.id.switchCabNotification);
         Switch switchPackageNotification = findViewById(R.id.switchPackageNotification);
 
-        textGeneralSettings.setTypeface(setLatoBoldFont(this));
+        /*Setting font for all the views*/
         textSoundSettings.setTypeface(setLatoBoldFont(this));
-        textLanguage.setTypeface(setLatoRegularFont(this));
-        buttonLanguage.setTypeface(setLatoRegularFont(this));
         buttonSignOut.setTypeface(setLatoRegularFont(this));
         eIntercomNotifications.setTypeface(setLatoRegularFont(this));
         switchGuestNotification.setTypeface(setLatoRegularFont(this));
@@ -64,21 +56,8 @@ public class NammaApartmentSettings extends BaseActivity {
         switchCabNotification.setTypeface(setLatoRegularFont(this));
         switchPackageNotification.setTypeface(setLatoRegularFont(this));
 
+        /*Settings On Click listeners to Views*/
         buttonSignOut.setOnClickListener(v -> showLogOutDialog());
-        buttonLanguage.setOnClickListener(v -> startActivityForResult(new Intent(NammaApartmentSettings.this, LanguageList.class), SELECT_LANGUAGE_REQUEST_CODE));
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding On Activity Result
-     * ------------------------------------------------------------- */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == SELECT_LANGUAGE_REQUEST_CODE) {
-            String language = data.getStringExtra(LANGUAGE);
-            buttonLanguage.setText(language);
-        }
     }
 
     /* ------------------------------------------------------------- *
