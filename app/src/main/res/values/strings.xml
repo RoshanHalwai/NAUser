@@ -115,6 +115,8 @@
     <string name="apartment_service_unavailable">Sorry you cannot use this feature since currently there is no apartment service available at your Society.</string>
     <string name="apartment">apartment</string>
     <string name="groceries_unavailable">We are setting up soon in your Society. We will notify you once we are there.</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="refer">Refer</string>
 
     <!--Digital Gate NammaApartmentService Activity-->
     <string name="digital_gate_title">Digi Gate</string>
@@ -656,5 +658,6 @@
     <!--Firebase Notifications  & Action Button Listener Activity-->
     <string name="namma_apartments_channel">Namma Apartments Channel</string>
     <string name="notice_board_notification">Notice_Board_Notification</string>
+
 
 </resources>
