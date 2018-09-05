@@ -591,6 +591,7 @@
     <string name="daily_service_notifications">Daily Service Notifications</string>
     <string name="cab_notifications">Cab Notifications</string>
     <string name="package_notifications">Package Notifications</string>
+    <string name="notification_sound_value">true</string>
 
     <!--NoticeBoard -->
     <string name="notice_unavailable">Currently there is no notice for your Society.</string>
