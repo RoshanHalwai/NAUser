@@ -91,6 +91,11 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         /*Getting the user id*/
         userUID = NammaApartmentsGlobal.userUID;
 
+        /*Showing Progress Dialog to users until fetch settings from firebase*/
+        showProgressDialog(this,
+                getString(R.string.sound_notification_dialog_title),
+                getString(R.string.please_wait_a_moment));
+
         /*This method retrieves the notification sound values*/
         retrieveNotificationSoundDetailsFromFireBase();
 
@@ -181,37 +186,12 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         userNotificationSoundReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String cabValue = Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).getValue()).toString();
-                String dailyServiceValue = Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).getValue()).toString();
-                String eIntercomValue = Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).getValue()).toString();
-                String guestValue = Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).getValue()).toString();
-                String packageValue = Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).getValue()).toString();
-                /*Based on the values we are differentiating switch values*/
-                if (cabValue.equals(getString(R.string.notification_sound_value))) {
-                    switchCabNotification.setChecked(true);
-                } else {
-                    switchCabNotification.setChecked(false);
-                }
-                if (dailyServiceValue.equals(getString(R.string.notification_sound_value))) {
-                    switchDailyServiceNotification.setChecked(true);
-                } else {
-                    switchDailyServiceNotification.setChecked(false);
-                }
-                if (eIntercomValue.equals(getString(R.string.notification_sound_value))) {
-                    eIntercomNotifications.setChecked(true);
-                } else {
-                    eIntercomNotifications.setChecked(false);
-                }
-                if (guestValue.equals(getString(R.string.notification_sound_value))) {
-                    switchGuestNotification.setChecked(true);
-                } else {
-                    switchGuestNotification.setChecked(false);
-                }
-                if (packageValue.equals(getString(R.string.notification_sound_value))) {
-                    switchPackageNotification.setChecked(true);
-                } else {
-                    switchPackageNotification.setChecked(false);
-                }
+                switchCabNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).getValue(Boolean.class)));
+                switchDailyServiceNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).getValue(Boolean.class)));
+                eIntercomNotifications.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).getValue(Boolean.class)));
+                switchGuestNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).getValue(Boolean.class)));
+                switchPackageNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).getValue(Boolean.class)));
+                hideProgressDialog();
             }
 
             @Override
