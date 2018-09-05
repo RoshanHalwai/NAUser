@@ -3,7 +3,6 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +52,7 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
 
         /*Creating an instance of NammaApartmentsNotice class and retrieving the values from Firebase*/
         NammaApartmentsNotice nammaApartmentsNotice = nammaApartmentsNoticeList.get(position);
-        String noticeDate = nammaApartmentsNotice.getDateAndTime();
-        String separatedDateAndTime[] = TextUtils.split(noticeDate, "\t\t ");
-        holder.textNoticeDate.setText(separatedDateAndTime[0]);
+        holder.textNoticeDate.setText(nammaApartmentsNotice.getDateAndTime());
         holder.textNoticeTitle.setText(nammaApartmentsNotice.getTitle());
         holder.textNoticeMessage.setText(nammaApartmentsNotice.getDescription());
         holder.textAdminName.setText(nammaApartmentsNotice.getNameOfAdmin());

@@ -158,6 +158,16 @@
                     android:visibility="gone" />
 
                 <TextView
+                    android:id="@+id/textErrorFutureTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/select_future_time"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone" />
+
+                <TextView
                     android:id="@+id/textValidFor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

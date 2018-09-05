@@ -62,7 +62,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
      * ------------------------------------------------------------- */
 
     private EditText editPickDateTime, editVisitorName, editVisitorMobile;
-    private TextView textErrorProfilePic, textErrorDateTime;
+    private TextView textErrorProfilePic, textErrorDateTime, textErrorFutureTime;
     private AlertDialog imageSelectionDialog;
     private String selectedDate, mobileNumber;
     private CircleImageView circleImageView;
@@ -103,6 +103,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         TextView textOr = findViewById(R.id.textOr);
         TextView textDateTime = findViewById(R.id.textDateTime);
         textErrorDateTime = findViewById(R.id.textErrorDateTime);
+        textErrorFutureTime = findViewById(R.id.textErrorFutureTime);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         editPickDateTime = findViewById(R.id.editPickDateTime);
         editVisitorName = findViewById(R.id.editVisitorName);
@@ -120,6 +121,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         textOr.setTypeface(setLatoBoldFont(this));
         textDateTime.setTypeface(setLatoBoldFont(this));
         textErrorDateTime.setTypeface(setLatoBoldFont(this));
+        textErrorFutureTime.setTypeface(setLatoBoldFont(this));
         textCountryCode.setTypeface(setLatoItalicFont(this));
         editPickDateTime.setTypeface(setLatoRegularFont(this));
         editVisitorName.setTypeface(setLatoRegularFont(this));
@@ -229,10 +231,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             int currentMinute = calendar.get(Calendar.MINUTE);
             if (isTodayDateSelected) {
                 if (hourOfDay < currentHour) {
-                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                    textErrorFutureTime.setVisibility(View.VISIBLE);
                     return;
                 } else if (hourOfDay == currentHour && minute < currentMinute) {
-                    Toast.makeText(this, getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                    textErrorFutureTime.setVisibility(View.VISIBLE);
                     return;
                 }
             }
@@ -240,6 +242,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
             textErrorDateTime.setVisibility(View.GONE);
+            textErrorFutureTime.setVisibility(View.GONE);
         }
     }
 

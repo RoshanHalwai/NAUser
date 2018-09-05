@@ -36,6 +36,7 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String COMPLETED = "Completed";
     public static final String LANGUAGE = "language";
+    public static final String VISITOR_MOBILE_NUMBER="visitorMobileNumber";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -68,7 +69,7 @@ public class Constants {
     public static final String SLOT_TWO = "Slot 2";
     public static final String SLOT_THREE = "Slot 3";
     public static final String SLOT_FOUR = "Slot 4";
-
+    public static final int LAUNCH_SCREEN_TIME_DURATION = 3000;
 
     /* ------------------------------------------------------------- *
      * Login/OTP Constants
@@ -134,6 +135,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
     public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
     public static final String FIREBASE_CHILD_STATUS = "status";
+    public static final String FIREBASE_CHILD_TOKENID = "tokenId";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
     public static final String FIREBASE_CHILD_USER_DATA = "userData";
@@ -180,6 +182,7 @@ public class Constants {
     public static final String REMOTE_VISITOR_TYPE = "visitor_type";
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
+    public static final String REMOTE_VISITOR_MOBILE_NUMBER="mobile_number";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References

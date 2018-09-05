@@ -14,17 +14,17 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.LANGUAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_LANGUAGE_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentSettings extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    private Button buttonLanguage;
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
     private Switch eIntercomNotifications, switchGuestNotification, switchDailyServiceNotification, switchCabNotification, switchPackageNotification;
 
     /* ------------------------------------------------------------- *
@@ -45,10 +45,8 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TextView textGeneralSettings = findViewById(R.id.textGeneralSettings);
-        TextView textLanguage = findViewById(R.id.textLanguage);
+        /*Getting Id's for all the views*/
         TextView textSoundSettings = findViewById(R.id.textSoundSettings);
-        buttonLanguage = findViewById(R.id.buttonLanguage);
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
         eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
         switchGuestNotification = findViewById(R.id.switchGuestNotification);
@@ -56,10 +54,8 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         switchCabNotification = findViewById(R.id.switchCabNotification);
         switchPackageNotification = findViewById(R.id.switchPackageNotification);
 
-        textGeneralSettings.setTypeface(setLatoBoldFont(this));
+        /*Setting font for all the views*/
         textSoundSettings.setTypeface(setLatoBoldFont(this));
-        textLanguage.setTypeface(setLatoRegularFont(this));
-        buttonLanguage.setTypeface(setLatoRegularFont(this));
         buttonSignOut.setTypeface(setLatoRegularFont(this));
         eIntercomNotifications.setTypeface(setLatoRegularFont(this));
         switchGuestNotification.setTypeface(setLatoRegularFont(this));
@@ -67,27 +63,8 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         switchCabNotification.setTypeface(setLatoRegularFont(this));
         switchPackageNotification.setTypeface(setLatoRegularFont(this));
 
-        buttonSignOut.setOnClickListener(this);
-        buttonLanguage.setOnClickListener(this);
-        eIntercomNotifications.setOnCheckedChangeListener(this);
-        switchGuestNotification.setOnCheckedChangeListener(this);
-        switchDailyServiceNotification.setOnCheckedChangeListener(this);
-        switchCabNotification.setOnCheckedChangeListener(this);
-        switchPackageNotification.setOnCheckedChangeListener(this);
-
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding On Activity Result
-     * ------------------------------------------------------------- */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == SELECT_LANGUAGE_REQUEST_CODE) {
-            String language = data.getStringExtra(LANGUAGE);
-            buttonLanguage.setText(language);
-        }
+        /*Settings On Click listeners to Views*/
+        buttonSignOut.setOnClickListener(v -> showLogOutDialog());
     }
 
     /* ------------------------------------------------------------- *
@@ -96,9 +73,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonLanguage:
-                startActivityForResult(new Intent(NammaApartmentSettings.this, LanguageList.class), SELECT_LANGUAGE_REQUEST_CODE);
-                break;
             case R.id.buttonSignOut:
                 showLogOutDialog();
                 break;

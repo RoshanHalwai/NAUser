@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
@@ -46,13 +47,8 @@ import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_VERSION;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TOKENID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -253,8 +249,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor;
         if (sharedPreferences.getBoolean(LOGGED_IN, false)) {
-            /*TODO: Change this dialog content with Splash Screen*/
-            showProgressDialog(this, "Loading Profile", getString(R.string.please_wait_a_moment));
             String userUid = sharedPreferences.getString(USER_UID, null);
             userReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(userUid));
         } else {
@@ -265,17 +259,14 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             editor.putString(USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
             editor.apply();
         }
-        
         /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
         userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
 
-        /*Storing Notification Sound Keys as default values in firebase when user successfully logs in*/
-        DatabaseReference userNotificationSoundReference = userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_NOTIFICATION_SOUND);
-        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).setValue(true);
-        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).setValue(true);
-        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(true);
-        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(true);
-        userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).setValue(true);
+        /*Generating token id for Family Member/Friend on launch of Home Screen, and making sure a refreshed token is generated when
+         * user logs in from a different device*/
+        String token_id = FirebaseInstanceId.getInstance().getToken();
+        DatabaseReference userTokenIdReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        userTokenIdReference.child(FIREBASE_CHILD_TOKENID).setValue(token_id);
     }
 
     /**
@@ -288,10 +279,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
                 ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(nammaApartmentUser);
                 addNavigationHeaderContent(Objects.requireNonNull(nammaApartmentUser));
-                /*TODO: Change this dialog content with Splash Screen*/
-                if (isProgressDialogShown()) {
-                    hideProgressDialog();
-                }
             }
 
             @Override
