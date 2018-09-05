@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,7 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -180,6 +182,16 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
+            Calendar calendar = Calendar.getInstance();
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = calendar.get(Calendar.MINUTE);
+            if (hourOfDay < currentHour) {
+                Toast.makeText(mCtx, mCtx.getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                return;
+            } else if (hourOfDay == currentHour && minute < currentMinute) {
+                Toast.makeText(mCtx, mCtx.getString(R.string.future_time_message), Toast.LENGTH_LONG).show();
+                return;
+            }
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             editPickTime.setText(selectedTime);
         }
