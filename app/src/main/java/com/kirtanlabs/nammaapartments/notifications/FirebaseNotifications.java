@@ -16,6 +16,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.RingtoneManager;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT;
+import static android.support.v4.app.NotificationCompat.PRIORITY_LOW;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCEPT_BUTTON_CLICKED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PACKAGES;
@@ -46,6 +48,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.REJECT_BUTTON_C
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_MESSAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_VISITOR_MOBILE_NUMBER;
@@ -171,16 +174,36 @@ public class FirebaseNotifications extends FirebaseMessagingService {
 
                 Objects.requireNonNull(notificationManager).notify(mNotificationID, noticeBoardNotification);
             } else {
-                Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
-                        .setSmallIcon(R.drawable.namma_apartment_notification)
-                        .setAutoCancel(true)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(message)
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setPriority(PRIORITY_DEFAULT)
-                        .build();
+                String remoteMessageSound = remoteMessageData.get(REMOTE_SOUND);
+                if (remoteMessageSound.equals(getString(R.string.default_sound))) {
+                    Notification notificationDefault = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                            .setSmallIcon(R.drawable.namma_apartment_notification)
+                            .setAutoCancel(true)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(message)
+                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                            .setPriority(PRIORITY_DEFAULT)
+                            .build();
 
-                Objects.requireNonNull(notificationManager).notify(mNotificationID, notification);
+                    Objects.requireNonNull(notificationManager).notify(mNotificationID, notificationDefault);
+                } else {
+                    Notification notificationNoSound = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
+                            .setSmallIcon(R.drawable.namma_apartment_notification)
+                            .setAutoCancel(true)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(message)
+                            .setPriority(PRIORITY_LOW)
+                            .build();
+
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel mChannel = new NotificationChannel(
+                                getString(R.string.default_notification_channel_id), getString(R.string.namma_apartments_channel), NotificationManager.IMPORTANCE_LOW);
+                        Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
+                        mChannel.setSound(null, null);
+                    }
+
+                    Objects.requireNonNull(notificationManager).notify(mNotificationID, notificationNoSound);
+                }
             }
         }
     }
