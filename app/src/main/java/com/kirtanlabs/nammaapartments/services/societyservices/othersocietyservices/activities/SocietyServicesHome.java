@@ -117,7 +117,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.electrician:
                 buttonRequestService.setText(R.string.request_electrician);
                 break;
-            case R.string.garbage_management:
+            case R.string.garbage_collector:
                 buttonRequestService.setText(R.string.request);
                 textSelectProblem.setText(R.string.select_garbage_type);
                 editTextSelectProblem.setVisibility(View.GONE);
@@ -164,8 +164,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                     case R.string.electrician:
                         infoIntent.putExtra(SCREEN_TITLE, R.string.electrician);
                         break;
-                    case R.string.garbage_management:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.garbage_management);
+                    case R.string.garbage_collector:
+                        infoIntent.putExtra(SCREEN_TITLE, R.string.garbage_collector);
                         break;
                 }
                 startActivity(infoIntent);
@@ -297,7 +297,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.electrician:
                 editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, notificationUID);
                 break;
-            case R.string.garbage_management:
+            case R.string.garbage_collector:
                 editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID);
                 break;
         }
@@ -342,7 +342,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                     storeSocietyServiceDetails();
                 }
                 break;
-            case R.string.garbage_management:
+            case R.string.garbage_collector:
                 /*This method stores user selected society details in Firebase.*/
                 storeSocietyServiceDetails();
                 break;

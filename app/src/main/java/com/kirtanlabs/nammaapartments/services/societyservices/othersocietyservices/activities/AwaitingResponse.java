@@ -249,7 +249,7 @@ public class AwaitingResponse extends BaseActivity {
                 break;
             case GARBAGE_MANAGEMENT:
                 imageRecentSocietyService.setImageResource(R.drawable.garbage_na);
-                textRecentSocietyService.setText(R.string.garbage_management);
+                textRecentSocietyService.setText(R.string.garbage_collector);
                 break;
         }
 

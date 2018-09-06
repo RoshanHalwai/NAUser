@@ -82,7 +82,7 @@
     <string name="plumber">Plumber</string>
     <string name="carpenter">Carpenter</string>
     <string name="electrician">Electrician</string>
-    <string name="garbage_management">Garbage Management</string>
+    <string name="garbage_collector">Garbage Collector</string>
     <string name="event_management">Event Management</string>
     <string name="medical_emergency">Medical Emergency</string>
     <string name="enjoy_free_service">Enjoy the free Service</string>

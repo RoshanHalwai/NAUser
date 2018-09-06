@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.home.adapters.ApartmentServiceAdapter;
+import com.kirtanlabs.nammaapartments.services.apartmentservices.adapter.ApartmentServiceAdapter;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
 
 import java.util.ArrayList;

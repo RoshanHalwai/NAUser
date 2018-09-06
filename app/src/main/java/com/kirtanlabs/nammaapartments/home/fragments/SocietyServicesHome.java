@@ -86,7 +86,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 break;
             case 4:
                 /*To Check if User's previous request for that particular society service is completed or not.*/
-                checkPreviousRequestStatus(R.string.garbage_management);
+                checkPreviousRequestStatus(R.string.garbage_collector);
                 break;
             case 5:
                 Intent medicalIntent = new Intent(getActivity(), NotifyGateAndEmergencyHome.class);
@@ -112,7 +112,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         societyServicesList.add(new NammaApartmentService(R.drawable.plumbers_na, getString(R.string.plumber)));
         societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_na, getString(R.string.carpenter)));
         societyServicesList.add(new NammaApartmentService(R.drawable.electrician_na, getString(R.string.electrician)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_na, getString(R.string.garbage_management)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_na, getString(R.string.garbage_collector)));
         societyServicesList.add(new NammaApartmentService(R.drawable.emergency_na, getString(R.string.emergency)));
         societyServicesList.add(new NammaApartmentService(R.drawable.event_na, getString(R.string.event_management)));
 
@@ -138,7 +138,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 notificationUID = sharedPreferences.getString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = getString(R.string.electrician).toLowerCase();
                 break;
-            case R.string.garbage_management:
+            case R.string.garbage_collector:
                 notificationUID = sharedPreferences.getString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
                 break;
@@ -170,7 +170,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                                 case R.string.electrician:
                                     editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
                                     break;
-                                case R.string.garbage_management:
+                                case R.string.garbage_collector:
                                     editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                                     break;
                                 case R.string.event_management:
