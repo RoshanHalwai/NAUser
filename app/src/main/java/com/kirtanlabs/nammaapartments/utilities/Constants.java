@@ -171,6 +171,8 @@ public class Constants {
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM="eIntercom";
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST="guest";
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE="package";
+    public static final String FIREBASE_CHILD_HISTORY = "history";
+    public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
