@@ -150,6 +150,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         circleImageView.setOnClickListener(this);
         buttonSelectFromContact.setOnClickListener(this);
         editPickTime.setOnClickListener(this);
+        editDailyServiceName.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         editPickTime.setOnFocusChangeListener(this);
         infoButton.setOnClickListener(this);
@@ -232,6 +233,10 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.dailyServiceProfilePic:
                 imageSelectionDialog.show();
+                break;
+            case R.id.editDailyServiceName:
+                /*Clearing the Error Messages For Lower Level Api's*/
+                editDailyServiceName.setError(null);
                 break;
             case R.id.buttonSelectFromContact:
                 showUserContacts();

@@ -134,6 +134,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
         infoButton.setOnClickListener(this);
         buttonSelectFromContact.setOnClickListener(this);
         editPickDateTime.setOnClickListener(this);
+        editVisitorName.setOnClickListener(this);
         editPickDateTime.setOnFocusChangeListener(this);
         buttonInvite.setOnClickListener(this);
 
@@ -185,6 +186,10 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.invitingVisitorsProfilePic:
                 imageSelectionDialog.show();
+                break;
+            case R.id.editVisitorName:
+                /*Clearing the Error Messages For Lower Level Api's*/
+                editVisitorName.setError(null);
                 break;
             case R.id.buttonSelectFromContact:
                 showUserContacts();
