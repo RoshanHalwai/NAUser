@@ -73,22 +73,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
     @Override
     public void onBindViewHolder(@NonNull DailyServicesHolder holder, int position) {
-        /*Since we are reusing the layouts we need to modify the Layout weight for Title
-         * and values, since in Daily Services Home the title take less space than Visitors
-         * list*/
-        LinearLayout.LayoutParams layoutTitleParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.2f
-        );
-        LinearLayout.LayoutParams layoutTitleValuesParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.8f
-        );
 
-        holder.layoutTitle.setLayoutParams(layoutTitleParams);
-        holder.layoutTitleValues.setLayoutParams(layoutTitleValuesParams);
         String stringServiceName = mCtx.getResources().getString(R.string.name) + ":";
         holder.textServiceName.setText(stringServiceName);
         holder.textInvitationTimeOrStatus.setText(R.string.status);
