@@ -78,8 +78,7 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
                 startActivity(faqIntent);
                 break;
             case 1:
-                Intent contactIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
-                contactIntent.putExtra(SCREEN_TITLE, R.string.contact_us);
+                Intent contactIntent = new Intent(NammaApartmentsHelp.this, ContactUs.class);
                 startActivity(contactIntent);
                 break;
             case 2:

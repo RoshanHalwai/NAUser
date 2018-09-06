@@ -130,7 +130,7 @@ public class DailyServicesHome extends BaseActivity implements View.OnClickListe
     private void createDailyServicesListDialog() {
         /*Custom DialogBox with list of all daily services*/
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] dailyServices = getResources().getStringArray(R.array.daily_services);
+        String[] dailyServices = getResources().getStringArray(R.array.apartment_services_list);
         Intent intent = new Intent(DailyServicesHome.this, AddDailyService.class);
         intent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
         builder.setItems(dailyServices, (dialog, which) -> {
