@@ -169,6 +169,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonAdd.setOnClickListener(this);
         radioButtonFamilyMember.setOnClickListener(this);
         radioButtonFriend.setOnClickListener(this);
+        editFamilyMemberName.setOnClickListener(this);
+        editFamilyMemberEmail.setOnClickListener(this);
         editFamilyMemberMobile.setOnFocusChangeListener(this);
 
     }
@@ -187,7 +189,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     editFamilyMemberMobile.setText(contactPicker.retrieveContactNumber());
                     editFamilyMemberName.setError(null);
                     editFamilyMemberMobile.setError(null);
-                    editFamilyMemberEmail.setError(null);
                     /*We need to check if mobile number selected from contact already exists
                      * in firebase*/
                     onFocusChange(editFamilyMemberMobile, false);
@@ -230,8 +231,17 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
             case R.id.familyMemberProfilePic:
                 imageSelectionDialog.show();
                 break;
+            case R.id.editFamilyMemberName:
+                /*Clearing the Error Messages For Lower Level Api's*/
+                editFamilyMemberName.setError(null);
+                break;
             case R.id.buttonSelectFromContact:
                 showUserContacts();
+                break;
+            case R.id.editFamilyMemberEmail:
+                /*Clearing the Error Messages For Lower Level Api's*/
+                editFamilyMemberEmail.requestFocus();
+                editFamilyMemberEmail.setError(null);
                 break;
             case R.id.radioButtonFamilyMember:
                 /*This line hides the relation error message if it was shown on if any of the fields are not filled.*/

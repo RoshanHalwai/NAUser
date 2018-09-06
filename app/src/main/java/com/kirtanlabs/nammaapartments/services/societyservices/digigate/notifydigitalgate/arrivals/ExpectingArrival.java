@@ -465,7 +465,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                editVendorValue.setError(null);
             }
 
             @Override
