@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.home.adapters;
+package com.kirtanlabs.nammaapartments.services.apartmentservices.adapter;
 
 import android.content.Context;
 import android.content.Intent;

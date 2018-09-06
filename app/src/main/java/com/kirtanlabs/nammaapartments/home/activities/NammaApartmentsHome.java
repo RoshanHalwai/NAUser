@@ -69,7 +69,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     private NavigationView navigationView;
 
     /* ------------------------------------------------------------- *
-     * Overriding BaseActivity Objects
+     * Overriding BaseActivity Methods
      * ------------------------------------------------------------- */
 
     @Override

@@ -78,17 +78,27 @@
     <string name="logout_dialog_title">Logout Message</string>
 
     <!--Society Services Activity-->
+    <string-array name="society_services_list">
+        <item>@string/digital_gate</item>
+        <item>@string/plumber</item>
+        <item>@string/carpenter</item>
+        <item>@string/electrician</item>
+        <item>@string/garbage_collector</item>
+        <item>@string/event_management</item>
+        <item>@string/medical_emergency</item>
+    </string-array>
+
     <string name="digital_gate">Digi Gate</string>
     <string name="plumber">Plumber</string>
     <string name="carpenter">Carpenter</string>
     <string name="electrician">Electrician</string>
-    <string name="garbage_management">Garbage Management</string>
+    <string name="garbage_collector">Garbage Collector</string>
     <string name="event_management">Event Management</string>
     <string name="medical_emergency">Medical Emergency</string>
     <string name="enjoy_free_service">Enjoy the free Service</string>
 
     <!--Apartment Services Activity-->
-    <string-array name="daily_services">
+    <string-array name="apartment_services_list">
         <item>@string/cook</item>
         <item>@string/maid</item>
         <item>@string/car_bike_cleaning</item>
