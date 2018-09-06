@@ -609,6 +609,10 @@
     <string name="vehicles_added_success_title">Vehicle Added Message</string>
     <string name="vehicles_added_success_message">You have successfully added your Vehicle.</string>
     <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
+    <string name="vehicle_owner">Owner:</string>
+    <string name="vehicle_added_date">Added On:</string>
+    <string name="car_no">Car No:</string>
+    <string name="bike_no">Bike No:</string>
 
     <!--Awaiting Response Activity-->
     <string name="awaiting_response_title">Awaiting Response</string>
