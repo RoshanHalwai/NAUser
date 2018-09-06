@@ -267,16 +267,29 @@ public class AwaitingResponse extends BaseActivity {
             /*Setting the rating given by the user in (societyServiceNotification->NotificationUID) in firebase*/
             societyServiceNotificationReference.child(Constants.RATING).setValue(rating);
 
-            //TODO: To store average rating of that society service.
             /*Setting the rating given by the user in (societyService->societyServiceType->societyServiceUID) in firebase*/
-            SOCIETY_SERVICES_REFERENCE.child(societyServiceType)
+            DatabaseReference averageRatingReference = SOCIETY_SERVICES_REFERENCE.child(societyServiceType)
                     .child(FIREBASE_CHILD_PRIVATE)
                     .child(FIREBASE_CHILD_DATA)
-                    .child(societyServiceUID)
-                    .child(Constants.RATING).setValue(rating);
+                    .child(societyServiceUID);
 
-            dialog.cancel();
-            finish();
+            averageRatingReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int number = (int) dataSnapshot.child(Constants.FIREBASE_CHILD_NOTIFICATIONS).child(Constants.FIREBASE_CHILD_HISTORY).getChildrenCount();
+                    float previousAverageRating = dataSnapshot.child(Constants.RATING).getValue(Float.class);
+                    float previousRating = (previousAverageRating * (number - 1));
+                    float newAverageRating = (rating + previousRating) / number;
+                    averageRatingReference.child(Constants.RATING).setValue(newAverageRating);
+                    dialog.cancel();
+                    finish();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         });
     }
 
