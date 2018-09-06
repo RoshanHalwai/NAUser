@@ -183,6 +183,7 @@ public class Constants {
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
     public static final String REMOTE_VISITOR_MOBILE_NUMBER="mobile_number";
+    public static final String REMOTE_SOUND = "sound";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References
