@@ -33,7 +33,6 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -105,7 +104,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
 
     @Override
     public void onLocationChanged(Location location) {
-
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
@@ -384,7 +382,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
     private void getLocation() {
         try {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Objects.requireNonNull(locationManager).requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -398,12 +395,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
      * @param MobileNumber - to which message needs to be sent
      */
     public void sendTextMessage(String MobileNumber) {
-        msgIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", MobileNumber, null));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION_REQUEST_CODE);
-        } else {
-            startActivity(msgIntent);
-        }
+        sendTextMessage(MobileNumber, "");
     }
 
     /**
