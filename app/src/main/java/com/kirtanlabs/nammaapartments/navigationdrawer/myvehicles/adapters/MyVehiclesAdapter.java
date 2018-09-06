@@ -45,10 +45,14 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.No
         holder.textVehicleNumberValue.setText(vehicle.getVehicleNumber());
         holder.textAddedDateValue.setText(vehicle.getAddedDate());
         holder.textOwnerValue.setText(vehicle.getOwnerName());
-        if (vehicle.getVehicleType().equals(mCtx.getString(R.string.vehicle_type_car)))
+        if (vehicle.getVehicleType().equals(mCtx.getString(R.string.vehicle_type_car))) {
             holder.imageVehicleType.setImageResource(R.drawable.car);
-        else
+            holder.textVehicleNumber.setText(mCtx.getString(R.string.car_no));
+        } else {
             holder.imageVehicleType.setImageResource(R.drawable.motorbike);
+            holder.textVehicleNumber.setText(mCtx.getString(R.string.bike_no));
+        }
+
     }
 
     @Override
