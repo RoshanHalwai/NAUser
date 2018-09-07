@@ -46,10 +46,6 @@ public class NammaApartmentsHelpUIFunctionality extends BaseActivity {
         List<String> helpList = new ArrayList<>();
 
         switch (screenTitle) {
-            case R.string.contact_us:
-                /*Adding items in the list*/
-                helpList.add(getString(R.string.contact_address));
-                break;
             case R.string.terms_and_conditions:
                 /*Adding items in the list*/
                 helpList.add(getString(R.string.terms_of_use));

@@ -115,7 +115,7 @@ public class FrequentlyAskedQuestionsActivity extends BaseActivity {
             case R.string.electrician:
                 listFrequentlyAskedQuestions.setSelection(ELECTRICIAN_SECTION);
                 break;
-            case R.string.garbage_collector:
+            case R.string.garbage_collection:
                 listFrequentlyAskedQuestions.setSelection(GARBAGE_MANAGEMENT_SECTION);
                 break;
             case R.string.event_management:

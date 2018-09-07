@@ -35,7 +35,6 @@ public class Constants {
     public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
     public static final String MESSAGE = "message";
     public static final String COMPLETED = "Completed";
-    public static final String LANGUAGE = "language";
     public static final String VISITOR_MOBILE_NUMBER="visitorMobileNumber";
 
     /* ------------------------------------------------------------- *
@@ -52,7 +51,7 @@ public class Constants {
     public static final String PLUMBER = "plumber";
     public static final String CARPENTER = "carpenter";
     public static final String ELECTRICIAN = "electrician";
-    public static final String GARBAGE_MANAGEMENT = "garbageManagement";
+    public static final String GARBAGE_COLLECTION = "garbageCollection";
     public static final String EVENT_MANAGEMENT = "eventManagement";
     public static final String SOCIETY_SERVICE_PROBLEM_OTHERS="Others";
 
@@ -116,7 +115,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
-    public static final String FIREBASE_CHILD_GARBAGE_MANAGEMENT = "garbageManagement";
+    public static final String FIREBASE_CHILD_GARBAGE_COLLECTION = "garbageCollection";
     public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     private static final String FIREBASE_CHILD_GUARDS = "guards";
@@ -172,6 +171,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE="package";
     public static final String FIREBASE_CHILD_HISTORY = "history";
     public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
+    public static final String FIREBASE_CHILD_SUPPORT="support";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -224,6 +224,7 @@ public class Constants {
     public static final DatabaseReference GUARDS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_GUARDS);
     public static final DatabaseReference NOTICE_BOARD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_NOTICE_BOARD);
     public static final DatabaseReference EVENT_MANAGEMENT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EVENT_MANAGEMENT);
+    public static final DatabaseReference SUPPORT_REFERENCE=FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SUPPORT);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
