@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -224,9 +225,22 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         buttonCancel.setTypeface(setLatoRegularFont(this));
 
         /*Setting OnClick Listeners to the views*/
-        /*TODO:TO Implement on click of Rate Now users will be redirected to PlayStore.*/
-        buttonSubmit.setOnClickListener(v -> dialog.cancel());
+        /*TODO:To Change The Url after successful registration of our app in PlayStore */
+        buttonSubmit.setOnClickListener(v -> redirectUsersToPlayStore());
         buttonCancel.setOnClickListener(v -> dialog.cancel());
+    }
+
+    /**
+     * This method gets invoked to redirect users to playStore Link
+     */
+    private void redirectUsersToPlayStore() {
+        // getPackageName() from Context or Activity object
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     private void initNavigationDrawer() {
