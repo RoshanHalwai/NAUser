@@ -112,7 +112,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
         societyServicesList.add(new NammaApartmentService(R.drawable.plumbers_na, getString(R.string.plumber)));
         societyServicesList.add(new NammaApartmentService(R.drawable.carpenter_na, getString(R.string.carpenter)));
         societyServicesList.add(new NammaApartmentService(R.drawable.electrician_na, getString(R.string.electrician)));
-        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_na, getString(R.string.garbage_collector)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_collector, getString(R.string.garbage_collector)));
         societyServicesList.add(new NammaApartmentService(R.drawable.emergency_na, getString(R.string.emergency)));
         societyServicesList.add(new NammaApartmentService(R.drawable.event_na, getString(R.string.event_management)));
 
@@ -140,7 +140,7 @@ public class SocietyServicesHome extends Fragment implements AdapterView.OnItemC
                 break;
             case R.string.garbage_collector:
                 notificationUID = sharedPreferences.getString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
-                societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+                societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_COLLECTOR;
                 break;
             case R.string.event_management:
                 notificationUID = sharedPreferences.getString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);

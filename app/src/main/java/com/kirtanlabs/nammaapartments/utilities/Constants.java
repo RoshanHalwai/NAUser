@@ -52,7 +52,7 @@ public class Constants {
     public static final String PLUMBER = "plumber";
     public static final String CARPENTER = "carpenter";
     public static final String ELECTRICIAN = "electrician";
-    public static final String GARBAGE_MANAGEMENT = "garbageManagement";
+    public static final String GARBAGE_COLLECTOR = "garbageCollector";
     public static final String EVENT_MANAGEMENT = "eventManagement";
     public static final String SOCIETY_SERVICE_PROBLEM_OTHERS="Others";
 
@@ -116,7 +116,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
-    public static final String FIREBASE_CHILD_GARBAGE_MANAGEMENT = "garbageManagement";
+    public static final String FIREBASE_CHILD_GARBAGE_COLLECTOR = "garbageCollector";
     public static final String FIREBASE_CHILD_GUESTS = "guests";
     public static final String FIREBASE_CHILD_GRANTEDACCESS = "grantedAccess";
     private static final String FIREBASE_CHILD_GUARDS = "guards";

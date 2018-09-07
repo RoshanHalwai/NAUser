@@ -19,7 +19,7 @@ import java.util.List;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTOR;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -113,8 +113,8 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
                 case ELECTRICIAN:
                     societyServiceIcon.setImageResource(R.drawable.electrician_na);
                     break;
-                case GARBAGE_MANAGEMENT:
-                    societyServiceIcon.setImageResource(R.drawable.garbage_na);
+                case GARBAGE_COLLECTOR:
+                    societyServiceIcon.setImageResource(R.drawable.garbage_collector);
                     break;
                 case EVENT_MANAGEMENT:
                     societyServiceIcon.setImageResource(R.drawable.event);

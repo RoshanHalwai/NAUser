@@ -29,7 +29,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTOR;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICES_REFERENCE;
@@ -247,8 +247,8 @@ public class AwaitingResponse extends BaseActivity {
                 imageRecentSocietyService.setImageResource(R.drawable.electrician_na);
                 textRecentSocietyService.setText(R.string.electrician);
                 break;
-            case GARBAGE_MANAGEMENT:
-                imageRecentSocietyService.setImageResource(R.drawable.garbage_na);
+            case GARBAGE_COLLECTOR:
+                imageRecentSocietyService.setImageResource(R.drawable.garbage_collector);
                 textRecentSocietyService.setText(R.string.garbage_collector);
                 break;
         }

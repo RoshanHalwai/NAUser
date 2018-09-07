@@ -20,7 +20,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_COLLECTOR;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
@@ -122,7 +122,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 textSelectProblem.setText(R.string.select_garbage_type);
                 editTextSelectProblem.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
-                societyServiceType = FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+                societyServiceType = FIREBASE_CHILD_GARBAGE_COLLECTOR;
                 problem = getString(R.string.dry_waste);
         }
 
