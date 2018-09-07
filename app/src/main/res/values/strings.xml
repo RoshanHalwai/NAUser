@@ -236,6 +236,7 @@
     <string name="daily_service_name">Name</string>
     <string name="history_unavailable_message">Sorry you cannot use this feature since you have not handed things in past.</string>
     <string name="history">History</string>
+    <string name="things">Things:</string>
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
@@ -317,17 +318,14 @@
     <string name="number_10digit_validation">Please Enter a valid 10 digit mobile number</string>
     <string name="mobile_number_validation">Please Enter Mobile Number</string>
     <string name="name_validation">Please Enter Name</string>
-    <string name="accept_alphabets">Accept Alphabets Only.</string>
-    <string name="enter_relation">Please Enter Relation</string>
+    <string name="accept_alphabets">Accept Alphabets Only</string>
     <string name="enter_date_time">Please select date and time</string>
     <string name="upload_image">Please Upload Image</string>
     <string name="mobile_number_exists">Mobile Number already exists</string>
     <string name="invalid_email">Invalid Email Address</string>
     <string name="email_validation">Please Enter E-Mail Address</string>
-    <string name="relation_check">Please check at least one Relation</string>
-    <string name="things">Things:</string>
-    <string name="default_notification_channel_id">01</string>
-    <string name="enter_time">Please select time.</string>
+    <string name="relation_check">Please select at least one Relation</string>
+    <string name="enter_time">Please select time</string>
     <string name="valid_button">Please select at least one button</string>
     <string name="cab_number_validation">Please Enter Cab Number</string>
     <string name="vehicle_number_validation">Please Enter Vehicle Number</string>
@@ -336,6 +334,8 @@
     <string name="event_title_error">Please enter event title</string>
     <string name="future_time_message">Please Select Future Time</string>
     <string name="enter_other_problem_desc">Please Enter Your Problem</string>
+    <string name="enter_service_type">Please select service type</string>
+    <string name="enter_problem_description">Please enter problem description</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -497,14 +497,11 @@
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="faq">FAQs</string>
-    <string name="using_na_app">Using Namma Apartments App</string>
     <string name="contact_us">Contact Us</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
 
     <!--Namma Apartments Help UI Functionality Activity-->
-    <string name="contact_address"> For any queries, contact:\n\n Full Address:\n#59/2,\nKirtan Labs, \n9th Cross, Tulasi Theatre Road, Marathahalli, \nBengaluru - 560037,\nKarnataka.\n\n
-    Landmark: Behind Innovative Multiplex\n\nContact Info.:\nAshish Jha\nMob No: +91-9986553474\nE-mail: iamashishjha@gmail.com</string>
     <string name="policy_statement">Namma Apartments respects the privacy of our users and has developed this Privacy Policy to demonstrate its commitment to protecting your privacy.\n\n
     These privacy policies (the \'Privacy Policy\') are intended to describe for you, as an individual who is a user of Namma Apartments or any of our related sites, mobile and connected applications,
     or other online services, the information we collect, how that information may be used, with whom it may be shared, and your choices about such uses and disclosures.\n\n
@@ -676,6 +673,20 @@
     <string name="namma_apartments_channel">Namma Apartments Channel</string>
     <string name="notice_board_notification">Notice_Board_Notification</string>
     <string name="default_sound">default</string>
+    <string name="default_notification_channel_id">01</string>
 
+    <!--Contact Us Activity-->
+    <string name="select_service_category">Select Service Category</string>
+    <string name="society_service">Society\n Services</string>
+    <string name="apartment_service">Apartment\n Services</string>
+    <string name="service_type">Select Service Type</string>
+    <string name="choose_one_hint">Choose One…</string>
+    <string name="describe_your_problem">Describe Your Problem</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="raising_request">Raising Request</string>
+    <string name="support_key">support</string>
+    <string name="request_raised">Request Raised</string>
+    <string name="user_support_message">Thank you for writing to us. Our Support team will get back to you regarding this request.</string>
+    <string name="pending">Pending</string>
 
 </resources>

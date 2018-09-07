@@ -35,7 +35,6 @@ public class Constants {
     public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
     public static final String MESSAGE = "message";
     public static final String COMPLETED = "Completed";
-    public static final String LANGUAGE = "language";
     public static final String VISITOR_MOBILE_NUMBER="visitorMobileNumber";
 
     /* ------------------------------------------------------------- *
@@ -172,6 +171,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE="package";
     public static final String FIREBASE_CHILD_HISTORY = "history";
     public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
+    public static final String FIREBASE_CHILD_SUPPORT="support";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -224,6 +224,7 @@ public class Constants {
     public static final DatabaseReference GUARDS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_GUARDS);
     public static final DatabaseReference NOTICE_BOARD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_NOTICE_BOARD);
     public static final DatabaseReference EVENT_MANAGEMENT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EVENT_MANAGEMENT);
+    public static final DatabaseReference SUPPORT_REFERENCE=FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SUPPORT);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
