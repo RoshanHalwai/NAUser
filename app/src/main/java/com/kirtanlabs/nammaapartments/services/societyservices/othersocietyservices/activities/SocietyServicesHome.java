@@ -225,6 +225,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 otherProblemSelected = true;
             } else {
                 otherProblemLayout.setVisibility(View.GONE);
+                otherProblemSelected = false;
             }
             editTextSelectProblem.setError(null);
         }
