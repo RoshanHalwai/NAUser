@@ -155,9 +155,10 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                     .addOnCompleteListener(task -> userSupportReference.child(supportUID).setValue(true)
                             .addOnCompleteListener(task1 -> {
                                 hideProgressDialog();
+                                Intent nammaApartmentsHelpIntent = new Intent(this, NammaApartmentsHelp.class);
                                 showNotificationDialog(getString(R.string.request_raised),
                                         getString(R.string.user_support_message),
-                                        null);
+                                        nammaApartmentsHelpIntent);
                             }));
         }
     }
