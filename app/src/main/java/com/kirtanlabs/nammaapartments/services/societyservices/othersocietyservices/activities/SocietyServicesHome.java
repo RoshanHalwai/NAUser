@@ -107,7 +107,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
 
-        /*Disabling time slots if current hour exceeds for current date*/
+        /*Disabling time slot based on current date past time.*/
         disablePastTimeSlot();
 
         societyServiceType = getString(screenTitle).toLowerCase();
