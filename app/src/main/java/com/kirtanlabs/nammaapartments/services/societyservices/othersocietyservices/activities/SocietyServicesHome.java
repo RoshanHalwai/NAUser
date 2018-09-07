@@ -22,7 +22,7 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 import java.util.Calendar;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
@@ -123,12 +123,12 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.electrician:
                 buttonRequestService.setText(R.string.request_electrician);
                 break;
-            case R.string.garbage_collector:
+            case R.string.garbage_collection:
                 buttonRequestService.setText(R.string.request);
                 textSelectProblem.setText(R.string.select_garbage_type);
                 editTextSelectProblem.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
-                societyServiceType = FIREBASE_CHILD_GARBAGE_MANAGEMENT;
+                societyServiceType = FIREBASE_CHILD_GARBAGE_COLLECTION;
                 problem = getString(R.string.dry_waste);
         }
 
@@ -170,8 +170,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                     case R.string.electrician:
                         infoIntent.putExtra(SCREEN_TITLE, R.string.electrician);
                         break;
-                    case R.string.garbage_collector:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.garbage_collector);
+                    case R.string.garbage_collection:
+                        infoIntent.putExtra(SCREEN_TITLE, R.string.garbage_collection);
                         break;
                 }
                 startActivity(infoIntent);
@@ -303,7 +303,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.electrician:
                 editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, notificationUID);
                 break;
-            case R.string.garbage_collector:
+            case R.string.garbage_collection:
                 editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID);
                 break;
         }
@@ -348,7 +348,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                     storeSocietyServiceDetails();
                 }
                 break;
-            case R.string.garbage_collector:
+            case R.string.garbage_collection:
                 /*This method stores user selected society details in Firebase.*/
                 storeSocietyServiceDetails();
                 break;
