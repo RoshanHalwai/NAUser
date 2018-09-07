@@ -364,11 +364,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         /*Disabling Time slot if current time greater than that time slot*/
-        if (currentHour > 11) {
+        if (currentHour >= 12) {
             buttonMorningSlot.setEnabled(false);
-            if (currentHour > 14) {
+            if (currentHour >= 15) {
                 buttonNoonSlot.setEnabled(false);
-                if (currentHour > 16) {
+                if (currentHour >= 17) {
                     buttonEveningSlot.setEnabled(false);
                 }
             }
