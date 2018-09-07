@@ -185,6 +185,8 @@
     <string name="time_pick">Pick Time</string>
     <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
     <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
+    <string name="visitor_reschedule_message">Sorry, you cannot reschedule, as the Visitor has already entered/left the Society.</string>
+    <string name="reschedule_dialog_title">Reschedule Message</string>
 
     <!--Cabs List And PackagesList Activity-->
     <string name="cabs_number">Cab No:</string>
