@@ -23,7 +23,6 @@ import java.util.Objects;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
@@ -40,7 +39,7 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
      * Private Members
      * ------------------------------------------------------------- */
 
-    private Switch eIntercomNotifications, switchGuestNotification, switchDailyServiceNotification, switchCabNotification, switchPackageNotification;
+    private Switch switchGuestNotification, switchDailyServiceNotification, switchCabNotification, switchPackageNotification;
     private String userUID;
     private DatabaseReference userNotificationSoundReference;
 
@@ -65,7 +64,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         /*Getting Id's for all the views*/
         TextView textSoundSettings = findViewById(R.id.textSoundSettings);
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
-        eIntercomNotifications = findViewById(R.id.eIntercomNotifications);
         switchGuestNotification = findViewById(R.id.switchGuestNotification);
         switchDailyServiceNotification = findViewById(R.id.switchDailyServiceNotification);
         switchCabNotification = findViewById(R.id.switchCabNotification);
@@ -74,7 +72,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         /*Setting font for all the views*/
         textSoundSettings.setTypeface(setLatoBoldFont(this));
         buttonSignOut.setTypeface(setLatoRegularFont(this));
-        eIntercomNotifications.setTypeface(setLatoRegularFont(this));
         switchGuestNotification.setTypeface(setLatoRegularFont(this));
         switchDailyServiceNotification.setTypeface(setLatoRegularFont(this));
         switchCabNotification.setTypeface(setLatoRegularFont(this));
@@ -82,7 +79,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
 
         /*Settings On Click listeners to Views*/
         buttonSignOut.setOnClickListener(this);
-        eIntercomNotifications.setOnClickListener(this);
         switchGuestNotification.setOnClickListener(this);
         switchDailyServiceNotification.setOnClickListener(this);
         switchCabNotification.setOnClickListener(this);
@@ -110,9 +106,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.buttonSignOut:
                 showLogOutDialog();
-                break;
-            case R.id.eIntercomNotifications:
-                userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).setValue(eIntercomNotifications.isChecked());
                 break;
             case R.id.switchGuestNotification:
                 userNotificationSoundReference.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).setValue(switchGuestNotification.isChecked());
@@ -168,7 +161,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
             public void onDataChange(DataSnapshot dataSnapshot) {
                 switchCabNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_CAB).getValue(Boolean.class)));
                 switchDailyServiceNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE).getValue(Boolean.class)));
-                eIntercomNotifications.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM).getValue(Boolean.class)));
                 switchGuestNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST).getValue(Boolean.class)));
                 switchPackageNotification.setChecked(Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE).getValue(Boolean.class)));
                 hideProgressDialog();

@@ -167,7 +167,6 @@ public class Constants {
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND="notificationSound";
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_CAB="cab";
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE="dailyService";
-    public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_EINTERCOM="eIntercom";
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST="guest";
     public static final String FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE="package";
     public static final String FIREBASE_CHILD_HISTORY = "history";
