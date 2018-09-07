@@ -19,6 +19,8 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.Frequentl
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.util.Calendar;
+
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
@@ -43,7 +45,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             R.id.buttonEveningSlot};
     private int screenTitle;
     private String problem, societyServiceType, descriptionValue;
-    private Button selectedButton, buttonDryWaste, buttonWetWaste;
+    private Button selectedButton, buttonDryWaste, buttonWetWaste,
+            buttonMorningSlot, buttonNoonSlot, buttonEveningSlot;
     private EditText editTextSelectProblem, editTextDescription;
     private LinearLayout otherProblemLayout;
     private Boolean otherProblemSelected = false;
@@ -75,9 +78,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         TextView textSelectProblem = findViewById(R.id.textSelectProblem);
         TextView textDescription = findViewById(R.id.textDescription);
         Button buttonImmediately = findViewById(R.id.buttonImmediately);
-        Button buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
-        Button buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
-        Button buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
+        buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
+        buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
+        buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
         Button buttonRequestService = findViewById(R.id.buttonRequestService);
         buttonDryWaste = findViewById(R.id.buttonDryWaste);
         buttonWetWaste = findViewById(R.id.buttonWetWaste);
@@ -103,6 +106,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
+
+        /*Disabling time slot based on current date past time.*/
+        disablePastTimeSlot();
 
         societyServiceType = getString(screenTitle).toLowerCase();
 
@@ -346,6 +352,26 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 /*This method stores user selected society details in Firebase.*/
                 storeSocietyServiceDetails();
                 break;
+        }
+    }
+
+    /**
+     * This method is invoked to disable time slot based on current date past time.
+     */
+    private void disablePastTimeSlot() {
+        /*Getting current hour here*/
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        /*Disabling Time slot if current time greater than that time slot*/
+        if (currentHour >= Constants.MORNING_SLOT_LAST_HOUR) {
+            buttonMorningSlot.setEnabled(false);
+            if (currentHour >= Constants.NOON_SLOT_LAST_HOUR) {
+                buttonNoonSlot.setEnabled(false);
+                if (currentHour >= Constants.EVENING_SLOT_LAST_HOUR) {
+                    buttonEveningSlot.setEnabled(false);
+                }
+            }
         }
     }
 
