@@ -398,7 +398,6 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         public void onClick(View v) {
             int position = getLayoutPosition();
             NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
-            String guestStatus = nammaApartmentGuest.getStatus();
             switch (v.getId()) {
                 case R.id.textCall:
                     baseActivity.makePhoneCall(nammaApartmentGuest.getMobileNumber());
@@ -407,7 +406,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
                     baseActivity.sendTextMessage(nammaApartmentGuest.getMobileNumber());
                     break;
                 case R.id.textRescheduleOrEdit:
-                    if (guestStatus.equals(NOT_ENTERED)) {
+                    if (nammaApartmentGuest.getStatus().equals(NOT_ENTERED)) {
                         openRescheduleDialog(textInvitationDateValue.getText().toString(), textInvitationTimeOrStatusValue.getText().toString(), position);
                     } else {
                         baseActivity.showNotificationDialog(mCtx.getString(R.string.reschedule_dialog_title),
