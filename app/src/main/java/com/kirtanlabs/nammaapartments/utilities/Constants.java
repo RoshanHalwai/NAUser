@@ -241,6 +241,9 @@ public class Constants {
     public static final String NOT_ENTERED = "Not Entered";
     public static final String FAMILY_MEMBER = "Family Member";
     public static final String FRIEND = "Friend";
+    public static final int MORNING_SLOT_LAST_HOUR = 12;
+    public static final int NOON_SLOT_LAST_HOUR = 15;
+    public static final int EVENING_SLOT_LAST_HOUR = 17;
 
    /* ------------------------------------------------------------- *
    * Frequently Asked Questions Sections
