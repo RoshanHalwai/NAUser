@@ -172,7 +172,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
             return true;
         else if (editServiceType.getText().toString().isEmpty())
             editServiceType.setError(getString(R.string.enter_service_type));
-        else if (editProblemDesc.getText().toString().isEmpty())
+        else
             textErrorProblemDesc.setVisibility(View.VISIBLE);
         return false;
     }
