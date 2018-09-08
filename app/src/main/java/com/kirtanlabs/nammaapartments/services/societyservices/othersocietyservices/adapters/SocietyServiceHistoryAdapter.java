@@ -117,7 +117,7 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
                     societyServiceIcon.setImageResource(R.drawable.garbage_collection_na);
                     break;
                 case EVENT_MANAGEMENT:
-                    societyServiceIcon.setImageResource(R.drawable.event);
+                    societyServiceIcon.setImageResource(R.drawable.event_na);
                     break;
             }
         }
