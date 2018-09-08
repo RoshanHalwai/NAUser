@@ -1,27 +1,23 @@
 package com.kirtanlabs.nammaapartments.home.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.adapters.NammaApartmentServiceAdapter;
 import com.kirtanlabs.nammaapartments.home.pojo.NammaApartmentService;
-import com.kirtanlabs.nammaapartments.services.apartmentservices.activities.ApartmentServices;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class ApartmentServicesHome extends Fragment implements AdapterView.OnItemClickListener {
+public class ApartmentServicesHome extends Fragment {
 
     /* ------------------------------------------------------------- *
      * Overriding Fragment Objects
@@ -37,76 +33,12 @@ public class ApartmentServicesHome extends Fragment implements AdapterView.OnIte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*Getting Id for listView*/
-        ListView listView = view.findViewById(R.id.listviewApartmentServices);
+        /*Getting Id's for all the views*/
+        RecyclerView recyclerView = view.findViewById(R.id.listApartmentServices);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        /*Attaching adapter to the listview*/
-        listView.setAdapter(getAdapter());
-
-        /*Setting event for list view items*/
-        listView.setOnItemClickListener(this);
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnItemClickListener
-     * ------------------------------------------------------------- */
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                Intent intentCook = new Intent(getActivity(), ApartmentServices.class);
-                intentCook.putExtra(Constants.SCREEN_TITLE, R.string.cook);
-                startActivity(intentCook);
-                break;
-            case 1:
-                Intent intentMaid = new Intent(getActivity(), ApartmentServices.class);
-                intentMaid.putExtra(Constants.SCREEN_TITLE, R.string.maid);
-                startActivity(intentMaid);
-                break;
-            case 2:
-                Intent intentCarBikeCleaning = new Intent(getActivity(), ApartmentServices.class);
-                intentCarBikeCleaning.putExtra(Constants.SCREEN_TITLE, R.string.car_bike_cleaning);
-                startActivity(intentCarBikeCleaning);
-                break;
-            case 3:
-                Intent intentChildDayCare = new Intent(getActivity(), ApartmentServices.class);
-                intentChildDayCare.putExtra(Constants.SCREEN_TITLE, R.string.child_day_care);
-                startActivity(intentChildDayCare);
-                break;
-            case 4:
-                Intent intentDailyNewspaper = new Intent(getActivity(), ApartmentServices.class);
-                intentDailyNewspaper.putExtra(Constants.SCREEN_TITLE, R.string.daily_newspaper);
-                startActivity(intentDailyNewspaper);
-                break;
-            case 5:
-                Intent intentMilkMan = new Intent(getActivity(), ApartmentServices.class);
-                intentMilkMan.putExtra(Constants.SCREEN_TITLE, R.string.milk_man);
-                startActivity(intentMilkMan);
-                break;
-            case 6:
-                Intent intentLaundry = new Intent(getActivity(), ApartmentServices.class);
-                intentLaundry.putExtra(Constants.SCREEN_TITLE, R.string.laundry);
-                startActivity(intentLaundry);
-                break;
-            case 7:
-                Intent intentDriver = new Intent(getActivity(), ApartmentServices.class);
-                intentDriver.putExtra(Constants.SCREEN_TITLE, R.string.driver);
-                startActivity(intentDriver);
-                break;
-            case 8:
-                Intent intentGrocery = new Intent(getActivity(), ApartmentServices.class);
-                intentGrocery.putExtra(Constants.SCREEN_TITLE, R.string.groceries);
-                startActivity(intentGrocery);
-                break;
-        }
-    }
-
-    /* ------------------------------------------------------------- *
-     * Private Methods
-     * ------------------------------------------------------------- */
-
-    private NammaApartmentServiceAdapter getAdapter() {
+        /*Initializing the apartmentServicesList*/
         List<NammaApartmentService> apartmentServicesList = new ArrayList<>();
 
         /*Adding apartment services to the list*/
@@ -120,7 +52,13 @@ public class ApartmentServicesHome extends Fragment implements AdapterView.OnIte
         apartmentServicesList.add(new NammaApartmentService(R.drawable.driver_na, getString(R.string.driver)));
         apartmentServicesList.add(new NammaApartmentService(R.drawable.grocery_na, getString(R.string.groceries)));
 
-        return new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), apartmentServicesList);
+        /*Creating the Adapter*/
+        NammaApartmentServiceAdapter nammaApartmentServiceAdapter = new NammaApartmentServiceAdapter(getActivity(), R.string.apartment_services, apartmentServicesList);
+
+        /*Attaching adapter to the listview*/
+        recyclerView.setAdapter(nammaApartmentServiceAdapter);
+
     }
+
 }
 
