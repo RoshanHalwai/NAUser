@@ -137,9 +137,6 @@
         <activity
             android:name=".navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".navigationdrawer.mywallet.activities.ServicesPaymentActivity"
-            android:screenOrientation="portrait" />
 
         <!-- Digital Gate Screens -->
         <activity
@@ -211,7 +208,7 @@
         <activity
             android:name=".services.apartmentservices.activities.ApartmentServices"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".navigationdrawer.mywallet.activities.TransactionHistory"></activity>
     </application>
 
 </manifest>
