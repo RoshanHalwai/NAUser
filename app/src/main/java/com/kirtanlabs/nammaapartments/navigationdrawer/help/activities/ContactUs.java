@@ -2,14 +2,13 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.help.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
@@ -17,6 +16,7 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.help.pojo.Support;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.SocietyServiceProblemList;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SUPPORT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
 
 public class ContactUs extends BaseActivity implements View.OnClickListener {
@@ -29,6 +29,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
     private Button buttonApartmentService;
     private EditText editServiceType;
     private EditText editProblemDesc;
+    private TextView textErrorProblemDesc;
     private int serviceCategory;
 
     /* ------------------------------------------------------------- *
@@ -53,6 +54,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         TextView textServiceCategory = findViewById(R.id.textServiceCategory);
         TextView textServiceType = findViewById(R.id.textServiceType);
         TextView textProblemDesc = findViewById(R.id.textProblemDesc);
+        textErrorProblemDesc = findViewById(R.id.textErrorProblemDesc);
         editServiceType = findViewById(R.id.editServiceType);
         editProblemDesc = findViewById(R.id.editProblemDesc);
         buttonSocietyServices = findViewById(R.id.buttonSocietyServices);
@@ -63,14 +65,19 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         textServiceCategory.setTypeface(Constants.setLatoBoldFont(this));
         textServiceType.setTypeface(Constants.setLatoBoldFont(this));
         textProblemDesc.setTypeface(Constants.setLatoBoldFont(this));
+        textErrorProblemDesc.setTypeface(Constants.setLatoBoldFont(this));
         editServiceType.setTypeface(Constants.setLatoRegularFont(this));
         editProblemDesc.setTypeface(Constants.setLatoRegularFont(this));
         buttonSocietyServices.setTypeface(Constants.setLatoRegularFont(this));
         buttonApartmentService.setTypeface(Constants.setLatoRegularFont(this));
         buttonSubmit.setTypeface(Constants.setLatoLightFont(this));
 
+        /*We don't want the keyboard to be displayed when user clicks on the choose one edit text*/
+        editServiceType.setInputType(InputType.TYPE_NULL);
+
         /*Setting Click Listeners for UI views*/
         editServiceType.setOnClickListener(this);
+        editProblemDesc.setOnClickListener(this);
         buttonSocietyServices.setOnClickListener(this);
         buttonApartmentService.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
@@ -90,6 +97,10 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                 Intent intent = new Intent(ContactUs.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, serviceCategory);
                 startActivityForResult(intent, SELECT_SOCIETY_SERVICE_REQUEST_CODE);
+                break;
+            case R.id.editProblemDesc:
+                /*Hiding the Error Message when user tries to enter description*/
+                textErrorProblemDesc.setVisibility(View.GONE);
                 break;
             case R.id.buttonSocietyServices:
                 if (serviceCategory != R.string.society_services) {
@@ -122,6 +133,8 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
             editServiceType.setText(data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM));
+            editServiceType.setError(null);
+            editProblemDesc.requestFocus();
         }
     }
 
@@ -134,17 +147,18 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
      */
     private void submitRequest() {
         if (isUIValidationSuccessful()) {
-            showProgressDialog(ContactUs.this, "Raising Request", getString(R.string.please_wait_a_moment));
-            DatabaseReference supportReference = FirebaseDatabase.getInstance().getReference("support");
-            DatabaseReference userSupportReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference().child("support");
+            showProgressDialog(ContactUs.this, getString(R.string.raising_request), getString(R.string.please_wait_a_moment));
+            DatabaseReference supportReference = Constants.SUPPORT_REFERENCE;
+            DatabaseReference userSupportReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_SUPPORT);
             String supportUID = userSupportReference.push().getKey();
             supportReference.child(supportUID).setValue(getProblemDetails(supportUID))
                     .addOnCompleteListener(task -> userSupportReference.child(supportUID).setValue(true)
                             .addOnCompleteListener(task1 -> {
                                 hideProgressDialog();
-                                showNotificationDialog("Request Raised",
-                                        "Thank you for writing to us. Our Support team will get back to you regarding this request.",
-                                        null);
+                                Intent nammaApartmentsHelpIntent = new Intent(this, NammaApartmentsHelp.class);
+                                showNotificationDialog(getString(R.string.request_raised),
+                                        getString(R.string.user_support_message),
+                                        nammaApartmentsHelpIntent);
                             }));
         }
     }
@@ -158,9 +172,9 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         if (!editServiceType.getText().toString().isEmpty() && !editProblemDesc.getText().toString().isEmpty())
             return true;
         else if (editServiceType.getText().toString().isEmpty())
-            Toast.makeText(this, "Please select service type", Toast.LENGTH_LONG).show();
+            editServiceType.setError(getString(R.string.enter_service_type));
         else
-            Toast.makeText(this, "Please enter problem description", Toast.LENGTH_LONG).show();
+            textErrorProblemDesc.setVisibility(View.VISIBLE);
         return false;
     }
 
@@ -174,7 +188,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         String serviceCategory = getString(this.serviceCategory);
         String serviceType = editServiceType.getText().toString();
         String problemDesc = editProblemDesc.getText().toString();
-        return new Support(problemDesc, serviceCategory, serviceType, "Pending",
+        return new Support(problemDesc, serviceCategory, serviceType, getString(R.string.pending),
                 System.currentTimeMillis(), supportUID, NammaApartmentsGlobal.userUID);
     }
 

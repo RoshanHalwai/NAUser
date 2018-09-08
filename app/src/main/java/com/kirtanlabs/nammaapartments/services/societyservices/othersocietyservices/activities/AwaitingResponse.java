@@ -29,7 +29,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICES_REFERENCE;
@@ -83,7 +83,7 @@ public class AwaitingResponse extends BaseActivity {
         textSocietyServiceNameValue = findViewById(R.id.textSocietyServiceNameValue);
         textMobileNumberValue = findViewById(R.id.textMobileNumberValue);
         textEndOTPValue = findViewById(R.id.textEndOTPValue);
-        TextView textPlumberResponse = findViewById(R.id.textPlumberResponse);
+        TextView textSocietyServiceResponse = findViewById(R.id.textSocietyServiceResponse);
 
         /*Setting font for all the views*/
         textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
@@ -94,7 +94,7 @@ public class AwaitingResponse extends BaseActivity {
         textMobileNumberValue.setTypeface(Constants.setLatoBoldFont(this));
         textEndOTPValue.setTypeface(Constants.setLatoBoldFont(this));
         textSocietyServiceAcceptedRequest.setTypeface(Constants.setLatoBoldFont(this));
-        textPlumberResponse.setTypeface(Constants.setLatoBoldFont(this));
+        textSocietyServiceResponse.setTypeface(Constants.setLatoBoldFont(this));
 
         String societyServiceNameTitle = getString(R.string.name) + ":";
         textSocietyServiceNameAndEventTitle.setText(societyServiceNameTitle);
@@ -105,6 +105,21 @@ public class AwaitingResponse extends BaseActivity {
         societyServiceType = getIntent().getStringExtra(Constants.SOCIETY_SERVICE_TYPE);
         societyServiceNotificationReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID);
 
+        /*Based On The Society Service Type we are differentiating appropriate string*/
+        switch (societyServiceType) {
+            case PLUMBER:
+                textSocietyServiceResponse.setText(getString(R.string.no_response_plumber));
+                break;
+            case CARPENTER:
+                textSocietyServiceResponse.setText(getString(R.string.no_response_carpenter));
+                break;
+            case ELECTRICIAN:
+                textSocietyServiceResponse.setText(getString(R.string.no_response_electrician));
+                break;
+            case GARBAGE_COLLECTION:
+                textSocietyServiceResponse.setText(getString(R.string.no_response_garbage));
+                break;
+        }
         if (societyServiceType.equals(Constants.EVENT_MANAGEMENT)) {
             /*This method is used to check status of user's latest request for Event Management*/
             checkUserEventManagementRequest();
@@ -247,9 +262,9 @@ public class AwaitingResponse extends BaseActivity {
                 imageRecentSocietyService.setImageResource(R.drawable.electrician_na);
                 textRecentSocietyService.setText(R.string.electrician);
                 break;
-            case GARBAGE_MANAGEMENT:
-                imageRecentSocietyService.setImageResource(R.drawable.garbage_na);
-                textRecentSocietyService.setText(R.string.garbage_collector);
+            case GARBAGE_COLLECTION:
+                imageRecentSocietyService.setImageResource(R.drawable.garbage_collection_na);
+                textRecentSocietyService.setText(R.string.garbage_collection);
                 break;
         }
 
