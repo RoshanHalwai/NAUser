@@ -33,7 +33,7 @@ public class ApartmentServicesHome extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*Getting Id's for all the views*/
+        /*Getting Id for the recycler view*/
         RecyclerView recyclerView = view.findViewById(R.id.listApartmentServices);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -55,7 +55,7 @@ public class ApartmentServicesHome extends Fragment {
         /*Creating the Adapter*/
         NammaApartmentServiceAdapter nammaApartmentServiceAdapter = new NammaApartmentServiceAdapter(getActivity(), R.string.apartment_services, apartmentServicesList);
 
-        /*Attaching adapter to the listview*/
+        /*Attaching adapter to the recyclerView*/
         recyclerView.setAdapter(nammaApartmentServiceAdapter);
 
     }
