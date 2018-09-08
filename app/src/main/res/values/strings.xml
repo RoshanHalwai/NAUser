@@ -371,6 +371,9 @@
     <string name="maintenance_text">All the payments related to maintenance, repairs and reconstruction of the common infrastructure of your housing society
         is now in our hands. You can directly pay the fixed amount for Maintenance Services through your Namma Apartments Mobile Wallet.</string>
 
+    <!--Transaction History-->
+    <string name="transactions">Transactions</string>
+    <string name="no_transactions_performed">You have not performed any transactions yet.</string>
 
     <!--Custom Notification -->
     <string name="e_intercom_profile_desc">Profile photo of Daily Service or Guest</string>

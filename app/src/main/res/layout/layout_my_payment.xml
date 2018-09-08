@@ -189,8 +189,10 @@
 
             <!--My Transactions Card View-->
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
+                android:id="@+id/layoutTransactionHistory"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="10dp">
 
                 <LinearLayout
@@ -203,13 +205,14 @@
                         android:layout_height="50dp"
                         android:padding="10dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/transactions" />
+                        android:src="@drawable/wallet" />
 
                     <TextView
                         android:id="@+id/textTransactions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:padding="10dp"
                         android:text="@string/my_transactions"
                         android:textColor="@color/nmBlack"
                         android:textSize="20sp" />

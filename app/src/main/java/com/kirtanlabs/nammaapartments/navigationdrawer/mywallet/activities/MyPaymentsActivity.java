@@ -1,7 +1,9 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +70,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         TextView textSocietyService = findViewById(R.id.textSocietyService);
         TextView textApartmentService = findViewById(R.id.textApartmentService);
         TextView textTransactions = findViewById(R.id.textTransactions);
+        CardView layoutTransactionHistory = findViewById(R.id.layoutTransactionHistory);
 
         /*Setting Font's for all the views*/
         textWalletTitle.setTypeface(setLatoBoldFont(this));
@@ -79,6 +82,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
 
         textSocietyService.setOnClickListener(v -> startPayment(amountInPaise, getString(R.string.society_services)));
         textApartmentService.setOnClickListener(v -> startPayment(amountInPaise, getString(R.string.apartment_services)));
+        layoutTransactionHistory.setOnClickListener(v -> startActivity(new Intent(this, TransactionHistory.class)));
     }
 
     public void startPayment(int amount, String description) {
@@ -137,7 +141,6 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     public void onPaymentError(int code, String response) {
         try {
             Toast.makeText(this, "Payment failed: " + code + " " + response, Toast.LENGTH_SHORT).show();
-            storeTransactionDetails("", "Failed");
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
         }
@@ -156,7 +159,9 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
                 serviceCategory, NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
         PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails)
                 .addOnCompleteListener(task -> userTransactionReference.child(transactionUID).setValue(true)
-                        .addOnCompleteListener(task1 -> Checkout.clearUserData(this)));
+                        .addOnCompleteListener(task1 -> {
+                            Checkout.clearUserData(this);
+                        }));
     }
 
 }
