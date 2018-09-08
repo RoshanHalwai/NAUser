@@ -51,6 +51,10 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
         this.apartmentServicesList = apartmentServicesList;
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding RecyclerView.Adapter Objects
+     * ------------------------------------------------------------- */
+
     @NonNull
     @Override
     public NammaApartmentServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -71,6 +75,10 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
     public int getItemCount() {
         return apartmentServicesList.size();
     }
+
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
 
     /**
      * This method is used to check if their is any previous society service request is active or not.
@@ -155,6 +163,10 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
             context.startActivity(intent);
         }
     }
+
+    /* ------------------------------------------------------------- *
+     * NammaApartment Service ViewHolder Class
+     * ------------------------------------------------------------- */
 
     public class NammaApartmentServiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
