@@ -15,7 +15,7 @@
         android:contentDescription="@string/apartment_image_on_the_splash_screen"
         android:padding="10dp"
         android:scaleType="fitXY"
-        android:src="@drawable/plumber" />
+        android:src="@drawable/apartment_services_na" />
 
     <RelativeLayout
         android:layout_width="match_parent"
