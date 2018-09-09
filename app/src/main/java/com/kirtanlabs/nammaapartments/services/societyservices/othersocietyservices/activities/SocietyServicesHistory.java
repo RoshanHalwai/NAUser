@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.adapters.ContactUsAdapter;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.RetrievingSocietyServiceHistoryList;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.SocietyServiceHistoryAdapter;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
@@ -48,32 +49,43 @@ public class SocietyServicesHistory extends BaseActivity {
 
         String societyServiceType = getIntent().getStringExtra(Constants.SCREEN_TITLE);
 
-        /*Retrieving all society service request details which user has raised till now*/
-        new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
-                .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
-                    if (societyServiceNotificationDataList == null) {
-                        switch (societyServiceType) {
-                            case PLUMBER:
-                                showFeatureUnavailableLayout(R.string.plumber_service_unavailable_message);
-                                break;
-                            case CARPENTER:
-                                showFeatureUnavailableLayout(R.string.carpenter_service_unavailable_message);
-                                break;
-                            case ELECTRICIAN:
-                                showFeatureUnavailableLayout(R.string.electrician_service_unavailable_message);
-                                break;
-                            case GARBAGE_COLLECTION:
-                                showFeatureUnavailableLayout(R.string.garbage_service_unavailable_message);
-                                break;
-                            case EVENT_MANAGEMENT:
-                                showFeatureUnavailableLayout(R.string.event_service_unavailable_message);
-                                break;
+        if (societyServiceType.equals(getString(R.string.contact_us))) {
+            new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
+                    .getSupportDataList(supportList -> {
+                        if (supportList == null) {
+                            showFeatureUnavailableLayout(R.string.support_unavailable);
+                        } else {
+                            ContactUsAdapter contactUsAdapter = new ContactUsAdapter(SocietyServicesHistory.this, supportList);
+                            recyclerView.setAdapter(contactUsAdapter);
                         }
-                    } else {
-                        SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
+                    });
+        } else {
+            /*Retrieving all society service request details which user has raised till now*/
+            new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
+                    .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
+                        if (societyServiceNotificationDataList == null) {
+                            switch (societyServiceType) {
+                                case PLUMBER:
+                                    showFeatureUnavailableLayout(R.string.plumber_service_unavailable_message);
+                                    break;
+                                case CARPENTER:
+                                    showFeatureUnavailableLayout(R.string.carpenter_service_unavailable_message);
+                                    break;
+                                case ELECTRICIAN:
+                                    showFeatureUnavailableLayout(R.string.electrician_service_unavailable_message);
+                                    break;
+                                case GARBAGE_COLLECTION:
+                                    showFeatureUnavailableLayout(R.string.garbage_service_unavailable_message);
+                                    break;
+                                case EVENT_MANAGEMENT:
+                                    showFeatureUnavailableLayout(R.string.event_service_unavailable_message);
+                                    break;
+                            }
+                        } else {
+                            SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+        }
     }
-
 }

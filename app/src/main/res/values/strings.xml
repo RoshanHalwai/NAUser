@@ -696,5 +696,8 @@
     <string name="request_raised">Request Raised</string>
     <string name="user_support_message">Thank you for writing to us. Our Support team will get back to you regarding this request.</string>
     <string name="pending">Pending</string>
+    <string name="support_unavailable">Currently there are no support requests raised by the user.</string>
+    <string name="problem">Problem:</string>
+    <string name="category">Category:</string>
 
 </resources>
