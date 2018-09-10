@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities;
+package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.pojo.Transaction;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +36,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * Constructor
      * ------------------------------------------------------------- */
 
-    TransactionHistoryAdapter(Context mCtx, List<Transaction> transactionList) {
+    public TransactionHistoryAdapter(Context mCtx, List<Transaction> transactionList) {
         this.mCtx = mCtx;
         this.transactionList = transactionList;
     }
