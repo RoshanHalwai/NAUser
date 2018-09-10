@@ -25,10 +25,7 @@
     <string name="enter_verification_code">We need to verify your account. Please enter the 6 digit verification
     code sent to your mobile number.</string>
     <string name="verify_otp">Verify OTP</string>
-    <string name="incorrect_otp">You have entered an incorrect OTP</string>
     <string name="auto_verification_completed">AutoVerification completed. Please wait while we check your Account in our system. . .</string>
-    <string name="record_not_found">Record not found. Please contact your Association.</string>
-    <string name="image_description">Image to indicate that the user does not exist in the database.</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="waiting_for_otp">Waiting for OTP. . .</string>
     <string name="change_mobile_number">Change Mobile Number</string>
@@ -62,7 +59,6 @@
     <string name="email_id">Email-Id</string>
     <string name="sign_up">Sign Up</string>
     <string name="i_agree_to_terms_and_conditions">By clicking on Sign Up, I agree to Namma Apartments Privacy Policy and Terms &amp; Conditions.</string>
-    <string name="i_already_have_an_account">I already have an Account</string>
 
     <!--SignIn Activity-->
     <string name="create_an_account">Create an Account</string>
@@ -120,7 +116,6 @@
     <string name="driver">Driver</string>
     <string name="groceries">Groceries</string>
     <string name="images_of_digital_gate_services">Images of Digital Gate Services</string>
-    <string name="refer_title">Refer via</string>
     <string name="whatsapp_msg">Hey there! I would like to have your service at my Flat. Revert back so that we can schedule and sort things out quickly.</string>
     <string name="message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading..</string>
     <string name="message_name">sms_body</string>
@@ -152,7 +147,6 @@
     <string name="contacts_information" tools:keep="@string/contacts_information">Contacts Information</string>
     <string name="pick_date_time"><![CDATA[Date & Time]]></string>
     <string name="select_future_time">Please select future time.</string>
-    <string name="send_otp_message">We will send an OTP to your visitor allowing them to enter into your society.</string>
     <string name="invitation_success_title">Invitation Message</string>
     <string name="invitation_success_message">You have successfully invited your Guest.</string>
     <string name="inviting_your_visitor">Inviting your Guest</string>
@@ -161,7 +155,6 @@
     <string name="guests">Guests</string>
     <string name="package_arrivals">Package Arrivals</string>
     <string name="cab_arrivals">Cab Arrivals</string>
-    <string name="my_guests_list">My Guests List</string>
 
     <!--Guests List Activity-->
     <string name="my_guests">Guests</string>
@@ -206,7 +199,6 @@
     <string name="raise_water_alarm">Raise Water Alarm</string>
     <string name="notification_message">Arrival Notification has been sent to your Security Guard.</string>
     <string name="notification_title">Security Guard Notification</string>
-    <string name="please_fill_details">Please fill details here</string>
 
     <!--Expecting Cab Arrival & Expecting Package Arrival Activities-->
     <string name="cab_number">Cab Number</string>
@@ -233,11 +225,9 @@
     <string name="guest_description_hint">Ex: Laptop</string>
     <string name="description">Description (Optional)</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
-    <string name="title_activity_daily_services">DailyServices</string>
     <string name="handed_things_success_title">Handed Things Message.</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
-    <string name="history_unavailable_message">Sorry you cannot use this feature since you have not handed things in past.</string>
     <string name="history">History</string>
     <string name="things">Things:</string>
 
@@ -249,10 +239,6 @@
     <string name="remove">Remove</string>
     <string name="flats">Flats:</string>
     <string name="rating">Rating:</string>
-    <string name="car_bike_cleaner">Car/Bike cleaner</string>
-    <string name="child_care_taker">Child Caretaker</string>
-    <string name="newspaper_paper_man">NewsPaper man</string>
-    <string name="laundry_man">Laundry man</string>
     <string name="daily_service_cancel">Are you sure you want to remove this Daily Service?\n\nNOTE: You will stop receiving notifications related to this Daily Service.</string>
     <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
@@ -264,7 +250,6 @@
     <!--Adding My Daily Services-->
     <string name="name">Name</string>
     <string name="mobile">Mobile</string>
-    <string name="pick_time">Time</string>
     <string name="add">Add</string>
     <string name="edit">Edit</string>
     <string name="camera">Camera</string>
@@ -294,7 +279,6 @@
     <string name="otp_message_friend">We will send an OTP to your friend for Authentication.</string>
     <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
     <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
-    <string name="notification_alert">Notification Alert</string>
     <string name="access">Access:</string>
     <string name="family_member_unavailable_message">Please add your Family Members to approve visitors on your behalf.</string>
     <string name="adding_your_family_member">Adding Family Member</string>
@@ -305,7 +289,6 @@
     <string name="non_admin_add_family_members_title">Add Family Members Message</string>
     <string name="non_admin_add_family_members_message">Sorry you cannot add family members to this flat since you are not the admin for this flat.</string>
     <string name="non_admin_edit_message">Sorry you cannot edit this family member since you are not the admin of this flat.</string>
-    <string name="non_admin_remove_message">Sorry you cannot remove this family member since you are not the admin of this flat.</string>
     <string name="non_admin_edit_title_message">Edit Message</string>
     <string name="non_admin_remove_title_message">Delete Message</string>
     <string name="change_access">Change Access</string>
@@ -313,8 +296,6 @@
     <string name="remove_dialog_title">Remove Flat Member Message</string>
 
     <!--Edit My Daily Service and Family Members Details-->
-    <string name="edit_my_daily_service_details">Edit My Daily Service Details</string>
-    <string name="edit_my_family_member_details">Edit My Family Member Details</string>
     <string name="update">Update</string>
 
     <!--Validations-->
@@ -335,7 +316,6 @@
     <string name="choose_problem_validation">Please Select Your Problem</string>
     <string name="enter_date">Please select date</string>
     <string name="event_title_error">Please enter event title</string>
-    <string name="future_time_message">Please Select Future Time</string>
     <string name="enter_other_problem_desc">Please Enter Your Problem</string>
     <string name="enter_service_type">Please select service type</string>
     <string name="enter_problem_description">Please enter problem description</string>
@@ -345,14 +325,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Namma Apartments</string>
     <string name="nav_header_subtitle">One Stop Shop Solution</string>
-    <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="logout">Logout</string>
     <string name="my_profile">My Profile</string>
     <string name="help">Help</string>
     <string name="rate_us">Rate Us</string>
     <string name="notice_board">Notice Board</string>
-    <string name="image_which_shows_app_icon">Image which shows app icon</string>
 
     <!--Payments -->
     <string name="my_payment_title">Namma Apartments E-Payment</string>
@@ -361,7 +338,7 @@
     <string name="make_payment_for">Make Payment For</string>
     <string name="my_transactions">My Transactions</string>
     <string name="transaction_image_desc">Image which shows users for My Transactions</string>
-    <string name="maintenance_cost">Maintenance Cost</string>
+    <string name="amount_due">Amount Due</string>
     <string name="Rs">\u20B9</string>
 
     <!--Transaction History-->
@@ -413,8 +390,6 @@
     <string name="garbage_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Garbage requests from your flat yet.</string>
     <string name="event_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Event requests from your flat yet.</string>
     <string name="history_name">Name:</string>
-    <string name="history_mobile">Mobile Number:</string>
-    <string name="history_problem">Problem:</string>
     <string name="time_slot">Time Slot:</string>
 
     <string-array name="plumbing_issues_list">
@@ -431,7 +406,6 @@
         <item>@string/others</item>
     </string-array>
     <string name="search">Search</string>
-    <string name="select_from_here">Select</string>
     <string name="dripping_faucets">Installation of underground Drainage Pipes</string>
     <string name="slow_draining_sink">Bathtub repair and replacement</string>
     <string name="clogged_bath_or_shower_drain">Toilet repair and replacement</string>
@@ -480,7 +454,6 @@
         <item>@string/window_frame</item>
         <item>@string/others</item>
     </string-array>
-    <string name="unable_to_open_drawers_and_doors">Installation of Cabinets and Molding</string>
     <string name="carpentry_finish_appears_uneven">Wooden Mesh</string>
     <string name="split_in_the_wood">Wood partition</string>
     <string name="weak_joints">Bolt, Latch and Handle work</string>
@@ -494,7 +467,6 @@
 
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
-    <string name="faq">FAQs</string>
     <string name="contact_us">Contact Us</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -538,7 +510,6 @@
 
     <!-- Sound settings -->
     <string name="sound_settings">Sound Settings</string>
-    <string name="e_intercom_notifications">E-Intercom Notifications</string>
     <string name="guest_notifications">Guest Notifications</string>
     <string name="daily_service_notifications">Daily Service Notifications</string>
     <string name="cab_notifications">Cab Notifications</string>
@@ -623,7 +594,6 @@
     <!--Firebase Notifications  & Action Button Listener Activity-->
     <string name="namma_apartments_channel">Namma Apartments Channel</string>
     <string name="notice_board_notification">Notice_Board_Notification</string>
-    <string name="default_sound">default</string>
     <string name="default_notification_channel_id">01</string>
 
     <!--Contact Us Activity-->
@@ -635,7 +605,6 @@
     <string name="describe_your_problem">Describe Your Problem</string>
     <string name="submit_request">Submit Request</string>
     <string name="raising_request">Raising Request</string>
-    <string name="support_key">support</string>
     <string name="request_raised">Request Raised</string>
     <string name="user_support_message">Thank you for writing to us. Our Support team will get back to you regarding this request.</string>
     <string name="pending">Pending</string>

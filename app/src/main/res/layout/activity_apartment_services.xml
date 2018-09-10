@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/itemList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -24,7 +23,6 @@
                 android:weightSum="3">
 
                 <RelativeLayout
-                    android:id="@+id/layoutVisitorProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -137,7 +135,6 @@
                 android:background="@android:color/black" />
 
             <LinearLayout
-                android:id="@+id/layoutIcons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line"

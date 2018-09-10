@@ -44,7 +44,6 @@
                         android:textSize="18sp" />
 
                     <View
-                        android:id="@+id/viewTitle"
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="2dp"
@@ -90,7 +89,6 @@
                         android:textSize="18sp" />
 
                     <View
-                        android:id="@+id/viewPayFor"
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="2dp"
@@ -150,52 +148,31 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textMaintenanceCost"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:text="@string/maintenance_cost"
+                                android:text="@string/amount_due"
                                 android:textColor="@color/nmBlack"
                                 android:textSize="16sp" />
 
                             <View
-                                android:id="@+id/view"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
                                 android:background="@color/nmLightYellow" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="30sp"
-                                android:layout_margin="10dp"
-                                android:orientation="horizontal"
-                                android:weightSum="1">
-
-                                <TextView
-                                    android:id="@+id/textRupeeSymbol"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="0.3"
-                                    android:gravity="center"
-                                    android:text="@string/Rs"
-                                    android:textColor="@color/nmBlack"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/textMaintenanceCostValue"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="0.7"
-                                    android:gravity="center"
-                                    android:textColor="@color/nmBlack"
-                                    android:textSize="@dimen/text_view_numbers_size" />
-
-                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/textMaintenanceCostValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:padding="2dp"
+                                android:text="2500"
+                                android:textColor="@color/nmBlack"
+                                android:textSize="@dimen/text_view_numbers_size" />
 
                         </LinearLayout>
 
@@ -221,9 +198,9 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:contentDescription="@string/transaction_image_desc"
                         android:padding="10dp"
                         android:scaleType="centerCrop"
-                        android:contentDescription="@string/transaction_image_desc"
                         android:src="@drawable/wallet" />
 
                     <TextView

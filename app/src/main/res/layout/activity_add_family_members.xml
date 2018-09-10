@@ -151,7 +151,6 @@
                 android:textSize="@dimen/button_default_size" />
 
             <LinearLayout
-                android:id="@+id/layoutLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -204,7 +203,6 @@
                 android:visibility="visible" />
 
             <RadioGroup
-                android:id="@+id/radioRelation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -258,7 +256,6 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/relativeLayoutAccess"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
