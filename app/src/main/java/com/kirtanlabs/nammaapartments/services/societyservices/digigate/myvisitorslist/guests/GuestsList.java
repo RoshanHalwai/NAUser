@@ -4,19 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.home.DigitalGateHome;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
-public class GuestsList extends BaseActivity implements View.OnClickListener {
+public class GuestsList extends BaseActivity {
 
     private GuestsListAdapter guestsListAdapter;
 
@@ -35,9 +33,6 @@ public class GuestsList extends BaseActivity implements View.OnClickListener {
          * go back to Invite Visitors screen but instead navigate to Digi Gate Home*/
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> onBackPressed());
-
-        ImageView infoButton = findViewById(R.id.infoButton);
-        infoButton.setOnClickListener(this);
 
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -87,18 +82,6 @@ public class GuestsList extends BaseActivity implements View.OnClickListener {
             startActivity(visitorsListIntent);
         } else {
             super.onBackPressed();
-        }
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
-     * ------------------------------------------------------------- */
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.infoButton) {
-            Intent infoIntent = new Intent(GuestsList.this, FrequentlyAskedQuestionsActivity.class);
-            infoIntent.putExtra(SCREEN_TITLE, R.string.my_guests);
-            startActivity(infoIntent);
         }
     }
 

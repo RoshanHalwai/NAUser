@@ -15,7 +15,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -88,7 +87,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         editTextDescription = findViewById(R.id.editTextDescription);
         LinearLayout layoutGarbageType = findViewById(R.id.layoutGarbageType);
         otherProblemLayout = findViewById(R.id.layoutProblemOthers);
-        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for all the views*/
         textSelectProblem.setTypeface(setLatoBoldFont(this));
@@ -138,7 +136,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         historyButton.setVisibility(View.VISIBLE);
 
         /*Setting event for views*/
-        infoButton.setOnClickListener(this);
         editTextSelectProblem.setOnClickListener(this);
         buttonImmediately.setOnClickListener(this);
         buttonMorningSlot.setOnClickListener(this);
@@ -157,25 +154,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.infoButton:
-                Intent infoIntent = new Intent(SocietyServicesHome.this, FrequentlyAskedQuestionsActivity.class);
-                /*Here Based on the screen title we are sending appropriate screen title to next screen.*/
-                switch (screenTitle) {
-                    case R.string.plumber:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.plumber);
-                        break;
-                    case R.string.carpenter:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.carpenter);
-                        break;
-                    case R.string.electrician:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.electrician);
-                        break;
-                    case R.string.garbage_collection:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.garbage_collection);
-                        break;
-                }
-                startActivity(infoIntent);
-                break;
             case R.id.editTextSelectProblem:
                 Intent intent = new Intent(SocietyServicesHome.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, screenTitle);

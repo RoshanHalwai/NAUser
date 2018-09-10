@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.kirtanlabs.nammaapartments.utilities.ContactPicker;
@@ -122,7 +120,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         Button buttonSelectFromContact = findViewById(R.id.buttonSelectFromContact);
         Button buttonAdd = findViewById(R.id.buttonAdd);
         circleImageView = findViewById(R.id.dailyServiceProfilePic);
-        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*We don't want the keyboard to be displayed when user clicks on the pick time edit field*/
         editPickTime.setInputType(InputType.TYPE_NULL);
@@ -153,7 +150,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         editDailyServiceName.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         editPickTime.setOnFocusChangeListener(this);
-        infoButton.setOnClickListener(this);
 
     }
 
@@ -226,11 +222,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.infoButton:
-                Intent infoIntent = new Intent(AddDailyService.this, FrequentlyAskedQuestionsActivity.class);
-                infoIntent.putExtra(SCREEN_TITLE, R.string.add_my_daily_service);
-                startActivity(infoIntent);
-                break;
             case R.id.dailyServiceProfilePic:
                 imageSelectionDialog.show();
                 break;

@@ -3,18 +3,15 @@ package com.kirtanlabs.nammaapartments.services.societyservices.digigate.emergen
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -23,11 +20,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EMERGENCIES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_EMERGENCY_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_EMERGENCIES_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class RaiseAlarm extends BaseActivity implements View.OnClickListener {
+public class RaiseAlarm extends BaseActivity {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -63,47 +59,13 @@ public class RaiseAlarm extends BaseActivity implements View.OnClickListener {
         TextView textCreateAlert = findViewById(R.id.textCreateAlert);
         textAlertRaised = findViewById(R.id.textAlertRaised);
         ImageButton buttonCreateAlert = findViewById(R.id.buttonCreateAlert);
-        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for all the views*/
         textCreateAlert.setTypeface(setLatoBoldFont(this));
         textAlertRaised.setTypeface(setLatoBoldFont(this));
 
         /*Setting event for all the views*/
-        buttonCreateAlert.setOnClickListener(this);
-        infoButton.setOnClickListener(this);
-
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
-     * ------------------------------------------------------------- */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.infoButton:
-                Intent infoIntent = new Intent(RaiseAlarm.this, FrequentlyAskedQuestionsActivity.class);
-                /*Here Based on the screen title we are sending appropriate screen title to next screen.*/
-                switch (alarmType) {
-                    case R.string.medical_emergency:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.medical_emergency);
-                        break;
-                    case R.string.raise_fire_alarm:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.raise_fire_alarm);
-                        break;
-                    case R.string.raise_theft_alarm:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.raise_theft_alarm);
-                        break;
-                    case R.string.raise_water_alarm:
-                        infoIntent.putExtra(SCREEN_TITLE, R.string.raise_water_alarm);
-                        break;
-                }
-                startActivity(infoIntent);
-                break;
-            case R.id.buttonCreateAlert:
-                showEmergencyDialog();
-                break;
-        }
+        buttonCreateAlert.setOnClickListener(v -> showEmergencyDialog());
     }
 
     /* ------------------------------------------------------------- *

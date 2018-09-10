@@ -7,6 +7,7 @@
     <string name="back_button_description">Back button to navigate previous activity</string>
     <string name="information_about_the_current_screen">Information about the current screen</string>
     <string name="check_network_connection">Please check your Network Connection</string>
+    <string name="faq_url">https://www.nammaapartments.com/faq</string>
 
     <!--Splash Screens-->
     <string name="society_services">Society Services</string>
@@ -531,61 +532,6 @@
     If you are an owner of an account on this application, you are solely responsible for maintaining the confidentiality of your private user details.
     You are responsible for all activities that occur under your account or password. We reserve all rights to terminate accounts, edit or remove content and cancel orders in their sole discretion.
     Create your own professional terms and conditions tailored to your website or app.</string>
-
-    <!-- Frequently Asked Questions Activity -->
-    <string name="general_related">General</string>
-    <string name="general_query">How frequently I would get updates?</string>
-    <string name="change_language_query">Does Namma Apartments support multiple languages?</string>
-    <string name="change_name_query">How do I change my Username?</string>
-    <string name="change_email_address_query">How do I change my Email Address?</string>
-    <string name="change_mobile_number_query">How do I change my registered Mobile Number?</string>
-    <string name="account_related">Account</string>
-    <string name="account_delete_query">How do I delete My Account?</string>
-    <string name="account_deactivate_query">I am moving out of my current place. How can I Deactivate my Account?</string>
-    <string name="visitor_related">Visitors</string>
-    <string name="invite_visitor_query">I faced an issue during inviting my Visitor. How can I raise a complaint?</string>
-    <string name="visitor_cancel_query">How can I cancel my Invited Visitor?</string>
-    <string name="visitor_reschedule_query">How can I change my Visitor Arrival Date or Time?</string>
-    <string name="visitor_notification_query">I am getting a notification for a visitor (e.g.Cab,Package,Guest) that I did not expect. What should I do?</string>
-    <string name="valid_for_query">What is \'Valid For\' about?</string>
-    <string name="daily_services_related">Daily Services</string>
-    <string name="daily_service_query">I faced an issue during adding my Daily Service. How can I raise a complaint?</string>
-    <string name="daily_service_remove_query">How can I remove my Daily Services?</string>
-    <string name="daily_services_reschedule_query">How can I change my Daily Service Arrival Time?</string>
-    <string name="flat_members_related">Flat Members</string>
-    <string name="flat_members_query">One of my present flat member is moving out from my flat. How can I delete his/her data?</string>
-    <string name="flat_members_friend_query">Unfortunately, I added Friend as my Family Member. What should I do?</string>
-    <string name="grant_access_query">What is Grant Access when I am trying to add my flat members?</string>
-    <string name="flat_member_admin_query">I want to give my Admin Access to one of my Flat Member. What should I do?</string>
-    <string name="handed_things_related">Handed Things</string>
-    <string name="handed_things_query">What things can be handed to Daily Service/Guest?</string>
-    <string name="handed_things_description">What is the concept of handed things to Daily Service/Guest?</string>
-    <string name="guard_handed_things_query">How Guard will get notified when I handed things to Daily Service/Guest?</string>
-    <string name="emergency_related">Emergency</string>
-    <string name="emergency_related_query">How can I raise an Emergency alarm?</string>
-    <string name="emergency_alarm_query">What actions will take place once an Emergency Alarm is raised?</string>
-    <string name="emergency_alarm_response_query">How much estimated time will it take for the Guard to take necessary action?</string>
-    <string name="plumber_related">Plumber</string>
-    <string name="plumber_query">I requested for a Plumber service, but I did not get any approval yet. What should I do?</string>
-    <string name="plumber_late_arrive_query">What should I do if the Plumber does not arrive within the expected time slot?</string>
-    <string name="carpenter_related">Carpenter</string>
-    <string name="carpenter_query">I requested for a Carpenter service, but I did not get any approval yet. What should I do?</string>
-    <string name="carpenter_late_arrive_query">What should I do if the Carpenter does not arrive within the expected time slot?</string>
-    <string name="electrician_related">Electrician</string>
-    <string name="electrician_query">I requested for an Electrician service, but I did not get any approval yet. What should I do?</string>
-    <string name="electrician_late_arrive_query">What should I do if the Electrician does not arrive within the expected time slot?</string>
-    <string name="garbage_management_related">Garbage Management</string>
-    <string name="garbage_management_query">I requested for a Garbage Management service, but I did not get any approval yet. What should I do?</string>
-    <string name="garbage_query">What should I do if the Garbage Management does not arrive within the expected time slot?</string>
-    <string name="event_management_related">Event Management</string>
-    <string name="event_management_query">I requested for an Event Management service, but I did not get any approval yet. What should I do?</string>
-    <string name="event_reschedule_query">I want to reschedule my event.What should I do?</string>
-    <string name="notifications_related">Notifications</string>
-    <string name="notifications_query">I am not getting any notifications?</string>
-    <string name="internet_connectivity_query">Why is the app showing no internet connection?</string>
-    <string name="notification_issue">My internet connectivity is fine, still I am not receiving any notifications, what could be the issue?</string>
-    <string name="notification_settings_query">My notification settings are \‘ON\', but still I am not getting any notifications?</string>
-    <string name="notifications_delay_query">I am receiving notifications but with small delay. What is the reason for delay?</string>
 
     <!-- Strings related to Settings -->
     <string name="sign_out">Sign Out</string>

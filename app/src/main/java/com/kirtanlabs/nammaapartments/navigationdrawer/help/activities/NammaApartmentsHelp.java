@@ -74,7 +74,7 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                Intent faqIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nammaapartments.com/faq-template-master/index.html"));
+                Intent faqIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.faq_url)));
                 startActivity(faqIntent);
                 break;
             case 1:
