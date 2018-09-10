@@ -173,6 +173,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
     public static final String FIREBASE_CHILD_SUPPORT = "support";
     public static final String FIREBASE_CHILD_TRANSACTIONS = "transactions";
+    public static final String FIREBASE_CHILD_MAINTENANCE_COST="maintenanceCost";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys

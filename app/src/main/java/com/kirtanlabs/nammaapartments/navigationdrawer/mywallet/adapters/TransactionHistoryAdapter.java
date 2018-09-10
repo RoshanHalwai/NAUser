@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities;
+package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -36,7 +36,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * Constructor
      * ------------------------------------------------------------- */
 
-    TransactionHistoryAdapter(Context mCtx, List<Transaction> transactionList) {
+    public TransactionHistoryAdapter(Context mCtx, List<Transaction> transactionList) {
         this.mCtx = mCtx;
         this.transactionList = transactionList;
     }

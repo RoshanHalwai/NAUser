@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.adapters.TransactionHistoryAdapter;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.pojo.Transaction;
 
 import java.util.ArrayList;
