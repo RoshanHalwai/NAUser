@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.pojo;
+package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo;
 
 /**
  * KirtanLabs Pvt. Ltd.

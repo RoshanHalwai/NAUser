@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.adapters;
+package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.pojo.Transaction;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
