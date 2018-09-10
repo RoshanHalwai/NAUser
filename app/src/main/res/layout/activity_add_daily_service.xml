@@ -151,7 +151,6 @@
                 android:textSize="@dimen/button_default_size" />
 
             <LinearLayout
-                android:id="@+id/layoutLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -167,7 +166,6 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/relativeLayoutTime"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"

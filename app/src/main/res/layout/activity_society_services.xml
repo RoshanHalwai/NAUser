@@ -31,7 +31,6 @@
                     android:weightSum="7">
 
                     <TextView
-                        android:id="@+id/textSelectProblemIcon"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -46,7 +45,6 @@
                         android:textStyle="bold" />
 
                     <View
-                        android:id="@+id/selectTimeSlotLine"
                         android:layout_width="0dp"
                         android:layout_height="5dp"
                         android:layout_marginTop="20dp"
@@ -55,7 +53,6 @@
                         android:layerType="software" />
 
                     <TextView
-                        android:id="@+id/textSelectSlotIcon"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -68,7 +65,6 @@
                         android:textStyle="bold" />
 
                     <View
-                        android:id="@+id/requestServiceLine"
                         android:layout_width="0dp"
                         android:layout_height="5dp"
                         android:layout_marginTop="20dp"
@@ -77,7 +73,6 @@
                         android:layerType="software" />
 
                     <TextView
-                        android:id="@+id/textRequestServiceIcon"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -90,7 +85,6 @@
                         android:textStyle="bold" />
 
                     <View
-                        android:id="@+id/enjoyFreeServiceLine"
                         android:layout_width="0dp"
                         android:layout_height="5dp"
                         android:layout_marginTop="20dp"
@@ -99,7 +93,6 @@
                         android:layerType="software" />
 
                     <TextView
-                        android:id="@+id/textEnjoyFreeServiceIcon"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"

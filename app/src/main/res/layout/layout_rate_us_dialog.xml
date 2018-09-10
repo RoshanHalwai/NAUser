@@ -33,7 +33,6 @@
         android:background="@color/nmGrey" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -46,13 +45,11 @@
         tools:targetApi="lollipop" />
 
     <View
-        android:id="@+id/rateDialogLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/nmGrey" />
 
     <LinearLayout
-        android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -72,7 +69,6 @@
             tools:ignore="ButtonStyle" />
 
         <View
-            android:id="@+id/rateDialogButtonsLine"
             android:layout_width="5dp"
             android:layout_height="45dp"
             android:background="@android:color/white" />

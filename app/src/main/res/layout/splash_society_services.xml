@@ -8,7 +8,6 @@
     tools:context=".onboarding.splashscreen.SplashSocietyServices">
 
     <ImageView
-        android:id="@+id/imageSocietyServices"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_weight="0.5"
