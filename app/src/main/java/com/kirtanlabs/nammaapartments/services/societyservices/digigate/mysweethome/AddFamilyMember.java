@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +28,6 @@ import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
@@ -136,7 +134,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         buttonNo = findViewById(R.id.buttonNo);
         Button buttonAdd = findViewById(R.id.buttonAdd);
         circleImageView = findViewById(R.id.familyMemberProfilePic);
-        ImageView infoButton = findViewById(R.id.infoButton);
 
         /*Setting font for all the views*/
         textFamilyMemberName.setTypeface(setLatoBoldFont(this));
@@ -160,7 +157,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         radioButtonFriend.setTypeface(setLatoRegularFont(this));
 
         /*Setting event for all button clicks */
-        infoButton.setOnClickListener(this);
         circleImageView.setOnClickListener(this);
         buttonSelectFromContact.setOnClickListener(this);
         buttonYes.setOnClickListener(this);
@@ -222,11 +218,6 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.infoButton:
-                Intent infoIntent = new Intent(AddFamilyMember.this, FrequentlyAskedQuestionsActivity.class);
-                infoIntent.putExtra(SCREEN_TITLE, R.string.add_my_family_members);
-                startActivity(infoIntent);
-                break;
             case R.id.familyMemberProfilePic:
                 imageSelectionDialog.show();
                 break;

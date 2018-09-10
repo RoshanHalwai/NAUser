@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.myvisitorslist.guests.GuestsList;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.kirtanlabs.nammaapartments.utilities.ContactPicker;
@@ -96,7 +94,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
         /*Getting Id's for all the views*/
         circleImageView = findViewById(R.id.invitingVisitorsProfilePic);
-        ImageView infoButton = findViewById(R.id.infoButton);
         textErrorProfilePic = findViewById(R.id.textErrorProfilePic);
         TextView textVisitorName = findViewById(R.id.textVisitorAndServiceName);
         TextView textVisitorMobile = findViewById(R.id.textInvitorMobile);
@@ -131,7 +128,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
 
         /*Setting event for views */
         circleImageView.setOnClickListener(this);
-        infoButton.setOnClickListener(this);
         buttonSelectFromContact.setOnClickListener(this);
         editPickDateTime.setOnClickListener(this);
         editVisitorName.setOnClickListener(this);
@@ -179,11 +175,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.infoButton:
-                Intent infoIntent = new Intent(InvitingVisitors.this, FrequentlyAskedQuestionsActivity.class);
-                infoIntent.putExtra(SCREEN_TITLE, R.string.inviting_visitors);
-                startActivity(infoIntent);
-                break;
             case R.id.invitingVisitorsProfilePic:
                 imageSelectionDialog.show();
                 break;

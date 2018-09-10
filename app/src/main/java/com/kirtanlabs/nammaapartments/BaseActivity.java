@@ -98,6 +98,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
         backButton.setVisibility(View.VISIBLE);
     }
 
+    private void setInfoButtonListener() {
+        infoButton = findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.faq_url)))));
+    }
+
     /* ------------------------------------------------------------- *
      * Overriding Location Listener Methods
      * ------------------------------------------------------------- */
@@ -144,6 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
         showBackButton();
         setActivityTitle(getActivityTitle());
         setBackButtonListener();
+        setInfoButtonListener();
     }
 
     @Override

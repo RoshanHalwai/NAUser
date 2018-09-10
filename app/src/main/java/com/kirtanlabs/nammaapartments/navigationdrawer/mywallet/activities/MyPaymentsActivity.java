@@ -57,9 +57,6 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
 
         super.onCreate(savedInstanceState);
 
-        /*We need Info Button in this screen*/
-        showInfoButton();
-
         /*Pre Load the contents of the Payment UI*/
         Checkout.preload(getApplicationContext());
 

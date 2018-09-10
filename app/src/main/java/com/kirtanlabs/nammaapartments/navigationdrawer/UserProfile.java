@@ -94,6 +94,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Info Button in this screen*/
+        showInfoButton();
+
         /*Here we are getting the instance of current user when screen loads for the first time*/
         currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
 

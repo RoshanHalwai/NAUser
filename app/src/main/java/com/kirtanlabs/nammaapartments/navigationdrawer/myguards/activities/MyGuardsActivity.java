@@ -30,9 +30,6 @@ public class MyGuardsActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
-        /*We need Info Button in this screen*/
-        showInfoButton();
-
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

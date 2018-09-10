@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.FrequentlyAskedQuestionsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -107,7 +106,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
         buttonNightSlot = findViewById(R.id.buttonNightSlot);
         Button buttonBook = findViewById(R.id.buttonBook);
-        ImageView infoButton = findViewById(R.id.infoButton);
         daySlotLayout = findViewById(R.id.daySlotLayout);
         nightSlotLayout = findViewById(R.id.nightSlotLayout);
         layoutLegend = findViewById(R.id.layoutLegend);
@@ -157,7 +155,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNightSlot.setOnClickListener(this);
         historyButton.setOnClickListener(this);
         buttonBook.setOnClickListener(this);
-        infoButton.setOnClickListener(this);
 
     }
 
@@ -248,11 +245,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
                 societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
                 startActivity(societyServiceHistoryIntent);
-                break;
-            case R.id.infoButton:
-                Intent infoIntent = new Intent(EventManagement.this, FrequentlyAskedQuestionsActivity.class);
-                infoIntent.putExtra(SCREEN_TITLE, R.string.event_management);
-                startActivity(infoIntent);
                 break;
         }
 
