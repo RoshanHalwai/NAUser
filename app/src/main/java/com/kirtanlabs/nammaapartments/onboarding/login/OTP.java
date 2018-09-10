@@ -38,6 +38,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
 
 public class OTP extends BaseActivity implements View.OnClickListener, View.OnKeyListener {
@@ -281,6 +283,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     /* Check if User mobile number is found in database */
                                     if (dataSnapshot.exists()) {
+                                        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(ACCOUNT_CREATED, true).apply();
                                         if (getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
                                             startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
                                         } else {

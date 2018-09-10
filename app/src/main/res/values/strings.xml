@@ -668,6 +668,11 @@
 
     <!--Launch Screen Activity-->
     <string name="launch_screen_image_desc">Image of Launch Screen</string>
+    <string name="new_version_title">New Version Available</string>
+    <string name="new_version_message">A new version of Namma Apartments is available. Please update.</string>
+    <string name="connection_unavailable_title">Connection Unavailable</string>
+    <string name="connection_unavailable_message">It seems you are not connected to internet.</string>
+    <string name="retry">Retry</string>
 
     <!--Firebase Notifications  & Action Button Listener Activity-->
     <string name="namma_apartments_channel">Namma Apartments Channel</string>
