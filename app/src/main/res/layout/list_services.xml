@@ -26,4 +26,10 @@
         android:textColor="@color/nmBlack"
         android:textSize="18sp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2.5dp"
+        android:layout_below="@id/imageServiceIcon"
+        android:background="@drawable/dash_line_light" />
+
 </RelativeLayout>
