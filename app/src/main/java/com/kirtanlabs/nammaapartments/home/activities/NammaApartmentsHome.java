@@ -44,9 +44,11 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSe
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_VERSION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TOKENID;
@@ -275,6 +277,9 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         }
         /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
         userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
+
+        /*Storing User's Mobile OS Type(Android) in firebase under (users->private->userUid->otherDetails->deviceType)*/
+        userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_TYPE).setValue(Constants.ANDROID);
 
         /*Generating token id for Family Member/Friend on launch of Home Screen, and making sure a refreshed token is generated when
          * user logs in from a different device*/

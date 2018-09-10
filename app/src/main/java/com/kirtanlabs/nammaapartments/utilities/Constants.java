@@ -174,6 +174,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_SUPPORT = "support";
     public static final String FIREBASE_CHILD_TRANSACTIONS = "transactions";
     public static final String FIREBASE_CHILD_MAINTENANCE_COST="maintenanceCost";
+    public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -248,6 +249,7 @@ public class Constants {
     public static final int MORNING_SLOT_LAST_HOUR = 12;
     public static final int NOON_SLOT_LAST_HOUR = 15;
     public static final int EVENING_SLOT_LAST_HOUR = 17;
+    public static final String ANDROID = "android";
 
    /* ------------------------------------------------------------- *
    * Frequently Asked Questions Sections
