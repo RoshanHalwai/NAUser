@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -14,9 +15,11 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.pojo.Support;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.SocietyServiceProblemList;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities.SocietyServicesHistory;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SUPPORT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
 
 public class ContactUs extends BaseActivity implements View.OnClickListener {
@@ -75,12 +78,18 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         /*We don't want the keyboard to be displayed when user clicks on the choose one edit text*/
         editServiceType.setInputType(InputType.TYPE_NULL);
 
+        /*Since we have History button here, we would want to users to navigate to Contact Us history
+         * and display data based on the user input*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+
         /*Setting Click Listeners for UI views*/
         editServiceType.setOnClickListener(this);
         editProblemDesc.setOnClickListener(this);
         buttonSocietyServices.setOnClickListener(this);
         buttonApartmentService.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
+        historyButton.setOnClickListener(this);
 
         /*Initializing service category*/
         serviceCategory = R.string.society_services;
@@ -120,6 +129,11 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.buttonSubmit:
                 submitRequest();
+                break;
+            case R.id.historyButton:
+                Intent societyServiceHistoryIntent = new Intent(ContactUs.this, SocietyServicesHistory.class);
+                societyServiceHistoryIntent.putExtra(SCREEN_TITLE, getString(R.string.contact_us));
+                startActivity(societyServiceHistoryIntent);
                 break;
         }
     }

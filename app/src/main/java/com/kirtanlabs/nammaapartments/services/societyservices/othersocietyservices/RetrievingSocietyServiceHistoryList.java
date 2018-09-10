@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
+import com.kirtanlabs.nammaapartments.navigationdrawer.help.pojo.Support;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -109,6 +110,57 @@ public class RetrievingSocietyServiceHistoryList {
         });
     }
 
+    private void getSupportUIDList(NotificationUIDCallback notificationUIDCallback) {
+        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
+        DatabaseReference userDataReference = nammaApartmentsGlobal.getUserDataReference().child(Constants.FIREBASE_CHILD_SUPPORT);
+        userDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    ArrayList<String> notificationUIDList = new ArrayList<>();
+                    for (DataSnapshot notificationUIDDataSnapshot : dataSnapshot.getChildren()) {
+                        notificationUIDList.add(notificationUIDDataSnapshot.getKey());
+                    }
+                    notificationUIDCallback.onCallBack(notificationUIDList);
+                } else {
+                    notificationUIDCallback.onCallBack(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getSupportDataList(SupportDataListCallBack supportDataListCallBack) {
+        getSupportUIDList(supportNotificationUIDList -> {
+            if (supportNotificationUIDList != null) {
+                List<Support> supportDataList = new ArrayList<>();
+                for (String notificationUID : supportNotificationUIDList) {
+                    DatabaseReference supportData = Constants.SUPPORT_REFERENCE
+                            .child(notificationUID);
+                    supportData.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Support support = dataSnapshot.getValue(Support.class);
+                            supportDataList.add(support);
+                            supportDataListCallBack.onCallBack(supportDataList);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            } else {
+                supportDataListCallBack.onCallBack(null);
+            }
+        });
+    }
+
     /* ------------------------------------------------------------- *
      * Interfaces
      * ------------------------------------------------------------- */
@@ -123,5 +175,9 @@ public class RetrievingSocietyServiceHistoryList {
 
     public interface SocietyServiceRequestStatus {
         void onCallBack(String status);
+    }
+
+    public interface SupportDataListCallBack {
+        void onCallBack(List<Support> supportList);
     }
 }
