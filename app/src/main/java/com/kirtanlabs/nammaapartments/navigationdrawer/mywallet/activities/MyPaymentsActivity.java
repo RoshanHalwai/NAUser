@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
@@ -19,6 +23,9 @@ import com.razorpay.PaymentResultListener;
 
 import org.json.JSONObject;
 
+import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_MAINTENANCE_COST;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSACTION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
@@ -30,13 +37,12 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
  * This class has been created to implement the home screen of 'My Wallet'
  */
 
-public class MyPaymentsActivity extends BaseActivity implements PaymentResultListener {
+public class MyPaymentsActivity extends BaseActivity implements PaymentResultListener, View.OnClickListener {
 
     private static final String TAG = MyPaymentsActivity.class.getSimpleName();
-
-    /*TODO: Get this amount from the server since each user might have different amount to be paid*/
-    private int amountInPaise = 100;
+    private int amountInPaise;
     private String serviceCategory;
+    private TextView textMaintenanceCostValue;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -65,7 +71,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         TextView textWalletDescription = findViewById(R.id.textWalletDescription);
         TextView textPayFor = findViewById(R.id.textPayFor);
         TextView textSocietyService = findViewById(R.id.textSocietyService);
-        TextView textApartmentService = findViewById(R.id.textApartmentService);
+        textMaintenanceCostValue = findViewById(R.id.textMaintenanceCostValue);
         TextView textTransactions = findViewById(R.id.textTransactions);
         CardView layoutTransactionHistory = findViewById(R.id.layoutTransactionHistory);
 
@@ -74,12 +80,55 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         textWalletDescription.setTypeface(setLatoRegularFont(this));
         textPayFor.setTypeface(setLatoBoldFont(this));
         textSocietyService.setTypeface(setLatoRegularFont(this));
-        textApartmentService.setTypeface(setLatoRegularFont(this));
+        textMaintenanceCostValue.setTypeface(setLatoBoldFont(this));
         textTransactions.setTypeface(setLatoRegularFont(this));
 
-        textSocietyService.setOnClickListener(v -> startPayment(amountInPaise, getString(R.string.society_services)));
-        textApartmentService.setOnClickListener(v -> startPayment(amountInPaise, getString(R.string.apartment_services)));
-        layoutTransactionHistory.setOnClickListener(v -> startActivity(new Intent(this, TransactionHistory.class)));
+        /*To Retrieve Maintenance Amount From Firebase */
+        retrieveMaintenanceCostValueFromFirebase();
+
+        /*Setting event for views */
+        textSocietyService.setOnClickListener(this);
+        layoutTransactionHistory.setOnClickListener(this);
+
+    }
+
+    /**
+     * This method retrieves the maintenance amount entered by society service admin to that particular
+     * flat.
+     */
+    private void retrieveMaintenanceCostValueFromFirebase() {
+        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference();
+        DatabaseReference userMaintenanceCostReference = userDataReference.child(FIREBASE_CHILD_MAINTENANCE_COST);
+        userMaintenanceCostReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int amountInRupees = Objects.requireNonNull(dataSnapshot.getValue(Integer.class));
+                textMaintenanceCostValue.setText(String.valueOf(amountInRupees));
+                amountInPaise = amountInRupees * 100;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listener Objects
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.textSocietyService:
+                startPayment(amountInPaise, getString(R.string.society_services));
+                break;
+            case R.id.layoutTransactionHistory:
+                startActivity(new Intent(this, TransactionHistory.class));
+                break;
+        }
     }
 
     public void startPayment(int amount, String description) {
@@ -156,9 +205,6 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
                 serviceCategory, NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
         PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails)
                 .addOnCompleteListener(task -> userTransactionReference.child(transactionUID).setValue(true)
-                        .addOnCompleteListener(task1 -> {
-                            Checkout.clearUserData(this);
-                        }));
+                        .addOnCompleteListener(task1 -> Checkout.clearUserData(this)));
     }
-
 }
