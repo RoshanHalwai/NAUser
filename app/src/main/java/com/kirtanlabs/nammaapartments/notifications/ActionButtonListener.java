@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.notifydigitalgate.arrivals.NammaApartmentArrival;
@@ -33,7 +32,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_REJECTED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VISITORS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MESSAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_ID;
@@ -41,6 +39,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_UI
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_CABS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_DELIVERIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REJECT_BUTTON_CLICKED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
@@ -91,8 +90,7 @@ public class ActionButtonListener extends BroadcastReceiver {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserFlatDetails userFlatDetails = Objects.requireNonNull(dataSnapshot.getValue(NammaApartmentUser.class)).getFlatDetails();
-                DatabaseReference currentUserDataReference = FirebaseDatabase.getInstance().getReference().child(FIREBASE_CHILD_USER_DATA)
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
+                DatabaseReference currentUserDataReference = PRIVATE_USER_DATA_REFERENCE
                         .child(userFlatDetails.getCity())
                         .child(userFlatDetails.getSocietyName())
                         .child(userFlatDetails.getApartmentName())
@@ -134,67 +132,67 @@ public class ActionButtonListener extends BroadcastReceiver {
 
                 /*We do not create new UID for post approved visitors instead we use the notification UID to
                  * identify each visitor*/
-                    String postApprovedVisitorUID = notificationUID;
-                    currentUserVisitorReference.child(postApprovedVisitorUID).setValue(true);
+                String postApprovedVisitorUID = notificationUID;
+                currentUserVisitorReference.child(postApprovedVisitorUID).setValue(true);
 
-                    /*Utility Functions to get Date and Time*/
-                    Calendar calendar = Calendar.getInstance();
-                    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                    int month = calendar.get(Calendar.MONTH);
-                    int year = calendar.get(Calendar.YEAR);
-                    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-                    int currentMinute = calendar.get(Calendar.MINUTE);
+                /*Utility Functions to get Date and Time*/
+                Calendar calendar = Calendar.getInstance();
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int currentMinute = calendar.get(Calendar.MINUTE);
 
-                    String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                    String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", currentHour, currentMinute);
-                    String concatenatedDateAndTime = formattedDate + "\t\t" + " " + formattedTime;
+                String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", currentHour, currentMinute);
+                String concatenatedDateAndTime = formattedDate + "\t\t" + " " + formattedTime;
 
-                    switch (visitorType) {
-                        case FIREBASE_CHILD_GUESTS: {
-                            String postApprovedVisitorName = getValueFromMessage(message, 2);
-                            String postApprovedVisitorMobileNumber = visitorMobileNumber;
+                switch (visitorType) {
+                    case FIREBASE_CHILD_GUESTS: {
+                        String postApprovedVisitorName = getValueFromMessage(message, 2);
+                        String postApprovedVisitorMobileNumber = visitorMobileNumber;
 
-                            /*Mapping Post Approved Visitor Mobile Number with visitor's UID*/
-                            DatabaseReference allVisitorsReference = Constants.ALL_VISITORS_REFERENCE;
-                            allVisitorsReference.child(postApprovedVisitorMobileNumber).setValue(postApprovedVisitorUID);
-                            /*Adding Post Approved Visitor data under PRIVATE_VISITORS_REFERENCE->Visitor UID*/
-                            DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
-                            /*Creating instance of Namma Apartment Guest*/
-                            NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
-                                    postApprovedVisitorName, postApprovedVisitorMobileNumber, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED);
-                            nammaApartmentGuest.setStatus(ENTERED);
-                            nammaApartmentGuest.setProfilePhoto(visitorProfilePhoto);
-                            postApprovedVisitorData.setValue(nammaApartmentGuest);
-                            break;
-                        }
-                        case FIREBASE_CHILD_CABS: {
-                            String cabNumber = TextUtils.split(message, " ")[3];
-
-                            /*Mapping Post Approved Cab Number with visitor's UID*/
-                            DatabaseReference cabNumberReference = Constants.ALL_CABS_REFERENCE;
-                            cabNumberReference.child(cabNumber).setValue(postApprovedVisitorUID);
-                            /*Creating instance of Namma Apartment Arrival*/
-                            DatabaseReference postApprovedVisitorData = PRIVATE_CABS_REFERENCE.child(postApprovedVisitorUID);
-                            NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
-                                    cabNumber, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
-                            nammaApartmentArrival.setStatus(ENTERED);
-                            postApprovedVisitorData.setValue(nammaApartmentArrival);
-                            break;
-                        }
-                        case FIREBASE_CHILD_PACKAGES: {
-                            String packageVendor = getValueFromMessage(message, 3);
-
-                            /*Creating instance of Namma Apartment Arrival*/
-                            DatabaseReference postApprovedVisitorData = PRIVATE_DELIVERIES_REFERENCE.child(postApprovedVisitorUID);
-                            NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
-                                    packageVendor, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
-                            nammaApartmentArrival.setStatus(ENTERED);
-                            postApprovedVisitorData.setValue(nammaApartmentArrival);
-                            break;
-                        }
+                        /*Mapping Post Approved Visitor Mobile Number with visitor's UID*/
+                        DatabaseReference allVisitorsReference = Constants.ALL_VISITORS_REFERENCE;
+                        allVisitorsReference.child(postApprovedVisitorMobileNumber).setValue(postApprovedVisitorUID);
+                        /*Adding Post Approved Visitor data under PRIVATE_VISITORS_REFERENCE->Visitor UID*/
+                        DatabaseReference postApprovedVisitorData = PRIVATE_VISITORS_REFERENCE.child(postApprovedVisitorUID);
+                        /*Creating instance of Namma Apartment Guest*/
+                        NammaApartmentGuest nammaApartmentGuest = new NammaApartmentGuest(postApprovedVisitorUID,
+                                postApprovedVisitorName, postApprovedVisitorMobileNumber, concatenatedDateAndTime, currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                        nammaApartmentGuest.setStatus(ENTERED);
+                        nammaApartmentGuest.setProfilePhoto(visitorProfilePhoto);
+                        postApprovedVisitorData.setValue(nammaApartmentGuest);
+                        break;
                     }
+                    case FIREBASE_CHILD_CABS: {
+                        String cabNumber = TextUtils.split(message, " ")[3];
+
+                        /*Mapping Post Approved Cab Number with visitor's UID*/
+                        DatabaseReference cabNumberReference = Constants.ALL_CABS_REFERENCE;
+                        cabNumberReference.child(cabNumber).setValue(postApprovedVisitorUID);
+                        /*Creating instance of Namma Apartment Arrival*/
+                        DatabaseReference postApprovedVisitorData = PRIVATE_CABS_REFERENCE.child(postApprovedVisitorUID);
+                        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
+                                cabNumber, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                        nammaApartmentArrival.setStatus(ENTERED);
+                        postApprovedVisitorData.setValue(nammaApartmentArrival);
+                        break;
+                    }
+                    case FIREBASE_CHILD_PACKAGES: {
+                        String packageVendor = getValueFromMessage(message, 3);
+
+                        /*Creating instance of Namma Apartment Arrival*/
+                        DatabaseReference postApprovedVisitorData = PRIVATE_DELIVERIES_REFERENCE.child(postApprovedVisitorUID);
+                        NammaApartmentArrival nammaApartmentArrival = new NammaApartmentArrival(
+                                packageVendor, concatenatedDateAndTime, "2 hrs", currentUserID, FIREBASE_CHILD_POSTAPPROVED);
+                        nammaApartmentArrival.setStatus(ENTERED);
+                        postApprovedVisitorData.setValue(nammaApartmentArrival);
+                        break;
+                    }
+                }
             }
-             
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

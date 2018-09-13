@@ -2,13 +2,19 @@ package com.kirtanlabs.nammaapartments;
 
 import android.app.Application;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.BETA_ENV;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DEV_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
 
 /**
  * Global NammaApartment class for storing User's Information
@@ -22,6 +28,25 @@ public class NammaApartmentsGlobal extends Application {
     public static String userUID;
     private NammaApartmentUser nammaApartmentUser;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        final FirebaseOptions BETA_ENV_OPTIONS = new FirebaseOptions.Builder()
+                .setApplicationId("1:896005326129:android:6ff623e10a2664c5")
+                .setApiKey("AIzaSyD3Ar2J0gJ8AiL8s0BVlkWP3PXbux3bvKU")
+                .setDatabaseUrl("https://nammaapartments-beta.firebaseio.com/")
+                .build();
+
+        final FirebaseOptions DEV_ENV_OPTIONS = new FirebaseOptions.Builder()
+                .setApplicationId("1:703896080530:android:67ab068074f57ad3")
+                .setApiKey("AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60")
+                .setDatabaseUrl("https://nammaapartments-development.firebaseio.com/")
+                .build();
+
+        FirebaseApp.initializeApp(this, BETA_ENV_OPTIONS, BETA_ENV);
+        FirebaseApp.initializeApp(this, DEV_ENV_OPTIONS, DEV_ENV);
+    }
 
     /* ------------------------------------------------------------- *
      * Getters
@@ -42,7 +67,7 @@ public class NammaApartmentsGlobal extends Application {
 
     public DatabaseReference getUserDataReference() {
         UserFlatDetails userFlatDetails = nammaApartmentUser.getFlatDetails();
-        return FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_USER_DATA).child(FIREBASE_CHILD_PRIVATE)
+        return PRIVATE_USER_DATA_REFERENCE
                 .child(userFlatDetails.getCity())
                 .child(userFlatDetails.getSocietyName())
                 .child(userFlatDetails.getApartmentName())
