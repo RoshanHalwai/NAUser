@@ -14,23 +14,22 @@
 
         <TextView
             android:id="@+id/textNoticeDate"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="25th August, 2018"
             android:textColor="@color/nmBlack"
             android:textSize="16sp" />
 
         <View
             android:id="@+id/dateLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
             android:layout_below="@id/textNoticeDate"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:background="@color/nmBlack" />
+            android:background="@drawable/dash_line_light" />
 
         <TextView
             android:id="@+id/textNoticeTitle"
@@ -38,45 +37,24 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/dateLine"
             android:layout_margin="10dp"
-            android:text="Ganesha Chaturthi"
             android:textColor="@color/nmBlack"
             android:textSize="@dimen/text_view_default_size" />
-
-        <View
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/textNoticeTitle"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/nmBlack" />
 
         <TextView
             android:id="@+id/textNoticeMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line"
+            android:layout_below="@id/textNoticeTitle"
             android:layout_margin="10dp"
-            android:text="Celebrations"
             android:textColor="@color/nmBlack"
             android:textSize="14sp" />
-
-        <View
-            android:id="@+id/messageLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/textNoticeMessage"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:background="@color/nmBlack" />
 
         <TextView
             android:id="@+id/textAdminName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/messageLine"
+            android:layout_below="@id/textNoticeMessage"
             android:layout_margin="10dp"
-            android:text="Ashish Jha"
             android:textColor="@color/nmBlack"
             android:textSize="14sp" />
 
