@@ -14,8 +14,6 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.help.adapters.HelpAndSett
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
-
 public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnItemClickListener {
 
     /* ------------------------------------------------------------- *
@@ -82,13 +80,11 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
                 startActivity(contactIntent);
                 break;
             case 2:
-                Intent termsIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
-                termsIntent.putExtra(SCREEN_TITLE, R.string.terms_and_conditions);
+                Intent termsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_and_conditions_url)));
                 startActivity(termsIntent);
                 break;
             case 3:
-                Intent policyIntent = new Intent(NammaApartmentsHelp.this, NammaApartmentsHelpUIFunctionality.class);
-                policyIntent.putExtra(SCREEN_TITLE, R.string.privacy_policy);
+                Intent policyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
                 startActivity(policyIntent);
                 break;
         }
