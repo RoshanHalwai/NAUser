@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.home.activities;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -20,7 +19,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,7 +54,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class NammaApartmentsHome extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,7 +64,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
 
     private SmoothActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
-    private Dialog dialog;
     private DatabaseReference userReference;
     private NavigationView navigationView;
 
@@ -181,10 +177,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             }
 
             case R.id.nav_rateUs: {
-                toggle.runWhenIdle(() -> {
-                    showRateUsDialog();
-                    dialog.show();
-                });
+                toggle.runWhenIdle(this::redirectUsersToPlayStore);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             }
@@ -205,32 +198,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
-
-    /**
-     * This dialog gets invoked when user clicks on rateUs button.
-     */
-    private void showRateUsDialog() {
-        /*Creating and Inflating the layout for rate us dialog */
-        dialog = new Dialog(NammaApartmentsHome.this);
-        dialog.setContentView(R.layout.layout_rate_us_dialog);
-
-        /*Getting Id's for all the views*/
-        TextView textRateDialogTitle = dialog.findViewById(R.id.textRateDialogTitle);
-        TextView textRateDialogMessage = dialog.findViewById(R.id.textRateDialogMessage);
-        Button buttonSubmit = dialog.findViewById(R.id.buttonSubmit);
-        Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
-
-        /*Setting Fonts for all the views*/
-        textRateDialogTitle.setTypeface(setLatoBoldFont(this));
-        textRateDialogMessage.setTypeface(setLatoRegularFont(this));
-        buttonSubmit.setTypeface(setLatoRegularFont(this));
-        buttonCancel.setTypeface(setLatoRegularFont(this));
-
-        /*Setting OnClick Listeners to the views*/
-        /*TODO:To Change The Url after successful registration of our app in PlayStore */
-        buttonSubmit.setOnClickListener(v -> redirectUsersToPlayStore());
-        buttonCancel.setOnClickListener(v -> dialog.cancel());
-    }
 
     /**
      * This method gets invoked to redirect users to playStore Link
