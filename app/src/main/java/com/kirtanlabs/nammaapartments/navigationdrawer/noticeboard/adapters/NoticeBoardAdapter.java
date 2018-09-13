@@ -96,7 +96,7 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
             textNoticeDate.setTypeface(setLatoRegularFont(mCtx));
             textNoticeTitle.setTypeface(setLatoBoldFont(mCtx));
             textNoticeMessage.setTypeface(setLatoRegularFont(mCtx));
-            textAdminName.setTypeface(setLatoRegularFont(mCtx));
+            textAdminName.setTypeface(setLatoBoldFont(mCtx));
 
         }
     }
