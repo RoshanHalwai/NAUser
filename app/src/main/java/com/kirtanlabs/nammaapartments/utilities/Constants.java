@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.utilities;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -12,10 +13,16 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Constants {
 
     /* ------------------------------------------------------------- *
+     * Environment
+     * ------------------------------------------------------------- */
+
+    public static final String BETA_ENV = "beta_env";
+    public static final String DEV_ENV = "dev_env";
+
+    /* ------------------------------------------------------------- *
      * Intent Keys
      * ------------------------------------------------------------- */
 
-    public static final String ACTIVATION_STATUS = "activation_status";
     public static final String ALARM_TYPE = "alarm_type";
     public static final String ARRIVAL_TYPE = "arrival_type";
     public static final String EMAIL_ID = "email_id";
@@ -111,7 +118,6 @@ public class Constants {
     public static final String FIREBASE_CHILD_EMERGENCIES = "emergencies";
     public static final String FIREBASE_CHILD_EVENT_MANAGEMENT="eventManagement";
     public static final String FIREBASE_CHILD_FAMILY_MEMBERS = "familyMembers";
-    public static final String FIREBASE_CHILD_FLATDETAILS = "flatDetails";
     public static final String FIREBASE_CHILD_FLAT_MEMBERS = "flatMembers";
     public static final String FIREBASE_CHILD_FRIENDS = "friends";
     public static final String FIREBASE_CHILD_FULLNAME = "fullName";
@@ -175,6 +181,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_TRANSACTIONS = "transactions";
     public static final String FIREBASE_CHILD_MAINTENANCE_COST="maintenanceCost";
     public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
+    private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -187,13 +194,12 @@ public class Constants {
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
     public static final String REMOTE_VISITOR_MOBILE_NUMBER="mobile_number";
-    public static final String REMOTE_SOUND = "sound";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References
      * ------------------------------------------------------------- */
 
-    private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance();
+    private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FirebaseApp.getInstance(DEV_ENV));
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
     public static final DatabaseReference SOCIETY_SERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETY_SERVICES);
@@ -230,6 +236,9 @@ public class Constants {
     public static final DatabaseReference SUPPORT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SUPPORT);
     private static final DatabaseReference TRANSACTION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_TRANSACTIONS);
     public static final DatabaseReference PRIVATE_TRANSACTION_REFERENCE = TRANSACTION_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+    private static final DatabaseReference USER_DATA_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_USER_DATA);
+    public static final DatabaseReference PRIVATE_USER_DATA_REFERENCE = USER_DATA_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+    public static final DatabaseReference VERSION_NAME_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VERSION_NAME);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
@@ -250,21 +259,7 @@ public class Constants {
     public static final int NOON_SLOT_LAST_HOUR = 15;
     public static final int EVENING_SLOT_LAST_HOUR = 17;
     public static final String ANDROID = "android";
-
-   /* ------------------------------------------------------------- *
-   * Frequently Asked Questions Sections
-   * ------------------------------------------------------------- */
-
-   public static final int VISITOR_SECTION=9;
-   public static final int DAILY_SERVICE_SECTION =15;
-   public static final int HANDED_THINGS_SECTION=23;
-   public static final int FLAT_MEMBER_SECTION=19;
-   public static final int EMERGENCY_SECTION =27;
-   public static final int PLUMBER_SECTION=31;
-   public static final int CARPENTER_SECTION=34;
-   public static final int ELECTRICIAN_SECTION=37;
-   public static final int GARBAGE_MANAGEMENT_SECTION=40;
-   public static final int EVENT_MANAGEMENT_SECTION=43;
+    public static final String PACKAGE_NAME = "com.kirtanlabs.nammaapartments";
 
     /* ------------------------------------------------------------- *
      * Request Code

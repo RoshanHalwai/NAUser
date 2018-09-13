@@ -14,8 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BuildConfig;
 import com.kirtanlabs.nammaapartments.R;
@@ -31,7 +29,9 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LAUNCH_SCREEN_TIME_DURATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PACKAGE_NAME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.VERSION_NAME_REFERENCE;
 
 public class LaunchScreen extends AppCompatActivity {
 
@@ -93,8 +93,7 @@ public class LaunchScreen extends AppCompatActivity {
      */
     private void isNewVersionAvailable() {
         if (isNetworkAvailable()) {
-            DatabaseReference versionReference = FirebaseDatabase.getInstance().getReference().child("versionName");
-            versionReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            VERSION_NAME_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String newVersionName = dataSnapshot.getValue(String.class);
@@ -143,12 +142,11 @@ public class LaunchScreen extends AppCompatActivity {
      * This method gets invoked to redirect users to playStore Link
      */
     private void redirectUsersToPlayStore() {
-        final String appPackageName = getPackageName();
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
             finish();
         } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
         }
     }
 
