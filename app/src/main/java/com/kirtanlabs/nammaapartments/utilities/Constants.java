@@ -260,6 +260,8 @@ public class Constants {
     public static final int EVENING_SLOT_LAST_HOUR = 17;
     public static final String ANDROID = "android";
     public static final String PACKAGE_NAME = "com.kirtanlabs.nammaapartments";
+    public static final int NOON_SLOT_LAST_HOUR_FOR_EVENT_MANGEMENT = 16;
+    public static final int EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 20;
 
     /* ------------------------------------------------------------- *
      * Request Code
