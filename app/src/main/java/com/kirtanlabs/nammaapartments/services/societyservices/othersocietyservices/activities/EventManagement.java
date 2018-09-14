@@ -58,6 +58,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private Button buttonMorningSlot, buttonNoonSlot, buttonEveningSlot, buttonNightSlot;
     private String societyServiceType, category, selectedEventDate, slotNumber;
     private TextView textErrorEventDate, textErrorChooseCategory, textErrorChooseTimeSlot, textTimeSlotQuery, textChooseTimeSlot;
+    private Calendar calendar;
     private Boolean isCategorySelected = false;
     private Boolean isTimeSlotSelected = false;
     private LinearLayout daySlotLayout, nightSlotLayout, layoutLegend;
@@ -169,7 +170,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             editPickDate.setText(selectedDate);
             textErrorEventDate.setVisibility(View.GONE);
 
-            Calendar calendar = Calendar.getInstance();
+            calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
             selectedEventDate = new SimpleDateFormat("dd-MM-yyyy", Locale.UK).format(calendar.getTime());
             showSlotLayout(selectedDate);
@@ -398,6 +399,26 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonNoonSlot.setEnabled(true);
         buttonEveningSlot.setEnabled(true);
         buttonNightSlot.setEnabled(true);
+
+        calendar = Calendar.getInstance();
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        /*Getting Current date here*/
+        String currentDate = new DateFormatSymbols().getMonths()[currentMonth].substring(0, 3) + " " + currentDay + ", " + currentYear;
+        /*Disabling Time Slot if current time exceeds the last hour of particular time slot for current date*/
+        if (selectedDate.equals(currentDate)) {
+            if (currentHour >= Constants.MORNING_SLOT_LAST_HOUR) {
+                buttonMorningSlot.setEnabled(false);
+                if (currentHour >= Constants.NOON_SLOT_LAST_HOUR_FOR_EVENT_MANGEMENT) {
+                    buttonNoonSlot.setEnabled(false);
+                    if (currentHour >= Constants.EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT) {
+                        buttonEveningSlot.setEnabled(false);
+                    }
+                }
+            }
+        }
 
         /*Disabling Time slot which are already booked for particular Date*/
         disableBookedSlots(selectedEventDate);
