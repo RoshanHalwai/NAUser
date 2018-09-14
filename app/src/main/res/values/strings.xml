@@ -116,8 +116,9 @@
     <string name="driver">Driver</string>
     <string name="groceries">Groceries</string>
     <string name="images_of_digital_gate_services">Images of Digital Gate Services</string>
-    <string name="whatsapp_msg">Hey there! I would like to have your service at my Flat. Revert back so that we can schedule and sort things out quickly.</string>
-    <string name="message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading..</string>
+    <string name="sms_and_whatsapp_msg">Hey there! I would like to get in contact with you, as I need your service at my Flat. Revert back so that we can discuss the necessary terms related to your service.</string>
+    <string name="refer_message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading: </string>
+    <string name="app_link">https://play.google.com/store/apps/details?id=com.kirtanlabs.nammaapartments</string>
     <string name="message_name">sms_body</string>
     <string name="apartment_service_unavailable">Sorry you cannot use this feature since currently there is no apartment service available at your Society.</string>
     <string name="apartment">apartment</string>

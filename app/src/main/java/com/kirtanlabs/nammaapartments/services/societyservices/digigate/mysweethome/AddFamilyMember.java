@@ -5,10 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -467,33 +464,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         if (!hasFocus) {
             if (editFamilyMemberMobile.getText().length() == PHONE_NUMBER_MAX_LENGTH) {
                 mobileNumber = editFamilyMemberMobile.getText().toString();
-                DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
-                familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            editFamilyMemberMobile.requestFocus();
-                            Drawable drawableWrap = DrawableCompat.wrap(
-                                    Objects.requireNonNull(ContextCompat.getDrawable(
-                                            AddFamilyMember.this,
-                                            android.R.drawable.stat_sys_warning)
-                                    )
-                            );
-                            drawableWrap.mutate();
-                            DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(AddFamilyMember.this, R.color.nmBlack));
-                            drawableWrap.setBounds(0, 0, drawableWrap.getIntrinsicWidth(), drawableWrap.getIntrinsicHeight());
-                            editFamilyMemberMobile.setError(getString(R.string.mobile_number_exists), drawableWrap);
-                            editFamilyMemberMobile.setSelection(editFamilyMemberMobile.length());
-                        } else {
-                            editFamilyMemberMobile.setError(null);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                checkEnteredMobileNumberInUsersList(mobileNumber, R.id.editFamilyMemberMobile, this);
             }
         }
     }
