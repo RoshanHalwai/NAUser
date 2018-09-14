@@ -362,7 +362,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
      * This method is invoked to check whether the mobile number entered in particular editText is
      * Already existing User's Mobile Number or not
      *
-     * @param mobileNumber - that needs to be checked in Users List
+     * @param mobileNumber - that needs to be checked in Users Mobile Number List
      * @param editTextID   - Id of the EditText
      * @param context      - of the calling Activity
      */
