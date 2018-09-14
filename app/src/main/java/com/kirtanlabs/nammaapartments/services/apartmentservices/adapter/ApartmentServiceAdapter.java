@@ -77,7 +77,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
     private void redirectUserToWhatsApp(int position) {
         PackageManager pm = mCtx.getPackageManager();
         Intent whatsappIntent = new Intent(Intent.ACTION_VIEW);
-        String message = mCtx.getString(R.string.whatsapp_msg);
+        String message = mCtx.getString(R.string.sms_and_whatsapp_msg);
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         String serviceMobileNumber = nammaApartmentDailyService.getPhoneNumber();
         try {
@@ -99,7 +99,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
     private void redirectUserToShareWith() {
         Intent referIntent = new Intent();
         referIntent.setAction(Intent.ACTION_SEND);
-        referIntent.putExtra(Intent.EXTRA_TEXT, mCtx.getString(R.string.message_body));
+        referIntent.putExtra(Intent.EXTRA_TEXT, mCtx.getString(R.string.refer_message_body) + " " + mCtx.getString(R.string.app_link));
         referIntent.setType("text/plain");
         mCtx.startActivity(referIntent);
     }
@@ -174,7 +174,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
                     baseActivity.makePhoneCall(nammaApartmentDailyService.getPhoneNumber());
                     break;
                 case R.id.textMessage:
-                    baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber(), mCtx.getString(R.string.whatsapp_msg));
+                    baseActivity.sendTextMessage(nammaApartmentDailyService.getPhoneNumber(), mCtx.getString(R.string.sms_and_whatsapp_msg));
                     break;
                 case R.id.textWhatsapp:
                     redirectUserToWhatsApp(position);
