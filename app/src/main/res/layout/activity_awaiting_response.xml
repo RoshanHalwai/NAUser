@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/activity_base" />
@@ -184,6 +185,40 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/buttonCallService"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/nmBlack"
+                        android:text="@string/call"
+                        android:textAllCaps="true"
+                        android:textColor="@color/nmLightYellow"
+                        android:textSize="@dimen/button_default_size"
+                        tools:ignore="ButtonStyle" />
+
+                    <Button
+                        android:id="@+id/buttonCancelService"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/nmBlack"
+                        android:text="@string/cancel"
+                        android:textAllCaps="true"
+                        android:textColor="@color/nmLightYellow"
+                        android:textSize="@dimen/button_default_size"
+                        tools:ignore="ButtonStyle" />
 
                 </LinearLayout>
 

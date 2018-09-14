@@ -53,6 +53,8 @@ public class AwaitingResponse extends BaseActivity {
             textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
+    private Button buttonCallService;
+    private Button buttonCancelService;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -84,6 +86,8 @@ public class AwaitingResponse extends BaseActivity {
         textMobileNumberValue = findViewById(R.id.textMobileNumberValue);
         textEndOTPValue = findViewById(R.id.textEndOTPValue);
         TextView textSocietyServiceResponse = findViewById(R.id.textSocietyServiceResponse);
+        buttonCallService = findViewById(R.id.buttonCallService);
+        buttonCancelService = findViewById(R.id.buttonCancelService);
 
         /*Setting font for all the views*/
         textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
@@ -95,6 +99,8 @@ public class AwaitingResponse extends BaseActivity {
         textEndOTPValue.setTypeface(Constants.setLatoBoldFont(this));
         textSocietyServiceAcceptedRequest.setTypeface(Constants.setLatoBoldFont(this));
         textSocietyServiceResponse.setTypeface(Constants.setLatoBoldFont(this));
+        buttonCallService.setTypeface(Constants.setLatoLightFont(this));
+        buttonCancelService.setTypeface(Constants.setLatoLightFont(this));
 
         String societyServiceNameTitle = getString(R.string.name) + ":";
         textSocietyServiceNameAndEventTitle.setText(societyServiceNameTitle);
@@ -166,7 +172,7 @@ public class AwaitingResponse extends BaseActivity {
     /**
      * This method is used to Retrieve the details of Society Society, if users request is accepted.
      */
-    private void checkSocietyServiceResponse() {
+    protected void checkSocietyServiceResponse() {
         /*Getting the reference till 'notificationUID' in societyServices in Firebase*/
         societyServiceNotificationReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -192,6 +198,9 @@ public class AwaitingResponse extends BaseActivity {
                             textSocietyServiceNameValue.setText(societyServiceName);
                             textMobileNumberValue.setText(societyServiceMobileNumber);
                             textEndOTPValue.setText(endOTP);
+                            /*User can call the Society Service to enquire about the status*/
+                            buttonCallService.setOnClickListener(v -> makePhoneCall(societyServiceMobileNumber));
+                            //TODO: Cancel Service to be implemented
                         }
 
                         @Override
