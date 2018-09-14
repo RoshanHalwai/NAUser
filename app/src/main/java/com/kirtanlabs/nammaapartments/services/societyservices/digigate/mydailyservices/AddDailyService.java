@@ -53,6 +53,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NOT_ENTERED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -150,7 +151,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         editDailyServiceName.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         editPickTime.setOnFocusChangeListener(this);
-
+        editDailyServiceMobile.setOnFocusChangeListener(this);
     }
 
     /*-------------------------------------------------------------------------------
@@ -243,8 +244,13 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
+        if (hasFocus && (v.getId() == R.id.editPickTime)) {
             pickTime(this, this);
+        } else if (!hasFocus) {
+            mobileNumber = editDailyServiceMobile.getText().toString().trim();
+            if (mobileNumber.length() == PHONE_NUMBER_MAX_LENGTH) {
+                checkEnteredMobileNumberInUsersList(mobileNumber, R.id.editDailyServiceMobile, this);
+            }
         }
     }
 
@@ -309,7 +315,6 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
      */
     private void validateFields() {
         String dailyServiceName = editDailyServiceName.getText().toString().trim();
-        mobileNumber = editDailyServiceMobile.getText().toString().trim();
         String pickTime = editPickTime.getText().toString().trim();
         boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editDailyServiceName, editDailyServiceMobile, editPickTime});
         /*This condition checks if all fields are not filled and if user presses add button it will then display proper error messages.*/

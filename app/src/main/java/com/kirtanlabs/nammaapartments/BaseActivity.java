@@ -9,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,6 +19,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,16 +30,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import pl.aprilapps.easyphotopicker.EasyImage;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ENABLE_LOCATION_PERMISSION_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_LATITUDE;
@@ -348,6 +356,46 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
 
     protected void hideProgressDialog() {
         progressDialog.dismiss();
+    }
+
+    /**
+     * This method is invoked to check whether the mobile number entered in particular editText is
+     * Already existing User's Mobile Number or not
+     *
+     * @param mobileNumber - that needs to be checked in Users List
+     * @param editTextID   - Id of the EditText
+     * @param context      - of the calling Activity
+     */
+    protected void checkEnteredMobileNumberInUsersList(String mobileNumber, int editTextID, Context context) {
+        EditText editTextMobileNumber = findViewById(editTextID);
+        DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
+        familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    editTextMobileNumber.requestFocus();
+                    Drawable drawableWrap = DrawableCompat.wrap(
+                            Objects.requireNonNull(ContextCompat.getDrawable(
+                                    context,
+                                    android.R.drawable.stat_sys_warning)
+                            )
+                    );
+                    drawableWrap.mutate();
+                    DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, R.color.nmBlack));
+                    drawableWrap.setBounds(0, 0, drawableWrap.getIntrinsicWidth(), drawableWrap.getIntrinsicHeight());
+                    editTextMobileNumber.setError(getString(R.string.mobile_number_exists), drawableWrap);
+                    editTextMobileNumber.setSelection(editTextMobileNumber.length());
+                } else {
+                    editTextMobileNumber.setError(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     /* ------------------------------------------------------------- *
