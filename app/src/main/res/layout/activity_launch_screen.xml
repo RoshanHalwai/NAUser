@@ -3,8 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nmBlack"
+    android:gravity="center"
     tools:context=".onboarding.launchscreen.LaunchScreen">
+
+    <ImageView
+        android:id="@+id/imageAppIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/launch_screen_image_desc"
+        android:src="@drawable/applogo" />
 
     <TextView
         android:id="@+id/textAppName"
@@ -13,7 +21,9 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/app_launch_screen_name"
-        android:textColor="@android:color/white"
+        android:layout_below="@+id/imageAppIcon"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/nmBlack"
         android:textSize="40sp" />
 
 </RelativeLayout>
