@@ -260,7 +260,7 @@ public class Constants {
     public static final int EVENING_SLOT_LAST_HOUR = 17;
     public static final String ANDROID = "android";
     public static final String PACKAGE_NAME = "com.kirtanlabs.nammaapartments";
-    public static final int NOON_SLOT_LAST_HOUR_FOR_EVENT_MANGEMENT = 16;
+    public static final int NOON_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 16;
     public static final int EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 20;
 
     /* ------------------------------------------------------------- *
@@ -276,6 +276,15 @@ public class Constants {
     public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
     public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
     public static final int NEW_NOTICE_CODE = 11;
+
+    /* ------------------------------------------------------------- *
+     * Payment Specific
+     * ------------------------------------------------------------- */
+
+    public static final String PAYMENT_SUCCESSFUL = "Successful";
+    public static final String PAYMENT_FAILURE = "Failure";
+    public static final int PAYMENT_CANCELLED_ERROR_CODE = 0;
+    public static final String INDIAN_RUPEE_CURRENCY_CODE = "INR";
 
     /* ------------------------------------------------------------- *
      * Font Types
