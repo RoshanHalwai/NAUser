@@ -34,6 +34,7 @@ import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.MyFoodActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
@@ -112,15 +113,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
 
-            case R.id.nav_myWallet: {
-                toggle.runWhenIdle(() -> {
-                    Intent intent = new Intent(NammaApartmentsHome.this, MyPaymentsActivity.class);
-                    startActivity(intent);
-                });
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            }
-
             case R.id.nav_myFamilyMembers: {
                 toggle.runWhenIdle(() -> {
                     Intent mySweetHomeIntent = new Intent(NammaApartmentsHome.this, MySweetHome.class);
@@ -150,6 +142,22 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
 
+            case R.id.nav_myWallet: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyPaymentsActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+            }
+            case R.id.nav_myFood: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyFoodActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+            }
             case R.id.nav_myNoticeBoard: {
                 toggle.runWhenIdle(() -> {
                     Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
