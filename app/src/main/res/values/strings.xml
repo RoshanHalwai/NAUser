@@ -8,6 +8,7 @@
     <string name="information_about_the_current_screen">Information about the current screen</string>
     <string name="check_network_connection">Please check your Network Connection</string>
     <string name="faq_url">https://www.nammaapartments.com/faq</string>
+    <string name="app_launch_screen_name">Namma \n Apartments</string>
 
     <!--Splash Screens-->
     <string name="society_services">Society Services</string>

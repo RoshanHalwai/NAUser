@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +22,7 @@ import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.onboarding.splashscreen.SplashScreen;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 
@@ -44,6 +46,12 @@ public class LaunchScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_screen);
 
+        /*Getting Id's for the Textview*/
+        TextView textAppName = findViewById(R.id.textAppName);
+
+        /*Setting Fonts for the Textview*/
+        textAppName.setTypeface(Constants.setLatoRegularFont(this));
+
         /*Mentioning the time duration of the launch screen to be displayed to user*/
         new Handler().postDelayed(this::isNewVersionAvailable, LAUNCH_SCREEN_TIME_DURATION);
     }
@@ -55,7 +63,6 @@ public class LaunchScreen extends AppCompatActivity {
     /**
      * Start corresponding activity based on shared preference data
      */
-    //TODO: Logic seems to be correct but can be written in a efficient way and startActivity API can be reused
     private void startCorrespondingActivity() {
         SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
         Boolean firstTime = sharedPreferences.getBoolean(FIRST_TIME, true);
