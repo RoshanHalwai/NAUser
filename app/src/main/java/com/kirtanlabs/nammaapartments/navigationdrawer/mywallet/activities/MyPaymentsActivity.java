@@ -18,6 +18,7 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -138,15 +139,15 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         try {
             UserPersonalDetails userPersonalDetails = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getPersonalDetails();
             JSONObject options = new JSONObject();
-            options.put("name", getString(R.string.app_name));
-            options.put("description", description);
-            options.put("currency", "INR");
-            options.put("amount", String.valueOf(amount));
+            options.put(getString(R.string.name).toLowerCase(), getString(R.string.app_name));
+            options.put(getString(R.string.payment_description), description);
+            options.put(getString(R.string.currency), Constants.INDIAN_RUPEE_CURRENCY_CODE);
+            options.put(getString(R.string.amount), String.valueOf(amount));
 
             JSONObject preFill = new JSONObject();
-            preFill.put("email", userPersonalDetails.getEmail());
-            preFill.put("contact", userPersonalDetails.getPhoneNumber());
-            options.put("prefill", preFill);
+            preFill.put(getString(R.string.email), userPersonalDetails.getEmail());
+            preFill.put(getString(R.string.contact), userPersonalDetails.getPhoneNumber());
+            options.put(getString(R.string.prefill), preFill);
 
             co.open(activity, options);
         } catch (Exception e) {
@@ -170,7 +171,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     public void onPaymentSuccess(String paymentID) {
         try {
             Toast.makeText(this, "Payment Successful: " + paymentID, Toast.LENGTH_SHORT).show();
-            storeTransactionDetails(paymentID, "Successful");
+            storeTransactionDetails(paymentID, Constants.PAYMENT_SUCCESSFUL);
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }
@@ -187,6 +188,9 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     public void onPaymentError(int code, String response) {
         try {
             Toast.makeText(this, "Payment failed: " + code + " " + response, Toast.LENGTH_SHORT).show();
+            if (!(code == Constants.PAYMENT_CANCELLED_ERROR_CODE) || !(response.equals(getString(R.string.payment_cancelled)))) {
+                storeTransactionDetails("", Constants.PAYMENT_FAILURE);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
         }

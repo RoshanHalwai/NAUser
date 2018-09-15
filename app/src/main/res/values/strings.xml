@@ -581,4 +581,13 @@
     <string name="problem">Problem:</string>
     <string name="category">Category:</string>
 
+    <!--Payments Activity-->
+    <string name="payment_cancelled">Payment Cancelled</string>
+    <string name="currency">currency</string>
+    <string name="amount">amount</string>
+    <string name="email">email</string>
+    <string name="contact">contact</string>
+    <string name="prefill">prefill</string>
+    <string name="payment_description">description</string>
+
 </resources>
