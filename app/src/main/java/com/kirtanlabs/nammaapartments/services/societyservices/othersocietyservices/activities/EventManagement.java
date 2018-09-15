@@ -411,7 +411,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         if (selectedDate.equals(currentDate)) {
             if (currentHour >= Constants.MORNING_SLOT_LAST_HOUR) {
                 buttonMorningSlot.setEnabled(false);
-                if (currentHour >= Constants.NOON_SLOT_LAST_HOUR_FOR_EVENT_MANGEMENT) {
+                if (currentHour >= Constants.NOON_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT) {
                     buttonNoonSlot.setEnabled(false);
                     if (currentHour >= Constants.EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT) {
                         buttonEveningSlot.setEnabled(false);
