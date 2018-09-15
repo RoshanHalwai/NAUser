@@ -25,6 +25,10 @@
             android:icon="@drawable/ic_account_balance_wallet_black"
             android:title="@string/payments" />
         <item
+            android:id="@+id/nav_myFood"
+            android:icon="@drawable/ic_local_dining_black_24dp"
+            android:title="@string/my_food" />
+        <item
             android:id="@+id/nav_myNoticeBoard"
             android:icon="@drawable/ic_dashboard_black"
             android:title="@string/notice_board" />

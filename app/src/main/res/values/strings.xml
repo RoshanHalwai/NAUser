@@ -320,6 +320,7 @@
     <string name="enter_other_problem_desc">Please Enter Your Problem</string>
     <string name="enter_service_type">Please select service type</string>
     <string name="enter_problem_description">Please enter problem description</string>
+    <string name="please_enter_food_type">Please Enter Food Type</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -589,5 +590,18 @@
     <string name="contact">contact</string>
     <string name="prefill">prefill</string>
     <string name="payment_description">description</string>
+
+    <!--MyFood Activity-->
+    <string name="my_food">My Food</string>
+    <string name="food_type">Food Type</string>
+    <string name="food_type_hint">E.g:Snacks,Rice etc</string>
+    <string name="food_quantity">Food Quantity</string>
+    <string name="less">Less</string>
+    <string name="more">More</string>
+    <string name="collect_food">Collect Food</string>
+    <string name="enter_food_type">Enter Food Type</string>
+    <string name="select_food_qty">Select Food Quantity</string>
+    <string name="team_collect_food">Our team will collect food</string>
+    <string name="food_request_service_dialog_message">Thank you for raising request.Our representative will arrive at your flat to collect food.</string>
 
 </resources>
