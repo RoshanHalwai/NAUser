@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +19,7 @@ import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE;
@@ -139,7 +139,7 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
             editor.putString(USER_UID, null);
             editor.apply();
 
-            FirebaseAuth.getInstance().signOut();
+            FIREBASE_AUTH.signOut();
             Intent intent = new Intent(NammaApartmentSettings.this, SignIn.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

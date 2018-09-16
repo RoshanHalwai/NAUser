@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
-                            /**------------------------------------------------------------- *
+/**------------------------------------------------------------- *
                              *----------------DO NOT AUTO-FORMAT THIS FILE-------------------*
                              *-------------------------------------------------------------- */
 public class Constants {
@@ -199,7 +201,10 @@ public class Constants {
      * Firebase Database References
      * ------------------------------------------------------------- */
 
-    private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FirebaseApp.getInstance(DEV_ENV));
+    private static final FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(DEV_ENV);
+    private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FIREBASE_APP);
+    public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance(FIREBASE_APP);
+    public static final FirebaseAuth FIREBASE_AUTH = FirebaseAuth.getInstance(FIREBASE_APP);
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
     public static final DatabaseReference SOCIETY_SERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETY_SERVICES);
