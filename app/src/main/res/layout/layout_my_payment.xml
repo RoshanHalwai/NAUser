@@ -170,7 +170,6 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:padding="2dp"
-                                android:text="2500"
                                 android:textColor="@color/nmBlack"
                                 android:textSize="@dimen/text_view_numbers_size" />
 

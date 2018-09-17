@@ -131,7 +131,7 @@ public class ApartmentServices extends BaseActivity {
             }
             case R.string.groceries:
                 hideProgressIndicator();
-                showGroceriesFeatureUnavailableLayout(R.string.groceries_unavailable);
+                showGroceriesFeatureUnavailableLayout();
                 break;
         }
     }
@@ -214,14 +214,13 @@ public class ApartmentServices extends BaseActivity {
     /**
      * This method invokes to inflate show a new layout for users that this feature will be implemented later.
      *
-     * @param text contains feature unavailable message.
      */
-    private void showGroceriesFeatureUnavailableLayout(int text) {
+    private void showGroceriesFeatureUnavailableLayout() {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutGroceriesUnavailable);
         featureUnavailableLayout.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.textGroceryFeatureUnavailable);
         textView.setTypeface(setLatoItalicFont(this));
-        textView.setText(text);
+        textView.setText(R.string.groceries_unavailable);
     }
 
     /**

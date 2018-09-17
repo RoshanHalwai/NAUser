@@ -15,6 +15,7 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -59,7 +60,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         Transaction transaction = transactionList.get(position);
         String serviceCategory = transaction.getServiceCategory();
         String amount = "Rs. " + String.valueOf(transaction.getAmount());
-        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm");
+        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
         String formattedDateAndTime = sfd.format(new Date(transaction.getTimestamp()));
         if (transaction.getResult().equals("Successful")) {
             holder.imageTransactionResult.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.request_accepted));

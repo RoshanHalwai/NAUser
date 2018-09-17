@@ -19,6 +19,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal"
+        android:drawableTop="@drawable/danger"
         android:text="@string/access_to_notifications"
         android:textColor="@color/nmBlack"
         android:textSize="@dimen/text_view_default_size" />
