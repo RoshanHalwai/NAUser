@@ -169,10 +169,17 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                     .addOnCompleteListener(task -> userSupportReference.child(supportUID).setValue(true)
                             .addOnCompleteListener(task1 -> {
                                 hideProgressDialog();
-                                Intent nammaApartmentsHelpIntent = new Intent(this, NammaApartmentsHelp.class);
+                                /*Clear text of service type and problem field so that the user doesn't get to see the old
+                                 * entry while creating a new one*/
+                                editServiceType.setText("");
+                                editProblemDesc.setText("");
+                                Intent societyServiceHistoryIntent = new Intent(this, SocietyServicesHistory.class);
+                                societyServiceHistoryIntent.putExtra(SCREEN_TITLE, getString(R.string.contact_us));
+                                societyServiceHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                societyServiceHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 showNotificationDialog(getString(R.string.request_raised),
                                         getString(R.string.user_support_message),
-                                        nammaApartmentsHelpIntent);
+                                        societyServiceHistoryIntent);
                             }));
         }
     }
