@@ -122,7 +122,7 @@
             android:name=".navigationdrawer.mywallet.activities.TransactionHistory"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.myfood.MyFoodActivity"
+            android:name=".navigationdrawer.myfood.activities.MyFoodActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.noticeboard.activities.NoticeBoard"
