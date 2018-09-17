@@ -185,6 +185,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
     private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
     public static final String FIREBASE_CHILD_DONATE_FOOD = "donateFood";
+    public static final String FIREBASE_CHILD_SCRAP_COLLECTION = "scrapCollection";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
