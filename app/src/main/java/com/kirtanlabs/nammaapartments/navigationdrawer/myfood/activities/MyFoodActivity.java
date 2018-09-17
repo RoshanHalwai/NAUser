@@ -153,7 +153,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         String foodType = editFoodType.getText().toString();
         String foodQuantity = selectedButton.getText().toString();
         DonateFood donateFood = new DonateFood(foodType, foodQuantity, foodRequestUID, NammaApartmentsGlobal.userUID, System.currentTimeMillis(), getString(R.string.pending));
-        donateFoodReference.setValue(donateFood);
+        donateFoodReference.child(foodRequestUID).setValue(donateFood);
 
         /*Navigating users back to home screen*/
         Intent naHomeIntent = new Intent(MyFoodActivity.this, NammaApartmentsHome.class);
