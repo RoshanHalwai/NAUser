@@ -33,7 +33,7 @@ import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.NammaApartmentsHelp;
-import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.MyFoodActivity;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.activities.MyFoodActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;

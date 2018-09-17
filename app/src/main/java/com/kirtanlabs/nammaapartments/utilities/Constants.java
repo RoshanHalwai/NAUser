@@ -184,6 +184,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_MAINTENANCE_COST="maintenanceCost";
     public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
     private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
+    public static final String FIREBASE_CHILD_DONATE_FOOD = "donateFood";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -244,6 +245,7 @@ public class Constants {
     private static final DatabaseReference USER_DATA_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_USER_DATA);
     public static final DatabaseReference PRIVATE_USER_DATA_REFERENCE = USER_DATA_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference VERSION_NAME_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VERSION_NAME);
+    public static final DatabaseReference DONATE_FOOD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_DONATE_FOOD);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
