@@ -104,6 +104,8 @@ public class Constants {
 
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_ADMIN = "admin";
+    public static final String FIREBASE_ACCEPTED = "Accepted";
+    public static final String FIREBASE_CANCELLED = "Cancelled";
     public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
@@ -140,6 +142,9 @@ public class Constants {
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
     public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
     public static final String FIREBASE_CHILD_STATUS = "status";
+    public static final String FIREBASE_CHILD_SERVING = "serving";
+    public static final String FIREBASE_CHILD_FUTURE =  "future";
+    public static final String FIREBASE_CHILD_TAKENBY = "takenBy";
     public static final String FIREBASE_CHILD_TOKENID = "tokenId";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";

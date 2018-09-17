@@ -383,6 +383,8 @@
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
     <string name="description_others">Description</string>
     <string name="request_service">Request Service</string>
+    <string name="cancel_dialog_title">Cancel Service Message</string>
+    <string name="cancel_question">Are you sure you want to Cancel the Service?</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
@@ -392,6 +394,7 @@
     <string name="event_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Event requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="time_slot">Time Slot:</string>
+    <string name="cancelled_status">cancelled</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>
