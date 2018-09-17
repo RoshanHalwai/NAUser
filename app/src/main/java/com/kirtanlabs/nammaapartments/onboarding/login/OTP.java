@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +38,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
 
@@ -69,7 +69,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
      * ------------------------------------------------------------- */
 
     private DatabaseReference userPrivateInfo;
-    private FirebaseAuth fbAuth;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -88,8 +87,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        fbAuth = FirebaseAuth.getInstance();
 
         /* Generate an OTP to user's mobile number */
         userMobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
@@ -272,7 +269,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
      * Checking if user's mobile number exists in Firebase or not
      */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
-        fbAuth.signInWithCredential(phoneAuthCredential)
+        FIREBASE_AUTH.signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(this, (task) -> {
                     hideProgressDialog();
                     if (task.isSuccessful()) {

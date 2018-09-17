@@ -14,12 +14,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -38,6 +36,7 @@ import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.DS_OTP_STATUS_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CARBIKECLEANERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CHILDDAYCARES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_COOKS;
@@ -51,6 +50,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OWNERS_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
@@ -374,7 +374,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
         dailyServiceMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String dailyServiceUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                String dailyServiceUID = Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid();
 
                 /*We map daily service mobile number with their UID to avoid other users to add same daily service again*/
                 dailyServiceMobileNumberReference.setValue(dailyServiceUID);
@@ -416,7 +416,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                 });
 
                 /*getting the storage reference*/
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_DAILYSERVICES)
+                StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_DAILYSERVICES)
                         .child(FIREBASE_CHILD_PRIVATE)
                         .child(dailyServiceChild)
                         .child(FIREBASE_CHILD_OWNERS_UID)

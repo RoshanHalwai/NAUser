@@ -18,7 +18,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -41,6 +40,7 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PREAPPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VISITORS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NOT_ENTERED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
@@ -344,7 +344,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
                 visitorName, visitorMobile, visitorDateTime, NammaApartmentsGlobal.userUID, FIREBASE_CHILD_PREAPPROVED);
 
         /*getting the storage reference*/
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_VISITORS)
+        StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_VISITORS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
                 .child(nammaApartmentGuest.getUid());
 

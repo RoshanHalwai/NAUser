@@ -20,7 +20,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -48,6 +47,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
@@ -429,7 +429,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 showProgressDialog(UserProfile.this, getString(R.string.updating_profile), getString(R.string.please_wait_a_moment));
 
                 String userUID = NammaApartmentsGlobal.userUID;
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference(FIREBASE_CHILD_USERS)
+                StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_USERS)
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(userUID);
 

@@ -14,12 +14,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -43,6 +41,7 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.AFM_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
@@ -52,6 +51,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -347,11 +347,11 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String familyMemberUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                String familyMemberUID = Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid();
                 familyMemberMobileNumberReference.setValue(familyMemberUID);
 
                 /*getting the storage reference*/
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.FIREBASE_CHILD_USERS)
+                StorageReference storageReference = FIREBASE_STORAGE.getReference(Constants.FIREBASE_CHILD_USERS)
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(familyMemberUID);
 

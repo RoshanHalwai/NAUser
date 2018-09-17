@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
-                            /**------------------------------------------------------------- *
+/**------------------------------------------------------------- *
                              *----------------DO NOT AUTO-FORMAT THIS FILE-------------------*
                              *-------------------------------------------------------------- */
 public class Constants {
@@ -204,7 +206,10 @@ public class Constants {
      * Firebase Database References
      * ------------------------------------------------------------- */
 
-    private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FirebaseApp.getInstance(DEV_ENV));
+    private static final FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(DEV_ENV);
+    private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FIREBASE_APP);
+    public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance(FIREBASE_APP);
+    public static final FirebaseAuth FIREBASE_AUTH = FirebaseAuth.getInstance(FIREBASE_APP);
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
     public static final DatabaseReference SOCIETY_SERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETY_SERVICES);
@@ -265,6 +270,8 @@ public class Constants {
     public static final int EVENING_SLOT_LAST_HOUR = 17;
     public static final String ANDROID = "android";
     public static final String PACKAGE_NAME = "com.kirtanlabs.nammaapartments";
+    public static final int NOON_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 16;
+    public static final int EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 20;
 
     /* ------------------------------------------------------------- *
      * Request Code
@@ -279,6 +286,15 @@ public class Constants {
     public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
     public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
     public static final int NEW_NOTICE_CODE = 11;
+
+    /* ------------------------------------------------------------- *
+     * Payment Specific
+     * ------------------------------------------------------------- */
+
+    public static final String PAYMENT_SUCCESSFUL = "Successful";
+    public static final String PAYMENT_FAILURE = "Failure";
+    public static final int PAYMENT_CANCELLED_ERROR_CODE = 0;
+    public static final String INDIAN_RUPEE_CURRENCY_CODE = "INR";
 
     /* ------------------------------------------------------------- *
      * Font Types

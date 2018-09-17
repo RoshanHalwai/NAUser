@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class SocietyServicesHome extends BaseActivity implements View.OnClickListener {
+public class SocietyServicesHome extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -102,6 +103,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonDryWaste.setTypeface(setLatoRegularFont(this));
         buttonWetWaste.setTypeface(setLatoRegularFont(this));
 
+        /*We don't want the keyboard to be displayed when user clicks edit views*/
+        editTextSelectProblem.setInputType(InputType.TYPE_NULL);
+
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediately);
 
@@ -145,10 +149,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         historyButton.setOnClickListener(this);
         buttonDryWaste.setOnClickListener(this);
         buttonWetWaste.setOnClickListener(this);
+        editTextSelectProblem.setOnFocusChangeListener(this);
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding OnClick Listener Method
+     * Overriding OnClick and OnFocus Change Listener Methods
      * ------------------------------------------------------------- */
 
     @Override
@@ -190,6 +195,13 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 buttonWetWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonDryWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            onClick(v);
         }
     }
 

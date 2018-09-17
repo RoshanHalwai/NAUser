@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +33,7 @@ import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.NammaApartmentsHelp;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.MyFoodActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities.MyGuardsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
@@ -46,6 +46,7 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DEVICE_VERSION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
@@ -112,15 +113,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
 
-            case R.id.nav_myWallet: {
-                toggle.runWhenIdle(() -> {
-                    Intent intent = new Intent(NammaApartmentsHome.this, MyPaymentsActivity.class);
-                    startActivity(intent);
-                });
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            }
-
             case R.id.nav_myFamilyMembers: {
                 toggle.runWhenIdle(() -> {
                     Intent mySweetHomeIntent = new Intent(NammaApartmentsHome.this, MySweetHome.class);
@@ -150,6 +142,22 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 break;
             }
 
+            case R.id.nav_myWallet: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyPaymentsActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+            }
+            case R.id.nav_myFood: {
+                toggle.runWhenIdle(() -> {
+                    Intent intent = new Intent(NammaApartmentsHome.this, MyFoodActivity.class);
+                    startActivity(intent);
+                });
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+            }
             case R.id.nav_myNoticeBoard: {
                 toggle.runWhenIdle(() -> {
                     Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
@@ -235,10 +243,10 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
             userReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(userUid));
         } else {
             userReference = PRIVATE_USERS_REFERENCE
-                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                    .child(Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid());
             editor = sharedPreferences.edit();
             editor.putBoolean(LOGGED_IN, true);
-            editor.putString(USER_UID, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            editor.putString(USER_UID, Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid());
             editor.apply();
         }
         /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
@@ -250,7 +258,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         /*Generating token id for Family Member/Friend on launch of Home Screen, and making sure a refreshed token is generated when
          * user logs in from a different device*/
         String token_id = FirebaseInstanceId.getInstance().getToken();
-        DatabaseReference userTokenIdReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        DatabaseReference userTokenIdReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid());
         userTokenIdReference.child(FIREBASE_CHILD_TOKENID).setValue(token_id);
     }
 
