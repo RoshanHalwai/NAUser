@@ -23,6 +23,8 @@ public class NammaApartmentSocietyServices {
     private String eventTitle;
     private String category;
     private String eventDate;
+    private String quantity;
+    private String scrapType;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -95,6 +97,14 @@ public class NammaApartmentSocietyServices {
         return category;
     }
 
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public String getScrapType() {
+        return scrapType;
+    }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -111,4 +121,11 @@ public class NammaApartmentSocietyServices {
         this.eventDate = eventDate;
     }
 
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setScrapType(String scrapType) {
+        this.scrapType = scrapType;
+    }
 }
