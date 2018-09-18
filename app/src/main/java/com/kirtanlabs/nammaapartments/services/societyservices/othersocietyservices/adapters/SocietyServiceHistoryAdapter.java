@@ -58,7 +58,6 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
     @Override
     public void onBindViewHolder(@NonNull SocietyServiceViewHolder holder, int position) {
         /*Getting the societyservice type based on the society type history. */
-
         String societyServiceType = nammaApartmentSocietyServiceList.get(0).getSocietyServiceType();
         /*Creating an instance of NammaApartmentSocietyServices class and retrieving the values from Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = nammaApartmentSocietyServiceList.get(position);

@@ -188,7 +188,6 @@ public class AwaitingResponse extends BaseActivity {
         String confirmDialogTitle = getString(R.string.cancel_dialog_title);
         String confirmDialogMessage = getString(R.string.cancel_question);
         showConfirmDialog(confirmDialogTitle, confirmDialogMessage, cancelService);
-
     }
 
     /**
@@ -223,7 +222,6 @@ public class AwaitingResponse extends BaseActivity {
                                                 /*Removing the UID from 'future' after it is placed in 'serving'*/
                                                 societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(futureServiceKey).removeValue();
                                             }
-
                                         }
 
                                         @Override
