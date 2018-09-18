@@ -16,7 +16,7 @@ import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.pojo.DonateFood;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DONATE_FOOD;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FOOD_DONATIONS;
 
 public class MyFoodActivity extends BaseActivity implements View.OnClickListener {
 
@@ -55,7 +55,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         editFoodType = findViewById(R.id.editFoodType);
         Button buttonFoodQtyLess = findViewById(R.id.buttonFoodQtyLess);
         Button buttonFoodQtyMore = findViewById(R.id.buttonFoodQtyMore);
-        Button buttonCollectFood = findViewById(R.id.buttonCollectFood);
+        Button buttonDonateFood = findViewById(R.id.buttonDonateFood);
 
         /*Setting Fonts for all the views*/
         textFoodType.setTypeface(Constants.setLatoBoldFont(this));
@@ -64,12 +64,12 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         editFoodType.setTypeface(Constants.setLatoRegularFont(this));
         buttonFoodQtyLess.setTypeface(Constants.setLatoRegularFont(this));
         buttonFoodQtyMore.setTypeface(Constants.setLatoRegularFont(this));
-        buttonCollectFood.setTypeface(Constants.setLatoLightFont(this));
+        buttonDonateFood.setTypeface(Constants.setLatoLightFont(this));
 
         /*Setting OnClick Listeners to the views*/
         buttonFoodQtyLess.setOnClickListener(this);
         buttonFoodQtyMore.setOnClickListener(this);
-        buttonCollectFood.setOnClickListener(this);
+        buttonDonateFood.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -86,7 +86,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
                 hideKeyboard();
                 selectButton(R.id.buttonFoodQtyMore);
                 break;
-            case R.id.buttonCollectFood:
+            case R.id.buttonDonateFood:
                 /*This method gets invoked to check all the editText fields and button validations.*/
                 validateFields();
                 break;
@@ -145,7 +145,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
      */
     private void storeFoodRequestDetailsInFirebase() {
         DatabaseReference donateFoodReference = Constants.DONATE_FOOD_REFERENCE;
-        DatabaseReference userDonateFoodReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_DONATE_FOOD);
+        DatabaseReference userDonateFoodReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_FOOD_DONATIONS);
         String foodRequestUID = userDonateFoodReference.push().getKey();
         userDonateFoodReference.child(foodRequestUID).setValue(true);
 
@@ -153,7 +153,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         String foodType = editFoodType.getText().toString();
         String foodQuantity = selectedButton.getText().toString();
         DonateFood donateFood = new DonateFood(foodType, foodQuantity, foodRequestUID, NammaApartmentsGlobal.userUID, System.currentTimeMillis(), getString(R.string.pending));
-        donateFoodReference.setValue(donateFood);
+        donateFoodReference.child(foodRequestUID).setValue(donateFood);
 
         /*Navigating users back to home screen*/
         Intent naHomeIntent = new Intent(MyFoodActivity.this, NammaApartmentsHome.class);
