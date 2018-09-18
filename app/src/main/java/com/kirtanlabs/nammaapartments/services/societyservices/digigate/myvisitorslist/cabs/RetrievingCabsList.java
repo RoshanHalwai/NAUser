@@ -17,14 +17,14 @@ import java.util.Set;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_CABS_REFERENCE;
 
-public class RetrievingCabsList {
+class RetrievingCabsList {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
-    private DatabaseReference userDataReference;
-    private List<String> userUIDList;
+    private final DatabaseReference userDataReference;
+    private final List<String> userUIDList;
     private int count = 0;
 
     /*-------------------------------------------------------------*

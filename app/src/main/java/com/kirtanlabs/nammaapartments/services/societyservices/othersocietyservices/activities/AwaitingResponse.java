@@ -54,7 +54,6 @@ public class AwaitingResponse extends BaseActivity {
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
     private Button buttonCallService;
-    private Button buttonCancelService;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -87,7 +86,7 @@ public class AwaitingResponse extends BaseActivity {
         textEndOTPValue = findViewById(R.id.textEndOTPValue);
         TextView textSocietyServiceResponse = findViewById(R.id.textSocietyServiceResponse);
         buttonCallService = findViewById(R.id.buttonCallService);
-        buttonCancelService = findViewById(R.id.buttonCancelService);
+        Button buttonCancelService = findViewById(R.id.buttonCancelService);
 
         /*Setting font for all the views*/
         textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
@@ -172,7 +171,7 @@ public class AwaitingResponse extends BaseActivity {
     /**
      * This method is used to Retrieve the details of Society Society, if users request is accepted.
      */
-    protected void checkSocietyServiceResponse() {
+    private void checkSocietyServiceResponse() {
         /*Getting the reference till 'notificationUID' in societyServices in Firebase*/
         societyServiceNotificationReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -369,7 +368,7 @@ public class AwaitingResponse extends BaseActivity {
         textEventManagementNote.setVisibility(View.VISIBLE);
         textRequestStatus.setVisibility(View.VISIBLE);
         textRequestStatusValue.setVisibility(View.VISIBLE);
-        imageSocietyServiceStatus.setImageResource(R.drawable.event_management_small);
+        imageSocietyServiceStatus.setImageResource(R.drawable.event_na);
 
         textSocietyServiceAcceptedRequest.setText(getText(R.string.request_initiated));
         String eventTitle = getString(R.string.event_title) + ":";

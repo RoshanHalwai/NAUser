@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:contentDescription="@string/feature_unavailable_image_desc"
-        android:src="@drawable/shopping_basket" />
+        android:src="@drawable/grocery_na" />
 
     <TextView
         android:id="@+id/textGroceryFeatureUnavailable"

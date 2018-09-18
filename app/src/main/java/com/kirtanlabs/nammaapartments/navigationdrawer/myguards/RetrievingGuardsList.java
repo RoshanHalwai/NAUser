@@ -98,7 +98,7 @@ public class RetrievingGuardsList {
      * Interfaces
      * ------------------------------------------------------------- */
 
-    public interface GuardUIDListCallback {
+    interface GuardUIDListCallback {
         void onCallBack(List<String> guardUIDList);
     }
 

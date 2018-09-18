@@ -28,7 +28,7 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
      * ------------------------------------------------------------- */
 
     private final Context mCtx;
-    private List<NammaApartmentsGuard> guardDataList;
+    private final List<NammaApartmentsGuard> guardDataList;
 
     /* ------------------------------------------------------------- *
      * Constructor

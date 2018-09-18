@@ -25,7 +25,7 @@ public class RetrievingSocietyServiceHistoryList {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private Context mCtx;
+    private final Context mCtx;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -165,7 +165,7 @@ public class RetrievingSocietyServiceHistoryList {
      * Interfaces
      * ------------------------------------------------------------- */
 
-    public interface NotificationUIDCallback {
+    interface NotificationUIDCallback {
         void onCallBack(List<String> societyServiceNotificationUIDList);
     }
 

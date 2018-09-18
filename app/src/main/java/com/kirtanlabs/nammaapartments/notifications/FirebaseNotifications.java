@@ -187,7 +187,7 @@ public class FirebaseNotifications extends FirebaseMessagingService {
         }
     }
 
-    public Bitmap getBitmapFromURL(String strURL) {
+    private Bitmap getBitmapFromURL(String strURL) {
         try {
             URL url = new URL(strURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

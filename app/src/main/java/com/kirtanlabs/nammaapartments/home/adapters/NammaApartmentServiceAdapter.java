@@ -38,7 +38,7 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
 
     private final Context context;
     private final List<NammaApartmentService> apartmentServicesList;
-    private int serviceType;
+    private final int serviceType;
     private String notificationUID, societyServiceType;
 
     /* ------------------------------------------------------------- *

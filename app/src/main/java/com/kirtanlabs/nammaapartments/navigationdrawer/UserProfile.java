@@ -68,11 +68,11 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     private EditText editUserName, editUserEmail, editFlatAdmin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
-    private List<String> flatMembersList = new ArrayList<>();
-    private List<String> flatMembersUIDList = new ArrayList<>();
+    private final List<String> flatMembersList = new ArrayList<>();
+    private final List<String> flatMembersUIDList = new ArrayList<>();
     private CircleImageView currentUserProfilePic;
     private File profilePhotoPath;
-    private int index = 0;
+    private final int index = 0;
     private String userName, userEmail, adminName, itemValue, selectedFamilyMemberUID;
     private NammaApartmentUser currentNammaApartmentUser;
 

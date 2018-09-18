@@ -20,8 +20,8 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
      * Private Members
      * ------------------------------------------------------------- */
 
-    List<String> helpList;
-    ListView listOfHelpServices;
+    private List<String> helpList;
+    private ListView listOfHelpServices;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects

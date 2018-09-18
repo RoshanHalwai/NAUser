@@ -132,7 +132,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         }
     }
 
-    public void startPayment(int amount, String description) {
+    private void startPayment(int amount, String description) {
         final Activity activity = this;
         final Checkout co = new Checkout();
         serviceCategory = description;
