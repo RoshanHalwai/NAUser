@@ -21,6 +21,7 @@ import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -62,7 +63,7 @@ public class AwaitingResponse extends BaseActivity {
     private TextView textEndOTPValue, textSocietyServiceAcceptedRequest, textSocietyServiceNameAndEventTitle,
             textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
     private DatabaseReference societyServiceNotificationReference;
-    private String notificationUID, societyServiceType, societyServiceUID;
+    private String notificationUID, societyServiceType, societyServiceUID, futureUID;
     private Button buttonCallService;
     private Button buttonCancelService;
 
@@ -213,17 +214,13 @@ public class AwaitingResponse extends BaseActivity {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot1) {
                                             if (dataSnapshot1.exists()) {
-                                                String futureUID = "";
-                                                for(DataSnapshot futureUIDdatasnapshot:dataSnapshot1.getChildren() ){
-                                                    futureUID = futureUIDdatasnapshot.getKey();
-                                                    break;
-                                                }
-                                                /*Getting the first UID from the list of UID's in queue in 'future'*/
-                                                //String futureUID = dataSnapshot1.getChildren().iterator().next().getKey();
+                                                Map<String, String> futureUIDMap = (Map<String, String>) dataSnapshot1.getValue();
+                                                String futureServiceUID = Objects.requireNonNull(futureUIDMap).keySet().iterator().next();
                                                 /*Moving a card from 'future' to 'serving'*/
-                                                societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(futureUID).setValue(FIREBASE_ACCEPTED);
+                                                societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(futureServiceUID).setValue(FIREBASE_ACCEPTED);
                                                 /*Removing the UID from 'future' after it is placed in 'serving'*/
-                                                societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(futureUID).removeValue();
+                                                societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(futureServiceUID).removeValue();
+
                                             }
 
                                         }
