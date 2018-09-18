@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.myfood;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myfood.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,10 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.pojo.DonateFood;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FOOD_DONATIONS;
 
 public class MyFoodActivity extends BaseActivity implements View.OnClickListener {
 
@@ -24,6 +29,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     private EditText editFoodType;
     private TextView textErrorFoodQuantity;
     private Boolean isFoodQtySelected = false;
+    private Button selectedButton;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -49,7 +55,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         editFoodType = findViewById(R.id.editFoodType);
         Button buttonFoodQtyLess = findViewById(R.id.buttonFoodQtyLess);
         Button buttonFoodQtyMore = findViewById(R.id.buttonFoodQtyMore);
-        Button buttonCollectFood = findViewById(R.id.buttonCollectFood);
+        Button buttonDonateFood = findViewById(R.id.buttonDonateFood);
 
         /*Setting Fonts for all the views*/
         textFoodType.setTypeface(Constants.setLatoBoldFont(this));
@@ -58,12 +64,12 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         editFoodType.setTypeface(Constants.setLatoRegularFont(this));
         buttonFoodQtyLess.setTypeface(Constants.setLatoRegularFont(this));
         buttonFoodQtyMore.setTypeface(Constants.setLatoRegularFont(this));
-        buttonCollectFood.setTypeface(Constants.setLatoLightFont(this));
+        buttonDonateFood.setTypeface(Constants.setLatoLightFont(this));
 
         /*Setting OnClick Listeners to the views*/
         buttonFoodQtyLess.setOnClickListener(this);
         buttonFoodQtyMore.setOnClickListener(this);
-        buttonCollectFood.setOnClickListener(this);
+        buttonDonateFood.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -73,12 +79,14 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonFoodQtyLess:
+                hideKeyboard();
                 selectButton(R.id.buttonFoodQtyLess);
                 break;
             case R.id.buttonFoodQtyMore:
+                hideKeyboard();
                 selectButton(R.id.buttonFoodQtyMore);
                 break;
-            case R.id.buttonCollectFood:
+            case R.id.buttonDonateFood:
                 /*This method gets invoked to check all the editText fields and button validations.*/
                 validateFields();
                 break;
@@ -99,6 +107,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
+                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
                 textErrorFoodQuantity.setVisibility(View.GONE);
             } else {
@@ -125,12 +134,33 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         }
         /*This condition checks for if user has filled all the fields and navigates to appropriate screen.*/
         if (fieldsFilled) {
-            Intent naHomeIntent = new Intent(MyFoodActivity.this, NammaApartmentsHome.class);
-            naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            showNotificationDialog(getString(R.string.request_raised),
-                    getString(R.string.food_request_service_dialog_message),
-                    naHomeIntent);
+            /*This method stores the user food request details in Firebase*/
+            storeFoodRequestDetailsInFirebase();
         }
+    }
+
+    /**
+     * This method stores food request details in firebase whenever user requests a request to
+     * donate food.
+     */
+    private void storeFoodRequestDetailsInFirebase() {
+        DatabaseReference donateFoodReference = Constants.DONATE_FOOD_REFERENCE;
+        DatabaseReference userDonateFoodReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference().child(FIREBASE_CHILD_FOOD_DONATIONS);
+        String foodRequestUID = userDonateFoodReference.push().getKey();
+        userDonateFoodReference.child(foodRequestUID).setValue(true);
+
+        /*Getting the user entered values*/
+        String foodType = editFoodType.getText().toString();
+        String foodQuantity = selectedButton.getText().toString();
+        DonateFood donateFood = new DonateFood(foodType, foodQuantity, foodRequestUID, NammaApartmentsGlobal.userUID, System.currentTimeMillis(), getString(R.string.pending));
+        donateFoodReference.child(foodRequestUID).setValue(donateFood);
+
+        /*Navigating users back to home screen*/
+        Intent naHomeIntent = new Intent(MyFoodActivity.this, NammaApartmentsHome.class);
+        naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        showNotificationDialog(getString(R.string.request_raised),
+                getString(R.string.food_request_service_dialog_message),
+                naHomeIntent);
     }
 }

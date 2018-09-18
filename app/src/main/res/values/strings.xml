@@ -598,7 +598,7 @@
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>
     <string name="food_type">Food Type</string>
-    <string name="food_type_hint">E.g. Rice, Dhal</string>
+    <string name="food_type_hint">E.g. Rice, Dal</string>
     <string name="food_quantity">Food Quantity</string>
     <string name="less">Less</string>
     <string name="more">More</string>
