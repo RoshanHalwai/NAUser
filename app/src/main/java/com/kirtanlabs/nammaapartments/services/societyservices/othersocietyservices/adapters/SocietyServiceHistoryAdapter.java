@@ -15,6 +15,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
@@ -62,7 +63,7 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
         /*Creating an instance of NammaApartmentSocietyServices class and retrieving the values from Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = nammaApartmentSocietyServiceList.get(position);
         String serviceStatus = nammaApartmentSocietyServices.getStatus();
-        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm");
+        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
         String formattedDateAndTime = sfd.format(new Date(nammaApartmentSocietyServices.getTimestamp()));
         /*If the society service type is event management display time slot instead of problem*/
         if (societyServiceType.equals(EVENT_MANAGEMENT)) {

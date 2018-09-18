@@ -69,9 +69,6 @@
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
-    <string name="rate_us_dialog_title">Enjoying Namma Apartments? </string>
-    <string name="submit">Submit</string>
-    <string name="rate_us_dialog_message">Tap a star to rate it on the Play Store.</string>
     <string name="logout_question">Are you sure you want to logout?</string>
     <string name="logout_dialog_title">Logout Message</string>
 
@@ -94,6 +91,14 @@
     <string name="event_management">Event Management</string>
     <string name="medical_emergency">Medical Emergency</string>
     <string name="enjoy_free_service">Enjoy the free Service</string>
+    <string name="scrap_collection">Scrap Collection</string>
+    <string name="total_quantity">Total Quantity (Rough Estimate in Kg\'s)</string>
+    <string name="less_quantity">0 – 5 Kg</string>
+    <string name="medium_quantity">5 – 10 Kg</string>
+    <string name="large_quantity">10 – 15 Kg</string>
+    <string name="very_large_quantity">15+ Kg</string>
+    <string name="select_scrap_type">Select Scrap Type</string>
+    <string name="select_quantity">Select Quantity</string>
 
     <!--Apartment Services Activity-->
     <string-array name="apartment_services_list">
@@ -342,7 +347,6 @@
     <string name="my_transactions">My Transactions</string>
     <string name="transaction_image_desc">Image which shows users for My Transactions</string>
     <string name="amount_due">Amount Due</string>
-    <string name="Rs">\u20B9</string>
 
     <!--Transaction History-->
     <string name="transactions">Transactions</string>
@@ -470,6 +474,25 @@
     <string name="sofa_door">Wood Flooring repair</string>
     <string name="window_frame">Unable to open doors/drawers</string>
 
+    <string-array name="scrap_list">
+        <item>@string/paper_scrap</item>
+        <item>@string/metal_waste</item>
+        <item>@string/plastic</item>
+        <item>@string/bottles</item>
+        <item>@string/clothes</item>
+        <item>@string/utensils</item>
+        <item>@string/electronic_waste</item>
+        <item>@string/mix_waste</item>
+        <item>@string/others</item>
+    </string-array>
+    <string name="paper_scrap">Paper Scrap</string>
+    <string name="metal_waste">Metal Waste</string>
+    <string name="plastic">Plastic</string>
+    <string name="bottles">Bottles</string>
+    <string name="clothes">Clothes</string>
+    <string name="utensils">Utensils</string>
+    <string name="electronic_waste">Electronic Waste</string>
+    <string name="mix_waste">Mix Waste</string>
 
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
@@ -608,4 +631,8 @@
     <string name="team_collect_food">Our team will collect food</string>
     <string name="food_request_service_dialog_message">Thank you for raising request.Our representative will arrive at your flat to collect food.</string>
 
+    <!--My Guard Activity-->
+    <string name="guard">Guard:</string>
+    <string name="gate_no">Gate No:</string>
+    <string name="gate_no_value">2</string>
 </resources>

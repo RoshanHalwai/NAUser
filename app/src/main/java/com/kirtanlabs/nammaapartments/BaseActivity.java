@@ -350,10 +350,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
         progressDialog.show();
     }
 
-    protected boolean isProgressDialogShown() {
-        return progressDialog != null && progressDialog.isShowing();
-    }
-
     protected void hideProgressDialog() {
         progressDialog.dismiss();
     }
@@ -436,7 +432,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
     private void getLocation() {
         try {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
+            Objects.requireNonNull(locationManager).requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
         } catch (SecurityException e) {
             e.printStackTrace();
         }

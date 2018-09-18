@@ -150,7 +150,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_TOKENID = "tokenId";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
-    public static final String FIREBASE_CHILD_USER_DATA = "userData";
+    private static final String FIREBASE_CHILD_USER_DATA = "userData";
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
     public static final String FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION = "societyServiceNotifications";
     public static final String FIREBASE_CHILD_GATE_NOTIFICATIONS = "gateNotifications";
@@ -189,6 +189,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_MAINTENANCE_COST="maintenanceCost";
     public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
     private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
+    public static final String FIREBASE_CHILD_SCRAP_COLLECTION = "scrapCollection";
     public static final String FIREBASE_CHILD_FOOD_DONATIONS = "foodDonations";
 
     /* ------------------------------------------------------------- *
