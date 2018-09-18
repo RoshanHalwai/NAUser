@@ -5,15 +5,11 @@ import android.app.Application;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.BETA_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.DEV_ENV;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USER_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
 
 /**

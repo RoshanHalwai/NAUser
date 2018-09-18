@@ -69,9 +69,6 @@
     <string name="namma_apartments_society_services_image">Namma Apartments Society Services image</string>
     <string name="namma_apartments_apartment_services_image">Namma Apartments Apartment Services image</string>
     <string name="service_icon">Service Icon</string>
-    <string name="rate_us_dialog_title">Enjoying Namma Apartments? </string>
-    <string name="submit">Submit</string>
-    <string name="rate_us_dialog_message">Tap a star to rate it on the Play Store.</string>
     <string name="logout_question">Are you sure you want to logout?</string>
     <string name="logout_dialog_title">Logout Message</string>
 
@@ -350,7 +347,6 @@
     <string name="my_transactions">My Transactions</string>
     <string name="transaction_image_desc">Image which shows users for My Transactions</string>
     <string name="amount_due">Amount Due</string>
-    <string name="Rs">\u20B9</string>
 
     <!--Transaction History-->
     <string name="transactions">Transactions</string>
@@ -632,4 +628,8 @@
     <string name="team_collect_food">Our team will collect food</string>
     <string name="food_request_service_dialog_message">Thank you for raising request.Our representative will arrive at your flat to collect food.</string>
 
+    <!--My Guard Activity-->
+    <string name="guard">Guard:</string>
+    <string name="gate_no">Gate No:</string>
+    <string name="gate_no_value">2</string>
 </resources>

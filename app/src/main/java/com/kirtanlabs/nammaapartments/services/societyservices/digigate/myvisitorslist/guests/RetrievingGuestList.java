@@ -11,6 +11,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevi
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VISITORS;
@@ -123,7 +124,7 @@ public class RetrievingGuestList {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<String> guestUIDList = new ArrayList<>();
                 for (DataSnapshot visitorUIDSnapshot : dataSnapshot.getChildren()) {
-                    if (visitorUIDSnapshot.getValue(Boolean.class).equals(true) || pastGuestListRequired) {
+                    if (Objects.requireNonNull(visitorUIDSnapshot.getValue(Boolean.class)).equals(true) || pastGuestListRequired) {
                         guestUIDList.add(visitorUIDSnapshot.getKey());
                     }
                 }

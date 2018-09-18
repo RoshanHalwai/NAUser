@@ -301,7 +301,7 @@ public class AwaitingResponse extends BaseActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int number = (int) dataSnapshot.child(Constants.FIREBASE_CHILD_NOTIFICATIONS).child(Constants.FIREBASE_CHILD_HISTORY).getChildrenCount();
-                    float previousAverageRating = dataSnapshot.child(Constants.RATING).getValue(Float.class);
+                    float previousAverageRating = Objects.requireNonNull(dataSnapshot.child(Constants.RATING).getValue(Float.class));
                     float previousRatingValue = (previousAverageRating * (number - 1));
                     float newAverageRating = (rating + previousRatingValue) / number;
                     averageRatingReference.child(Constants.RATING).setValue(newAverageRating);

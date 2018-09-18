@@ -223,7 +223,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -350,8 +350,8 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
 
         private Runnable runnable;
 
-        SmoothActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
-            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
+        SmoothActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar) {
+            super(activity, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         }
 
         @Override

@@ -30,13 +30,15 @@ public class HelpAndSettingsAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_notify_digital_gate, parent, false);
-        TextView textNotification = view.findViewById(R.id.textNotification);
-        ImageView imageNotificationService = view.findViewById(R.id.imageNotificationService);
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(mCtx);
+            convertView = inflater.inflate(R.layout.layout_notify_digital_gate, parent, false);
+        }
+        TextView textNotification = convertView.findViewById(R.id.textNotification);
+        ImageView imageNotificationService = convertView.findViewById(R.id.imageNotificationService);
         textNotification.setText(helpList.get(position));
         textNotification.setTypeface(setLatoRegularFont(mCtx));
         imageNotificationService.setVisibility(View.GONE);
-        return view;
+        return convertView;
     }
 }
