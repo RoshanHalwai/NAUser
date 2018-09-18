@@ -63,7 +63,7 @@ public class AwaitingResponse extends BaseActivity {
     private TextView textEndOTPValue, textSocietyServiceAcceptedRequest, textSocietyServiceNameAndEventTitle,
             textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
     private DatabaseReference societyServiceNotificationReference;
-    private String notificationUID, societyServiceType, societyServiceUID, futureUID;
+    private String notificationUID, societyServiceType, societyServiceUID;
     private Button buttonCallService;
     private Button buttonCancelService;
 
@@ -210,17 +210,18 @@ public class AwaitingResponse extends BaseActivity {
                             /*Removing data related to that particular notificationUID from 'serving' if user cancels a service*/
                             societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(notificationUID)
                                     .removeValue().addOnCompleteListener(task -> societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE)
-                                    .addValueEventListener(new ValueEventListener() {
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot1) {
                                             if (dataSnapshot1.exists()) {
                                                 Map<String, String> futureUIDMap = (Map<String, String>) dataSnapshot1.getValue();
-                                                String futureServiceUID = Objects.requireNonNull(futureUIDMap).keySet().iterator().next();
+                                                Long lastIndex = dataSnapshot1.getChildrenCount() - 1;
+                                                String futureServiceKey = (String) Objects.requireNonNull(futureUIDMap).keySet().toArray()[lastIndex.intValue()];
+                                                String futureServiceUID = futureUIDMap.get(futureServiceKey);
                                                 /*Moving a card from 'future' to 'serving'*/
                                                 societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(futureServiceUID).setValue(FIREBASE_ACCEPTED);
                                                 /*Removing the UID from 'future' after it is placed in 'serving'*/
-                                                societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(futureServiceUID).removeValue();
-
+                                                societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(futureServiceKey).removeValue();
                                             }
 
                                         }

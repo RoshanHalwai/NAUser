@@ -60,7 +60,7 @@ public class ActivationRequired extends BaseActivity {
                             startActivity(new Intent(ActivationRequired.this, NammaApartmentsHome.class));
                             finish();
                         } else if (verifiedValue == FIREBASE_CHILD_VERIFIED_PENDING) {
-                            imageActivation.setImageResource(R.drawable.welcome_na);
+                            imageActivation.setImageResource(R.drawable.doormat);
                             textActivationRequiredMessage.setText(R.string.activation_pending_message);
                         } else {
                             imageActivation.setImageResource(R.drawable.feature_unavailable);
