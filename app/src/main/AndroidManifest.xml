@@ -39,13 +39,17 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".notifications.FirebaseNotifications">
+        <service
+            android:name=".notifications.FirebaseNotifications"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name=".notifications.ActionButtonListener">
+        <receiver
+            android:name=".notifications.ActionButtonListener"
+            android:exported="false">
             <intent-filter>
                 <action android:name="accept_button_clicked" />
                 <action android:name="reject_button_clicked" />

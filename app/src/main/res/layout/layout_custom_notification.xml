@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="150dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/eIntercomProfilePic"
@@ -58,7 +60,8 @@
                     android:background="@android:color/white"
                     android:text="@string/accept"
                     android:textColor="@color/nmDarkBlue"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/buttonReject"
@@ -69,7 +72,8 @@
                     android:background="@android:color/white"
                     android:text="@string/reject"
                     android:textColor="@color/nmDarkBlue"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="ButtonStyle" />
 
             </LinearLayout>
 
