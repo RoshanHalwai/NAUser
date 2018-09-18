@@ -23,6 +23,7 @@ import java.util.Calendar;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
@@ -39,15 +40,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
      * Private Members
      * ------------------------------------------------------------- */
 
-    private final int[] buttonIds = new int[]{R.id.buttonImmediately,
-            R.id.buttonMorningSlot,
-            R.id.buttonNoonSlot,
-            R.id.buttonEveningSlot};
+    private final int[] buttonIds = new int[]{R.id.buttonImmediatelyAndLessQuantity,
+            R.id.buttonMorningSlotAndMediumQuantity,
+            R.id.buttonNoonSlotAndLargeQuantity,
+            R.id.buttonEveningSlotAndVeryLargeQuantity};
     private int screenTitle;
     private String problem, societyServiceType, descriptionValue;
     private Button selectedButton, buttonDryWaste, buttonWetWaste,
-            buttonMorningSlot, buttonNoonSlot, buttonEveningSlot;
-    private EditText editTextSelectProblem, editTextDescription;
+            buttonMorningSlotAndMediumQuantity, buttonNoonSlotAndLargeQuantity,
+            buttonEveningSlotAndVeryLargeQuantity;
+    private EditText editTextSelectProblemAndScrapType, editTextDescription;
     private LinearLayout otherProblemLayout;
     private Boolean otherProblemSelected = false;
 
@@ -74,64 +76,82 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         showInfoButton();
 
         /*Getting Id's for all the views*/
-        TextView textSelectSlot = findViewById(R.id.textSelectSlot);
-        TextView textSelectProblem = findViewById(R.id.textSelectProblem);
+        TextView textSelectSlotAndTotalQuantity = findViewById(R.id.textSelectSlotAndTotalQuantity);
+        TextView textSelectProblemAndScrapType = findViewById(R.id.textSelectProblemAndScrapType);
         TextView textDescription = findViewById(R.id.textDescription);
-        Button buttonImmediately = findViewById(R.id.buttonImmediately);
-        buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
-        buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
-        buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
+        TextView imageSelectProblemAndScrapType = findViewById(R.id.imageSelectProblemAndScrapType);
+        TextView imageSelectSlotAndQuantity = findViewById(R.id.imageSelectSlotAndQuantity);
+        Button buttonImmediatelyAndLessQuantity = findViewById(R.id.buttonImmediatelyAndLessQuantity);
+        buttonMorningSlotAndMediumQuantity = findViewById(R.id.buttonMorningSlotAndMediumQuantity);
+        buttonNoonSlotAndLargeQuantity = findViewById(R.id.buttonNoonSlotAndLargeQuantity);
+        buttonEveningSlotAndVeryLargeQuantity = findViewById(R.id.buttonEveningSlotAndVeryLargeQuantity);
         Button buttonRequestService = findViewById(R.id.buttonRequestService);
         buttonDryWaste = findViewById(R.id.buttonDryWaste);
         buttonWetWaste = findViewById(R.id.buttonWetWaste);
-        editTextSelectProblem = findViewById(R.id.editTextSelectProblem);
+        editTextSelectProblemAndScrapType = findViewById(R.id.editTextSelectProblemAndScrapType);
         editTextDescription = findViewById(R.id.editTextDescription);
         LinearLayout layoutGarbageType = findViewById(R.id.layoutGarbageType);
+        LinearLayout layoutLegend = findViewById(R.id.layoutLegend);
         otherProblemLayout = findViewById(R.id.layoutProblemOthers);
 
         /*Setting font for all the views*/
-        textSelectProblem.setTypeface(setLatoBoldFont(this));
-        textSelectSlot.setTypeface(setLatoBoldFont(this));
+        textSelectProblemAndScrapType.setTypeface(setLatoBoldFont(this));
+        textSelectSlotAndTotalQuantity.setTypeface(setLatoBoldFont(this));
         textDescription.setTypeface(setLatoBoldFont(this));
-        editTextSelectProblem.setTypeface(setLatoRegularFont(this));
+        editTextSelectProblemAndScrapType.setTypeface(setLatoRegularFont(this));
         editTextDescription.setTypeface(setLatoRegularFont(this));
-        buttonImmediately.setTypeface(setLatoRegularFont(this));
-        buttonMorningSlot.setTypeface(setLatoRegularFont(this));
-        buttonNoonSlot.setTypeface(setLatoRegularFont(this));
-        buttonEveningSlot.setTypeface(setLatoRegularFont(this));
+        buttonImmediatelyAndLessQuantity.setTypeface(setLatoRegularFont(this));
+        buttonMorningSlotAndMediumQuantity.setTypeface(setLatoRegularFont(this));
+        buttonNoonSlotAndLargeQuantity.setTypeface(setLatoRegularFont(this));
+        buttonEveningSlotAndVeryLargeQuantity.setTypeface(setLatoRegularFont(this));
         buttonRequestService.setTypeface(setLatoLightFont(this));
         buttonDryWaste.setTypeface(setLatoRegularFont(this));
         buttonWetWaste.setTypeface(setLatoRegularFont(this));
 
         /*We don't want the keyboard to be displayed when user clicks edit views*/
-        editTextSelectProblem.setInputType(InputType.TYPE_NULL);
+        editTextSelectProblemAndScrapType.setInputType(InputType.TYPE_NULL);
 
         /*We want Button Immediately should be selected on start of activity*/
-        selectButton(R.id.buttonImmediately);
-
-        /*Disabling time slot based on current date past time.*/
-        disablePastTimeSlot();
+        selectButton(R.id.buttonImmediatelyAndLessQuantity);
 
         societyServiceType = getString(screenTitle).toLowerCase();
 
         /* We set button text according to screen title */
         switch (screenTitle) {
             case R.string.plumber:
+                disablePastTimeSlot();
                 buttonRequestService.setText(R.string.request_plumber);
                 break;
             case R.string.carpenter:
+                disablePastTimeSlot();
                 buttonRequestService.setText(R.string.request_carpenter);
                 break;
             case R.string.electrician:
+                disablePastTimeSlot();
                 buttonRequestService.setText(R.string.request_electrician);
                 break;
             case R.string.garbage_collection:
+                disablePastTimeSlot();
                 buttonRequestService.setText(R.string.request);
-                textSelectProblem.setText(R.string.select_garbage_type);
-                editTextSelectProblem.setVisibility(View.GONE);
+                textSelectProblemAndScrapType.setText(R.string.select_garbage_type);
+                editTextSelectProblemAndScrapType.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
                 societyServiceType = FIREBASE_CHILD_GARBAGE_COLLECTION;
                 problem = getString(R.string.dry_waste);
+                break;
+            case R.string.scrap_collection:
+                imageSelectProblemAndScrapType.setText(R.string.select_scrap_type);
+                imageSelectSlotAndQuantity.setText(R.string.select_quantity);
+                textSelectProblemAndScrapType.setText(R.string.select_scrap_type);
+                textSelectSlotAndTotalQuantity.setText(R.string.total_quantity);
+                buttonImmediatelyAndLessQuantity.setText(R.string.less_quantity);
+                buttonMorningSlotAndMediumQuantity.setText(R.string.medium_quantity);
+                buttonNoonSlotAndLargeQuantity.setText(R.string.large_quantity);
+                buttonEveningSlotAndVeryLargeQuantity.setText(R.string.very_large_quantity);
+                layoutLegend.setVisibility(View.GONE);
+                buttonRequestService.setText(R.string.request);
+                societyServiceType = FIREBASE_CHILD_SCRAP_COLLECTION;
+                break;
         }
 
         /*Since we have History button here, we would want users to navigate to history and take a look at their
@@ -140,16 +160,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         historyButton.setVisibility(View.VISIBLE);
 
         /*Setting event for views*/
-        editTextSelectProblem.setOnClickListener(this);
-        buttonImmediately.setOnClickListener(this);
-        buttonMorningSlot.setOnClickListener(this);
-        buttonNoonSlot.setOnClickListener(this);
-        buttonEveningSlot.setOnClickListener(this);
+        editTextSelectProblemAndScrapType.setOnClickListener(this);
+        buttonImmediatelyAndLessQuantity.setOnClickListener(this);
+        buttonMorningSlotAndMediumQuantity.setOnClickListener(this);
+        buttonNoonSlotAndLargeQuantity.setOnClickListener(this);
+        buttonEveningSlotAndVeryLargeQuantity.setOnClickListener(this);
         buttonRequestService.setOnClickListener(this);
         historyButton.setOnClickListener(this);
         buttonDryWaste.setOnClickListener(this);
         buttonWetWaste.setOnClickListener(this);
-        editTextSelectProblem.setOnFocusChangeListener(this);
+        editTextSelectProblemAndScrapType.setOnFocusChangeListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -159,22 +179,22 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.editTextSelectProblem:
+            case R.id.editTextSelectProblemAndScrapType:
                 Intent intent = new Intent(SocietyServicesHome.this, SocietyServiceProblemList.class);
                 intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
                 startActivityForResult(intent, SELECT_SOCIETY_SERVICE_REQUEST_CODE);
                 break;
-            case R.id.buttonImmediately:
-                selectButton(R.id.buttonImmediately);
+            case R.id.buttonImmediatelyAndLessQuantity:
+                selectButton(R.id.buttonImmediatelyAndLessQuantity);
                 break;
-            case R.id.buttonMorningSlot:
-                selectButton(R.id.buttonMorningSlot);
+            case R.id.buttonMorningSlotAndMediumQuantity:
+                selectButton(R.id.buttonMorningSlotAndMediumQuantity);
                 break;
-            case R.id.buttonNoonSlot:
-                selectButton(R.id.buttonNoonSlot);
+            case R.id.buttonNoonSlotAndLargeQuantity:
+                selectButton(R.id.buttonNoonSlotAndLargeQuantity);
                 break;
-            case R.id.buttonEveningSlot:
-                selectButton(R.id.buttonEveningSlot);
+            case R.id.buttonEveningSlotAndVeryLargeQuantity:
+                selectButton(R.id.buttonEveningSlotAndVeryLargeQuantity);
                 break;
             case R.id.buttonRequestService:
                 /*This method gets invoked to check all the editText fields and button validations.*/
@@ -215,7 +235,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
             problem = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
-            editTextSelectProblem.setText(problem);
+            editTextSelectProblemAndScrapType.setText(problem);
             if (problem.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
                 otherProblemLayout.setVisibility(View.VISIBLE);
                 otherProblemSelected = true;
@@ -223,7 +243,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 otherProblemLayout.setVisibility(View.GONE);
                 otherProblemSelected = false;
             }
-            editTextSelectProblem.setError(null);
+            editTextSelectProblemAndScrapType.setError(null);
         }
     }
 
@@ -318,13 +338,13 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.plumber:
             case R.string.carpenter:
             case R.string.electrician:
-                String problemValue = editTextSelectProblem.getText().toString();
+                String problemValue = editTextSelectProblemAndScrapType.getText().toString();
                 descriptionValue = editTextDescription.getText().toString();
-                fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblem});
+                fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblemAndScrapType});
                 /*This condition checks if all fields are not filled and if user presses request button it will then display proper error messages.*/
                 if (!fieldsFilled) {
                     if (TextUtils.isEmpty(problemValue)) {
-                        editTextSelectProblem.setError(getString(R.string.choose_problem_validation));
+                        editTextSelectProblemAndScrapType.setError(getString(R.string.choose_problem_validation));
                         break;
                     }
                 }
@@ -356,11 +376,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
         /*Disabling Time slot if current time greater than that time slot*/
         if (currentHour >= Constants.MORNING_SLOT_LAST_HOUR) {
-            buttonMorningSlot.setEnabled(false);
+            buttonMorningSlotAndMediumQuantity.setEnabled(false);
             if (currentHour >= Constants.NOON_SLOT_LAST_HOUR) {
-                buttonNoonSlot.setEnabled(false);
+                buttonNoonSlotAndLargeQuantity.setEnabled(false);
                 if (currentHour >= Constants.EVENING_SLOT_LAST_HOUR) {
-                    buttonEveningSlot.setEnabled(false);
+                    buttonEveningSlotAndVeryLargeQuantity.setEnabled(false);
                 }
             }
         }

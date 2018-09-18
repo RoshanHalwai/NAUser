@@ -70,6 +70,9 @@ public class SocietyServiceProblemList extends BaseActivity implements SearchVie
             case R.string.apartment_services:
                 problemsList = getResources().getStringArray(R.array.apartment_services_list);
                 break;
+            case R.string.scrap_collection:
+                problemsList = getResources().getStringArray(R.array.scrap_list);
+                break;
         }
 
         /*Setting font for all the items in the list*/
