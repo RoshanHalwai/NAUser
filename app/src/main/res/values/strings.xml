@@ -391,6 +391,7 @@
     <string name="request_service">Request Service</string>
     <string name="cancel_dialog_title">Cancel Service Message</string>
     <string name="cancel_question">Are you sure you want to Cancel the Service?</string>
+    <string name="scrap_collection_request_dialog_message">A Scrap Collection request has been raised</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
