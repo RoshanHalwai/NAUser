@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 
@@ -9,7 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-/**------------------------------------------------------------- *
+                            /**------------------------------------------------------------- *
                              *----------------DO NOT AUTO-FORMAT THIS FILE-------------------*
                              *-------------------------------------------------------------- */
 public class Constants {
@@ -160,6 +161,7 @@ public class Constants {
     public static final int FIREBASE_CHILD_VERIFIED_APPROVED = 1;
     public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
     public static final String FIREBASE_CHILD_REJECTED = "Rejected";
+    public static final String FIREBASE_CHILD_IGNORED = "Ignored";
     private static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     private static final String FIREBASE_CHILD_CITIES = "cities";
     private static final String FIREBASE_CHILD_CLIENTS = "clients";
@@ -208,9 +210,10 @@ public class Constants {
      * Firebase Database References
      * ------------------------------------------------------------- */
 
+    @SuppressLint("StaticFieldLeak")
     private static final FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(DEV_ENV);
     private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FIREBASE_APP);
-    public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance();
+    public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance(FIREBASE_APP);
     public static final FirebaseAuth FIREBASE_AUTH = FirebaseAuth.getInstance(FIREBASE_APP);
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
