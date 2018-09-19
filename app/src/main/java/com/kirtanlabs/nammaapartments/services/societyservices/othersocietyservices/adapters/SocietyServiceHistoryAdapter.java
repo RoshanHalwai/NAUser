@@ -75,7 +75,7 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
 
         /*Setting icon as per the status of Service*/
         if (serviceStatus.equals(mCtx.getString(R.string.cancelled_status))) {
-            holder.serviceStatus.setImageResource(R.drawable.cancelled);
+            holder.serviceStatus.setImageResource(R.drawable.remove_new);
         }
     }
 

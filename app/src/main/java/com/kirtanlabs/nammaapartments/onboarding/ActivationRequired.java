@@ -64,11 +64,11 @@ public class ActivationRequired extends BaseActivity {
                                 finish();
                                 break;
                             case FIREBASE_CHILD_VERIFIED_PENDING:
-                                imageActivation.setImageResource(R.drawable.doormat);
+                                imageActivation.setImageResource(R.drawable.welcome_na);
                                 textActivationRequiredMessage.setText(R.string.activation_pending_message);
                                 break;
                             default:
-                                imageActivation.setImageResource(R.drawable.feature_unavailable);
+                                imageActivation.setImageResource(R.drawable.feature_unavailable_na);
                                 textActivationRequiredMessage.setText(R.string.activation_rejection_message);
                                 break;
                         }

@@ -414,7 +414,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
     }
 
     /**
-     * We check if permissions are granted to access location of the user, if granted user's loatitude and longitude can be fetched
+     * We check if permissions are granted to access location of the user, if granted user's latitude and longitude can be fetched
      * else we show Request permission dialog to allow users to give access.
      */
     protected void enableLocationService() {

@@ -64,7 +64,7 @@ public class AwaitingResponse extends BaseActivity {
             textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
-    private Button buttonCallService;
+    private Button buttonCallService, buttonCancelService;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -97,7 +97,7 @@ public class AwaitingResponse extends BaseActivity {
         textEndOTPValue = findViewById(R.id.textEndOTPValue);
         TextView textSocietyServiceResponse = findViewById(R.id.textSocietyServiceResponse);
         buttonCallService = findViewById(R.id.buttonCallService);
-        Button buttonCancelService = findViewById(R.id.buttonCancelService);
+        buttonCancelService = findViewById(R.id.buttonCancelService);
 
         /*Setting font for all the views*/
         textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
@@ -209,6 +209,7 @@ public class AwaitingResponse extends BaseActivity {
                             societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(notificationUID)
                                     .removeValue().addOnCompleteListener(task -> societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @SuppressWarnings("unchecked")
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot1) {
                                             if (dataSnapshot1.exists()) {
