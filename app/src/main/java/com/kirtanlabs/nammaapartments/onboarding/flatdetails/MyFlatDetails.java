@@ -77,7 +77,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * Private Members
      * ------------------------------------------------------------- */
 
-    private List<String> itemsInList = new ArrayList<>();
+    private final List<String> itemsInList = new ArrayList<>();
     private Dialog dialog;
     private ListView listView;
     private ArrayAdapter<String> adapter;

@@ -36,7 +36,7 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static Map<String, Long> numberOfFlats = new HashMap<>();
+    public static final Map<String, Long> numberOfFlats = new HashMap<>();
     private AlertDialog dailyServicesListDialog;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;

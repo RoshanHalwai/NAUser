@@ -22,7 +22,7 @@ public class RetrievingVehiclesList {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private DatabaseReference userDataReference;
+    private final DatabaseReference userDataReference;
 
     /*-------------------------------------------------------------*
      * Constructor

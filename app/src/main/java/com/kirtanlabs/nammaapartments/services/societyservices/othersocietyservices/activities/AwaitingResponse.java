@@ -64,8 +64,7 @@ public class AwaitingResponse extends BaseActivity {
             textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
-    private Button buttonCallService;
-    private Button buttonCancelService;
+    private Button buttonCallService, buttonCancelService;
 
     /*----------------------------------------------------
      *  Overriding BaseActivity Objects
@@ -210,6 +209,7 @@ public class AwaitingResponse extends BaseActivity {
                             societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(notificationUID)
                                     .removeValue().addOnCompleteListener(task -> societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @SuppressWarnings("unchecked")
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot1) {
                                             if (dataSnapshot1.exists()) {
@@ -262,7 +262,7 @@ public class AwaitingResponse extends BaseActivity {
     /**
      * This method is used to Retrieve the details of Society Society, if users request is accepted.
      */
-    protected void checkSocietyServiceResponse() {
+    private void checkSocietyServiceResponse() {
         /*Getting the reference till 'notificationUID' in societyServices in Firebase*/
         societyServiceNotificationReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -459,7 +459,7 @@ public class AwaitingResponse extends BaseActivity {
         textEventManagementNote.setVisibility(View.VISIBLE);
         textRequestStatus.setVisibility(View.VISIBLE);
         textRequestStatusValue.setVisibility(View.VISIBLE);
-        imageSocietyServiceStatus.setImageResource(R.drawable.event_management_small);
+        imageSocietyServiceStatus.setImageResource(R.drawable.event_na);
 
         textSocietyServiceAcceptedRequest.setText(getText(R.string.request_initiated));
         String eventTitle = getString(R.string.event_title) + ":";

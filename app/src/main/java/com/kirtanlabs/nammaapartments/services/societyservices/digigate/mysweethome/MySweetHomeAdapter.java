@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -241,8 +240,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
          * Private Members
          * ------------------------------------------------------------- */
 
-        final LinearLayout layoutTitle;
-        final LinearLayout layoutTitleValues;
         final TextView textMemberName;
         final TextView textMemberNameValue;
         final TextView textMemberRelation;
@@ -267,9 +264,6 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             super(itemView);
 
             /*Getting Id's for all the views*/
-            layoutTitle = itemView.findViewById(R.id.layoutTitle);
-            layoutTitleValues = itemView.findViewById(R.id.layoutTitleValues);
-
             textMemberName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textMemberRelation = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);

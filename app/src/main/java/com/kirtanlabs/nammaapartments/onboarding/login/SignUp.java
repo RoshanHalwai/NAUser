@@ -29,7 +29,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static SignUp signUp;
+    private static SignUp signUp;
     private CircleImageView newUserProfileImage;
     private TextView textErrorProfilePic;
     private EditText editFullName, editEmailId;

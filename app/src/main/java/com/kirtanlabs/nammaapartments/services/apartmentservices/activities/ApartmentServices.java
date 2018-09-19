@@ -40,7 +40,7 @@ public class ApartmentServices extends BaseActivity {
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static Map<String, Long> numberOfFlats = new HashMap<>();
+    public static final Map<String, Long> numberOfFlats = new HashMap<>();
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private ApartmentServiceAdapter apartmentServiceAdapter;
     private int index = 0;

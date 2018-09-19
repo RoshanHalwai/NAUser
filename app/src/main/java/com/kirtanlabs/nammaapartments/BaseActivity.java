@@ -271,7 +271,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
      *
      * @param text contains message passed based on the context.
      */
-    public void showFeatureUnAvailableLayout(String text) {
+    protected void showFeatureUnAvailableLayout(String text) {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
         featureUnavailableLayout.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.textFeatureUnavailable);
@@ -282,7 +282,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
     /**
      * This Method is used to Hide Feature Unavailable layout from the activity whenever it is called
      */
-    public void hideFeatureUnavailableLayout() {
+    protected void hideFeatureUnavailableLayout() {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutFeatureUnavailable);
         featureUnavailableLayout.setVisibility(View.GONE);
     }
@@ -414,10 +414,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
     }
 
     /**
-     * We check if permissions are granted to access location of the user, if granted user's loatitude and longitude can be fetched
+     * We check if permissions are granted to access location of the user, if granted user's latitude and longitude can be fetched
      * else we show Request permission dialog to allow users to give access.
      */
-    public void enableLocationService() {
+    protected void enableLocationService() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ENABLE_LOCATION_PERMISSION_CODE);

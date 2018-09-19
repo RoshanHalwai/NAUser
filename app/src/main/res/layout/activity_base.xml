@@ -19,7 +19,7 @@
         android:layout_weight="0.05"
         android:contentDescription="@string/back_button_description"
         android:scaleType="fitXY"
-        android:src="@drawable/arrow_left_white" />
+        android:src="@drawable/arrow_left_na" />
 
     <TextView
         android:id="@+id/textActivityTitle"
@@ -40,7 +40,7 @@
         android:layout_marginRight="10dp"
         android:layout_weight="0.05"
         android:contentDescription="@string/history_button_description"
-        android:src="@drawable/history"
+        android:src="@drawable/history_na"
         android:visibility="gone" />
 
     <ImageView
@@ -51,6 +51,6 @@
         android:layout_marginRight="10dp"
         android:layout_weight="0.05"
         android:contentDescription="@string/information_about_the_current_screen"
-        android:src="@drawable/information" />
+        android:src="@drawable/info_icon_na" />
 
 </LinearLayout>

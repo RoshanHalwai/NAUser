@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -231,8 +230,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
          * Private Members
          * ------------------------------------------------------------- */
 
-        final LinearLayout layoutTitle;
-        final LinearLayout layoutTitleValues;
         final TextView textServiceName;
         final TextView textServiceNameValue;
         final TextView textServiceType;
@@ -256,9 +253,8 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
 
         DailyServicesHolder(View itemView) {
             super(itemView);
-            layoutTitle = itemView.findViewById(R.id.layoutTitle);
-            layoutTitleValues = itemView.findViewById(R.id.layoutTitleValues);
 
+            /*Getting id's for all the views*/
             textServiceName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textServiceType = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
@@ -277,6 +273,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textCancel = itemView.findViewById(R.id.textCancel);
             visitorOrDailyServiceProfilePic = itemView.findViewById(R.id.visitorOrDailyServiceProfilePic);
 
+            /*Setting fonts for all the views*/
             textServiceName.setTypeface(Constants.setLatoRegularFont(mCtx));
             textServiceType.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));

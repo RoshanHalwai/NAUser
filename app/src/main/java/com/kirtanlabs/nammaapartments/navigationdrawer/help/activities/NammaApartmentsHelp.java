@@ -17,13 +17,6 @@ import java.util.List;
 public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnItemClickListener {
 
     /* ------------------------------------------------------------- *
-     * Private Members
-     * ------------------------------------------------------------- */
-
-    List<String> helpList;
-    ListView listOfHelpServices;
-
-    /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
 
@@ -43,10 +36,10 @@ public class NammaApartmentsHelp extends BaseActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
 
         /*Getting Id's for all the views*/
-        listOfHelpServices = findViewById(R.id.listOfHelpServices);
+        ListView listOfHelpServices = findViewById(R.id.listOfHelpServices);
 
         /*We are initialising list with array list*/
-        helpList = new ArrayList<>();
+        List<String> helpList = new ArrayList<>();
 
         /*Adding items in the list*/
         helpList.add((getString(R.string.frequently_asked_questions)));

@@ -29,7 +29,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_logo_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/NammaApartmentsTheme">
+        android:theme="@style/NammaApartmentsTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <!-- Ignore this activity for now -->
         <activity android:name=".MainActivity" />

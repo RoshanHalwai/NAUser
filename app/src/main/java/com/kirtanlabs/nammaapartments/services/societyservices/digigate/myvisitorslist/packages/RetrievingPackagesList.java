@@ -17,13 +17,13 @@ import java.util.Set;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DELIVERIES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_DELIVERIES_REFERENCE;
 
-public class RetrievingPackagesList {
+class RetrievingPackagesList {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
-    private DatabaseReference userDataReference;
-    private List<String> userUIDList;
+    private final DatabaseReference userDataReference;
+    private final List<String> userUIDList;
     private int count = 0;
 
     /*-------------------------------------------------------------*

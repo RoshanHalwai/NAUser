@@ -20,7 +20,7 @@
             android:layout_height="200dp"
             android:contentDescription="@string/namma_apartments_society_services_image"
             android:scaleType="fitXY"
-            android:src="@drawable/namma_apartments" />
+            android:src="@drawable/namma_apartments_na" />
 
         <TextView
             android:id="@+id/textSocietyServices"
@@ -45,7 +45,7 @@
             android:layout_height="200dp"
             android:contentDescription="@string/namma_apartments_apartment_services_image"
             android:scaleType="fitXY"
-            android:src="@drawable/namma_apartments" />
+            android:src="@drawable/namma_apartments_na" />
 
         <TextView
             android:id="@+id/textApartmentServices"

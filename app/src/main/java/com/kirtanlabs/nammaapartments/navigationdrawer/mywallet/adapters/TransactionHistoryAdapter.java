@@ -63,7 +63,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
         String formattedDateAndTime = sfd.format(new Date(transaction.getTimestamp()));
         if (transaction.getResult().equals("Successful")) {
-            holder.imageTransactionResult.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.request_accepted));
+            holder.imageTransactionResult.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.request_accepted_na));
         } else {
             holder.imageTransactionResult.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.remove_new));
         }

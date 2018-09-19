@@ -29,7 +29,7 @@
                     android:layout_height="50dp"
                     android:layout_margin="10dp"
                     android:contentDescription="@string/image_success"
-                    android:src="@drawable/transactions" />
+                    android:src="@drawable/transaction_na" />
 
             </LinearLayout>
 
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:contentDescription="@string/image_success"
-                    android:src="@drawable/request_accepted" />
+                    android:src="@drawable/request_accepted_na" />
 
             </LinearLayout>
 

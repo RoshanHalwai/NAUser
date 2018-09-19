@@ -40,7 +40,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static Map<String, Long> numberOfFlats = new HashMap<>();
+    public static final Map<String, Long> numberOfFlats = new HashMap<>();
     private HandedThingsToVisitorsAdapter adapterVisitors;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;

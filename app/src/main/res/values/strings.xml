@@ -261,7 +261,7 @@
     <string name="edit">Edit</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-    <string name="send_otp_daily_service">We will send an OTP to your daily service for authentication</string>
+    <string name="send_otp_daily_service">We will send an OTP to your daily service for authentication.</string>
     <string name="daily_service">daily service</string>
 
     <!--Raise Fire Alarm & Theft Alarm-->
@@ -400,7 +400,7 @@
     <string name="event_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Event requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="time_slot">Time Slot:</string>
-    <string name="cancelled_status">cancelled</string>
+    <string name="cancelled_status">Cancelled</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>

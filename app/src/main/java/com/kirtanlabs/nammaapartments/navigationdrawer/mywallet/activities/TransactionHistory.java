@@ -22,7 +22,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSAC
 
 public class TransactionHistory extends BaseActivity {
 
-    private List<Transaction> transactionList = new ArrayList<>();
+    private final List<Transaction> transactionList = new ArrayList<>();
 
     @Override
     protected int getLayoutResourceId() {

@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:contentDescription="@string/feature_unavailable_image_desc"
-        android:src="@drawable/feature_unavailable" />
+        android:src="@drawable/feature_unavailable_na" />
 
     <TextView
         android:id="@+id/textFeatureUnavailable"

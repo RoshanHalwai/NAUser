@@ -168,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/whatsapp_intent"
+                    android:drawableTop="@drawable/whatsapp_na"
                     android:gravity="center"
                     android:text="@string/whatsapp"
                     android:textColor="@color/nmBlack" />
@@ -178,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/refer_others"
+                    android:drawableTop="@drawable/refer_na"
                     android:gravity="center"
                     android:text="@string/refer"
                     android:textColor="@color/nmBlack" />

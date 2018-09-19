@@ -27,10 +27,10 @@ public class RetrievingGuestList {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private DatabaseReference userDataReference;
-    private List<String> userUIDList;
+    private final DatabaseReference userDataReference;
+    private final List<String> userUIDList;
     private int count = 0;
-    private boolean pastGuestListRequired;
+    private final boolean pastGuestListRequired;
 
     /* ------------------------------------------------------------- *
      * Constructor
