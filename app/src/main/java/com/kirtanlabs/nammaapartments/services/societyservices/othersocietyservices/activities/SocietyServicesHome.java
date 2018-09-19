@@ -45,7 +45,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             R.id.buttonNoonSlotAndLargeQuantity,
             R.id.buttonEveningSlotAndVeryLargeQuantity};
     private int screenTitle;
-    private String problem, societyServiceType, descriptionValue;
+    private String problemAndScrapType, societyServiceType, descriptionValue;
     private Button selectedButton, buttonDryWaste, buttonWetWaste,
             buttonMorningSlotAndMediumQuantity, buttonNoonSlotAndLargeQuantity,
             buttonEveningSlotAndVeryLargeQuantity;
@@ -137,7 +137,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 editTextSelectProblemAndScrapType.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
                 societyServiceType = FIREBASE_CHILD_GARBAGE_COLLECTION;
-                problem = getString(R.string.dry_waste);
+                problemAndScrapType = getString(R.string.dry_waste);
                 break;
             case R.string.scrap_collection:
                 imageSelectProblemAndScrapType.setText(R.string.select_scrap_type);
@@ -206,12 +206,12 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 startActivity(societyServiceHistoryIntent);
                 break;
             case R.id.buttonDryWaste:
-                problem = getString(R.string.dry_waste);
+                problemAndScrapType = getString(R.string.dry_waste);
                 buttonDryWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonWetWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonWetWaste:
-                problem = getString(R.string.wet_waste);
+                problemAndScrapType = getString(R.string.wet_waste);
                 buttonWetWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonDryWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
@@ -234,9 +234,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
-            problem = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
-            editTextSelectProblemAndScrapType.setText(problem);
-            if (problem.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
+            problemAndScrapType = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
+            editTextSelectProblemAndScrapType.setText(problemAndScrapType);
+            if (problemAndScrapType.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
                 otherProblemLayout.setVisibility(View.VISIBLE);
                 otherProblemSelected = true;
             } else {
@@ -278,19 +278,36 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
         /*Getting the data entered by user while logging the Society Service issue*/
         String userUID = NammaApartmentsGlobal.userUID;
-        String timeSlot = selectedButton.getText().toString();
+        String timeSlotAndScrapQuantity = selectedButton.getText().toString();
 
-        /*If the user selected problem is others then we display the description entered by the user as problem*/
-        if (problem.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
-            /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-            NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(descriptionValue, timeSlot,
-                    userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+        if (screenTitle == R.string.scrap_collection) {
+            /*Storing Scrap collection data entered by the user under new parent 'societyServiceNotifications' in firebase*/
+            NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, null, userUID,
+                    societyServiceType, notificationUID, IN_PROGRESS, null, null);
+            nammaApartmentSocietyServices.setQuantity(timeSlotAndScrapQuantity);
+
+            /*If the user selected scrap type is others then we display the description entered by the user as scrap type*/
+            if (problemAndScrapType.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
+                nammaApartmentSocietyServices.setScrapType(descriptionValue);
+            } else {
+                nammaApartmentSocietyServices.setScrapType(problemAndScrapType);
+            }
             societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+
         } else {
-            /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-            NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problem, timeSlot,
-                    userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
-            societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+            /*If the user selected problem is others then we display the description entered by the user as problem*/
+            if (problemAndScrapType.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
+                /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+                NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(descriptionValue, timeSlotAndScrapQuantity,
+                        userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+                societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+            } else {
+
+                /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
+                NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(problemAndScrapType, timeSlotAndScrapQuantity,
+                        userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
+                societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+            }
         }
 
         /*Storing time stamp to keep track of notifications*/
@@ -338,6 +355,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.plumber:
             case R.string.carpenter:
             case R.string.electrician:
+            case R.string.scrap_collection:
                 String problemValue = editTextSelectProblemAndScrapType.getText().toString();
                 descriptionValue = editTextDescription.getText().toString();
                 fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblemAndScrapType});
