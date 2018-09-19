@@ -281,12 +281,12 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         String timeSlotAndScrapQuantity = selectedButton.getText().toString();
 
         if (screenTitle == R.string.scrap_collection) {
+            /*Storing Scrap collection data entered by the user under new parent 'societyServiceNotifications' in firebase*/
             NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, null, userUID,
                     societyServiceType, notificationUID, IN_PROGRESS, null, null);
-
             nammaApartmentSocietyServices.setQuantity(timeSlotAndScrapQuantity);
 
-            /*If the user selected scrap type is others then we display the description entered by the user as problem*/
+            /*If the user selected scrap type is others then we display the description entered by the user as scrap type*/
             if (problemAndScrapType.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
                 nammaApartmentSocietyServices.setScrapType(descriptionValue);
             } else {
