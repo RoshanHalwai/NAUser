@@ -161,6 +161,7 @@ public class Constants {
     public static final int FIREBASE_CHILD_VERIFIED_APPROVED = 1;
     public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
     public static final String FIREBASE_CHILD_REJECTED = "Rejected";
+    public static final String FIREBASE_CHILD_IGNORED = "Ignored";
     private static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     private static final String FIREBASE_CHILD_CITIES = "cities";
     private static final String FIREBASE_CHILD_CLIENTS = "clients";

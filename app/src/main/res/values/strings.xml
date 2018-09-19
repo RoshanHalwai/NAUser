@@ -591,7 +591,8 @@
     <!--Firebase Notifications  & Action Button Listener Activity-->
     <string name="namma_apartments_channel">Namma Apartments Channel</string>
     <string name="notice_board_notification">Notice_Board_Notification</string>
-    <string name="default_notification_channel_id">01</string>
+    <string name="intercom_notification_channel_id">01</string>
+    <string name="general_notification_channel_id">02</string>
 
     <!--Contact Us Activity-->
     <string name="select_service_category">Select Service Category</string>

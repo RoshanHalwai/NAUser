@@ -37,8 +37,11 @@
 
         <!-- Notification Services -->
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+            android:name="com.google.firebase.messaging.intercom_notification_channel_id"
+            android:value="@string/intercom_notification_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.general_notification_channel_id"
+            android:value="@string/general_notification_channel_id" />
 
         <service
             android:name=".notifications.FirebaseNotifications"
