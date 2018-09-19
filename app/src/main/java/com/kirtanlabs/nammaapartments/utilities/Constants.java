@@ -106,6 +106,8 @@ public class Constants {
 
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_ADMIN = "admin";
+    public static final String FIREBASE_ACCEPTED = "Accepted";
+    public static final String FIREBASE_CANCELLED = "Cancelled";
     public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
@@ -142,10 +144,13 @@ public class Constants {
     public static final String FIREBASE_CHILD_PERSONALDETAILS = "personalDetails";
     public static final String FIREBASE_CHILD_PRIVILEGES = "privileges";
     public static final String FIREBASE_CHILD_STATUS = "status";
+    public static final String FIREBASE_CHILD_SERVING = "serving";
+    public static final String FIREBASE_CHILD_FUTURE =  "future";
+    public static final String FIREBASE_CHILD_TAKENBY = "takenBy";
     public static final String FIREBASE_CHILD_TOKENID = "tokenId";
     public static final String FIREBASE_CHILD_TIMEOFVISIT = "timeOfVisit";
     public static final String FIREBASE_CHILD_USERS = "users";
-    public static final String FIREBASE_CHILD_USER_DATA = "userData";
+    private static final String FIREBASE_CHILD_USER_DATA = "userData";
     public static final String FIREBASE_CHILD_VISITORS = "visitors";
     public static final String FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION = "societyServiceNotifications";
     public static final String FIREBASE_CHILD_GATE_NOTIFICATIONS = "gateNotifications";
@@ -205,7 +210,7 @@ public class Constants {
 
     private static final FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(DEV_ENV);
     private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FIREBASE_APP);
-    public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance(FIREBASE_APP);
+    public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance();
     public static final FirebaseAuth FIREBASE_AUTH = FirebaseAuth.getInstance(FIREBASE_APP);
     public static final DatabaseReference ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);

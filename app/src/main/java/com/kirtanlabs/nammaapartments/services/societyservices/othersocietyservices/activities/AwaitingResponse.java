@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -16,19 +17,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COMPLETED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPTED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CANCELLED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FUTURE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_HISTORY;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SERVING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TAKENBY;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
@@ -170,6 +181,85 @@ public class AwaitingResponse extends BaseActivity {
     }
 
     /**
+     * This dialog gets invoked when user clicks on Cancel button.
+     */
+    private void showCancelDialog() {
+        Runnable cancelService = this::cancelSocietyService;
+        String confirmDialogTitle = getString(R.string.cancel_dialog_title);
+        String confirmDialogMessage = getString(R.string.cancel_question);
+        showConfirmDialog(confirmDialogTitle, confirmDialogMessage, cancelService);
+    }
+
+    /**
+     * This method is invoked when user presses on OK in the dialog box to cancel the society service
+     */
+    private void cancelSocietyService() {
+        /*Getting notificationUID reference under 'societyServiceNotifications'*/
+        societyServiceNotificationReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String takenBy = dataSnapshot.child(FIREBASE_CHILD_TAKENBY).getValue(String.class);
+                /*Getting reference till 'notification' key*/
+                DatabaseReference societyServiceUIDReference = SOCIETY_SERVICES_REFERENCE.child(societyServiceType)
+                        .child(FIREBASE_CHILD_PRIVATE).child(FIREBASE_CHILD_DATA).child(Objects.requireNonNull(takenBy)).child(FIREBASE_CHILD_NOTIFICATIONS);
+                societyServiceUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(FIREBASE_CHILD_SERVING).child(notificationUID).exists()) {
+                            /*Removing data related to that particular notificationUID from 'serving' if user cancels a service*/
+                            societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(notificationUID)
+                                    .removeValue().addOnCompleteListener(task -> societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot1) {
+                                            if (dataSnapshot1.exists()) {
+                                                Map<String, String> futureUIDMap = (Map<String, String>) dataSnapshot1.getValue();
+                                                Long lastIndex = dataSnapshot1.getChildrenCount() - 1;
+                                                String futureServiceKey = (String) Objects.requireNonNull(futureUIDMap).keySet().toArray()[lastIndex.intValue()];
+                                                String futureServiceUID = futureUIDMap.get(futureServiceKey);
+                                                /*Moving a card from 'future' to 'serving'*/
+                                                societyServiceUIDReference.child(FIREBASE_CHILD_SERVING).child(futureServiceUID).setValue(FIREBASE_ACCEPTED);
+                                                /*Removing the UID from 'future' after it is placed in 'serving'*/
+                                                societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(futureServiceKey).removeValue();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    }));
+
+                        } else if (dataSnapshot.child(FIREBASE_CHILD_FUTURE).child(notificationUID).exists()) {
+                            /*Removing data of the cancelled notification from 'future' after user cancels service*/
+                            societyServiceUIDReference.child(FIREBASE_CHILD_FUTURE).child(notificationUID)
+                                    .removeValue();
+                        }
+                        /*Moving the cancelled request to Society Service History*/
+                        societyServiceUIDReference.child(FIREBASE_CHILD_HISTORY).child(notificationUID).setValue(FIREBASE_CANCELLED);
+                        /*Setting 'Cancelled' value in the 'status' key inside societyServiceNotifications for the cancelled notification id*/
+                        DatabaseReference statusReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE
+                                .child(notificationUID).child(FIREBASE_CHILD_STATUS);
+                        statusReference.setValue(FIREBASE_CANCELLED);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        /*Navigating to Home screen once user cancels service*/
+        startActivity(new Intent(AwaitingResponse.this, NammaApartmentsHome.class));
+    }
+
+    /**
      * This method is used to Retrieve the details of Society Society, if users request is accepted.
      */
     protected void checkSocietyServiceResponse() {
@@ -200,7 +290,7 @@ public class AwaitingResponse extends BaseActivity {
                             textEndOTPValue.setText(endOTP);
                             /*User can call the Society Service to enquire about the status*/
                             buttonCallService.setOnClickListener(v -> makePhoneCall(societyServiceMobileNumber));
-                            //TODO: Cancel Service to be implemented
+                            buttonCancelService.setOnClickListener(v -> showCancelDialog());
                         }
 
                         @Override
@@ -301,7 +391,7 @@ public class AwaitingResponse extends BaseActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int number = (int) dataSnapshot.child(Constants.FIREBASE_CHILD_NOTIFICATIONS).child(Constants.FIREBASE_CHILD_HISTORY).getChildrenCount();
-                    float previousAverageRating = dataSnapshot.child(Constants.RATING).getValue(Float.class);
+                    float previousAverageRating = Objects.requireNonNull(dataSnapshot.child(Constants.RATING).getValue(Float.class));
                     float previousRatingValue = (previousAverageRating * (number - 1));
                     float newAverageRating = (rating + previousRatingValue) / number;
                     averageRatingReference.child(Constants.RATING).setValue(newAverageRating);

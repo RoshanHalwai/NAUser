@@ -15,6 +15,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
@@ -61,7 +62,8 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
         String societyServiceType = nammaApartmentSocietyServiceList.get(0).getSocietyServiceType();
         /*Creating an instance of NammaApartmentSocietyServices class and retrieving the values from Firebase*/
         NammaApartmentSocietyServices nammaApartmentSocietyServices = nammaApartmentSocietyServiceList.get(position);
-        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm");
+        String serviceStatus = nammaApartmentSocietyServices.getStatus();
+        SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
         String formattedDateAndTime = sfd.format(new Date(nammaApartmentSocietyServices.getTimestamp()));
         /*If the society service type is event management display time slot instead of problem*/
         if (societyServiceType.equals(EVENT_MANAGEMENT)) {
@@ -70,6 +72,11 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
             holder.textProblem.setText(nammaApartmentSocietyServices.getProblem());
         }
         holder.textDateAndTime.setText(formattedDateAndTime);
+
+        /*Setting icon as per the status of Service*/
+        if (serviceStatus.equals(mCtx.getString(R.string.cancelled_status))) {
+            holder.serviceStatus.setImageResource(R.drawable.cancelled);
+        }
     }
 
     @Override
@@ -86,6 +93,7 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
         private final TextView textProblem;
         private final TextView textDateAndTime;
         private final ImageView societyServiceIcon;
+        private final ImageView serviceStatus;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -98,6 +106,7 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
             textDateAndTime = itemView.findViewById(R.id.textDateAndTime);
             textProblem = itemView.findViewById(R.id.textProblem);
             societyServiceIcon = itemView.findViewById(R.id.societyServiceIcon);
+            serviceStatus = itemView.findViewById(R.id.serviceStatus);
 
             /*Setting Fonts for all the views on cardView*/
             textDateAndTime.setTypeface(setLatoBoldFont(mCtx));
