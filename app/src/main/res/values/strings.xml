@@ -91,6 +91,14 @@
     <string name="event_management">Event Management</string>
     <string name="medical_emergency">Medical Emergency</string>
     <string name="enjoy_free_service">Enjoy the free Service</string>
+    <string name="scrap_collection">Scrap Collection</string>
+    <string name="total_quantity">Total Quantity (Rough Estimate in Kg\'s)</string>
+    <string name="less_quantity">0 – 5 Kg</string>
+    <string name="medium_quantity">5 – 10 Kg</string>
+    <string name="large_quantity">10 – 15 Kg</string>
+    <string name="very_large_quantity">15+ Kg</string>
+    <string name="select_scrap_type">Select Scrap Type</string>
+    <string name="select_quantity">Select Quantity</string>
 
     <!--Apartment Services Activity-->
     <string-array name="apartment_services_list">
@@ -381,6 +389,8 @@
     <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
     <string name="description_others">Description</string>
     <string name="request_service">Request Service</string>
+    <string name="cancel_dialog_title">Cancel Service Message</string>
+    <string name="cancel_question">Are you sure you want to Cancel the Service?</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
@@ -390,6 +400,7 @@
     <string name="event_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Event requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="time_slot">Time Slot:</string>
+    <string name="cancelled_status">cancelled</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>
@@ -463,6 +474,25 @@
     <string name="sofa_door">Wood Flooring repair</string>
     <string name="window_frame">Unable to open doors/drawers</string>
 
+    <string-array name="scrap_list">
+        <item>@string/paper_scrap</item>
+        <item>@string/metal_waste</item>
+        <item>@string/plastic</item>
+        <item>@string/bottles</item>
+        <item>@string/clothes</item>
+        <item>@string/utensils</item>
+        <item>@string/electronic_waste</item>
+        <item>@string/mix_waste</item>
+        <item>@string/others</item>
+    </string-array>
+    <string name="paper_scrap">Paper Scrap</string>
+    <string name="metal_waste">Metal Waste</string>
+    <string name="plastic">Plastic</string>
+    <string name="bottles">Bottles</string>
+    <string name="clothes">Clothes</string>
+    <string name="utensils">Utensils</string>
+    <string name="electronic_waste">Electronic Waste</string>
+    <string name="mix_waste">Mix Waste</string>
 
     <!--Namma Apartments Help Activity-->
     <string name="frequently_asked_questions">Frequently Asked Questions</string>

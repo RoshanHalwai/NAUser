@@ -57,10 +57,10 @@
             </intent-filter>
         </receiver>
 
-        <!-- Payment Gatway API Key -->
+        <!-- Payment Gateway API Key -->
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_GCFVAY6RGbNWyb" />
+            android:value="rzp_live_NpHSQJwSuvSIts" />
 
         <!-- Launch Screen -->
         <activity

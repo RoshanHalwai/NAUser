@@ -219,6 +219,11 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
                         /*To Check if User's previous request for that particular society service is completed or not.*/
                         checkPreviousRequestStatus(R.string.event_management);
                         break;
+                    case 7:
+                        Intent intent = new Intent(context, SocietyServicesHome.class);
+                        intent.putExtra(Constants.SCREEN_TITLE, R.string.scrap_collection);
+                        context.startActivity(intent);
+                        break;
                 }
             } else {
                 Intent apartmentServiceIntent = new Intent(context, ApartmentServices.class);

@@ -31,6 +31,7 @@
                     android:weightSum="7">
 
                     <TextView
+                        android:id="@+id/imageSelectProblemAndScrapType"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -53,6 +54,7 @@
                         android:layerType="software" />
 
                     <TextView
+                        android:id="@+id/imageSelectSlotAndQuantity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -118,7 +120,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textSelectProblem"
+                        android:id="@+id/textSelectProblemAndScrapType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -129,7 +131,7 @@
                         android:textSize="@dimen/text_view_default_size" />
 
                     <EditText
-                        android:id="@+id/editTextSelectProblem"
+                        android:id="@+id/editTextSelectProblemAndScrapType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
@@ -207,7 +209,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/textSelectSlot"
+                        android:id="@+id/textSelectSlotAndTotalQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -226,7 +228,7 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/buttonImmediately"
+                            android:id="@+id/buttonImmediatelyAndLessQuantity"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -237,7 +239,7 @@
                             android:textAllCaps="false" />
 
                         <Button
-                            android:id="@+id/buttonMorningSlot"
+                            android:id="@+id/buttonMorningSlotAndMediumQuantity"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -257,7 +259,7 @@
                         android:layout_marginTop="10dp">
 
                         <Button
-                            android:id="@+id/buttonNoonSlot"
+                            android:id="@+id/buttonNoonSlotAndLargeQuantity"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -268,7 +270,7 @@
                             android:textAllCaps="false" />
 
                         <Button
-                            android:id="@+id/buttonEveningSlot"
+                            android:id="@+id/buttonEveningSlotAndVeryLargeQuantity"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
