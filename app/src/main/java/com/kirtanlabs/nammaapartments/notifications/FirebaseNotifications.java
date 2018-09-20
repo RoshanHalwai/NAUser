@@ -143,7 +143,6 @@ public class FirebaseNotifications extends FirebaseMessagingService {
                 .setContentText(NOTIFICATION_EXPAND_MSG)
                 .setAutoCancel(true)
                 .setCustomBigContentView(remoteViews)
-                .setSound(RingtoneManager.getDefaultUri(Notification.DEFAULT_SOUND))
                 .setPriority(PRIORITY_DEFAULT)
                 .build();
 
