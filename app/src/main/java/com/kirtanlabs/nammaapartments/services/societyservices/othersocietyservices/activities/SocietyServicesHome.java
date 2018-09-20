@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -280,6 +281,12 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         String userUID = NammaApartmentsGlobal.userUID;
         String timeSlotAndScrapQuantity = selectedButton.getText().toString();
 
+        /*Mapping Society Service UID with value in userData under Flat Number*/
+        DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
+                .getUserDataReference()
+                .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
+        societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
+
         if (screenTitle == R.string.scrap_collection) {
             /*Storing Scrap collection data entered by the user under new parent 'societyServiceNotifications' in firebase*/
             NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, null, userUID,
@@ -293,6 +300,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 nammaApartmentSocietyServices.setScrapType(problemAndScrapType);
             }
             societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
+
+            /*Storing time stamp to keep track of notifications*/
+            societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
+
+            /*Navigating users back to home screen*/
+            Intent naHomeIntent = new Intent(SocietyServicesHome.this, NammaApartmentsHome.class);
+            naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            showNotificationDialog(getString(R.string.request_raised),
+                    getString(R.string.scrap_collection_request_dialog_message),
+                    naHomeIntent);
 
         } else {
             /*If the user selected problem is others then we display the description entered by the user as problem*/
@@ -308,42 +325,36 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                         userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
                 societyServiceNotificationReference.child(notificationUID).setValue(nammaApartmentSocietyServices);
             }
+
+            /*Storing time stamp to keep track of notifications*/
+            societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
+
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            switch (screenTitle) {
+                case R.string.plumber:
+                    editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, notificationUID);
+                    break;
+                case R.string.carpenter:
+                    editor.putString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, notificationUID);
+                    break;
+                case R.string.electrician:
+                    editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, notificationUID);
+                    break;
+                case R.string.garbage_collection:
+                    editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID);
+                    break;
+            }
+            editor.apply();
+
+            /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
+             * Since, cloud functions would have been triggered*/
+            Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
+            awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
+            awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
+            startActivity(awaitingResponseIntent);
+            finish();
         }
-
-        /*Storing time stamp to keep track of notifications*/
-        societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
-
-        /*Mapping Society Service UID with value in userData under Flat Number*/
-        DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference()
-                .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
-        societyServiceUserDataReference.child(societyServiceType).child(notificationUID).setValue(true);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        switch (screenTitle) {
-            case R.string.plumber:
-                editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, notificationUID);
-                break;
-            case R.string.carpenter:
-                editor.putString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, notificationUID);
-                break;
-            case R.string.electrician:
-                editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, notificationUID);
-                break;
-            case R.string.garbage_collection:
-                editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID);
-                break;
-        }
-        editor.apply();
-
-        /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
-         * Since, cloud functions would have been triggered*/
-        Intent awaitingResponseIntent = new Intent(SocietyServicesHome.this, AwaitingResponse.class);
-        awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
-        awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
-        startActivity(awaitingResponseIntent);
-        finish();
     }
 
     /**
