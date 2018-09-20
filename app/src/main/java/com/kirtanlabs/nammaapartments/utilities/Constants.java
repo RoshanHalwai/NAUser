@@ -193,6 +193,7 @@ public class Constants {
     private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
     public static final String FIREBASE_CHILD_SCRAP_COLLECTION = "scrapCollection";
     public static final String FIREBASE_CHILD_FOOD_DONATIONS = "foodDonations";
+    public static final String FIREBASE_CHILD_SCRAP_TYPE = "scrapType";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
