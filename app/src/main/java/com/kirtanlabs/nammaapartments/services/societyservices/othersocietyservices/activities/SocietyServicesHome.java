@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -304,9 +303,9 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             /*Storing time stamp to keep track of notifications*/
             societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
-            /*Navigating users back to home screen*/
-            Intent naHomeIntent = new Intent(SocietyServicesHome.this, NammaApartmentsHome.class);
-            naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            /*Navigating users to scrap collection history screen*/
+            Intent naHomeIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
+            naHomeIntent.putExtra(SCREEN_TITLE, societyServiceType);
             showNotificationDialog(getString(R.string.request_raised),
                     getString(R.string.scrap_collection_request_dialog_message),
                     naHomeIntent);
