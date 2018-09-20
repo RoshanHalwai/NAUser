@@ -14,6 +14,7 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 
@@ -42,6 +43,9 @@ public class SocietyServicesHistory extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*We need Progress Indicator in this screen*/
+        showProgressIndicator();
+
         /*Getting Id of recycler view*/
         RecyclerView recyclerView = findViewById(R.id.recyclerViewHistory);
         recyclerView.setHasFixedSize(true);
@@ -63,24 +67,32 @@ public class SocietyServicesHistory extends BaseActivity {
             /*Retrieving all society service request details which user has raised till now*/
             new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
                     .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
+                        hideProgressIndicator();
                         if (societyServiceNotificationDataList == null) {
+                            String messageDescription = getString(R.string.society_service_unavailable_message);
+                            String textReplacement = getString(R.string.service);
+                            String updatedDescription = "";
                             switch (societyServiceType) {
                                 case PLUMBER:
-                                    showFeatureUnavailableLayout(R.string.plumber_service_unavailable_message);
+                                    updatedDescription = messageDescription.replace(textReplacement, getString(R.string.plumber));
                                     break;
                                 case CARPENTER:
-                                    showFeatureUnavailableLayout(R.string.carpenter_service_unavailable_message);
+                                    updatedDescription = messageDescription.replace(textReplacement, getString(R.string.carpenter));
                                     break;
                                 case ELECTRICIAN:
-                                    showFeatureUnavailableLayout(R.string.electrician_service_unavailable_message);
+                                    updatedDescription = messageDescription.replace(textReplacement, getString(R.string.electrician));
                                     break;
                                 case GARBAGE_COLLECTION:
-                                    showFeatureUnavailableLayout(R.string.garbage_service_unavailable_message);
+                                    updatedDescription = messageDescription.replace(textReplacement, getString(R.string.garbage_collection));
                                     break;
                                 case EVENT_MANAGEMENT:
-                                    showFeatureUnavailableLayout(R.string.event_service_unavailable_message);
+                                    updatedDescription = messageDescription.replace(textReplacement, getString(R.string.event_management));
+                                    break;
+                                case FIREBASE_CHILD_SCRAP_COLLECTION:
+                                    updatedDescription = messageDescription.replace(textReplacement, getString(R.string.scrap_collection));
                                     break;
                             }
+                            showFeatureUnAvailableLayout(updatedDescription);
                         } else {
                             SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                             recyclerView.setAdapter(adapter);

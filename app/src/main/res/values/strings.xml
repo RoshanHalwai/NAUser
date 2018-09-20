@@ -393,14 +393,11 @@
     <string name="cancel_question">Are you sure you want to Cancel the Service?</string>
 
     <!--SocietyServicesHistory Activity-->
-    <string name="plumber_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Plumber requests from your flat yet.</string>
-    <string name="carpenter_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Carpenter requests from your flat yet.</string>
-    <string name="electrician_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Electrician requests from your flat yet.</string>
-    <string name="garbage_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Garbage requests from your flat yet.</string>
-    <string name="event_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Event requests from your flat yet.</string>
+    <string name="society_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Service requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
+    <string name="service">Service</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>

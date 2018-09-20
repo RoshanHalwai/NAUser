@@ -20,6 +20,7 @@ import java.util.Locale;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
@@ -66,10 +67,15 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
         SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
         String formattedDateAndTime = sfd.format(new Date(nammaApartmentSocietyServices.getTimestamp()));
         /*If the society service type is event management display time slot instead of problem*/
-        if (societyServiceType.equals(EVENT_MANAGEMENT)) {
-            holder.textProblem.setText(nammaApartmentSocietyServices.getTimeSlot());
-        } else {
-            holder.textProblem.setText(nammaApartmentSocietyServices.getProblem());
+        switch (societyServiceType) {
+            case EVENT_MANAGEMENT:
+                holder.textProblem.setText(nammaApartmentSocietyServices.getTimeSlot());
+                break;
+            case FIREBASE_CHILD_SCRAP_COLLECTION:
+                holder.textProblem.setText(nammaApartmentSocietyServices.getScrapType());
+                break;
+            default:
+                holder.textProblem.setText(nammaApartmentSocietyServices.getProblem());
         }
         holder.textDateAndTime.setText(formattedDateAndTime);
 
@@ -127,6 +133,9 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
                     break;
                 case EVENT_MANAGEMENT:
                     societyServiceIcon.setImageResource(R.drawable.event_na);
+                    break;
+                case FIREBASE_CHILD_SCRAP_COLLECTION:
+                    societyServiceIcon.setImageResource(R.drawable.scrap_collection_na);
                     break;
             }
         }

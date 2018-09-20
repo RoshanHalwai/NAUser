@@ -13,6 +13,11 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -51,7 +56,9 @@ public class RetrievingSocietyServiceHistoryList {
                     for (DataSnapshot notificationUIDDataSnapshot : dataSnapshot.getChildren()) {
                         notificationUIDList.add(notificationUIDDataSnapshot.getKey());
                     }
-                    notificationUIDCallback.onCallBack(notificationUIDList);
+                    if (notificationUIDList.size() == dataSnapshot.getChildrenCount()) {
+                        notificationUIDCallback.onCallBack(notificationUIDList);
+                    }
                 } else {
                     notificationUIDCallback.onCallBack(null);
                 }
@@ -76,9 +83,16 @@ public class RetrievingSocietyServiceHistoryList {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             NammaApartmentSocietyServices nammaApartmentSocietyServices = dataSnapshot.getValue(NammaApartmentSocietyServices.class);
+                            String societyServiceType = dataSnapshot.child(SOCIETY_SERVICE_TYPE).getValue(String.class);
+                            if (Objects.requireNonNull(societyServiceType).equals(FIREBASE_CHILD_SCRAP_COLLECTION)) {
+                                String scrapType = dataSnapshot.child(FIREBASE_CHILD_SCRAP_TYPE).getValue(String.class);
+                                Objects.requireNonNull(nammaApartmentSocietyServices).setScrapType(scrapType);
+                            }
                             notificationDataList.add(nammaApartmentSocietyServices);
 
-                            notificationDataListCallback.onCallBack(notificationDataList);
+                            if (societyServiceNotificationUIDList.size() == notificationDataList.size()) {
+                                notificationDataListCallback.onCallBack(notificationDataList);
+                            }
                         }
 
                         @Override

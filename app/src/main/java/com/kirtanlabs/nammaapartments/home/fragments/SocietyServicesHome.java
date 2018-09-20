@@ -50,8 +50,7 @@ public class SocietyServicesHome extends Fragment {
         societyServicesList.add(new NammaApartmentService(R.drawable.garbage_collection_na, getString(R.string.garbage_collection)));
         societyServicesList.add(new NammaApartmentService(R.drawable.emergency_na, getString(R.string.medical_emergency)));
         societyServicesList.add(new NammaApartmentService(R.drawable.event_na, getString(R.string.event_management)));
-        //TODO: To change scrap collection icon
-        societyServicesList.add(new NammaApartmentService(R.drawable.garbage_collection_na, getString(R.string.scrap_collection)));
+        societyServicesList.add(new NammaApartmentService(R.drawable.scrap_collection_na, getString(R.string.scrap_collection)));
 
         /*Creating the Adapter*/
         NammaApartmentServiceAdapter nammaApartmentServiceAdapter = new NammaApartmentServiceAdapter(Objects.requireNonNull(getActivity()), R.string.society_services, societyServicesList);
