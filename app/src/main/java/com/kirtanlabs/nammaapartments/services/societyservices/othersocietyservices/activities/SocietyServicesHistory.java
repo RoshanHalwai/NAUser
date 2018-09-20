@@ -56,6 +56,7 @@ public class SocietyServicesHistory extends BaseActivity {
         if (societyServiceType.equals(getString(R.string.contact_us))) {
             new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
                     .getSupportDataList(supportList -> {
+                        hideProgressIndicator();
                         if (supportList == null) {
                             showFeatureUnavailableLayout(R.string.support_unavailable);
                         } else {
