@@ -79,11 +79,9 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonFoodQtyLess:
-                hideKeyboard();
                 selectButton(R.id.buttonFoodQtyLess);
                 break;
             case R.id.buttonFoodQtyMore:
-                hideKeyboard();
                 selectButton(R.id.buttonFoodQtyMore);
                 break;
             case R.id.buttonDonateFood:
