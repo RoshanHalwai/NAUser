@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +19,6 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -26,8 +26,12 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_MAINTENANCE_COST;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PENDING_DUES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.INDIAN_RUPEE_CURRENCY_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_CANCELLED_ERROR_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_FAILURE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_SUCCESSFUL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSACTION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -41,9 +45,12 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
 public class MyPaymentsActivity extends BaseActivity implements PaymentResultListener, View.OnClickListener {
 
     private static final String TAG = MyPaymentsActivity.class.getSimpleName();
-    private int amountInPaise;
+    private int pendingAmountInPaise;
+    private int pendingAmount = 0;
     private String serviceCategory;
     private TextView textMaintenanceCostValue;
+    private LinearLayout layoutPendingDues;
+    private LinearLayout layoutNoPendingDues;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -61,17 +68,16 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
-        /*Pre Load the contents of the Payment UI*/
-        Checkout.preload(getApplicationContext());
-
         /*Getting Id's for all the views*/
+        layoutPendingDues = findViewById(R.id.layoutPendingDues);
+        layoutNoPendingDues = findViewById(R.id.layoutNoPendingDues);
         TextView textWalletTitle = findViewById(R.id.textWalletTitle);
         TextView textWalletDescription = findViewById(R.id.textWalletDescription);
         TextView textPayFor = findViewById(R.id.textPayFor);
         TextView textSocietyService = findViewById(R.id.textSocietyService);
+        TextView textNoPendingDues = findViewById(R.id.textNoPendingDues);
         textMaintenanceCostValue = findViewById(R.id.textMaintenanceCostValue);
         TextView textTransactions = findViewById(R.id.textTransactions);
         CardView layoutTransactionHistory = findViewById(R.id.layoutTransactionHistory);
@@ -81,32 +87,45 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         textWalletDescription.setTypeface(setLatoRegularFont(this));
         textPayFor.setTypeface(setLatoBoldFont(this));
         textSocietyService.setTypeface(setLatoRegularFont(this));
+        textNoPendingDues.setTypeface(setLatoRegularFont(this));
         textMaintenanceCostValue.setTypeface(setLatoBoldFont(this));
         textTransactions.setTypeface(setLatoRegularFont(this));
 
-        /*To Retrieve Maintenance Amount From Firebase */
-        retrieveMaintenanceCostValueFromFirebase();
+        /*To retrieve pending dues from server*/
+        getPendingDues();
 
         /*Setting event for views */
         textSocietyService.setOnClickListener(this);
         layoutTransactionHistory.setOnClickListener(this);
-
     }
 
     /**
-     * This method retrieves the maintenance amount entered by society service admin to that particular
-     * flat.
+     * Gets the pending maintenance amount to be paid by the flat user. If there is no pending dues
+     * we show "No Pending Dues" text.
      */
-    private void retrieveMaintenanceCostValueFromFirebase() {
+    private void getPendingDues() {
+        showProgressDialog(this, "Pending Dues", "Please wait, we are checking for pending dues.");
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference();
-        DatabaseReference userMaintenanceCostReference = userDataReference.child(FIREBASE_CHILD_MAINTENANCE_COST);
-        userMaintenanceCostReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userMaintenanceCostReference = userDataReference.child(FIREBASE_CHILD_PENDING_DUES);
+        userMaintenanceCostReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int amountInRupees = Objects.requireNonNull(dataSnapshot.getValue(Integer.class));
-                textMaintenanceCostValue.setText(String.valueOf(amountInRupees));
-                amountInPaise = amountInRupees * 100;
+                if (dataSnapshot.exists()) {
+                    layoutPendingDues.setVisibility(View.VISIBLE);
+                    layoutNoPendingDues.setVisibility(View.GONE);
+                    pendingAmount = 0;
+                    for (DataSnapshot pendingSnapshot : dataSnapshot.getChildren()) {
+                        pendingAmount = pendingAmount + Objects.requireNonNull(pendingSnapshot.getValue(Integer.class));
+                    }
+                    String pendingAmountStr = "Rs. " + String.valueOf(pendingAmount);
+                    textMaintenanceCostValue.setText(pendingAmountStr);
+                    pendingAmountInPaise = pendingAmount * 100;
+                } else {
+                    layoutPendingDues.setVisibility(View.GONE);
+                    layoutNoPendingDues.setVisibility(View.VISIBLE);
+                }
+                hideProgressDialog();
             }
 
             @Override
@@ -124,7 +143,11 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textSocietyService:
-                startPayment(amountInPaise, getString(R.string.society_services));
+                if (layoutNoPendingDues.getVisibility() == View.VISIBLE) {
+                    showNotificationDialog("No Dues", "You do not have any pending dues.", null);
+                } else {
+                    startPayment(pendingAmountInPaise, getString(R.string.society_services));
+                }
                 break;
             case R.id.layoutTransactionHistory:
                 startActivity(new Intent(this, TransactionHistory.class));
@@ -141,7 +164,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
             JSONObject options = new JSONObject();
             options.put(getString(R.string.name).toLowerCase(), getString(R.string.app_name));
             options.put(getString(R.string.payment_description), description);
-            options.put(getString(R.string.currency), Constants.INDIAN_RUPEE_CURRENCY_CODE);
+            options.put(getString(R.string.currency), INDIAN_RUPEE_CURRENCY_CODE);
             options.put(getString(R.string.amount), String.valueOf(amount));
 
             JSONObject preFill = new JSONObject();
@@ -170,8 +193,8 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     @Override
     public void onPaymentSuccess(String paymentID) {
         try {
-            Toast.makeText(this, "Payment Successful: " + paymentID, Toast.LENGTH_SHORT).show();
-            storeTransactionDetails(paymentID, Constants.PAYMENT_SUCCESSFUL);
+            Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            storeTransactionDetails(paymentID, PAYMENT_SUCCESSFUL);
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }
@@ -187,9 +210,9 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     @Override
     public void onPaymentError(int code, String response) {
         try {
-            Toast.makeText(this, "Payment failed: " + code + " " + response, Toast.LENGTH_SHORT).show();
-            if (!(code == Constants.PAYMENT_CANCELLED_ERROR_CODE) || !(response.equals(getString(R.string.payment_cancelled)))) {
-                storeTransactionDetails("", Constants.PAYMENT_FAILURE);
+            Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+            if (!(code == PAYMENT_CANCELLED_ERROR_CODE) || !(response.equals(getString(R.string.payment_cancelled)))) {
+                storeTransactionDetails("", PAYMENT_FAILURE);
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
@@ -205,10 +228,16 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         DatabaseReference userTransactionReference = ((NammaApartmentsGlobal) getApplicationContext()).
                 getUserDataReference().child(FIREBASE_CHILD_TRANSACTIONS);
         final String transactionUID = userTransactionReference.push().getKey();
-        final Transaction transactionDetails = new Transaction((amountInPaise / 100), paymentId, result,
+        final Transaction transactionDetails = new Transaction((pendingAmountInPaise / 100), paymentId, result,
                 serviceCategory, NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
         PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails)
                 .addOnCompleteListener(task -> userTransactionReference.child(transactionUID).setValue(true)
-                        .addOnCompleteListener(task1 -> Checkout.clearUserData(this)));
+                        .addOnCompleteListener(task1 -> {
+                            Checkout.clearUserData(this);
+                            /*Remove Pending dues*/
+                            ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                                    .child(FIREBASE_CHILD_PENDING_DUES).removeValue();
+                        }));
     }
+
 }
