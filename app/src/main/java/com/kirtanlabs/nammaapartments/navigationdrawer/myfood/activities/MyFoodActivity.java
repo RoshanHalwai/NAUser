@@ -6,13 +6,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.pojo.DonateFood;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -29,7 +29,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     private EditText editFoodType;
     private TextView textErrorFoodQuantity;
     private Boolean isFoodQtySelected = false;
-    private Button selectedButton;
+    private Button selectedButton, button;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -57,6 +57,11 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         Button buttonFoodQtyMore = findViewById(R.id.buttonFoodQtyMore);
         Button buttonDonateFood = findViewById(R.id.buttonDonateFood);
 
+        /*Since we have History button here, we would want users to navigate to history and take a look at their
+         * history of that particular food donations raised by user*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+
         /*Setting Fonts for all the views*/
         textFoodType.setTypeface(Constants.setLatoBoldFont(this));
         textFoodQty.setTypeface(Constants.setLatoBoldFont(this));
@@ -70,6 +75,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         buttonFoodQtyLess.setOnClickListener(this);
         buttonFoodQtyMore.setOnClickListener(this);
         buttonDonateFood.setOnClickListener(this);
+        historyButton.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -90,6 +96,10 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
                 /*This method gets invoked to check all the editText fields and button validations.*/
                 validateFields();
                 break;
+            case R.id.historyButton:
+                Intent donateFoodHistoryIntent = new Intent(MyFoodActivity.this, FoodDonationHistory.class);
+                startActivity(donateFoodHistoryIntent);
+                break;
         }
     }
 
@@ -105,7 +115,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     private void selectButton(int id) {
         isFoodQtySelected = true;
         for (int buttonId : buttonIds) {
-            Button button = findViewById(buttonId);
+            button = findViewById(buttonId);
             if (buttonId == id) {
                 selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
@@ -136,11 +146,14 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         if (fieldsFilled) {
             /*This method stores the user food request details in Firebase*/
             storeFoodRequestDetailsInFirebase();
+            /*Clearing the editText value and deselecting the user selected button*/
+            editFoodType.setText("");
+            button.setBackgroundResource(R.drawable.valid_for_button_design);
         }
     }
 
     /**
-     * This method stores food request details in firebase whenever user requests a request to
+     * This method stores food request details in firebase whenever user raises a request to
      * donate food.
      */
     private void storeFoodRequestDetailsInFirebase() {
@@ -155,12 +168,12 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
         DonateFood donateFood = new DonateFood(foodType, foodQuantity, foodRequestUID, NammaApartmentsGlobal.userUID, System.currentTimeMillis(), getString(R.string.pending));
         donateFoodReference.child(foodRequestUID).setValue(donateFood);
 
-        /*Navigating users back to home screen*/
-        Intent naHomeIntent = new Intent(MyFoodActivity.this, NammaApartmentsHome.class);
-        naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        naHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        /*Navigating users to donate food history screen*/
+        Intent foodDonationHistoryIntent = new Intent(MyFoodActivity.this, FoodDonationHistory.class);
+        foodDonationHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        foodDonationHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         showNotificationDialog(getString(R.string.request_raised),
                 getString(R.string.food_request_service_dialog_message),
-                naHomeIntent);
+                foodDonationHistoryIntent);
     }
 }
