@@ -631,6 +631,8 @@
     <string name="select_food_qty">Select Food Quantity</string>
     <string name="team_collect_food">Our team will collect food</string>
     <string name="food_request_service_dialog_message">Thank you for raising request.Our representative will arrive at your flat to collect food.</string>
+    <string name="food_donation_history_title">Food Donations</string>
+    <string name="no_food_donations_raised">Currently, there are no food donations done by the user.</string>
 
     <!--My Guard Activity-->
     <string name="guard">Guard:</string>

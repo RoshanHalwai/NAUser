@@ -133,6 +133,9 @@
             android:name=".navigationdrawer.myfood.activities.MyFoodActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".navigationdrawer.myfood.activities.FoodDonationHistory"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".navigationdrawer.noticeboard.activities.NoticeBoard"
             android:screenOrientation="portrait" />
         <activity
@@ -216,6 +219,7 @@
         <activity
             android:name=".services.apartmentservices.activities.ApartmentServices"
             android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
