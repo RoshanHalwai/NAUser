@@ -188,7 +188,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_NOTIFICATIONS = "notifications";
     public static final String FIREBASE_CHILD_SUPPORT = "support";
     public static final String FIREBASE_CHILD_TRANSACTIONS = "transactions";
-    public static final String FIREBASE_CHILD_MAINTENANCE_COST="maintenanceCost";
+    public static final String FIREBASE_CHILD_PENDING_DUES = "pendingDues";
     public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
     private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
     public static final String FIREBASE_CHILD_SCRAP_COLLECTION = "scrapCollection";
@@ -205,7 +205,7 @@ public class Constants {
     public static final String REMOTE_VISITOR_TYPE = "visitor_type";
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
-    public static final String REMOTE_VISITOR_MOBILE_NUMBER="mobile_number";
+    public static final String REMOTE_VISITOR_MOBILE_NUMBER = "mobile_number";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References

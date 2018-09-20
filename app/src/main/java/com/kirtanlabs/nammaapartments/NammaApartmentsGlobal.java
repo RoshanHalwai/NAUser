@@ -7,6 +7,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
+import com.razorpay.Checkout;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.BETA_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.DEV_ENV;
@@ -48,6 +49,9 @@ public class NammaApartmentsGlobal extends Application {
 
         FirebaseApp.initializeApp(this, BETA_ENV_OPTIONS, BETA_ENV);
         FirebaseApp.initializeApp(this, DEV_ENV_OPTIONS, DEV_ENV);
+
+        /*Pre Load the contents of the Payment UI*/
+        Checkout.preload(getApplicationContext());
     }
 
     /* ------------------------------------------------------------- *
