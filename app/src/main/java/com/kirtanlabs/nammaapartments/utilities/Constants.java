@@ -74,10 +74,21 @@ public class Constants {
     public static final int CAB_NUMBER_FIELD_LENGTH = 2;
     public static final String COUNTRY_CODE_IN = "+91";
     public static final String HYPHEN = "-";
-    public static final String SLOT_ONE = "Slot 1";
-    public static final String SLOT_TWO = "Slot 2";
-    public static final String SLOT_THREE = "Slot 3";
-    public static final String SLOT_FOUR = "Slot 4";
+    public static final String FIRST_TIME_SLOT = "8AM - 9AM";
+    public static final String SECOND_TIME_SLOT = "9AM - 10AM";
+    public static final String THIRD_TIME_SLOT = "10AM - 11AM";
+    public static final String FOURTH_TIME_SLOT = "11AM - 12PM";
+    public static final String FIFTH_TIME_SLOT = "12PM - 1PM";
+    public static final String SIXTH_TIME_SLOT = "1PM - 2PM";
+    public static final String SEVENTH_TIME_SLOT = "2PM - 3PM";
+    public static final String EIGHTH_TIME_SLOT = "3PM - 4PM";
+    public static final String NINTH_TIME_SLOT = "4PM - 5PM";
+    public static final String TENTH_TIME_SLOT = "5PM - 6PM";
+    public static final String ELEVENTH_TIME_SLOT = "6PM - 7PM";
+    public static final String TWELFTH_TIME_SLOT = "7PM - 8PM";
+    public static final String THIRTEENTH_TIME_SLOT = "8PM - 9PM";
+    public static final String FOURTEENTH_TIME_SLOT = "9PM - 10PM";
+    public static final String TIME_SLOT_FULL_DAY = "fullDay";
     public static final int LAUNCH_SCREEN_TIME_DURATION = 5000;
 
     /* ------------------------------------------------------------- *
@@ -194,6 +205,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_SCRAP_COLLECTION = "scrapCollection";
     public static final String FIREBASE_CHILD_FOOD_DONATIONS = "foodDonations";
     public static final String FIREBASE_CHILD_SCRAP_TYPE = "scrapType";
+    public static final String FIREBASE_CHILD_TIME_SLOTS = "timeSlots";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -272,13 +284,24 @@ public class Constants {
     public static final String NOT_ENTERED = "Not Entered";
     public static final String FAMILY_MEMBER = "Family Member";
     public static final String FRIEND = "Friend";
-    public static final int MORNING_SLOT_LAST_HOUR = 12;
-    public static final int NOON_SLOT_LAST_HOUR = 15;
-    public static final int EVENING_SLOT_LAST_HOUR = 17;
     public static final String ANDROID = "android";
     public static final String PACKAGE_NAME = "com.kirtanlabs.nammaapartments";
-    public static final int NOON_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 16;
-    public static final int EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT = 20;
+    public static final int NINE_HOURS = 9;
+    public static final int TEN_HOURS = 10;
+    public static final int ELEVEN_HOURS = 11;
+    public static final int TWELVE_HOURS = 12;
+    public static final int THIRTEEN_HOURS = 13;
+    public static final int FOURTEEN_HOURS = 14;
+    public static final int FIFTEEN_HOURS = 15;
+    public static final int SIXTEEN_HOURS = 16;
+    public static final int SEVENTEEN_HOURS = 17;
+    public static final int EIGHTEEN_HOURS = 18;
+    public static final int NINETEEN_HOURS = 19;
+    public static final int TWENTY_HOURS = 20;
+    public static final int TWENTY_ONE_HOURS = 21;
+    public static final int TWENTY_TWO_HOURS = 22;
+    public static final int TWENTY_THREE_HOURS = 23;
+
 
     /* ------------------------------------------------------------- *
      * Request Code

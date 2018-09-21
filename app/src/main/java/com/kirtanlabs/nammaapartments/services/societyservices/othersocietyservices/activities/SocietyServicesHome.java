@@ -22,6 +22,7 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 import java.util.Calendar;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
@@ -29,7 +30,9 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_PROBLEM_OTHERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELVE_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -408,11 +411,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         /*Disabling Time slot if current time greater than that time slot*/
-        if (currentHour >= Constants.MORNING_SLOT_LAST_HOUR) {
+        if (currentHour >= TWELVE_HOURS) {
             buttonMorningSlotAndMediumQuantity.setEnabled(false);
-            if (currentHour >= Constants.NOON_SLOT_LAST_HOUR) {
+            if (currentHour >= FIFTEEN_HOURS) {
                 buttonNoonSlotAndLargeQuantity.setEnabled(false);
-                if (currentHour >= Constants.EVENING_SLOT_LAST_HOUR) {
+                if (currentHour >= SEVENTEEN_HOURS) {
                     buttonEveningSlotAndVeryLargeQuantity.setEnabled(false);
                 }
             }
