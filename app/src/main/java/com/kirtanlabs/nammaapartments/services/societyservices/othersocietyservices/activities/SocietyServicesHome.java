@@ -145,6 +145,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 textSelectProblemAndScrapType.setText(R.string.select_scrap_type);
                 textSelectSlotAndTotalQuantity.setText(R.string.total_quantity);
                 buttonImmediatelyAndLessQuantity.setText(R.string.less_quantity);
+                buttonImmediatelyAndLessQuantity.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMorningSlotAndMediumQuantity.setText(R.string.medium_quantity);
                 buttonNoonSlotAndLargeQuantity.setText(R.string.large_quantity);
                 buttonEveningSlotAndVeryLargeQuantity.setText(R.string.very_large_quantity);
@@ -366,12 +367,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             case R.string.carpenter:
             case R.string.electrician:
             case R.string.scrap_collection:
-                String problemValue = editTextSelectProblemAndScrapType.getText().toString();
                 descriptionValue = editTextDescription.getText().toString();
                 fieldsFilled = isAllFieldsFilled(new EditText[]{editTextSelectProblemAndScrapType});
-                /*This condition checks if all fields are not filled and if user presses request button it will then display proper error messages.*/
+                /*This condition checks if all fields are not filled and if user presses request button
+                 *it will then display proper error messages.*/
                 if (!fieldsFilled) {
-                    if (TextUtils.isEmpty(problemValue)) {
+                    switch (screenTitle) {
+                        case R.string.scrap_collection:
+                            editTextSelectProblemAndScrapType.setError(getString(R.string.please_select_scrap_type));
+                            break;
+                        default:
                         editTextSelectProblemAndScrapType.setError(getString(R.string.choose_problem_validation));
                         break;
                     }
