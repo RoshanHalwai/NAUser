@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -22,23 +21,54 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EIGHTEEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ELEVEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIME_SLOTS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FOURTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_UID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NINETEEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NINE_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EIGHTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ELEVENTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FOURTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FOURTEENTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TIME_SLOT_FULL_DAY;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NINTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TENTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEENTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRD_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELFTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELVE_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWENTY_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWENTY_ONE_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWENTY_THREE_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TWENTY_TWO_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -49,26 +79,26 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * Private Members
      * ------------------------------------------------------------- */
 
-    private final int[] buttonIds = new int[]{R.id.buttonMorningSlot,
-            R.id.buttonNoonSlot,
-            R.id.buttonEveningSlot,
-            R.id.buttonNightSlot};
+    private final int[] buttonIds = new int[]{R.id.buttonParties,
+            R.id.buttonConcerts,
+            R.id.buttonMeetings,
+            R.id.buttonSeminarsOrWorkshops};
     private EditText editPickDate, editEventTitle;
-    private Button buttonParties, buttonConcerts, buttonMeetings, buttonSeminarsOrWorkshops, selectedButton;
-    private Button buttonMorningSlot, buttonNoonSlot, buttonEveningSlot, buttonNightSlot;
-    private String societyServiceType, category, selectedEventDate, slotNumber;
+    private Button buttonFirstTimeSlot, buttonSecondTimeSlot, buttonThirdTimeSlot, buttonFourthTimeSlot, buttonFifthTimeSlot,
+            buttonSixthTimeSlot, buttonSeventhTimeSlot, buttonEighthTimeSlot, buttonNinthTimeSlot, buttonTenthTimeSlot,
+            buttonEleventhTimeSlot, buttonTwelfthTimeSlot, buttonThirteenthTimeSlot, buttonFourteenthTimeSlot, buttonFullDay;
+    private String societyServiceType, category, selectedEventDate;
     private TextView textErrorEventDate, textErrorChooseCategory, textErrorChooseTimeSlot, textTimeSlotQuery, textChooseTimeSlot;
     private Calendar calendar;
-    private Boolean isCategorySelected = false;
-    private Boolean isTimeSlotSelected = false;
-    private LinearLayout daySlotLayout, nightSlotLayout, layoutLegend;
+    private Boolean isCategorySelected = false, isFullDayTimeSlotSelected = false;
+    private LinearLayout layoutTimeSlot, layoutLegend;
+    private List<String> selectedTimeSlotsList;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
      * ------------------------------------------------------------- */
 
     @Override
-
     protected int getLayoutResourceId() {
         return R.layout.activity_event_management;
     }
@@ -98,18 +128,28 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         TextView textUnavailableSlotInfo = findViewById(R.id.textUnavailableSlotInfo);
         editEventTitle = findViewById(R.id.editEventTitle);
         editPickDate = findViewById(R.id.editPickDate);
-        buttonParties = findViewById(R.id.buttonParties);
-        buttonConcerts = findViewById(R.id.buttonConcerts);
-        buttonMeetings = findViewById(R.id.buttonMeetings);
-        buttonSeminarsOrWorkshops = findViewById(R.id.buttonSeminarsOrWorkshops);
-        buttonMorningSlot = findViewById(R.id.buttonMorningSlot);
-        buttonNoonSlot = findViewById(R.id.buttonNoonSlot);
-        buttonEveningSlot = findViewById(R.id.buttonEveningSlot);
-        buttonNightSlot = findViewById(R.id.buttonNightSlot);
+        Button buttonParties = findViewById(R.id.buttonParties);
+        Button buttonConcerts = findViewById(R.id.buttonConcerts);
+        Button buttonMeetings = findViewById(R.id.buttonMeetings);
+        Button buttonSeminarsOrWorkshops = findViewById(R.id.buttonSeminarsOrWorkshops);
+        buttonFirstTimeSlot = findViewById(R.id.buttonFirstTimeSlot);
+        buttonSecondTimeSlot = findViewById(R.id.buttonSecondTimeSlot);
+        buttonThirdTimeSlot = findViewById(R.id.buttonThirdTimeSlot);
+        buttonFourthTimeSlot = findViewById(R.id.buttonFourthTimeSlot);
+        buttonFifthTimeSlot = findViewById(R.id.buttonFifthTimeSlot);
+        buttonSixthTimeSlot = findViewById(R.id.buttonSixthTimeSlot);
+        buttonSeventhTimeSlot = findViewById(R.id.buttonSeventhTimeSlot);
+        buttonEighthTimeSlot = findViewById(R.id.buttonEighthTimeSlot);
+        buttonNinthTimeSlot = findViewById(R.id.buttonNinthTimeSlot);
+        buttonTenthTimeSlot = findViewById(R.id.buttonTenthTimeSlot);
+        buttonEleventhTimeSlot = findViewById(R.id.buttonEleventhTimeSlot);
+        buttonTwelfthTimeSlot = findViewById(R.id.buttonTwelfthTimeSlot);
+        buttonThirteenthTimeSlot = findViewById(R.id.buttonThirteenthTimeSlot);
+        buttonFourteenthTimeSlot = findViewById(R.id.buttonFourteenthTimeSlot);
+        buttonFullDay = findViewById(R.id.buttonFullDay);
         Button buttonBook = findViewById(R.id.buttonBook);
-        daySlotLayout = findViewById(R.id.daySlotLayout);
-        nightSlotLayout = findViewById(R.id.nightSlotLayout);
         layoutLegend = findViewById(R.id.layoutLegend);
+        layoutTimeSlot = findViewById(R.id.layoutTimeSlot);
 
         /*Setting Fonts for all the views*/
         textEventTitle.setTypeface(setLatoBoldFont(this));
@@ -127,11 +167,25 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonConcerts.setTypeface(setLatoRegularFont(this));
         buttonMeetings.setTypeface(setLatoRegularFont(this));
         buttonSeminarsOrWorkshops.setTypeface(setLatoRegularFont(this));
-        buttonMorningSlot.setTypeface(setLatoRegularFont(this));
-        buttonNoonSlot.setTypeface(setLatoRegularFont(this));
-        buttonEveningSlot.setTypeface(setLatoRegularFont(this));
-        buttonNightSlot.setTypeface(setLatoRegularFont(this));
+        buttonSeminarsOrWorkshops.setTypeface(setLatoRegularFont(this));
+        buttonFirstTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonSecondTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonThirdTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonFourthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonFifthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonSixthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonSeventhTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonEighthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonNinthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonTenthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonEleventhTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonTwelfthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonThirteenthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonFourteenthTimeSlot.setTypeface(setLatoRegularFont(this));
+        buttonFullDay.setTypeface(setLatoRegularFont(this));
         buttonBook.setTypeface(setLatoLightFont(this));
+
+        selectedTimeSlotsList = new ArrayList<>();
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDate.setInputType(InputType.TYPE_NULL);
@@ -150,13 +204,23 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonConcerts.setOnClickListener(this);
         buttonMeetings.setOnClickListener(this);
         buttonSeminarsOrWorkshops.setOnClickListener(this);
-        buttonMorningSlot.setOnClickListener(this);
-        buttonNoonSlot.setOnClickListener(this);
-        buttonEveningSlot.setOnClickListener(this);
-        buttonNightSlot.setOnClickListener(this);
+        buttonFirstTimeSlot.setOnClickListener(this);
+        buttonSecondTimeSlot.setOnClickListener(this);
+        buttonThirdTimeSlot.setOnClickListener(this);
+        buttonFourthTimeSlot.setOnClickListener(this);
+        buttonFifthTimeSlot.setOnClickListener(this);
+        buttonSixthTimeSlot.setOnClickListener(this);
+        buttonSeventhTimeSlot.setOnClickListener(this);
+        buttonEighthTimeSlot.setOnClickListener(this);
+        buttonNinthTimeSlot.setOnClickListener(this);
+        buttonTenthTimeSlot.setOnClickListener(this);
+        buttonEleventhTimeSlot.setOnClickListener(this);
+        buttonTwelfthTimeSlot.setOnClickListener(this);
+        buttonThirteenthTimeSlot.setOnClickListener(this);
+        buttonFourteenthTimeSlot.setOnClickListener(this);
+        buttonFullDay.setOnClickListener(this);
         historyButton.setOnClickListener(this);
         buttonBook.setOnClickListener(this);
-
     }
 
     /* ------------------------------------------------------------- *
@@ -186,57 +250,70 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             case R.id.editPickDate:
                 pickDate(this, this);
                 break;
-            case R.id.buttonMorningSlot:
-                selectButton(R.id.buttonMorningSlot);
-                slotNumber = getString(R.string.slot_one);
-                break;
-            case R.id.buttonNoonSlot:
-                selectButton(R.id.buttonNoonSlot);
-                slotNumber = getString(R.string.slot_two);
-                break;
-            case R.id.buttonEveningSlot:
-                selectButton(R.id.buttonEveningSlot);
-                slotNumber = getString(R.string.slot_three);
-                break;
-            case R.id.buttonNightSlot:
-                selectButton(R.id.buttonNightSlot);
-                slotNumber = getString(R.string.slot_four);
-                break;
             case R.id.buttonParties:
-                isCategorySelected = true;
                 category = getString(R.string.parties);
-                buttonParties.setBackgroundResource(R.drawable.selected_button_design);
-                buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
+                selectButton(R.id.buttonParties);
                 textErrorChooseCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonConcerts:
-                isCategorySelected = true;
                 category = getString(R.string.concerts);
-                buttonConcerts.setBackgroundResource(R.drawable.selected_button_design);
-                buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
+                selectButton(R.id.buttonConcerts);
                 textErrorChooseCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonMeetings:
-                isCategorySelected = true;
                 category = getString(R.string.meetings);
-                buttonMeetings.setBackgroundResource(R.drawable.selected_button_design);
-                buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.valid_for_button_design);
+                selectButton(R.id.buttonMeetings);
                 textErrorChooseCategory.setVisibility(View.GONE);
                 break;
             case R.id.buttonSeminarsOrWorkshops:
-                isCategorySelected = true;
                 category = getString(R.string.seminar_workshops);
-                buttonSeminarsOrWorkshops.setBackgroundResource(R.drawable.selected_button_design);
-                buttonParties.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonConcerts.setBackgroundResource(R.drawable.valid_for_button_design);
-                buttonMeetings.setBackgroundResource(R.drawable.valid_for_button_design);
+                selectButton(R.id.buttonSeminarsOrWorkshops);
                 textErrorChooseCategory.setVisibility(View.GONE);
+                break;
+            case R.id.buttonFirstTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonFirstTimeSlot);
+                break;
+            case R.id.buttonSecondTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonSecondTimeSlot);
+                break;
+            case R.id.buttonThirdTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonThirdTimeSlot);
+                break;
+            case R.id.buttonFourthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonFourthTimeSlot);
+                break;
+            case R.id.buttonFifthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonFifthTimeSlot);
+                break;
+            case R.id.buttonSixthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonSixthTimeSlot);
+                break;
+            case R.id.buttonSeventhTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonSeventhTimeSlot);
+                break;
+            case R.id.buttonEighthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonEighthTimeSlot);
+                break;
+            case R.id.buttonNinthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonNinthTimeSlot);
+                break;
+            case R.id.buttonTenthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonTenthTimeSlot);
+                break;
+            case R.id.buttonEleventhTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonEleventhTimeSlot);
+                break;
+            case R.id.buttonTwelfthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonTwelfthTimeSlot);
+                break;
+            case R.id.buttonThirteenthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonThirteenthTimeSlot);
+                break;
+            case R.id.buttonFourteenthTimeSlot:
+                selectMultipleTimeSlots(R.id.buttonFourteenthTimeSlot);
+                break;
+            case R.id.buttonFullDay:
+                fullDayTimeSlotSelected();
                 break;
             case R.id.buttonBook:
                 /* This method gets invoked to check all the editText fields for validations.*/
@@ -263,18 +340,81 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * ------------------------------------------------------------- */
 
     /**
+     * This method is invoked to select multiple time slots.
+     *
+     * @param buttonTimeSlotID - Id of button
+     */
+    private void selectMultipleTimeSlots(int buttonTimeSlotID) {
+        Button button = findViewById(buttonTimeSlotID);
+        String timeSlotValue = button.getText().toString().trim();
+
+        /*if that particular time slot is already selected than deselect that time slot*/
+        if (selectedTimeSlotsList.contains(timeSlotValue)) {
+            button.setBackgroundResource(R.drawable.valid_for_button_design);
+            selectedTimeSlotsList.remove(timeSlotValue);
+        } else {
+            button.setBackgroundResource(R.drawable.selected_button_design);
+            selectedTimeSlotsList.add(timeSlotValue);
+        }
+        /*Deselecting "Full day" time slot if it is selected*/
+        textErrorChooseTimeSlot.setVisibility(View.GONE);
+        isFullDayTimeSlotSelected = false;
+        buttonFullDay.setBackgroundResource(R.drawable.valid_for_button_design);
+    }
+
+    /**
+     * This method is invoked when user selects on "Full day" time slot.
+     */
+    private void fullDayTimeSlotSelected() {
+        if (isFullDayTimeSlotSelected) {
+            isFullDayTimeSlotSelected = false;
+            buttonFullDay.setBackgroundResource(R.drawable.valid_for_button_design);
+        } else {
+            selectedTimeSlotsList.clear();
+            isFullDayTimeSlotSelected = true;
+            buttonFullDay.setBackgroundResource(R.drawable.selected_button_design);
+            deselectAllTimeSlots();
+            textErrorChooseTimeSlot.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * This method is invoked to deselect all time slots which user has selected
+     */
+    private void deselectAllTimeSlots() {
+        int[] buttonTimeSlotIDs = new int[]{R.id.buttonFirstTimeSlot,
+                R.id.buttonSecondTimeSlot,
+                R.id.buttonThirdTimeSlot,
+                R.id.buttonFourthTimeSlot,
+                R.id.buttonFifthTimeSlot,
+                R.id.buttonSixthTimeSlot,
+                R.id.buttonSeventhTimeSlot,
+                R.id.buttonEighthTimeSlot,
+                R.id.buttonNinthTimeSlot,
+                R.id.buttonTenthTimeSlot,
+                R.id.buttonEleventhTimeSlot,
+                R.id.buttonTwelfthTimeSlot,
+                R.id.buttonThirteenthTimeSlot,
+                R.id.buttonFourteenthTimeSlot};
+
+        for (int buttonId : buttonTimeSlotIDs) {
+            Button button = findViewById(buttonId);
+            button.setBackgroundResource(R.drawable.valid_for_button_design);
+        }
+    }
+
+    /**
      * Method to change colour of selected buttons
      *
      * @param id - of selected button
      */
     private void selectButton(int id) {
-        isTimeSlotSelected = true;
+        isCategorySelected = true;
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
-                selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
-                textErrorChooseTimeSlot.setVisibility(View.GONE);
+                textErrorChooseCategory.setVisibility(View.GONE);
             } else {
                 button.setBackgroundResource(R.drawable.valid_for_button_design);
             }
@@ -300,13 +440,14 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             if (!isCategorySelected) {
                 textErrorChooseCategory.setVisibility(View.VISIBLE);
             }
-        } else if (!isTimeSlotSelected) {
+        } else if (selectedTimeSlotsList.isEmpty() && !isFullDayTimeSlotSelected) {
             textErrorChooseTimeSlot.setVisibility(View.VISIBLE);
         }
 
         /*This condition checks for if user has filled all the fields and have chosen the time slot
          *and navigates to appropriate screen.*/
-        if (fieldsFilled && isTimeSlotSelected) {
+        if (fieldsFilled && (!selectedTimeSlotsList.isEmpty() || isFullDayTimeSlotSelected)) {
+            //TODO: Navigate user to Razor pay payment Gateway to click of book event buttons
             /*This method stores event details given by user to firebase*/
             storeEventManagementDetailsInFirebase();
         }
@@ -322,12 +463,11 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
         /*Getting the data entered by user while booking the Society Service */
         String userUID = NammaApartmentsGlobal.userUID;
-        String timeSlot = selectedButton.getText().toString();
         String eventTitle = editEventTitle.getText().toString();
         String eventDate = editPickDate.getText().toString();
 
         /*Storing Society Service data entered by user under new parent 'societyServiceNotifications' in Firebase*/
-        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, timeSlot,
+        NammaApartmentSocietyServices nammaApartmentSocietyServices = new NammaApartmentSocietyServices(null, null,
                 userUID, societyServiceType, notificationUID, IN_PROGRESS, null, null);
 
         /*Setting Event Title Entered By User*/
@@ -345,6 +485,18 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*Storing time stamp to keep track of notifications*/
         eventManagementNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
+        /*Mapping Time Slot with value in eventManagement under selected Event Date and (SocietyServiceNotifications->notificationUID->timeSlots) in firebase */
+        DatabaseReference eventTimeSlotReference = EVENT_MANAGEMENT_REFERENCE.child(FIREBASE_CHILD_PRIVATE).child(selectedEventDate);
+        if (isFullDayTimeSlotSelected) {
+            eventManagementNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIME_SLOTS).child(TIME_SLOT_FULL_DAY).setValue(true);
+            eventTimeSlotReference.child(TIME_SLOT_FULL_DAY).setValue(true);
+        } else {
+            for (String timeSlotValue : selectedTimeSlotsList) {
+                eventManagementNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIME_SLOTS).child(timeSlotValue).setValue(true);
+                eventTimeSlotReference.child(timeSlotValue).setValue(true);
+            }
+        }
+
         /*Mapping Society Service UID with value in userData under Flat Number*/
         DatabaseReference societyServiceUserDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference()
@@ -354,23 +506,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*Creating new key under societyServicesNotifications->eventManagement->notificationUid->true*/
         DatabaseReference eventManagementReference = SOCIETYSERVICENOTIFICATION_REFERENCE.child(FIREBASE_CHILD_EVENT_MANAGEMENT);
         eventManagementReference.child(notificationUID).setValue(true);
-
-        /*Mapping Time Slot with value in eventManagement under selected Event Date */
-        DatabaseReference eventTimeSlotReference = EVENT_MANAGEMENT_REFERENCE.child(selectedEventDate).child(slotNumber);
-        eventTimeSlotReference.setValue(true);
-
-        /*Storing Event Management Notification UID to check if the status of event has changed from 'in progress' to 'confirmed/rejected'*/
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID).apply();
-
-        /*Call AwaitingResponse activity, by this time Admin should have received the Notification
-         * Since, cloud functions would have been triggered*/
-        Intent awaitingResponseIntent = new Intent(EventManagement.this, AwaitingResponse.class);
-        awaitingResponseIntent.putExtra(NOTIFICATION_UID, notificationUID);
-        awaitingResponseIntent.putExtra(SOCIETY_SERVICE_TYPE, societyServiceType);
-        startActivity(awaitingResponseIntent);
-        finish();
     }
 
 
@@ -385,20 +520,30 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 getString(R.string.event_management_dialog_message));
 
         if (!TextUtils.isEmpty(selectedDate)) {
-            daySlotLayout.setVisibility(View.VISIBLE);
-            nightSlotLayout.setVisibility(View.VISIBLE);
+            layoutTimeSlot.setVisibility(View.VISIBLE);
             layoutLegend.setVisibility(View.VISIBLE);
             textChooseTimeSlot.setVisibility(View.VISIBLE);
             textTimeSlotQuery.setVisibility(View.VISIBLE);
         }
-        buttonMorningSlot.setBackgroundResource(R.drawable.valid_for_button_design);
-        buttonNoonSlot.setBackgroundResource(R.drawable.valid_for_button_design);
-        buttonEveningSlot.setBackgroundResource(R.drawable.valid_for_button_design);
-        buttonNightSlot.setBackgroundResource(R.drawable.valid_for_button_design);
-        buttonMorningSlot.setEnabled(true);
-        buttonNoonSlot.setEnabled(true);
-        buttonEveningSlot.setEnabled(true);
-        buttonNightSlot.setEnabled(true);
+
+        /*Deselecting all previous time slots*/
+        deselectAllTimeSlots();
+        buttonFirstTimeSlot.setEnabled(true);
+        buttonSecondTimeSlot.setEnabled(true);
+        buttonThirdTimeSlot.setEnabled(true);
+        buttonFourthTimeSlot.setEnabled(true);
+        buttonFifthTimeSlot.setEnabled(true);
+        buttonSixthTimeSlot.setEnabled(true);
+        buttonSeventhTimeSlot.setEnabled(true);
+        buttonEighthTimeSlot.setEnabled(true);
+        buttonNinthTimeSlot.setEnabled(true);
+        buttonTenthTimeSlot.setEnabled(true);
+        buttonEleventhTimeSlot.setEnabled(true);
+        buttonTwelfthTimeSlot.setEnabled(true);
+        buttonThirteenthTimeSlot.setEnabled(true);
+        buttonFourteenthTimeSlot.setEnabled(true);
+        buttonFullDay.setEnabled(true);
+        buttonFullDay.setBackgroundResource(R.drawable.valid_for_button_design);
 
         calendar = Calendar.getInstance();
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -409,20 +554,57 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         String currentDate = new DateFormatSymbols().getMonths()[currentMonth].substring(0, 3) + " " + currentDay + ", " + currentYear;
         /*Disabling Time Slot if current time exceeds the last hour of particular time slot for current date*/
         if (selectedDate.equals(currentDate)) {
-            if (currentHour >= Constants.MORNING_SLOT_LAST_HOUR) {
-                buttonMorningSlot.setEnabled(false);
-                if (currentHour >= Constants.NOON_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT) {
-                    buttonNoonSlot.setEnabled(false);
-                    if (currentHour >= Constants.EVENING_SLOT_LAST_HOUR_FOR_EVENT_MANAGEMENT) {
-                        buttonEveningSlot.setEnabled(false);
-                    }
-                }
+            switch (currentHour) {
+                case NINE_HOURS:
+                    disableTimeSlots(R.id.buttonFirstTimeSlot);
+                    break;
+                case TEN_HOURS:
+                    disableTimeSlots(R.id.buttonSecondTimeSlot);
+                    break;
+                case ELEVEN_HOURS:
+                    disableTimeSlots(R.id.buttonThirdTimeSlot);
+                    break;
+                case TWELVE_HOURS:
+                    disableTimeSlots(R.id.buttonFourthTimeSlot);
+                    break;
+                case THIRTEEN_HOURS:
+                    disableTimeSlots(R.id.buttonFifthTimeSlot);
+                    break;
+                case FOURTEEN_HOURS:
+                    disableTimeSlots(R.id.buttonSixthTimeSlot);
+                    break;
+                case FIFTEEN_HOURS:
+                    disableTimeSlots(R.id.buttonSeventhTimeSlot);
+                    break;
+                case SIXTEEN_HOURS:
+                    disableTimeSlots(R.id.buttonEighthTimeSlot);
+                    break;
+                case SEVENTEEN_HOURS:
+                    disableTimeSlots(R.id.buttonNinthTimeSlot);
+                    break;
+                case EIGHTEEN_HOURS:
+                    disableTimeSlots(R.id.buttonTenthTimeSlot);
+                    break;
+                case NINETEEN_HOURS:
+                    disableTimeSlots(R.id.buttonEleventhTimeSlot);
+                    break;
+                case TWENTY_HOURS:
+                    disableTimeSlots(R.id.buttonTwelfthTimeSlot);
+                    break;
+                case TWENTY_ONE_HOURS:
+                    disableTimeSlots(R.id.buttonThirteenthTimeSlot);
+                    break;
+                case TWENTY_TWO_HOURS:
+                    disableTimeSlots(R.id.buttonFourteenthTimeSlot);
+                    break;
+                case TWENTY_THREE_HOURS:
+                    disableTimeSlots(R.id.buttonFullDay);
+                    break;
             }
         }
 
         /*Disabling Time slot which are already booked for particular Date*/
         disableBookedSlots(selectedEventDate);
-
     }
 
     /**
@@ -431,27 +613,61 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * @param date selected by the user.
      */
     private void disableBookedSlots(String date) {
-        DatabaseReference eventBookingReference = EVENT_MANAGEMENT_REFERENCE.child(date);
+        DatabaseReference eventBookingReference = EVENT_MANAGEMENT_REFERENCE.child(FIREBASE_CHILD_PRIVATE).child(date);
 
         /*Retrieving Booked Time slot of particular date from (eventManagement->selectedDate->timeSlot) in firebase*/
         eventBookingReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot slotDataSnapshot : dataSnapshot.getChildren()) {
-                        String slotNumber = slotDataSnapshot.getKey();
-                        switch (slotNumber) {
-                            case Constants.SLOT_ONE:
-                                buttonMorningSlot.setEnabled(false);
+                    buttonFullDay.setEnabled(false);
+                    for (DataSnapshot timeSlotDataSnapshot : dataSnapshot.getChildren()) {
+                        String timeSlot = timeSlotDataSnapshot.getKey();
+                        switch (timeSlot) {
+                            case FIRST_TIME_SLOT:
+                                buttonFirstTimeSlot.setEnabled(false);
                                 break;
-                            case Constants.SLOT_TWO:
-                                buttonNoonSlot.setEnabled(false);
+                            case SECOND_TIME_SLOT:
+                                buttonSecondTimeSlot.setEnabled(false);
                                 break;
-                            case Constants.SLOT_THREE:
-                                buttonEveningSlot.setEnabled(false);
+                            case THIRD_TIME_SLOT:
+                                buttonThirdTimeSlot.setEnabled(false);
                                 break;
-                            case Constants.SLOT_FOUR:
-                                buttonNightSlot.setEnabled(false);
+                            case FOURTH_TIME_SLOT:
+                                buttonFourthTimeSlot.setEnabled(false);
+                                break;
+                            case FIFTH_TIME_SLOT:
+                                buttonFifthTimeSlot.setEnabled(false);
+                                break;
+                            case SIXTH_TIME_SLOT:
+                                buttonSixthTimeSlot.setEnabled(false);
+                                break;
+                            case SEVENTH_TIME_SLOT:
+                                buttonSeventhTimeSlot.setEnabled(false);
+                                break;
+                            case EIGHTH_TIME_SLOT:
+                                buttonEighthTimeSlot.setEnabled(false);
+                                break;
+                            case NINTH_TIME_SLOT:
+                                buttonNinthTimeSlot.setEnabled(false);
+                                break;
+                            case TENTH_TIME_SLOT:
+                                buttonTenthTimeSlot.setEnabled(false);
+                                break;
+                            case ELEVENTH_TIME_SLOT:
+                                buttonEleventhTimeSlot.setEnabled(false);
+                                break;
+                            case TWELFTH_TIME_SLOT:
+                                buttonTwelfthTimeSlot.setEnabled(false);
+                                break;
+                            case THIRTEENTH_TIME_SLOT:
+                                buttonThirteenthTimeSlot.setEnabled(false);
+                                break;
+                            case FOURTEENTH_TIME_SLOT:
+                                buttonFourteenthTimeSlot.setEnabled(false);
+                                break;
+                            case TIME_SLOT_FULL_DAY:
+                                disableTimeSlots(R.id.buttonFullDay);
                                 break;
                         }
                     }
@@ -466,4 +682,44 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         });
     }
 
+    /**
+     * This method is invoked to disable the time slots if current time exceeds the time slots last hour value
+     *
+     * @param buttonTimeSlotId of the button
+     */
+    private void disableTimeSlots(int buttonTimeSlotId) {
+        switch (buttonTimeSlotId) {
+            case R.id.buttonFullDay:
+                buttonFullDay.setEnabled(false);
+            case R.id.buttonFourteenthTimeSlot:
+                buttonFourteenthTimeSlot.setEnabled(false);
+            case R.id.buttonThirteenthTimeSlot:
+                buttonThirteenthTimeSlot.setEnabled(false);
+            case R.id.buttonTwelfthTimeSlot:
+                buttonTwelfthTimeSlot.setEnabled(false);
+            case R.id.buttonEleventhTimeSlot:
+                buttonEleventhTimeSlot.setEnabled(false);
+            case R.id.buttonTenthTimeSlot:
+                buttonTenthTimeSlot.setEnabled(false);
+            case R.id.buttonNinthTimeSlot:
+                buttonNinthTimeSlot.setEnabled(false);
+            case R.id.buttonEighthTimeSlot:
+                buttonEighthTimeSlot.setEnabled(false);
+            case R.id.buttonSeventhTimeSlot:
+                buttonSeventhTimeSlot.setEnabled(false);
+            case R.id.buttonSixthTimeSlot:
+                buttonSixthTimeSlot.setEnabled(false);
+            case R.id.buttonFifthTimeSlot:
+                buttonFifthTimeSlot.setEnabled(false);
+            case R.id.buttonFourthTimeSlot:
+                buttonFourthTimeSlot.setEnabled(false);
+            case R.id.buttonThirdTimeSlot:
+                buttonThirdTimeSlot.setEnabled(false);
+            case R.id.buttonSecondTimeSlot:
+                buttonSecondTimeSlot.setEnabled(false);
+            case R.id.buttonFirstTimeSlot:
+                buttonFirstTimeSlot.setEnabled(false);
+                break;
+        }
+    }
 }

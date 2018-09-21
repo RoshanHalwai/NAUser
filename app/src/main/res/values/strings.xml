@@ -559,17 +559,25 @@
     <string name="book">BOOK</string>
     <string name="choose_time_slot">Choose Time Slot</string>
     <string name="event_date">Event Date:</string>
-    <string name="morning">8AM - 12PM</string>
-    <string name="noon">12PM - 4PM</string>
-    <string name="evening">4PM - 8PM</string>
-    <string name="night">8PM - 12PM</string>
+    <string name="time_slot_one">8AM - 9AM</string>
+    <string name="time_slot_two">9AM - 10AM</string>
+    <string name="time_slot_three">10AM - 11AM</string>
+    <string name="time_slot_four">11AM - 12PM</string>
+    <string name="time_slot_five">12PM - 1PM</string>
+    <string name="time_slot_six">1PM - 2PM</string>
+    <string name="time_slot_seven">2PM - 3PM</string>
+    <string name="time_slot_eight">3PM - 4PM</string>
+    <string name="time_slot_nine">4PM - 5PM</string>
+    <string name="time_slot_ten">5PM - 6PM</string>
+    <string name="time_slot_eleven">6PM - 7PM</string>
+    <string name="time_slot_twelve">7PM - 8PM</string>
+    <string name="time_slot_thirteen">8PM - 9PM</string>
+    <string name="time_slot_fourteen">9PM - 10PM</string>
+    <string name="full_day">Full Day(8AM - 10PM)</string>
     <string name="query_time_slot">For any queries related to time slot, Contact Admin.</string>
     <string name="event_management_dialog_title">Event Message</string>
     <string name="event_management_dialog_message">Searching for booked slots</string>
-    <string name="slot_one">Slot 1</string>
-    <string name="slot_two">Slot 2</string>
-    <string name="slot_three">Slot 3</string>
-    <string name="slot_four">Slot 4</string>
+
     <string name="available_slots">Available</string>
     <string name="unavailable_slots">Unavailable</string>
 

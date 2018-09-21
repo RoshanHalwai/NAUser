@@ -177,68 +177,243 @@
                 android:visibility="gone" />
 
             <LinearLayout
-                android:id="@+id/daySlotLayout"
+                android:id="@+id/layoutTimeSlot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:visibility="gone">
 
-                <Button
-                    android:id="@+id/buttonMorningSlot"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/valid_for_button_design"
-                    android:text="@string/morning"
-                    android:textAllCaps="false" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonFirstTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_one"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonSecondTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_two"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/buttonThirdTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_three"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonFourthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_four"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonFifthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_five"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonSixthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_six"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/buttonSeventhTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_seven"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonEighthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_eight"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonNinthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_nine"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonTenthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_ten"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/buttonEleventhTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_eleven"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonTwelfthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_twelve"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonThirteenthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_thirteen"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/buttonFourteenthTimeSlot"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/valid_for_button_design"
+                        android:text="@string/time_slot_fourteen"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
 
                 <Button
-                    android:id="@+id/buttonNoonSlot"
+                    android:id="@+id/buttonFullDay"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/valid_for_button_design"
-                    android:text="@string/noon"
-                    android:textAllCaps="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nightSlotLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/buttonEveningSlot"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/valid_for_button_design"
-                    android:text="@string/evening"
-                    android:textAllCaps="false" />
-
-                <Button
-                    android:id="@+id/buttonNightSlot"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/valid_for_button_design"
-                    android:text="@string/night"
+                    android:text="@string/full_day"
                     android:textAllCaps="false" />
 
             </LinearLayout>
