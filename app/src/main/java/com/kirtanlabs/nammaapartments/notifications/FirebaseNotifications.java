@@ -186,7 +186,7 @@ public class FirebaseNotifications extends FirebaseMessagingService {
     }
 
     /**
-     * Sets the status of the notification to IGNORED since the notification timedout
+     * Sets the status of the notification to IGNORED since the notification timed out
      *
      * @param currentUserID   - userUID of the the LoggedIn user
      * @param visitorType     - can be either one of these Guest/Cab/Package
@@ -211,7 +211,19 @@ public class FirebaseNotifications extends FirebaseMessagingService {
                         .child(visitorType)
                         .child(notificationUID);
 
-                currentUserNotificationReference.child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_IGNORED);
+                currentUserNotificationReference.child(FIREBASE_CHILD_STATUS).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            currentUserNotificationReference.child(FIREBASE_CHILD_STATUS).setValue(FIREBASE_CHILD_IGNORED);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
