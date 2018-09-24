@@ -1,5 +1,7 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo;
 
+import java.util.List;
+
 /**
  * KirtanLabs Pvt. Ltd.
  * Created by Ashish Jha on 7/22/2018
@@ -25,6 +27,7 @@ public class NammaApartmentSocietyServices {
     private String eventDate;
     private String quantity;
     private String scrapType;
+    private List<String> timeSlots;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -105,6 +108,7 @@ public class NammaApartmentSocietyServices {
         return scrapType;
     }
 
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -127,5 +131,9 @@ public class NammaApartmentSocietyServices {
 
     public void setScrapType(String scrapType) {
         this.scrapType = scrapType;
+    }
+
+    public void setTimeSlots(List<String> timeSlots) {
+        this.timeSlots = timeSlots;
     }
 }

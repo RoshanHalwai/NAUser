@@ -1,6 +1,7 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,8 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIME_SLOTS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
 
 /**
@@ -87,6 +90,25 @@ public class RetrievingSocietyServiceHistoryList {
                             if (Objects.requireNonNull(societyServiceType).equals(FIREBASE_CHILD_SCRAP_COLLECTION)) {
                                 String scrapType = dataSnapshot.child(FIREBASE_CHILD_SCRAP_TYPE).getValue(String.class);
                                 Objects.requireNonNull(nammaApartmentSocietyServices).setScrapType(scrapType);
+                            }
+                            if (societyServiceType.equals(EVENT_MANAGEMENT)) {
+                                List<String> timeSlotsList = new ArrayList<>();
+                                DatabaseReference timeSlotsReference = notificationData.child(FIREBASE_CHILD_TIME_SLOTS);
+                                timeSlotsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot timeSlotsSnapshot : dataSnapshot.getChildren()) {
+                                            timeSlotsList.add(timeSlotsSnapshot.getKey());
+                                            Toast.makeText(mCtx, "" + timeSlotsSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                                        }
+                                        Objects.requireNonNull(nammaApartmentSocietyServices).setTimeSlots(timeSlotsList);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
                             notificationDataList.add(nammaApartmentSocietyServices);
 

@@ -400,6 +400,7 @@
     <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
     <string name="service">Service</string>
+    <string name="selected_slots">Selected Slots:</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>

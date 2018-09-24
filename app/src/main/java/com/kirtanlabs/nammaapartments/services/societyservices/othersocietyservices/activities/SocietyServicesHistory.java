@@ -8,6 +8,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.adapters.ContactUsAdapter;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.RetrievingSocietyServiceHistoryList;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.EventManagementHistoryAdapter;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.SocietyServiceHistoryAdapter;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -95,8 +96,14 @@ public class SocietyServicesHistory extends BaseActivity {
                             }
                             showFeatureUnAvailableLayout(updatedDescription);
                         } else {
-                            SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
-                            recyclerView.setAdapter(adapter);
+                            if (societyServiceType.equals(EVENT_MANAGEMENT)) {
+                                EventManagementHistoryAdapter adapter = new EventManagementHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                                recyclerView.setAdapter(adapter);
+
+                            } else {
+                                SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                                recyclerView.setAdapter(adapter);
+                            }
                         }
                     });
         }

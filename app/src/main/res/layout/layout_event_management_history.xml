@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/layoutEventHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.1">
+
+                    <ImageView
+                        android:id="@+id/eventManagementIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp"
+                        android:contentDescription="@string/image_success"
+                        android:src="@drawable/event_na" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textEventTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/event_title"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <TextView
+                        android:id="@+id/textEventStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/status"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <TextView
+                        android:id="@+id/textEventDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/event_date"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTitleValues"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.9"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textEventTitleValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:padding="2dp"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <TextView
+                        android:id="@+id/textEventStatusValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+
+                    <TextView
+                        android:id="@+id/textEventDateValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutSelectedSlots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layoutEventHistory"
+                android:layout_margin="10dp"
+                android:baselineAligned="false">
+
+                <TextView
+                    android:id="@+id/textSelectedSlots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@string/selected_slots"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <LinearLayout
+                    android:id="@+id/layoutMorningSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textSelectedSlots"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/textMorningSlotFirstHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_one"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textMorningSlotSecondHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_two"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textMorningSlotThirdHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_three"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutNoonSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutMorningSlots"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/textMorningSlotLastHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_four"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textNoonSlotFirstHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_five"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textNoonSlotSecondHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_six"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutEveningSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutNoonSlots"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/textNoonSlotThirdHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_seven"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textNoonSlotLastHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_eight"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textEveningSlotFirstHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_nine"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutNightSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutEveningSlots"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/textEveningSlotSecondHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_ten"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textEveningSlotThirdHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_eleven"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textEveningSlotLastHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_twelve"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutLastHourSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutNightSlots">
+
+                    <TextView
+                        android:id="@+id/textNightSlotFirstHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_thirteen"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textNightSlotLastHour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/time_slot_fourteen"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textFullDaySlot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/selected_slots_design"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/full_day"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

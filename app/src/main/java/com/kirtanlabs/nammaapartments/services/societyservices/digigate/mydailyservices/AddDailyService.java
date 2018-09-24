@@ -199,7 +199,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                         case "Child Day Care":
                             storeDailyServiceDetails(FIREBASE_CHILD_CHILDDAYCARES);
                             break;
-                        case "Daily NewsPaper":
+                        case "Daily Newspaper":
                             storeDailyServiceDetails(FIREBASE_CHILD_DAILYNEWSPAPERS);
                             break;
                         case "Milk Man":
