@@ -301,7 +301,8 @@ public class Constants {
     public static final int TWENTY_ONE_HOURS = 21;
     public static final int TWENTY_TWO_HOURS = 22;
     public static final int TWENTY_THREE_HOURS = 23;
-
+    public static final int TOTAL_NUMBER_OF_TIME_SLOTS = 14;
+    public static final int SINGLE_TIME_SLOT_BOOKING_AMOUNT = 100;
 
     /* ------------------------------------------------------------- *
      * Request Code

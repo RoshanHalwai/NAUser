@@ -1,10 +1,14 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
+import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
+
+import org.json.JSONObject;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -40,11 +51,13 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIME_SLOTS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FOURTEEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.INDIAN_RUPEE_CURRENCY_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NINETEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NINE_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SINGLE_TIME_SLOT_BOOKING_AMOUNT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TEN_HOURS;
@@ -62,6 +75,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTH_TIME_SLOT
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TENTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEENTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRD_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TOTAL_NUMBER_OF_TIME_SLOTS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELFTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELVE_HOURS;
@@ -73,12 +87,13 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class EventManagement extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener {
+public class EventManagement extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, PaymentResultListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
+    private static final String TAG = MyPaymentsActivity.class.getSimpleName();
     private final int[] buttonIds = new int[]{R.id.buttonParties,
             R.id.buttonConcerts,
             R.id.buttonMeetings,
@@ -336,6 +351,34 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     }
 
     /* ------------------------------------------------------------- *
+     * Implementing PaymentResultListener Methods
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        try {
+            Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            /*This method stores event details given by user to firebase*/
+            storeEventManagementDetailsInFirebase();
+            Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
+            societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
+            societyServiceHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            showNotificationDialog(getString(R.string.payment_success_title), getString(R.string.payment_success_message), societyServiceHistoryIntent);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in onPaymentSuccess", e);
+        }
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        try {
+            Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in onPaymentError", e);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
 
@@ -447,9 +490,94 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*This condition checks for if user has filled all the fields and have chosen the time slot
          *and navigates to appropriate screen.*/
         if (fieldsFilled && (!selectedTimeSlotsList.isEmpty() || isFullDayTimeSlotSelected)) {
-            //TODO: Navigate user to Razor pay payment Gateway to click of book event buttons
-            /*This method stores event details given by user to firebase*/
-            storeEventManagementDetailsInFirebase();
+            showEventPaymentDialog();
+        }
+    }
+
+    /**
+     * This is invoked to call a Dialog box which is used to display total amount that user has to for booking
+     * an event in particular time slots for that date.
+     */
+    private void showEventPaymentDialog() {
+        View eventPaymentDialog = View.inflate(this, R.layout.layout_event_bill_dialog, null);
+
+        /*Getting Id's for all the views*/
+        TextView textEventBill = eventPaymentDialog.findViewById(R.id.textEventBill);
+        TextView textBookedSlotsNumber = eventPaymentDialog.findViewById(R.id.textBookedSlotsNumber);
+        TextView textAmountPerSlot = eventPaymentDialog.findViewById(R.id.textAmountPerSlot);
+        TextView textTotalAmount = eventPaymentDialog.findViewById(R.id.textTotalAmount);
+        TextView textBookedSlotsNumberValue = eventPaymentDialog.findViewById(R.id.textBookedSlotsNumberValue);
+        TextView textAmountPerSlotValue = eventPaymentDialog.findViewById(R.id.textAmountPerSlotValue);
+        TextView textTotalAmountValue = eventPaymentDialog.findViewById(R.id.textTotalAmountValue);
+        Button buttonCancel = eventPaymentDialog.findViewById(R.id.buttonCancel);
+        Button buttonPayNow = eventPaymentDialog.findViewById(R.id.buttonPayNow);
+
+        textEventBill.setTypeface(setLatoBoldFont(this));
+        textBookedSlotsNumber.setTypeface(setLatoRegularFont(this));
+        textAmountPerSlot.setTypeface(setLatoRegularFont(this));
+        textTotalAmount.setTypeface(setLatoRegularFont(this));
+        textBookedSlotsNumberValue.setTypeface(setLatoBoldFont(this));
+        textAmountPerSlotValue.setTypeface(setLatoBoldFont(this));
+        textTotalAmountValue.setTypeface(setLatoBoldFont(this));
+        buttonCancel.setTypeface(setLatoLightFont(this));
+        buttonPayNow.setTypeface(setLatoLightFont(this));
+
+        /*Calculating total amount based on number of time slots selected by the user*/
+        int totalNumberOfTimeSlotsSelected;
+        if (isFullDayTimeSlotSelected) {
+            totalNumberOfTimeSlotsSelected = TOTAL_NUMBER_OF_TIME_SLOTS;
+        } else {
+            totalNumberOfTimeSlotsSelected = selectedTimeSlotsList.size();
+        }
+        textBookedSlotsNumberValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
+
+        int totalAmount = (totalNumberOfTimeSlotsSelected );
+        String totalAmountValue = getString(R.string.rupees_symbol) + " " + totalAmount;
+        textTotalAmountValue.setText(totalAmountValue);
+
+        AlertDialog.Builder alertValidationDialog = new AlertDialog.Builder(this);
+        alertValidationDialog.setView(eventPaymentDialog);
+        AlertDialog dialog = alertValidationDialog.create();
+        dialog.setCancelable(false);
+
+        new Dialog(this);
+        dialog.show();
+
+        /*Setting Listeners to the views*/
+        buttonCancel.setOnClickListener(v -> dialog.cancel());
+        buttonPayNow.setOnClickListener(v -> {
+            /*converting Rupees into paise*/
+            int totalAmountInPaise = totalAmount * 100;
+            startPayment(totalAmountInPaise);
+            dialog.cancel();
+        });
+    }
+
+    /**
+     * This method is invoked to open razor pay payment gateway
+     *
+     * @param amount - that user has to pay to book an event
+     */
+    private void startPayment(int amount) {
+        final Activity activity = this;
+        final Checkout co = new Checkout();
+        try {
+            UserPersonalDetails userPersonalDetails = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser().getPersonalDetails();
+            JSONObject options = new JSONObject();
+            options.put(getString(R.string.name).toLowerCase(), getString(R.string.app_name));
+            options.put(getString(R.string.payment_description), getString(R.string.event_management));
+            options.put(getString(R.string.currency), INDIAN_RUPEE_CURRENCY_CODE);
+            options.put(getString(R.string.amount), String.valueOf(amount));
+
+            JSONObject preFill = new JSONObject();
+            preFill.put(getString(R.string.email), userPersonalDetails.getEmail());
+            preFill.put(getString(R.string.contact), userPersonalDetails.getPhoneNumber());
+            options.put(getString(R.string.prefill), preFill);
+
+            co.open(activity, options);
+        } catch (Exception e) {
+            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
