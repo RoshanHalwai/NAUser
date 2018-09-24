@@ -531,7 +531,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         }
         textBookedSlotsNumberValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
 
-        int totalAmount = (totalNumberOfTimeSlotsSelected );
+        int totalAmount = (totalNumberOfTimeSlotsSelected * SINGLE_TIME_SLOT_BOOKING_AMOUNT);
         String totalAmountValue = getString(R.string.rupees_symbol) + " " + totalAmount;
         textTotalAmountValue.setText(totalAmountValue);
 
