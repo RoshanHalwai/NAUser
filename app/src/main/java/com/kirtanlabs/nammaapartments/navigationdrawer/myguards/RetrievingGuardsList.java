@@ -4,14 +4,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pogo.NammaApartmentsGuard;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pojo.NammaApartmentsGuard;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GUARDS_REFERENCE;
 
 public class RetrievingGuardsList {
 
@@ -34,7 +34,7 @@ public class RetrievingGuardsList {
      * ------------------------------------------------------------- */
 
     private void getGuardUIDList(GuardUIDListCallback guardUIDListCallback) {
-        guardsReference = Constants.GUARDS_REFERENCE
+        guardsReference = GUARDS_REFERENCE
                 .child(FIREBASE_CHILD_PRIVATE)
                 .child(FIREBASE_CHILD_DATA);
         guardsReference.addListenerForSingleValueEvent(new ValueEventListener() {

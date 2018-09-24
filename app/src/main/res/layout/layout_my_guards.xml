@@ -60,7 +60,7 @@
                         android:padding="3dp"
                         android:text="@string/guard"
                         android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_view_default_size" />
 
                     <TextView
                         android:id="@+id/textGateNumber"
@@ -69,7 +69,7 @@
                         android:padding="3dp"
                         android:text="@string/gate_no"
                         android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_view_default_size" />
 
                     <TextView
                         android:id="@+id/textGuardStatus"
@@ -78,7 +78,7 @@
                         android:padding="3dp"
                         android:text="@string/status"
                         android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_view_default_size" />
 
                 </LinearLayout>
 
@@ -98,16 +98,15 @@
                         android:maxLines="1"
                         android:padding="3dp"
                         android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_view_default_size" />
 
                     <TextView
                         android:id="@+id/textGateNumberValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="3dp"
-                        android:text="@string/gate_no_value"
                         android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_view_default_size" />
 
                     <TextView
                         android:id="@+id/textGuardStatusValue"
@@ -115,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:padding="3dp"
                         android:textColor="@color/nmBlack"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_view_default_size" />
 
                 </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pogo;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pojo;
 
 public class NammaApartmentsGuard {
 
@@ -9,6 +9,7 @@ public class NammaApartmentsGuard {
     private String fullName;
     private String profilePhoto;
     private String status;
+    private int gateNumber;
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -17,10 +18,11 @@ public class NammaApartmentsGuard {
     NammaApartmentsGuard() {
     }
 
-    public NammaApartmentsGuard(String fullName, String profilePhoto, String status) {
+    public NammaApartmentsGuard(String fullName, String profilePhoto, String status, int gateNumber) {
         this.fullName = fullName;
         this.profilePhoto = profilePhoto;
         this.status = status;
+        this.gateNumber = gateNumber;
     }
 
     /* ------------------------------------------------------------- *
@@ -37,5 +39,9 @@ public class NammaApartmentsGuard {
 
     public String getStatus() {
         return status;
+    }
+
+    public int getGateNumber() {
+        return gateNumber;
     }
 }
