@@ -644,5 +644,5 @@
     <!--My Guard Activity-->
     <string name="guard">Guard:</string>
     <string name="gate_no">Gate No:</string>
-    <string name="gate_no_value">2</string>
+
 </resources>

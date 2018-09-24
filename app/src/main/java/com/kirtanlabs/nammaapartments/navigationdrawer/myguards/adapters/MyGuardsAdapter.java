@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pogo.NammaApartmentsGuard;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.pojo.NammaApartmentsGuard;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.List;
@@ -57,6 +57,7 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
         /*Creating an instance of NammaApartmentsGuard class and retrieving the values from Firebase*/
         NammaApartmentsGuard nammaApartmentsGuard = guardDataList.get(position);
         holder.textGuardNameValue.setText(nammaApartmentsGuard.getFullName());
+        holder.textGateNumberValue.setText(String.valueOf(nammaApartmentsGuard.getGateNumber()));
         holder.textGuardStatusValue.setText(nammaApartmentsGuard.getStatus().toUpperCase());
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentsGuard.getProfilePhoto()).into(holder.profileImage);
     }
@@ -90,7 +91,7 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
         GuardViewHolder(View itemView) {
             super(itemView);
 
-            //Getting Id's for all the views on cardview
+            /*Getting Id's for all the views on cardview*/
             profileImage = itemView.findViewById(R.id.profileImage);
             textGuardName = itemView.findViewById(R.id.textGuardName);
             textGateNumber = itemView.findViewById(R.id.textGateNumber);
@@ -99,7 +100,7 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
             textGateNumberValue = itemView.findViewById(R.id.textGateNumberValue);
             textGuardStatusValue = itemView.findViewById(R.id.textGuardStatusValue);
 
-            //Setting Fonts for all the views on cardview
+            /*Setting Fonts for all the views on cardview*/
             textGuardName.setTypeface(Constants.setLatoRegularFont(mCtx));
             textGateNumber.setTypeface(Constants.setLatoRegularFont(mCtx));
             textGuardStatus.setTypeface(Constants.setLatoRegularFont(mCtx));
