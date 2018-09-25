@@ -148,7 +148,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 textSelectProblemAndScrapType.setText(R.string.select_scrap_type);
                 textSelectSlotAndTotalQuantity.setText(R.string.total_quantity);
                 buttonImmediatelyAndLessQuantity.setText(R.string.less_quantity);
-                buttonImmediatelyAndLessQuantity.setBackgroundResource(R.drawable.valid_for_button_design);
                 buttonMorningSlotAndMediumQuantity.setText(R.string.medium_quantity);
                 buttonNoonSlotAndLargeQuantity.setText(R.string.large_quantity);
                 buttonEveningSlotAndVeryLargeQuantity.setText(R.string.very_large_quantity);
@@ -307,12 +306,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             /*Storing time stamp to keep track of notifications*/
             societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
+            /*Clearing the editText value and deselecting the user selected button*/
+            editTextSelectProblemAndScrapType.setText("");
+            selectedButton.setBackgroundResource(R.drawable.valid_for_button_design);
+
             /*Navigating users to scrap collection history screen*/
-            Intent naHomeIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
-            naHomeIntent.putExtra(SCREEN_TITLE, societyServiceType);
+            Intent societyServicesHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
+            societyServicesHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
             showNotificationDialog(getString(R.string.request_raised),
                     getString(R.string.scrap_collection_request_dialog_message),
-                    naHomeIntent);
+                    societyServicesHistoryIntent);
 
         } else {
             /*If the user selected problem is others then we display the description entered by the user as problem*/
