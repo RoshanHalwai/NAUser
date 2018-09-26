@@ -324,6 +324,7 @@
     <string name="enter_date">Please select date</string>
     <string name="event_title_error">Please enter event title</string>
     <string name="enter_other_problem_desc">Please Enter Your Problem</string>
+    <string name="enter_other_scrap_type_desc">Please Enter Scrap Type</string>
     <string name="enter_service_type">Please select service type</string>
     <string name="enter_problem_description">Please enter problem description</string>
     <string name="please_enter_food_type">Please Enter Food Type</string>
