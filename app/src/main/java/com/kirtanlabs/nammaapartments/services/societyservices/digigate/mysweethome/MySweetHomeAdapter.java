@@ -6,10 +6,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -240,6 +242,8 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
          * Private Members
          * ------------------------------------------------------------- */
 
+        final LinearLayout layoutTitle;
+        final LinearLayout layoutTitleValues;
         final TextView textMemberName;
         final TextView textMemberNameValue;
         final TextView textMemberRelation;
@@ -264,6 +268,8 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             super(itemView);
 
             /*Getting Id's for all the views*/
+            layoutTitle = itemView.findViewById(R.id.layoutTitle);
+            layoutTitleValues = itemView.findViewById(R.id.layoutTitleValues);
             textMemberName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textMemberRelation = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
@@ -299,6 +305,18 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textEdit.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textCancel.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
+
+            /*Programmatically setting the layoutTitle as this layout contains only three titles */
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.weight = 1.13f;
+            params.gravity = Gravity.CENTER;
+            layoutTitle.setLayoutParams(params);
+
+            /*Programmatically setting the layoutTitleValues as this layout contains only three values */
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.weight = 0.87f;
+            layoutParams.gravity = Gravity.CENTER;
+            layoutTitleValues.setLayoutParams(layoutParams);
 
             /*Setting events for items in card view*/
             textCall.setOnClickListener(this);
