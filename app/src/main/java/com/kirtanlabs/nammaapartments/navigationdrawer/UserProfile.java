@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -64,7 +65,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private TextView textEIntercomNumber;
+    private TextView textEIntercomNumber, textErrorUserName, textErrorEmailId, textErrorInvalidEmailId;
     private EditText editUserName, editUserEmail, editFlatAdmin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
@@ -113,6 +114,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         TextView textName = findViewById(R.id.textName);
         TextView textEmail = findViewById(R.id.textEmail);
         TextView textFlatAdmin = findViewById(R.id.textFlatAdmin);
+        textErrorUserName = findViewById(R.id.textErrorUserName);
+        textErrorEmailId = findViewById(R.id.textErrorEmailId);
+        textErrorInvalidEmailId = findViewById(R.id.textErrorInvalidEmailId);
         editUserName = findViewById(R.id.editUserName);
         editUserEmail = findViewById(R.id.editUserEmail);
         editFlatAdmin = findViewById(R.id.editFlatAdmin);
@@ -124,6 +128,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         textName.setTypeface(setLatoBoldFont(this));
         textEmail.setTypeface(setLatoBoldFont(this));
         textFlatAdmin.setTypeface(setLatoBoldFont(this));
+        textErrorUserName.setTypeface(setLatoRegularFont(this));
+        textErrorEmailId.setTypeface(setLatoRegularFont(this));
+        textErrorInvalidEmailId.setTypeface(setLatoRegularFont(this));
         editUserEmail.setTypeface(setLatoRegularFont(this));
         editUserName.setTypeface(setLatoRegularFont(this));
         editFlatAdmin.setTypeface(setLatoRegularFont(this));
@@ -178,6 +185,13 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
             case R.id.currentUserProfilePic:
                 imageSelectionDialog.show();
                 break;
+            case R.id.editUserName:
+                textErrorUserName.setVisibility(View.GONE);
+                break;
+            case R.id.editUserEmail:
+                textErrorEmailId.setVisibility(View.GONE);
+                textErrorInvalidEmailId.setVisibility(View.GONE);
+                break;
             case R.id.editFlatAdmin:
                 if (flatMembersList.isEmpty()) {
                     showNotificationDialog(getString(R.string.change_admin), getString(R.string.no_flat_members), null);
@@ -186,7 +200,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.buttonUpdate:
-                updateUserDetailsInFirebase();
+                /* This method gets invoked to check all the editText fields for validations.*/
+                validateFields();
                 break;
         }
     }
@@ -194,6 +209,34 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
+
+    /**
+     * This method gets invoked to check all the validation fields such as editTexts name and email.
+     */
+    private void validateFields() {
+        String userFullName = editUserName.getText().toString();
+        String userEmailId = editUserEmail.getText().toString();
+        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editUserName, editUserEmail});
+        /*This condition checks if all fields are not filled and if user presses update button
+         *it will then display proper error messages.*/
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(userFullName)) {
+                textErrorUserName.setVisibility(View.VISIBLE);
+            }
+            if (TextUtils.isEmpty(userEmailId)) {
+                textErrorEmailId.setVisibility(View.VISIBLE);
+            }
+        }
+        /*This condition checks for if user has filled all the fields and also validates email
+         *and displays appropriate error messages.*/
+        if (fieldsFilled) {
+            if (isValidEmail(userEmailId)) {
+                textErrorInvalidEmailId.setVisibility(View.VISIBLE);
+            } else {
+                updateUserDetailsInFirebase();
+            }
+        }
+    }
 
     /**
      * Fills the family members related to that particular user.
@@ -384,7 +427,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         String updatedAdmin = editFlatAdmin.getText().toString();
         boolean profilePicChanged = profilePhotoPath != null;
 
-        Intent nammaApartmentsHome = new Intent(this, NammaApartmentsHome.class);
+        Intent nammaApartmentsHomeIntent = new Intent(this, NammaApartmentsHome.class);
+        nammaApartmentsHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (updatedUserName.equals(userName) &&
                 updatedUserEmail.equals(userEmail) &&
                 updatedAdmin.equals(adminName) &&
@@ -420,7 +464,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 if (!updatedUserName.equals(userName) || !updatedUserEmail.equals(userEmail)) {
                     showNotificationDialog(getString(R.string.update_message),
                             getString(R.string.update_success_message),
-                            nammaApartmentsHome);
+                            nammaApartmentsHomeIntent);
                 }
             }
 
@@ -449,7 +493,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                         hideProgressDialog();
                         showNotificationDialog(getString(R.string.update_message),
                                 getString(R.string.update_success_message),
-                                nammaApartmentsHome);
+                                nammaApartmentsHomeIntent);
                     });
                 });
             }
@@ -492,6 +536,12 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         String confirmDialogMessageValue = confirmDialogMessage.replace(getString(R.string.person), itemValue);
         showConfirmDialog(confirmDialogTitle, confirmDialogMessageValue, updateAdminDetailsInFirebase);
     }
+
+
+
+    /* ------------------------------------------------------------- *
+     * Interfaces
+     * ------------------------------------------------------------- */
 
     private interface FirebaseCallback {
         void onCallback(List<String> list);

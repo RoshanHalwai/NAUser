@@ -106,6 +106,16 @@
                 tools:ignore="LabelFor" />
 
             <TextView
+                android:id="@+id/textErrorUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="@string/name_validation"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/textEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,6 +140,26 @@
                 android:textSize="@dimen/edit_text_default_size"
                 android:visibility="visible"
                 tools:ignore="LabelFor" />
+
+            <TextView
+                android:id="@+id/textErrorEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="@string/email_validation"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textErrorInvalidEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="@string/invalid_email"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textFlatAdmin"
