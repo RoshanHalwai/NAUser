@@ -51,7 +51,7 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
     @NonNull
     @Override
     public GuestsHistoryAdapter.VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_guests_history, parent, false);
         return new GuestsHistoryAdapter.VisitorViewHolder(view);
@@ -59,7 +59,7 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
 
     @Override
     public void onBindViewHolder(@NonNull GuestsHistoryAdapter.VisitorViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        /*Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase*/
         NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
 
         String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
@@ -67,7 +67,15 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
         holder.textVisitorNameValue.setText(nammaApartmentGuest.getFullName());
         holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
         holder.textInvitationTimeValue.setText(separatedDateAndTime[1]);
-        holder.textHandedThingsValue.setText(nammaApartmentGuest.getHandedThings());
+        /*Ensuring if the Handed Things value is entered as empty by the User (since the Description field is optional),
+        then the blank value is not shown beside 'Things' title */
+        String handedThingsValue = nammaApartmentGuest.getHandedThings();
+        if (handedThingsValue.isEmpty()) {
+            holder.textHandedThings.setVisibility(View.GONE);
+            holder.textHandedThingsValue.setVisibility(View.GONE);
+        } else {
+            holder.textHandedThingsValue.setText(handedThingsValue);
+        }
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.profileImage);
 
@@ -148,7 +156,7 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
             textInvitedByValue = itemView.findViewById(R.id.textInvitedByValue);
             profileImage = itemView.findViewById(R.id.profileImage);
 
-            //Setting Fonts for all the views on cardview
+            /*Setting Fonts for all the views on Card View*/
             textVisitorName.setTypeface(setLatoRegularFont(mCtx));
             textHandedThings.setTypeface(setLatoRegularFont(mCtx));
             textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
