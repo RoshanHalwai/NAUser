@@ -379,8 +379,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
             /*Clearing the editTexts values and deselecting the user selected buttons*/
             isCategorySelected = false;
-            Button categoryButton = findViewById(selectedButtonId);
-            categoryButton.setBackgroundResource(R.drawable.valid_for_button_design);
+            Button eventCategoryButton = findViewById(selectedButtonId);
+            eventCategoryButton.setBackgroundResource(R.drawable.valid_for_button_design);
             editEventTitle.getText().clear();
             editPickDate.getText().clear();
             layoutTimeSlot.setVisibility(View.GONE);
