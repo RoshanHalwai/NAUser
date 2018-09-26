@@ -342,7 +342,7 @@
 
     <!--Payments -->
     <string name="my_payment_title">Namma Apartments E-Payment</string>
-    <string name="my_payment_content">Hola! Now we provide you an option to make online payment for the basic Society Maintenance charges.</string>
+    <string name="my_payment_content">Hola! Now we provide you an option to make online payment for your Society Services.</string>
     <string name="payments">Payments</string>
     <string name="make_payment">Make Payment</string>
     <string name="pay_society_maintenance">Pay\n Maintenance</string>
