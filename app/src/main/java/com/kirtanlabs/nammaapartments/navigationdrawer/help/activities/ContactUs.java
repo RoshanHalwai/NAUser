@@ -115,6 +115,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                 if (serviceCategory != R.string.society_services) {
                     serviceCategory = R.string.society_services;
                     editServiceType.getText().clear();
+                    editProblemDesc.getText().clear();
                     buttonApartmentService.setBackgroundResource(R.drawable.valid_for_button_design);
                     buttonSocietyServices.setBackgroundResource(R.drawable.selected_button_design);
                 }
@@ -123,6 +124,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                 if (serviceCategory != R.string.apartment_services) {
                     serviceCategory = R.string.apartment_services;
                     editServiceType.getText().clear();
+                    editProblemDesc.getText().clear();
                     buttonSocietyServices.setBackgroundResource(R.drawable.valid_for_button_design);
                     buttonApartmentService.setBackgroundResource(R.drawable.selected_button_design);
                 }
