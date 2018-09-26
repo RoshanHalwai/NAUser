@@ -84,7 +84,7 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
-                        android:text="@string/make_payment_for"
+                        android:text="@string/make_payment"
                         android:textColor="@color/nmBlack"
                         android:textSize="18sp" />
 
@@ -125,7 +125,7 @@
                                     android:layout_marginRight="10dp"
                                     android:layout_marginTop="10dp"
                                     android:gravity="center"
-                                    android:text="@string/society_service"
+                                    android:text="@string/pay_society_maintenance"
                                     android:textColor="@color/nmBlack"
                                     android:textSize="16sp" />
 
