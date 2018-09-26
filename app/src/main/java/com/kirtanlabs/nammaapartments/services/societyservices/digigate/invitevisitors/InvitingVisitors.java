@@ -223,6 +223,8 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
+            textErrorDateTime.setVisibility(View.GONE);
+            textErrorFutureTime.setVisibility(View.GONE);
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
             int currentMinute = calendar.get(Calendar.MINUTE);
             if (isTodayDateSelected) {
@@ -237,8 +239,6 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
-            textErrorDateTime.setVisibility(View.GONE);
-            textErrorFutureTime.setVisibility(View.GONE);
         }
     }
 
@@ -291,6 +291,7 @@ public class InvitingVisitors extends BaseActivity implements View.OnClickListen
             }
             if (TextUtils.isEmpty(dateTime)) {
                 textErrorDateTime.setVisibility(View.VISIBLE);
+                textErrorFutureTime.setVisibility(View.GONE);
             }
         }
         /*This condition checks for if user has filled all the fields and also validates name,mobile number
