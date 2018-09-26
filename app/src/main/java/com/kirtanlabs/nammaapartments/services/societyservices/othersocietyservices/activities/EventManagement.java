@@ -114,7 +114,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private Boolean isCategorySelected = false, isFullDayTimeSlotSelected = false;
     private LinearLayout layoutTimeSlot, layoutLegend;
     private List<String> selectedTimeSlotsList;
-    private int totalAmount;
+    private int totalAmount, selectedButtonId;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -375,8 +375,18 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             storeEventManagementTransactionDetails(paymentID, PAYMENT_SUCCESSFUL);
             Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
             societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
-            societyServiceHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             showNotificationDialog(getString(R.string.payment_success_title), getString(R.string.payment_success_message), societyServiceHistoryIntent);
+
+            /*Clearing the editTexts values and deselecting the user selected buttons*/
+            isCategorySelected = false;
+            Button eventCategoryButton = findViewById(selectedButtonId);
+            eventCategoryButton.setBackgroundResource(R.drawable.valid_for_button_design);
+            editEventTitle.getText().clear();
+            editPickDate.getText().clear();
+            layoutTimeSlot.setVisibility(View.GONE);
+            layoutLegend.setVisibility(View.GONE);
+            textChooseTimeSlot.setVisibility(View.GONE);
+            textTimeSlotQuery.setVisibility(View.GONE);
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }
@@ -475,6 +485,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      */
     private void selectButton(int id) {
         isCategorySelected = true;
+        selectedButtonId = id;
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
