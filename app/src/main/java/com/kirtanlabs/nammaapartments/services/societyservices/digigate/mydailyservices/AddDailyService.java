@@ -35,6 +35,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_CAR_BIKE_CLEANING;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_CHILD_DAY_CARE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_COOK;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_DAILY_NEWSPAPER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_DRIVER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_LAUNDRY;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_MAID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DAILY_SERVICE_MILK_MAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.DS_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CARBIKECLEANERS;
@@ -187,28 +195,28 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
 
                 case DS_OTP_STATUS_REQUEST_CODE:
                     switch (service_type) {
-                        case "Cook":
+                        case DAILY_SERVICE_COOK:
                             storeDailyServiceDetails(FIREBASE_CHILD_COOKS);
                             break;
-                        case "Maid":
+                        case DAILY_SERVICE_MAID:
                             storeDailyServiceDetails(FIREBASE_CHILD_MAIDS);
                             break;
-                        case "Car/Bike Cleaning":
+                        case DAILY_SERVICE_CAR_BIKE_CLEANING:
                             storeDailyServiceDetails(FIREBASE_CHILD_CARBIKECLEANERS);
                             break;
-                        case "Child Day Care":
+                        case DAILY_SERVICE_CHILD_DAY_CARE:
                             storeDailyServiceDetails(FIREBASE_CHILD_CHILDDAYCARES);
                             break;
-                        case "Daily NewsPaper":
+                        case DAILY_SERVICE_DAILY_NEWSPAPER:
                             storeDailyServiceDetails(FIREBASE_CHILD_DAILYNEWSPAPERS);
                             break;
-                        case "Milk Man":
+                        case DAILY_SERVICE_MILK_MAN:
                             storeDailyServiceDetails(FIREBASE_CHILD_MILKMEN);
                             break;
-                        case "Laundry":
+                        case DAILY_SERVICE_LAUNDRY:
                             storeDailyServiceDetails(FIREBASE_CHILD_LAUNDRIES);
                             break;
-                        case "Driver":
+                        case DAILY_SERVICE_DRIVER:
                             storeDailyServiceDetails(FIREBASE_CHILD_DRIVERS);
                             break;
                     }

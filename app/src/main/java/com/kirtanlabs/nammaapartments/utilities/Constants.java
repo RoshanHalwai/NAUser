@@ -328,6 +328,19 @@ public class Constants {
     public static final String INDIAN_RUPEE_CURRENCY_CODE = "INR";
 
     /* ------------------------------------------------------------- *
+    * Daily Service Types
+    * ------------------------------------------------------------- */
+
+    public static final String DAILY_SERVICE_COOK="Cook";
+    public static final String DAILY_SERVICE_MAID="Maid";
+    public static final String DAILY_SERVICE_CAR_BIKE_CLEANING ="Car/Bike Cleaning";
+    public static final String DAILY_SERVICE_CHILD_DAY_CARE="Child Day Care";
+    public static final String DAILY_SERVICE_DAILY_NEWSPAPER="Daily Newspaper";
+    public static final String DAILY_SERVICE_MILK_MAN="Milk Man";
+    public static final String DAILY_SERVICE_LAUNDRY="Laundry";
+    public static final String DAILY_SERVICE_DRIVER="Driver";
+
+    /* ------------------------------------------------------------- *
      * Font Types
      * ------------------------------------------------------------- */
 

@@ -29,7 +29,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     private EditText editFoodType;
     private TextView textErrorFoodQuantity;
     private Boolean isFoodQtySelected = false;
-    private Button selectedButton, button;
+    private Button selectedButton;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -113,7 +113,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     private void selectButton(int id) {
         isFoodQtySelected = true;
         for (int buttonId : buttonIds) {
-            button = findViewById(buttonId);
+            Button button = findViewById(buttonId);
             if (buttonId == id) {
                 selectedButton = button;
                 button.setBackgroundResource(R.drawable.selected_button_design);
@@ -130,7 +130,7 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
     private void validateFields() {
         boolean fieldsFilled;
         fieldsFilled = isAllFieldsFilled(new EditText[]{editFoodType}) && isFoodQtySelected;
-        /*This condition checks if all fields are not filled and if user presses collect food button
+        /*This condition checks if all fields are not filled and if user presses donate food button
          *it will then display appropriate error messages.*/
         if (!fieldsFilled) {
             if (!isFoodQtySelected) {
@@ -146,7 +146,8 @@ public class MyFoodActivity extends BaseActivity implements View.OnClickListener
             storeFoodRequestDetailsInFirebase();
             /*Clearing the editText value and deselecting the user selected button*/
             editFoodType.setText("");
-            button.setBackgroundResource(R.drawable.valid_for_button_design);
+            selectedButton.setBackgroundResource(R.drawable.valid_for_button_design);
+            isFoodQtySelected = false;
         }
     }
 
