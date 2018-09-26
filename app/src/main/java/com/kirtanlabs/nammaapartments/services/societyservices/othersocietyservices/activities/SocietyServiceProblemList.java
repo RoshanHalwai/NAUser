@@ -101,7 +101,6 @@ public class SocietyServiceProblemList extends BaseActivity implements SearchVie
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        returnSelectedProblem(query);
         return false;
     }
 
