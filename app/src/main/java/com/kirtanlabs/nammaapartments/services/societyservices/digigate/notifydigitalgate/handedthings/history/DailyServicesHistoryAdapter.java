@@ -42,7 +42,7 @@ public class DailyServicesHistoryAdapter extends RecyclerView.Adapter<DailyServi
     @NonNull
     @Override
     public DailyServicesHistoryAdapter.DailyServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_daily_services_history, parent, false);
         return new DailyServicesHistoryAdapter.DailyServiceViewHolder(view);
@@ -50,12 +50,20 @@ public class DailyServicesHistoryAdapter extends RecyclerView.Adapter<DailyServi
 
     @Override
     public void onBindViewHolder(@NonNull DailyServicesHistoryAdapter.DailyServiceViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        /*Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase*/
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
-        holder.textHandedThingsValue.setText((nammaApartmentDailyService.getDailyServiceHandedThingsDescription()));
+        /*Ensuring if the Handed Things value is entered as empty by the User (since the Description field is optional),
+        then the blank value is not shown beside 'Things' title */
+        String handedThingsValue = nammaApartmentDailyService.getDailyServiceHandedThingsDescription();
+        if (handedThingsValue.isEmpty()) {
+            holder.textHandedThings.setVisibility(View.GONE);
+            holder.textHandedThingsValue.setVisibility(View.GONE);
+        } else {
+            holder.textHandedThingsValue.setText(handedThingsValue);
+        }
         holder.textInvitationDateValue.setText(nammaApartmentDailyService.getDateOfVisit());
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.profileImage);
@@ -110,7 +118,7 @@ public class DailyServicesHistoryAdapter extends RecyclerView.Adapter<DailyServi
             textInvitationDateValue = itemView.findViewById(R.id.textInvitationDateValue);
             profileImage = itemView.findViewById(R.id.profileImage);
 
-            //Setting Fonts for all the views on cardview
+            /*Setting Fonts for all the views on Card View*/
             textDailyServiceName.setTypeface(setLatoRegularFont(mCtx));
             textDailyServiceType.setTypeface(setLatoRegularFont(mCtx));
             textHandedThings.setTypeface(setLatoRegularFont(mCtx));
