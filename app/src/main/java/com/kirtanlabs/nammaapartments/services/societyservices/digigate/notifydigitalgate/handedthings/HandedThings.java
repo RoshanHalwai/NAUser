@@ -45,6 +45,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;
     private int index = 0;
+    private boolean isDailyServiceEntered = false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -202,6 +203,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (Objects.requireNonNull(dataSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString().equals(ENTERED) && isDailyServicePresent) {
                                             if (dataSnapshot.hasChild(userUID)) {
+                                                isDailyServiceEntered = true;
                                                 numberOfFlats.put(dailyServiceUID, dataSnapshot.getChildrenCount() - 1);
                                                 DataSnapshot dailyServiceDataSnapshot = dataSnapshot.child(userUID);
                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
@@ -209,8 +211,10 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
                                                 nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
                                                 adapterDailyService.notifyDataSetChanged();
                                             }
+                                        }
+                                        if (isDailyServiceEntered) {
+                                            hideFeatureUnavailableLayout();
                                         } else {
-                                            hideProgressIndicator();
                                             showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
                                         }
                                     }
@@ -238,6 +242,4 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
             }
         });
     }
-
-
 }
