@@ -134,7 +134,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
         textErrorCabNumber.setTypeface(setLatoRegularFont(this));
         textErrorDateTime.setTypeface(setLatoRegularFont(this));
         textErrorValidForButton.setTypeface(setLatoRegularFont(this));
-        textErrorFutureTime.setTypeface(setLatoBoldFont(this));
+        textErrorFutureTime.setTypeface(setLatoRegularFont(this));
         textValidFor.setTypeface(setLatoBoldFont(this));
         editCabStateCode.setTypeface(setLatoRegularFont(this));
         editCabRtoNumber.setTypeface(setLatoRegularFont(this));
@@ -249,6 +249,8 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
+            textErrorDateTime.setVisibility(View.GONE);
+            textErrorFutureTime.setVisibility(View.GONE);
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
             int currentMinute = calendar.get(Calendar.MINUTE);
             if (isTodayDateSelected) {
@@ -263,8 +265,6 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             String concatenatedDateAndTime = selectedDate + "\t\t" + " " + selectedTime;
             editPickDateTime.setText(concatenatedDateAndTime);
-            textErrorDateTime.setVisibility(View.GONE);
-            textErrorFutureTime.setVisibility(View.GONE);
         }
     }
 
@@ -489,6 +489,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 }
                 if (TextUtils.isEmpty(cabDateTime)) {
                     textErrorDateTime.setVisibility(View.VISIBLE);
+                    textErrorFutureTime.setVisibility(View.GONE);
                 }
                 if (!isValidForSelected) {
                     textErrorValidForButton.setVisibility(View.VISIBLE);
@@ -513,6 +514,7 @@ public class ExpectingArrival extends BaseActivity implements View.OnClickListen
                 }
                 if (TextUtils.isEmpty(vendorDateTime)) {
                     textErrorDateTime.setVisibility(View.VISIBLE);
+                    textErrorFutureTime.setVisibility(View.GONE);
                 }
                 if (!isValidForSelected) {
                     textErrorValidForButton.setVisibility(View.VISIBLE);

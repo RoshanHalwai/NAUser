@@ -306,16 +306,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             /*Storing time stamp to keep track of notifications*/
             societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
 
-            /*Clearing the editText value and deselecting the user selected button*/
-            editTextSelectProblemAndScrapType.setText("");
-            selectedButton.setBackgroundResource(R.drawable.valid_for_button_design);
-
             /*Navigating users to scrap collection history screen*/
             Intent societyServicesHistoryIntent = new Intent(SocietyServicesHome.this, SocietyServicesHistory.class);
             societyServicesHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
             showNotificationDialog(getString(R.string.request_raised),
                     getString(R.string.scrap_collection_request_dialog_message),
                     societyServicesHistoryIntent);
+
+            /*Clearing the editText value and deselecting the user selected button*/
+            editTextSelectProblemAndScrapType.setText("");
+            selectButton(R.id.buttonImmediatelyAndLessQuantity);
 
         } else {
             /*If the user selected problem is others then we display the description entered by the user as problem*/
@@ -383,12 +383,16 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                             editTextSelectProblemAndScrapType.setError(getString(R.string.please_select_scrap_type));
                             break;
                         default:
-                        editTextSelectProblemAndScrapType.setError(getString(R.string.choose_problem_validation));
-                        break;
+                            editTextSelectProblemAndScrapType.setError(getString(R.string.choose_problem_validation));
+                            break;
                     }
                 }
                 if (otherProblemSelected && TextUtils.isEmpty(descriptionValue)) {
-                    editTextDescription.setError(getString(R.string.enter_other_problem_desc));
+                    if (screenTitle == R.string.scrap_collection) {
+                        editTextDescription.setError(getString(R.string.enter_other_scrap_type_desc));
+                    } else {
+                        editTextDescription.setError(getString(R.string.enter_other_problem_desc));
+                    }
                     editTextDescription.requestFocus();
                     break;
                 }

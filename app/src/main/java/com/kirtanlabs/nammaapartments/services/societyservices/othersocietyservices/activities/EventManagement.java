@@ -26,6 +26,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
 import com.kirtanlabs.nammaapartments.userpojo.UserPersonalDetails;
 import com.razorpay.Checkout;
@@ -53,6 +54,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIME_SLOTS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FOURTEENTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FOURTEEN_HOURS;
@@ -62,6 +64,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NINETEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NINE_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NINTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_CANCELLED_ERROR_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_FAILURE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_SUCCESSFUL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSACTION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
@@ -108,6 +114,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private Boolean isCategorySelected = false, isFullDayTimeSlotSelected = false;
     private LinearLayout layoutTimeSlot, layoutLegend;
     private List<String> selectedTimeSlotsList;
+    private int totalAmount, selectedButtonId;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -354,25 +361,50 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * Implementing PaymentResultListener Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * On Payment Success, method gets called containing payment ID of the transaction
+     *
+     * @param paymentID - Id of Successful transaction
+     */
     @Override
-    public void onPaymentSuccess(String s) {
+    public void onPaymentSuccess(String paymentID) {
         try {
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
             /*This method stores event details given by user to firebase*/
             storeEventManagementDetailsInFirebase();
+            storeEventManagementTransactionDetails(paymentID, PAYMENT_SUCCESSFUL);
             Intent societyServiceHistoryIntent = new Intent(EventManagement.this, SocietyServicesHistory.class);
             societyServiceHistoryIntent.putExtra(SCREEN_TITLE, societyServiceType);
-            societyServiceHistoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             showNotificationDialog(getString(R.string.payment_success_title), getString(R.string.payment_success_message), societyServiceHistoryIntent);
+
+            /*Clearing the editTexts values and deselecting the user selected buttons*/
+            isCategorySelected = false;
+            Button eventCategoryButton = findViewById(selectedButtonId);
+            eventCategoryButton.setBackgroundResource(R.drawable.valid_for_button_design);
+            editEventTitle.getText().clear();
+            editPickDate.getText().clear();
+            layoutTimeSlot.setVisibility(View.GONE);
+            layoutLegend.setVisibility(View.GONE);
+            textChooseTimeSlot.setVisibility(View.GONE);
+            textTimeSlotQuery.setVisibility(View.GONE);
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }
     }
 
+    /**
+     * On Payment Failure, method gets called containing error code and gateway response
+     *
+     * @param code     - Error Code
+     * @param response - Payment Gateway Response
+     */
     @Override
-    public void onPaymentError(int i, String s) {
+    public void onPaymentError(int code, String response) {
         try {
             Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+            if (!(code == PAYMENT_CANCELLED_ERROR_CODE) || !(response.equals(getString(R.string.payment_cancelled)))) {
+                storeEventManagementTransactionDetails("", PAYMENT_FAILURE);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
         }
@@ -453,6 +485,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      */
     private void selectButton(int id) {
         isCategorySelected = true;
+        selectedButtonId = id;
         for (int buttonId : buttonIds) {
             Button button = findViewById(buttonId);
             if (buttonId == id) {
@@ -531,7 +564,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         }
         textBookedSlotsNumberValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
 
-        int totalAmount = (totalNumberOfTimeSlotsSelected * SINGLE_TIME_SLOT_BOOKING_AMOUNT);
+        totalAmount = (totalNumberOfTimeSlotsSelected * SINGLE_TIME_SLOT_BOOKING_AMOUNT);
         String totalAmountValue = getString(R.string.rupees_symbol) + " " + totalAmount;
         textTotalAmountValue.setText(totalAmountValue);
 
@@ -849,5 +882,21 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonFirstTimeSlot.setEnabled(false);
                 break;
         }
+    }
+
+    /**
+     * Stores the details of transaction for event in firebase
+     *
+     * @param paymentId Unique Id to identify each transaction
+     * @param result    of the transaction
+     */
+    private void storeEventManagementTransactionDetails(final String paymentId, final String result) {
+        DatabaseReference userTransactionReference = ((NammaApartmentsGlobal) getApplicationContext()).
+                getUserDataReference().child(FIREBASE_CHILD_TRANSACTIONS);
+        final String transactionUID = userTransactionReference.push().getKey();
+        final Transaction transactionDetails = new Transaction(totalAmount, paymentId, result,
+                getString(R.string.event_management), NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
+        PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails).addOnCompleteListener(task ->
+                userTransactionReference.child(transactionUID).setValue(true));
     }
 }

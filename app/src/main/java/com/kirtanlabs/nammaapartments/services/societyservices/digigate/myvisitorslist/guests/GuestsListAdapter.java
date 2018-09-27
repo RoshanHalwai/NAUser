@@ -62,6 +62,8 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     private EditText editPickDate;
     private EditText editPickTime;
     private TextView textErrorFutureTime;
+    private Calendar calendar;
+    private boolean isTodayDateSelected, isTodayDatePastTimeSelected;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -174,24 +176,23 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (view.isShown()) {
+            int currentMonth = calendar.get(Calendar.MONTH);
+            int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+            isTodayDateSelected = month == currentMonth && dayOfMonth == currentDay;
             String selectedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
             editPickDate.setText(selectedDate);
+            textErrorFutureTime.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
-            Calendar calendar = Calendar.getInstance();
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
             int currentMinute = calendar.get(Calendar.MINUTE);
-            if (hourOfDay < currentHour) {
-                textErrorFutureTime.setVisibility(View.VISIBLE);
-                return;
-            } else if (hourOfDay == currentHour && minute < currentMinute) {
-                textErrorFutureTime.setVisibility(View.VISIBLE);
-                return;
-            }
+            boolean pastHour = hourOfDay < currentHour;
+            boolean pastMinute = hourOfDay == currentHour && minute < currentMinute;
+            isTodayDatePastTimeSelected = pastHour || pastMinute;
             String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
             editPickTime.setText(selectedTime);
             textErrorFutureTime.setVisibility(View.GONE);
@@ -228,6 +229,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         editPickDate.setText(existingDate);
         editPickTime.setText(existingTime);
 
+        /*Getting the instance of calendar*/
+        calendar = Calendar.getInstance();
+
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit fields*/
         editPickDate.setInputType(InputType.TYPE_NULL);
         editPickTime.setInputType(InputType.TYPE_NULL);
@@ -241,10 +245,7 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         editPickTime.setOnClickListener(this);
         editPickTime.setOnFocusChangeListener(this);
         buttonCancel.setOnClickListener(this);
-        buttonReschedule.setOnClickListener(v -> {
-            updateGuestDataInFirebase(position);
-            dialog.cancel();
-        });
+        buttonReschedule.setOnClickListener(v -> updateGuestDataInFirebase(position));
     }
 
     /**
@@ -265,12 +266,17 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
      * @param position of card view for which date and time has been manipulated
      */
     private void updateGuestDataInFirebase(int position) {
-        NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
-        String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
-        nammaApartmentGuest.setDateAndTimeOfVisit(updatedDateAndTime);
-        notifyItemChanged(position);
-        PRIVATE_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid())
-                .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
+        if (isTodayDateSelected && isTodayDatePastTimeSelected) {
+            textErrorFutureTime.setVisibility(View.VISIBLE);
+        } else {
+            NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
+            String updatedDateAndTime = editPickDate.getText().toString() + "\t\t " + editPickTime.getText().toString();
+            nammaApartmentGuest.setDateAndTimeOfVisit(updatedDateAndTime);
+            notifyItemChanged(position);
+            PRIVATE_VISITORS_REFERENCE.child(nammaApartmentGuest.getUid())
+                    .child(FIREBASE_CHILD_DATEANDTIMEOFVISIT).setValue(updatedDateAndTime);
+            dialog.cancel();
+        }
     }
 
     /**
