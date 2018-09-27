@@ -329,6 +329,7 @@
     <string name="enter_problem_description">Please enter problem description</string>
     <string name="please_enter_food_type">Please Enter Food Type</string>
     <string name="please_select_scrap_type">Please Select Scrap Type</string>
+    <string name="please_select_garbage_type">Please Select Garbage Type</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

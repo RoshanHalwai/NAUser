@@ -137,10 +137,20 @@
                         android:layout_margin="15dp"
                         android:cursorVisible="false"
                         android:inputType="none"
+                        android:focusable="false"
                         android:textColor="@color/nmBlack"
                         android:textColorHint="@color/nmLightBlack"
                         android:textSize="@dimen/edit_text_default_size"
                         tools:ignore="LabelFor" />
+
+                    <TextView
+                        android:id="@+id/textErrorSelectProblem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/choose_problem_validation"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/layoutProblemOthers"
@@ -182,23 +192,24 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        android:weightSum="2">
 
                         <Button
                             android:id="@+id/buttonDryWaste"
                             style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="2dp"
                             android:layout_weight="1"
-                            android:background="@drawable/selected_button_design"
+                            android:background="@drawable/valid_for_button_design"
                             android:text="@string/dry_waste"
                             android:textAllCaps="false" />
 
                         <Button
                             android:id="@+id/buttonWetWaste"
                             style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="2dp"
                             android:layout_weight="1"
@@ -207,6 +218,16 @@
                             android:textAllCaps="false" />
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textErrorGarbageType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/please_select_garbage_type"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/textSelectSlotAndTotalQuantity"
