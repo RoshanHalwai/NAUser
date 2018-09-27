@@ -302,11 +302,11 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         AlertDialog.Builder alertNotificationDialog = new AlertDialog.Builder(this);
         View notificationDialog = View.inflate(this, R.layout.layout_dialog_grant_access_yes, null);
         alertNotificationDialog.setView(notificationDialog);
-        imageSelectionDialog = alertNotificationDialog.create();
+        AlertDialog grantAccessConfirmationDialog = alertNotificationDialog.create();
 
         /* Setting Custom Dialog Buttons*/
         alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
-        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> dialog.cancel());
+        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> grantAccessConfirmationDialog.cancel());
 
         new Dialog(getApplicationContext());
         alertNotificationDialog.show();
