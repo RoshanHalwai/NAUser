@@ -305,8 +305,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
         AlertDialog grantAccessConfirmationDialog = alertNotificationDialog.create();
 
         /* Setting Custom Dialog Buttons*/
-        alertNotificationDialog.setPositiveButton("Accept", (dialog, which) -> navigatingToOTPScreen());
-        alertNotificationDialog.setNegativeButton("Reject", (dialog, which) -> grantAccessConfirmationDialog.cancel());
+        alertNotificationDialog.setPositiveButton(getString(R.string.accept), (dialog, which) -> navigatingToOTPScreen());
+        alertNotificationDialog.setNegativeButton(getString(R.string.reject), (dialog, which) -> grantAccessConfirmationDialog.cancel());
 
         new Dialog(getApplicationContext());
         alertNotificationDialog.show();
