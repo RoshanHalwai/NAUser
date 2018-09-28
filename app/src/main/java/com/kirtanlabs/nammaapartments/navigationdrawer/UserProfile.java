@@ -200,8 +200,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.buttonUpdate:
-                /* This method gets invoked to check all the editText fields for validations.*/
-                validateFields();
+                /* This method gets invoked to check all the editText fields for validations
+                 * and also updates the user profile details in Firebase accordingly. */
+                updateUserDetailsInFirebase();
                 break;
         }
     }
@@ -209,34 +210,6 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
-
-    /**
-     * This method gets invoked to check all the validation fields such as editTexts name and email.
-     */
-    private void validateFields() {
-        String userFullName = editUserName.getText().toString();
-        String userEmailId = editUserEmail.getText().toString();
-        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editUserName, editUserEmail});
-        /*This condition checks if all fields are not filled and if user presses update button
-         *it will then display proper error messages.*/
-        if (!fieldsFilled) {
-            if (TextUtils.isEmpty(userFullName)) {
-                textErrorUserName.setVisibility(View.VISIBLE);
-            }
-            if (TextUtils.isEmpty(userEmailId)) {
-                textErrorEmailId.setVisibility(View.VISIBLE);
-            }
-        }
-        /*This condition checks for if user has filled all the fields and also validates email
-         *and displays appropriate error messages.*/
-        if (fieldsFilled) {
-            if (isValidEmail(userEmailId)) {
-                textErrorInvalidEmailId.setVisibility(View.VISIBLE);
-            } else {
-                updateUserDetailsInFirebase();
-            }
-        }
-    }
 
     /**
      * Fills the family members related to that particular user.
@@ -420,6 +393,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     /**
      * This method gets invoked when user wants to update existing name and existing email and also
      * for updating profile photo as well as if flat admin value changes.
+     * This method also checks for field validations if user clears the existing username and email
+     * and also checks if while updating the email entered by the user is invalid or not.
      */
     private void updateUserDetailsInFirebase() {
         String updatedUserName = editUserName.getText().toString();
@@ -427,77 +402,96 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         String updatedAdmin = editFlatAdmin.getText().toString();
         boolean profilePicChanged = profilePhotoPath != null;
 
-        Intent nammaApartmentsHomeIntent = new Intent(this, NammaApartmentsHome.class);
-        nammaApartmentsHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        if (updatedUserName.equals(userName) &&
-                updatedUserEmail.equals(userEmail) &&
-                updatedAdmin.equals(adminName) &&
-                !profilePicChanged) {
-            showNotificationDialog(getString(R.string.update_message),
-                    getString(R.string.no_update_message),
-                    null);
+        /*Boolean condition to check if user name and user email fields are filled or not.*/
+        boolean fieldsFilled = isAllFieldsFilled(new EditText[]{editUserName, editUserEmail});
+        /*This condition checks if all fields are not filled and if user presses update button
+         *it will then display proper error messages.*/
+        if (!fieldsFilled) {
+            if (TextUtils.isEmpty(updatedUserName)) {
+                textErrorUserName.setVisibility(View.VISIBLE);
+            }
+            if (TextUtils.isEmpty(updatedUserEmail)) {
+                textErrorEmailId.setVisibility(View.VISIBLE);
+            }
         } else {
-            DatabaseReference personalDetailsReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
-                    .child(FIREBASE_CHILD_PERSONALDETAILS);
-
-            /*User Name has been changed*/
-            if (!updatedUserName.equals(userName)) {
-                currentNammaApartmentUser.getPersonalDetails().setFullName(updatedUserName);
-                DatabaseReference updatedUserNameReference = personalDetailsReference
-                        .child(FIREBASE_CHILD_FULLNAME);
-                updatedUserNameReference.setValue(updatedUserName);
-            }
-
-            /*Email address has been changed*/
-            if (!updatedUserEmail.equals(userEmail)) {
-                currentNammaApartmentUser.getPersonalDetails().setEmail(updatedUserEmail);
-                DatabaseReference updatedUserEmailReference = personalDetailsReference
-                        .child(FIREBASE_CHILD_EMAIL);
-                updatedUserEmailReference.setValue(updatedUserEmail);
-            }
-
-            /*Admin has been changed*/
-            if (!updatedAdmin.equals(adminName)) {
-                /*This method invokes if user wants to change admin to other flat members.*/
-                changeAdmin();
+            /*This condition checks if user has entered valid email id or not*/
+            if (isValidEmail(updatedUserEmail)) {
+                textErrorInvalidEmailId.setVisibility(View.VISIBLE);
             } else {
-                if (!updatedUserName.equals(userName) || !updatedUserEmail.equals(userEmail)) {
+                Intent nammaApartmentsHomeIntent = new Intent(this, NammaApartmentsHome.class);
+                nammaApartmentsHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if (updatedUserName.equals(userName) &&
+                        updatedUserEmail.equals(userEmail) &&
+                        updatedAdmin.equals(adminName) &&
+                        !profilePicChanged) {
                     showNotificationDialog(getString(R.string.update_message),
-                            getString(R.string.update_success_message),
-                            nammaApartmentsHomeIntent);
+                            getString(R.string.no_update_message),
+                            null);
+                } else {
+                    DatabaseReference personalDetailsReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
+                            .child(FIREBASE_CHILD_PERSONALDETAILS);
+
+                    /*User Name has been changed*/
+                    if (!updatedUserName.equals(userName)) {
+                        currentNammaApartmentUser.getPersonalDetails().setFullName(updatedUserName);
+                        DatabaseReference updatedUserNameReference = personalDetailsReference
+                                .child(FIREBASE_CHILD_FULLNAME);
+                        updatedUserNameReference.setValue(updatedUserName);
+                    }
+
+                    /*Email address has been changed*/
+                    if (!updatedUserEmail.equals(userEmail)) {
+                        currentNammaApartmentUser.getPersonalDetails().setEmail(updatedUserEmail);
+                        DatabaseReference updatedUserEmailReference = personalDetailsReference
+                                .child(FIREBASE_CHILD_EMAIL);
+                        updatedUserEmailReference.setValue(updatedUserEmail);
+                    }
+
+                    /*Admin has been changed*/
+                    if (!updatedAdmin.equals(adminName)) {
+                        /*This method invokes if user wants to change admin to other flat members.*/
+                        changeAdmin();
+                    } else {
+                        if (!updatedUserName.equals(userName) || !updatedUserEmail.equals(userEmail)) {
+                            showNotificationDialog(getString(R.string.update_message),
+                                    getString(R.string.update_success_message),
+                                    nammaApartmentsHomeIntent);
+                        }
+                    }
+
+                    /*Profile pic has been changed*/
+                    if (profilePicChanged) {
+                        showProgressDialog(UserProfile.this, getString(R.string.updating_profile), getString(R.string.please_wait_a_moment));
+
+                        String userUID = NammaApartmentsGlobal.userUID;
+                        StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_USERS)
+                                .child(Constants.FIREBASE_CHILD_PRIVATE)
+                                .child(userUID);
+
+                        UploadTask uploadTask = storageReference.putBytes(getByteArrayFromFile(UserProfile.this, profilePhotoPath));
+                        /*adding the profile photo to storage reference*/
+                        uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+                            /*creating the upload object to store uploaded image details*/
+                            String profilePhotoPath = Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString();
+                            currentNammaApartmentUser.getPersonalDetails().setProfilePhoto(profilePhotoPath);
+
+                            /*Update the new profile photo URL in firebase*/
+                            DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
+                                    .child(FIREBASE_CHILD_PERSONALDETAILS)
+                                    .child(FIREBASE_CHILD_PROFILE_PHOTO);
+                            updatedUserPhotoReference.setValue(profilePhotoPath).addOnCompleteListener(task -> {
+                                hideProgressDialog();
+                                showNotificationDialog(getString(R.string.update_message),
+                                        getString(R.string.update_success_message),
+                                        nammaApartmentsHomeIntent);
+                            });
+                        });
+                    }
                 }
             }
-
-            /*Profile pic has been changed*/
-            if (profilePicChanged) {
-                showProgressDialog(UserProfile.this, getString(R.string.updating_profile), getString(R.string.please_wait_a_moment));
-
-                String userUID = NammaApartmentsGlobal.userUID;
-                StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_USERS)
-                        .child(Constants.FIREBASE_CHILD_PRIVATE)
-                        .child(userUID);
-
-                UploadTask uploadTask = storageReference.putBytes(getByteArrayFromFile(UserProfile.this, profilePhotoPath));
-                /*adding the profile photo to storage reference*/
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-
-                    /*creating the upload object to store uploaded image details*/
-                    String profilePhotoPath = Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString();
-                    currentNammaApartmentUser.getPersonalDetails().setProfilePhoto(profilePhotoPath);
-
-                    /*Update the new profile photo URL in firebase*/
-                    DatabaseReference updatedUserPhotoReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
-                            .child(FIREBASE_CHILD_PERSONALDETAILS)
-                            .child(FIREBASE_CHILD_PROFILE_PHOTO);
-                    updatedUserPhotoReference.setValue(profilePhotoPath).addOnCompleteListener(task -> {
-                        hideProgressDialog();
-                        showNotificationDialog(getString(R.string.update_message),
-                                getString(R.string.update_success_message),
-                                nammaApartmentsHomeIntent);
-                    });
-                });
-            }
         }
+
     }
 
     /**

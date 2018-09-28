@@ -76,7 +76,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_TYPE;
  */
 public class FirebaseNotifications extends FirebaseMessagingService {
 
-    String remoteMessageType;
+    private String remoteMessageType;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
