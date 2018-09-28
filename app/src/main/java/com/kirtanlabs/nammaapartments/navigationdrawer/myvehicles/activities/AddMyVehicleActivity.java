@@ -293,6 +293,7 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             showNotificationDialog(getString(R.string.vehicles_added_success_title),
                     getString(R.string.vehicles_added_success_message),
                     MySweetHomeIntent);
+            hideKeyboard();
         });
     }
 

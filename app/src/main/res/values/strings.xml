@@ -635,6 +635,7 @@
     <string name="contact">contact</string>
     <string name="prefill">prefill</string>
     <string name="payment_description">description</string>
+    <string name="no_pending_dues">No\n Pending Dues</string>
 
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>

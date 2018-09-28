@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class SignUp extends BaseActivity implements View.OnClickListener, View.O
      * Private Members
      * ------------------------------------------------------------- */
 
+    @SuppressLint("StaticFieldLeak")
     private static SignUp signUp;
     private CircleImageView newUserProfileImage;
     private TextView textErrorProfilePic;
