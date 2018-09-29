@@ -100,7 +100,6 @@ public class SocietyServicesHistory extends BaseActivity {
                             if (societyServiceType.equals(EVENT_MANAGEMENT)) {
                                 EventManagementHistoryAdapter adapter = new EventManagementHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                                 recyclerView.setAdapter(adapter);
-
                             } else {
                                 SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                                 recyclerView.setAdapter(adapter);

@@ -94,7 +94,6 @@ public class EventManagementHistoryAdapter extends RecyclerView.Adapter<EventMan
     private List<String> getSelectedSlots(final NammaApartmentSocietyServices nammaApartmentSocietyServices) {
         Set<String> bookedSlotsSet = nammaApartmentSocietyServices.getTimeSlots().keySet();
         Set<String> availableSlotsSetRef = new LinkedHashSet<>(availableSlotsSet);
-
         if (bookedSlotsSet.contains(TIME_SLOT_FULL_DAY)) {
             availableSlotsSetRef.clear();
             availableSlotsSetRef.add(mCtx.getString(R.string.full_day));

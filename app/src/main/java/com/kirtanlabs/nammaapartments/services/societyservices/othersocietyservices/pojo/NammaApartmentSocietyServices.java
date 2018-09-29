@@ -134,7 +134,4 @@ public class NammaApartmentSocietyServices {
         this.scrapType = scrapType;
     }
 
-    public void setTimeSlots(Map<String, Boolean> timeSlots) {
-        this.timeSlots = timeSlots;
-    }
 }
