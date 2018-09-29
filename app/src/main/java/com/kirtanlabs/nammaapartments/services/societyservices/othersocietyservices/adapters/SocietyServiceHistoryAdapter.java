@@ -68,9 +68,6 @@ public class SocietyServiceHistoryAdapter extends RecyclerView.Adapter<SocietySe
         String formattedDateAndTime = sfd.format(new Date(nammaApartmentSocietyServices.getTimestamp()));
         /*If the society service type is event management display time slot instead of problem*/
         switch (societyServiceType) {
-            case EVENT_MANAGEMENT:
-                holder.textProblem.setText(nammaApartmentSocietyServices.getTimeSlot());
-                break;
             case FIREBASE_CHILD_SCRAP_COLLECTION:
                 holder.textProblem.setText(nammaApartmentSocietyServices.getScrapType());
                 break;
