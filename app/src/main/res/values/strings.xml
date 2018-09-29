@@ -329,6 +329,7 @@
     <string name="enter_problem_description">Please enter problem description</string>
     <string name="please_enter_food_type">Please Enter Food Type</string>
     <string name="please_select_scrap_type">Please Select Scrap Type</string>
+    <string name="please_select_garbage_type">Please Select Garbage Type</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -635,6 +636,7 @@
     <string name="contact">contact</string>
     <string name="prefill">prefill</string>
     <string name="payment_description">description</string>
+    <string name="no_pending_dues">No\n Pending Dues</string>
 
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>

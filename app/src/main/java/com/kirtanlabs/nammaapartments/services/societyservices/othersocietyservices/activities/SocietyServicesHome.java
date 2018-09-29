@@ -54,7 +54,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
             buttonEveningSlotAndVeryLargeQuantity;
     private EditText editTextSelectProblemAndScrapType, editTextDescription;
     private LinearLayout otherProblemLayout;
-    private Boolean otherProblemSelected = false;
+    private Boolean otherProblemSelected = false, isGarbageTypeSelected = false;
+    private TextView textErrorGarbageType, textErrorSelectProblem;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -84,6 +85,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         TextView textDescription = findViewById(R.id.textDescription);
         TextView imageSelectProblemAndScrapType = findViewById(R.id.imageSelectProblemAndScrapType);
         TextView imageSelectSlotAndQuantity = findViewById(R.id.imageSelectSlotAndQuantity);
+        textErrorGarbageType = findViewById(R.id.textErrorGarbageType);
+        textErrorSelectProblem = findViewById(R.id.textErrorSelectProblem);
         Button buttonImmediatelyAndLessQuantity = findViewById(R.id.buttonImmediatelyAndLessQuantity);
         buttonMorningSlotAndMediumQuantity = findViewById(R.id.buttonMorningSlotAndMediumQuantity);
         buttonNoonSlotAndLargeQuantity = findViewById(R.id.buttonNoonSlotAndLargeQuantity);
@@ -101,6 +104,8 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         textSelectProblemAndScrapType.setTypeface(setLatoBoldFont(this));
         textSelectSlotAndTotalQuantity.setTypeface(setLatoBoldFont(this));
         textDescription.setTypeface(setLatoBoldFont(this));
+        textErrorGarbageType.setTypeface(setLatoBoldFont(this));
+        textErrorSelectProblem.setTypeface(setLatoBoldFont(this));
         editTextSelectProblemAndScrapType.setTypeface(setLatoRegularFont(this));
         editTextDescription.setTypeface(setLatoRegularFont(this));
         buttonImmediatelyAndLessQuantity.setTypeface(setLatoRegularFont(this));
@@ -111,12 +116,13 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         buttonDryWaste.setTypeface(setLatoRegularFont(this));
         buttonWetWaste.setTypeface(setLatoRegularFont(this));
 
-        /*We don't want the keyboard to be displayed when user clicks edit views*/
+        /*We don't want the keyboard to be displayed when user clicks on editTextSelectProblemAndScrapType view*/
         editTextSelectProblemAndScrapType.setInputType(InputType.TYPE_NULL);
 
         /*We want Button Immediately should be selected on start of activity*/
         selectButton(R.id.buttonImmediatelyAndLessQuantity);
 
+        /*Getting the society service type based on the screen title*/
         societyServiceType = getString(screenTitle).toLowerCase();
 
         /* We set button text according to screen title */
@@ -140,7 +146,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 editTextSelectProblemAndScrapType.setVisibility(View.GONE);
                 layoutGarbageType.setVisibility(View.VISIBLE);
                 societyServiceType = FIREBASE_CHILD_GARBAGE_COLLECTION;
-                problemAndScrapType = getString(R.string.dry_waste);
                 break;
             case R.string.scrap_collection:
                 imageSelectProblemAndScrapType.setText(R.string.select_scrap_type);
@@ -209,11 +214,15 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 startActivity(societyServiceHistoryIntent);
                 break;
             case R.id.buttonDryWaste:
+                isGarbageTypeSelected = true;
+                textErrorGarbageType.setVisibility(View.GONE);
                 problemAndScrapType = getString(R.string.dry_waste);
                 buttonDryWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonWetWaste.setBackgroundResource(R.drawable.valid_for_button_design);
                 break;
             case R.id.buttonWetWaste:
+                isGarbageTypeSelected = true;
+                textErrorGarbageType.setVisibility(View.GONE);
                 problemAndScrapType = getString(R.string.wet_waste);
                 buttonWetWaste.setBackgroundResource(R.drawable.selected_button_design);
                 buttonDryWaste.setBackgroundResource(R.drawable.valid_for_button_design);
@@ -239,6 +248,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
         if (resultCode == RESULT_OK && requestCode == SELECT_SOCIETY_SERVICE_REQUEST_CODE) {
             problemAndScrapType = data.getStringExtra(Constants.SOCIETY_SERVICE_PROBLEM);
             editTextSelectProblemAndScrapType.setText(problemAndScrapType);
+            textErrorSelectProblem.setVisibility(View.GONE);
             if (problemAndScrapType.equals(SOCIETY_SERVICE_PROBLEM_OTHERS)) {
                 otherProblemLayout.setVisibility(View.VISIBLE);
                 otherProblemSelected = true;
@@ -380,10 +390,11 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 if (!fieldsFilled) {
                     switch (screenTitle) {
                         case R.string.scrap_collection:
-                            editTextSelectProblemAndScrapType.setError(getString(R.string.please_select_scrap_type));
+                            textErrorSelectProblem.setVisibility(View.VISIBLE);
+                            textErrorSelectProblem.setText(R.string.enter_other_scrap_type_desc);
                             break;
                         default:
-                            editTextSelectProblemAndScrapType.setError(getString(R.string.choose_problem_validation));
+                            textErrorSelectProblem.setVisibility(View.VISIBLE);
                             break;
                     }
                 }
@@ -403,9 +414,13 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.string.garbage_collection:
-                /*This method stores user selected society details in Firebase.*/
-                storeSocietyServiceDetails();
-                break;
+                if (!isGarbageTypeSelected) {
+                    textErrorGarbageType.setVisibility(View.VISIBLE);
+                } else {
+                    /*This method stores user selected society details in Firebase.*/
+                    storeSocietyServiceDetails();
+                    break;
+                }
         }
     }
 
