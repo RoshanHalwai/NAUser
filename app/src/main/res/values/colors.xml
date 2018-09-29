@@ -7,6 +7,7 @@
     <color name="nmDarkBlue">#005564</color>
     <color name="nmLightYellow">#f1c40f</color>
     <color name="nmGrey">#515151</color>
+    <color name="nmGreen">#05ab2c</color>
 
     <!--Settings Activity-->
     <color name="nmSettingsHeader">#e2e1e1</color>

@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_TYPE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -83,7 +82,6 @@ public class RetrievingSocietyServiceHistoryList {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             NammaApartmentSocietyServices nammaApartmentSocietyServices = dataSnapshot.getValue(NammaApartmentSocietyServices.class);
-                            String societyServiceType = dataSnapshot.child(SOCIETY_SERVICE_TYPE).getValue(String.class);
                             if (Objects.requireNonNull(societyServiceType).equals(FIREBASE_CHILD_SCRAP_COLLECTION)) {
                                 String scrapType = dataSnapshot.child(FIREBASE_CHILD_SCRAP_TYPE).getValue(String.class);
                                 Objects.requireNonNull(nammaApartmentSocietyServices).setScrapType(scrapType);

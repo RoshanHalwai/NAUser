@@ -8,6 +8,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.adapters.ContactUsAdapter;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.RetrievingSocietyServiceHistoryList;
+import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.EventManagementHistoryAdapter;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.SocietyServiceHistoryAdapter;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -70,6 +71,7 @@ public class SocietyServicesHistory extends BaseActivity {
                     .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
                         hideProgressIndicator();
                         if (societyServiceNotificationDataList == null) {
+                            //Show Feature Unavailable layout based on the Society Service Feature
                             String messageDescription = getString(R.string.society_service_unavailable_message);
                             String textReplacement = getString(R.string.service);
                             String updatedDescription = "";
@@ -95,8 +97,13 @@ public class SocietyServicesHistory extends BaseActivity {
                             }
                             showFeatureUnAvailableLayout(updatedDescription);
                         } else {
-                            SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
-                            recyclerView.setAdapter(adapter);
+                            if (societyServiceType.equals(EVENT_MANAGEMENT)) {
+                                EventManagementHistoryAdapter adapter = new EventManagementHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                                recyclerView.setAdapter(adapter);
+                            } else {
+                                SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
+                                recyclerView.setAdapter(adapter);
+                            }
                         }
                     });
         }
