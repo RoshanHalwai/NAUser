@@ -46,7 +46,7 @@
     <string name="creating_your_account">Creating your Account</string>
     <string name="please_wait_a_moment">Please wait a moment</string>
     <string name="create_account">Create Account</string>
-    <string name="multiple_admin_restricted">Sorry, we already have an Admin from your Flat. Please ask admin to add you as a Family Member or Friend.</string>
+    <string name="multiple_admin_restricted">Sorry, we already have an Admin from your Flat. Please ask the Flat Admin to add you as a Flat Member.</string>
     <string name="title_multiple_admin">Registration unsuccessful</string>
     <string name="city_hint">Search City</string>
     <string name="society_hint">Search Society</string>
