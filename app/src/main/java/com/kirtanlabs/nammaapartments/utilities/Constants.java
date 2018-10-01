@@ -150,6 +150,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PACKAGES = "packages";
     public static final String FIREBASE_CHILD_POSTAPPROVED = "postApproved";
     public static final String FIREBASE_CHILD_PREAPPROVED = "preApproved";
+    public static final String FIREBASE_CHILD_GUARD_APPROVED = "guardApproved";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_DATA = "data";
     public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";
