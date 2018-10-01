@@ -270,7 +270,6 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         String userName = nammaApartmentUser.getPersonalDetails().getFullName();
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-        Vehicle vehicle = new Vehicle(userName, vehicleNumber, vehicleType, dateFormat.format(new Date()));
 
         /*Get User Data Vehicle Reference*/
         DatabaseReference userVehiclesReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
@@ -282,6 +281,7 @@ public class AddMyVehicleActivity extends BaseActivity implements View.OnClickLi
             allVehicleReference.setValue(userVehicleUID);
 
             DatabaseReference privateVehicleReference = PRIVATE_VEHICLES_REFERENCE.child(userVehicleUID);
+            Vehicle vehicle = new Vehicle(userName, vehicleNumber, vehicleType, dateFormat.format(new Date()), userVehicleUID);
             privateVehicleReference.setValue(vehicle);
 
             /* Once we are done with storing data we need to call MyVehiclesActivity screen again
