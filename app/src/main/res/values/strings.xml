@@ -253,6 +253,8 @@
     <string name="daily_service_success_title">Daily Service Message</string>
     <string name="daily_service_success_message">You have successfully added your Daily Service.</string>
     <string name="remove_daily_service_title">Remove Daily Service</string>
+    <string name="rate_service">Rate</string>
+    <string name="rate_service_message">How about rating your Daily Service?</string>
 
     <!--Adding My Daily Services-->
     <string name="name">Name</string>

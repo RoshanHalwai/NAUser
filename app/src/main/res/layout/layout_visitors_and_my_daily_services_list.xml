@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line"
                 android:layout_marginTop="10dp"
-                android:weightSum="4">
+                android:weightSum="5">
 
                 <TextView
                     android:id="@+id/textCall"
@@ -204,6 +204,16 @@
                     android:drawableTop="@drawable/reschedule_new"
                     android:gravity="center"
                     android:text="@string/reschedule"
+                    android:textColor="@color/nmBlack" />
+
+                <TextView
+                    android:id="@+id/textRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/rating_star_na"
+                    android:gravity="center"
+                    android:text="@string/rate_service"
                     android:textColor="@color/nmBlack" />
 
                 <TextView
