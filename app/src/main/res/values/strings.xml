@@ -594,6 +594,7 @@
     <string name="rupees_symbol">Rs.</string>
     <string name="payment_success_title">Payment Success Message</string>
     <string name="payment_success_message">Payment successfully done. Your Event has been booked.</string>
+    <string name="estimated_amount">Estimated Amount:</string>
 
     <!--Activation Required Activity-->
     <string name="activation_required_title">Account Created</string>
@@ -639,6 +640,19 @@
     <string name="prefill">prefill</string>
     <string name="payment_description">description</string>
     <string name="no_pending_dues">No\n Pending Dues</string>
+    <string name="pending_dues">Pending Dues</string>
+    <string name="progress_dialog_message">Please wait, we are checking for pending dues.</string>
+    <string name="payment_success">Payment Successful</string>
+    <string name="payment_failed">Payment Failed</string>
+    <string name="payment_success_exception">Exception in onPaymentSuccess</string>
+    <string name="payment_failure_exception">Exception in onPaymentError</string>
+    <string name="payment_error">Error in payment:</string>
+    <string name="no_dues_dialog_title">No Dues</string>
+    <string name="no_dues_dialog_message">You do not have any pending dues.</string>
+    <string name="maintenance_bill">Maintenance Bill</string>
+    <string name="maintenance_amount">Maintenance Amount:</string>
+    <string name="convenience_fee">Convenience Fee (num%): </string>
+    <string name="num_value">num</string>
 
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>
