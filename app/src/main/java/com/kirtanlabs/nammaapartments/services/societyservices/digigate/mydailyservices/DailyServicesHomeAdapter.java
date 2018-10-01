@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -296,6 +297,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
          * Private Members
          * ------------------------------------------------------------- */
 
+        final LinearLayout layoutExtras;
         final TextView textServiceName;
         final TextView textServiceNameValue;
         final TextView textServiceType;
@@ -322,6 +324,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             super(itemView);
 
             /*Getting id's for all the views*/
+            layoutExtras = itemView.findViewById(R.id.layoutExtras);
             textServiceName = itemView.findViewById(R.id.textVisitorOrServiceName);
             textServiceType = itemView.findViewById(R.id.textVisitorOrServiceType);
             textInvitationDateOrServiceRating = itemView.findViewById(R.id.textInvitationDateOrServiceRating);
@@ -353,6 +356,10 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitationTimeOrStatusValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
+
+            /*Ensuring 'Rate' option is shown only in the Daily Service list, since the Guest list also uses the same layout*/
+            layoutExtras.setWeightSum(5);
+            textRate.setVisibility(View.VISIBLE);
 
             textCall.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
             textMessage.setTypeface(Constants.setLatoBoldItalicFont(mCtx));
@@ -393,6 +400,5 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             }
         }
     }
-
 
 }
