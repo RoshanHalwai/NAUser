@@ -45,6 +45,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     private final Context mCtx;
     private final BaseActivity baseActivity;
     private final List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
+    private RatingBar ratingBarSocietyService;
     private EditText editPickTime;
 
     /* ------------------------------------------------------------- *
@@ -198,6 +199,22 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     }
 
     /**
+     * This method is invoked when User presses on Submit button in Rate Daily Service dialog
+     *
+     * @param position                    of card view for which time has to be manipulated
+     * @param nammaApartmentDailyService  of whose rating needs to be updated
+     * @param dailyServiceRatingReference where rating value has toi be set
+     */
+    private void submitRating(int position, NammaApartmentDailyService nammaApartmentDailyService, DatabaseReference dailyServiceRatingReference) {
+        float rating = ratingBarSocietyService.getRating();
+        int rateInt = Math.round(rating);
+        nammaApartmentDailyService.setRating(rateInt);
+        notifyItemChanged(position);
+        dailyServiceRatingReference.setValue(rating);
+        //TODO: Calculate, Store, and Retrieve Average Rating
+    }
+
+    /**
      * This method is invoked when the User presses on 'Rate' option. The rating is then stored in firebase
      *
      * @param position                   of card view for which time has to be manipulated
@@ -205,46 +222,39 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      */
     private void openRateDailyServiceDialog(int position, NammaApartmentDailyService nammaApartmentDailyService) {
         View rateServiceDialog = View.inflate(mCtx, R.layout.layout_rate_society_service, null);
-
         /*Getting Id's for all the views*/
         TextView textRateExperience = rateServiceDialog.findViewById(R.id.textRateExperience);
         TextView textRecentSocietyService = rateServiceDialog.findViewById(R.id.textRecentSocietyService);
         CircleImageView imageRecentSocietyService = rateServiceDialog.findViewById(R.id.imageRecentSocietyService);
-        RatingBar ratingBarSocietyService = rateServiceDialog.findViewById(R.id.ratingBarSocietyService);
+        ratingBarSocietyService = rateServiceDialog.findViewById(R.id.ratingBarSocietyService);
         Button buttonSubmit = rateServiceDialog.findViewById(R.id.buttonSubmit);
-
         /*Setting font for all the views*/
         textRateExperience.setTypeface(setLatoBoldFont(mCtx));
         buttonSubmit.setTypeface(setLatoRegularFont(mCtx));
 
+        /*Setting dialog message*/
         textRateExperience.setText(R.string.rate_service_message);
-
         imageRecentSocietyService.setVisibility(View.GONE);
         textRecentSocietyService.setVisibility(View.GONE);
 
+        /*Setting dialog*/
         android.support.v7.app.AlertDialog.Builder alertRateServiceDialog = new android.support.v7.app.AlertDialog.Builder(mCtx);
         alertRateServiceDialog.setView(rateServiceDialog);
         android.support.v7.app.AlertDialog dialog = alertRateServiceDialog.create();
         dialog.setCancelable(true);
-
         new Dialog(mCtx);
         dialog.show();
 
         /*Setting onClickListener for view*/
         buttonSubmit.setOnClickListener(v -> {
-            float rating = ratingBarSocietyService.getRating();
-            int rateInt = Math.round(rating);
             String dailyServiceUID = nammaApartmentDailyService.getUID();
             String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
-            nammaApartmentDailyService.setRating(rateInt);
-            notifyItemChanged(position);
             /*Setting the rating given by the user in Daily Services data in firebase*/
             DatabaseReference dailyServiceRatingReference = PUBLIC_DAILYSERVICES_REFERENCE
-                    .child(DailyServiceType.getKeyByValue(dailyServiceType)).child(dailyServiceUID).child(NammaApartmentsGlobal.userUID);
-            dailyServiceRatingReference.child(Constants.RATING).setValue(rating);
+                    .child(DailyServiceType.getKeyByValue(dailyServiceType)).child(dailyServiceUID).child(NammaApartmentsGlobal.userUID)
+                    .child(Constants.RATING);
+            submitRating(position, nammaApartmentDailyService, dailyServiceRatingReference);
             dialog.cancel();
-
-            //TODO: Calculate, Store, and Retrieve Average Rating
         });
     }
 
