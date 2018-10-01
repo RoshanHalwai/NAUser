@@ -48,14 +48,12 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFER
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_DAILYSERVICE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
@@ -371,6 +369,10 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         }
     }
 
+    /**
+     * This method is invoked when User presses on 'Create Account' button in 'My Flat Details' screen.
+     * The details entered by User during Sign Up process is stored in Firebase
+     */
     private void storeUserDetailsInFirebase() {
         //Displaying progress dialog while image is uploading
         showProgressDialog(this,
@@ -402,38 +404,8 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                  * the Admin to add them as Family Member. This is done to ensure a flat does not have
                  * multiple admins*/
                 if (dataSnapshot.exists()) {
-                    DatabaseReference adminUIDReference = flatsReference.child(FIREBASE_ADMIN);
-                    adminUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String adminUID = Objects.requireNonNull(dataSnapshot.getValue()).toString();
-                            DatabaseReference adminNameReference = PRIVATE_USERS_REFERENCE.child(adminUID);
-                            adminNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    //Getting full name of Admin of the flat from User's Private data
-                                    String adminName = dataSnapshot.child(FIREBASE_CHILD_PERSONALDETAILS).child(FIREBASE_CHILD_FULLNAME).getValue(String.class);
-                                    String multipleAdminText = getResources().getString(R.string.multiple_admin_restricted);
-                                    multipleAdminText = multipleAdminText.replace(FIREBASE_ADMIN, Objects.requireNonNull(adminName));
-
-                                    //This dialog box pops up when a new user who is trying to sign up, already has a registered Admin
-                                    //in that particular flat, because of which, the user is being restricted to sign up
-                                    showNotificationDialog(getString(R.string.title_multiple_admin), multipleAdminText, null);
-                                    hideProgressDialog();
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    showNotificationDialog(getString(R.string.title_multiple_admin), getResources().getString(R.string.multiple_admin_restricted), null);
+                    hideProgressDialog();
                 }
                 /*Record not found, user is the first family member for the entered flat details.
                  * Setup account for them*/
@@ -444,14 +416,14 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                             .child(Constants.FIREBASE_CHILD_PRIVATE)
                             .child(userUID);
 
-                    //Create file metadata including the content type
+                    /*Create file metadata including the content type*/
                     StorageMetadata metadata = new StorageMetadata.Builder()
                             .setContentType("image/png")
                             .build();
 
                     UploadTask uploadTask = storageReference.putBytes(getByteArrayFromFile(MyFlatDetails.this, profilePhotoPath), metadata);
 
-                    //adding the profile photo to storage reference and user data to real time database
+                    /*adding the profile photo to storage reference and user data to real time database*/
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
                         /*Create an instance of NammaApartmentUser class*/
                         UserPersonalDetails userPersonalDetails = new UserPersonalDetails(emailId, fullName, mobileNumber, Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString());

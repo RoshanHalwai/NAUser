@@ -46,7 +46,7 @@
     <string name="creating_your_account">Creating your Account</string>
     <string name="please_wait_a_moment">Please wait a moment</string>
     <string name="create_account">Create Account</string>
-    <string name="multiple_admin_restricted">Sorry, we already have an Admin from your Flat. Please ask admin to add you as a Family Member or Friend.</string>
+    <string name="multiple_admin_restricted">Sorry, we already have an Admin from your Flat. Please ask the Flat Admin to add you as a Flat Member.</string>
     <string name="title_multiple_admin">Registration unsuccessful</string>
     <string name="city_hint">Search City</string>
     <string name="society_hint">Search Society</string>
@@ -403,6 +403,7 @@
     <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
     <string name="service">Service</string>
+    <string name="selected_slots">Selected Slots:</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>
@@ -556,6 +557,7 @@
 
     <!--Event Management Activity-->
     <string name="event_title">Event Title</string>
+    <string name="event_title_with_colon">Event Title:</string>
     <string name="choose_category">Choose Category</string>
     <string name="parties">Parties</string>
     <string name="concerts">Concerts</string>

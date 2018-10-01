@@ -137,6 +137,11 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         /*We need Info Button in this screen*/
         showInfoButton();
 
+        /*Since we have History button here, we would want users to navigate to history and take a look at their
+         * History of that particular Society Service*/
+        ImageView historyButton = findViewById(R.id.historyButton);
+        historyButton.setVisibility(View.VISIBLE);
+
         /*Getting Id's for all the views*/
         TextView textEventTitle = findViewById(R.id.textEventTitle);
         TextView textChooseCategory = findViewById(R.id.textChooseCategory);
@@ -214,11 +219,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
         societyServiceType = FIREBASE_CHILD_EVENT_MANAGEMENT;
 
-        /*Since we have History button here, we would want users to navigate to history and take a look at their
-         * History of that particular Society Service*/
-        ImageView historyButton = findViewById(R.id.historyButton);
-        historyButton.setVisibility(View.VISIBLE);
-
         /*Setting event for views */
         editPickDate.setOnClickListener(this);
         editPickDate.setOnFocusChangeListener(this);
@@ -258,7 +258,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
             calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
-            selectedEventDate = new SimpleDateFormat("dd-MM-yyyy", Locale.UK).format(calendar.getTime());
+            selectedEventDate = new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(calendar.getTime());
             showSlotLayout(selectedDate);
         }
     }
