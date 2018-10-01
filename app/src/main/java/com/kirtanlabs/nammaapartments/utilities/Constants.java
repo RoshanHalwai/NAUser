@@ -206,6 +206,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_FOOD_DONATIONS = "foodDonations";
     public static final String FIREBASE_CHILD_SCRAP_TYPE = "scrapType";
     public static final String FIREBASE_CHILD_TIME_SLOTS = "timeSlots";
+    public static final String FIREBASE_CHILD_VEHICLE_NUMBER = "vehicleNumber";
     public static final String FIREBASE_CHILD_CONVENIENCE_CHARGES="convenienceCharges";
 
     /* ------------------------------------------------------------- *

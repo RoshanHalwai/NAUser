@@ -116,6 +116,43 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/row1"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/buttonEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/nmBlack"
+                    android:text="@string/edit"
+                    android:textAllCaps="true"
+                    android:textColor="@color/nmLightYellow"
+                    android:textSize="@dimen/button_default_size"
+                    tools:ignore="ButtonStyle" />
+
+                <Button
+                    android:id="@+id/buttonRemove"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/nmBlack"
+                    android:text="@string/remove"
+                    android:textAllCaps="true"
+                    android:textColor="@color/nmLightYellow"
+                    android:textSize="@dimen/button_default_size"
+                    tools:ignore="ButtonStyle" />
+
+            </LinearLayout>
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

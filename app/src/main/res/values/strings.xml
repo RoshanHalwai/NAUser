@@ -253,6 +253,8 @@
     <string name="daily_service_success_title">Daily Service Message</string>
     <string name="daily_service_success_message">You have successfully added your Daily Service.</string>
     <string name="remove_daily_service_title">Remove Daily Service</string>
+    <string name="rate_service">Rate</string>
+    <string name="rate_service_message">How about rating your Daily Service?</string>
 
     <!--Adding My Daily Services-->
     <string name="name">Name</string>
@@ -534,6 +536,9 @@
     <string name="vehicle_added_date">Added On:</string>
     <string name="car_no">Car No:</string>
     <string name="bike_no">Bike No:</string>
+    <string name="remove_vehicle_title">Remove Message</string>
+    <string name="remove_vehicle_message">Are you sure you want to remove the details of the Vehicle ?</string>
+    <string name="edit_vehicle_description">Edit My Vehicle details</string>
 
     <!--Awaiting Response Activity-->
     <string name="awaiting_response_title">Awaiting Response</string>

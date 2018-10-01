@@ -114,6 +114,10 @@ public class NammaApartmentDailyService implements Serializable {
         this.status = status;
     }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public String getDateOfVisit() {
         return dateOfVisit;
     }
