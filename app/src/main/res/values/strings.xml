@@ -405,6 +405,7 @@
     <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
     <string name="service">Service</string>
+    <string name="selected_slots">Selected Slots:</string>
 
     <string-array name="plumbing_issues_list">
         <item>@string/dripping_faucets</item>
@@ -555,6 +556,7 @@
 
     <!--Event Management Activity-->
     <string name="event_title">Event Title</string>
+    <string name="event_title_with_colon">Event Title:</string>
     <string name="choose_category">Choose Category</string>
     <string name="parties">Parties</string>
     <string name="concerts">Concerts</string>
