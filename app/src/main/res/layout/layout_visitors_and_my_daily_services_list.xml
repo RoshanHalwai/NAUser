@@ -170,9 +170,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/layoutExtras"
                 android:layout_below="@+id/line"
                 android:layout_marginTop="10dp"
-                android:weightSum="5">
+                android:weightSum="4">
 
                 <TextView
                     android:id="@+id/textCall"
@@ -214,7 +215,8 @@
                     android:drawableTop="@drawable/rating_star_na"
                     android:gravity="center"
                     android:text="@string/rate_service"
-                    android:textColor="@color/nmBlack" />
+                    android:textColor="@color/nmBlack"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/textCancel"
