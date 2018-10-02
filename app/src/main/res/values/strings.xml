@@ -599,6 +599,7 @@
     <string name="payment_success_title">Payment Success Message</string>
     <string name="payment_success_message">Payment successfully done. Your Event has been booked.</string>
     <string name="estimated_amount">Estimated Amount:</string>
+    <string name="event_feature_unavailable">Event Booking facility is Unavailable in your Society</string>
 
     <!--Activation Required Activity-->
     <string name="activation_required_title">Account Created</string>

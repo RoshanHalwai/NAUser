@@ -119,6 +119,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_ALL = "all";
     public static final String FIREBASE_ADMIN = "admin";
     public static final String FIREBASE_ACCEPTED = "Accepted";
+    public static final String FIREBASE_CHILD_BOOKING_AMOUNT = "bookingAmount";
     public static final String FIREBASE_CANCELLED = "Cancelled";
     public static final String FIREBASE_CHILD_CARBIKECLEANERS = "carBikeCleaners";
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
@@ -177,6 +178,7 @@ public class Constants {
     private static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     private static final String FIREBASE_CHILD_CITIES = "cities";
     private static final String FIREBASE_CHILD_CLIENTS = "clients";
+    public static final String FIREBASE_CHILD_CONVENIENCE_CHARGES = "convenienceCharges";
     private static final String FIREBASE_CHILD_FLATS = "flats";
     private static final String FIREBASE_CHILD_PUBLIC = "public";
     private static final String FIREBASE_CHILD_SOCIETIES = "societies";
@@ -208,7 +210,6 @@ public class Constants {
     public static final String FIREBASE_CHILD_SCRAP_TYPE = "scrapType";
     public static final String FIREBASE_CHILD_TIME_SLOTS = "timeSlots";
     public static final String FIREBASE_CHILD_VEHICLE_NUMBER = "vehicleNumber";
-    public static final String FIREBASE_CHILD_CONVENIENCE_CHARGES="convenienceCharges";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
