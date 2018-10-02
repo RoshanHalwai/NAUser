@@ -138,7 +138,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*To Retrieve the booking amount per slot from server, if booking*/
+        /*To Retrieve the booking amount per slot from server, if booking charges is 0.0 then it indicates
+         * the society do not have Event Booking facilities*/
         showProgressDialog(this, "Event Booking", getString(R.string.please_wait_a_moment));
         retrieveBookingAmountPerSlot(bookingAmount -> {
             hideProgressDialog();
