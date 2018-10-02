@@ -51,6 +51,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ELEVEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_BOOKING_AMOUNT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CONVENIENCE_CHARGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
@@ -144,7 +145,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         retrieveBookingAmountPerSlot(bookingAmount -> {
             hideProgressDialog();
             if (bookingAmount == 0.0f) {
-                showFeatureUnAvailableLayout("Event Booking facility is Unavailable in your Society");
+                showFeatureUnAvailableLayout(getString(R.string.event_feature_unavailable));
             } else {
                 ScrollView eventManagementLayout = findViewById(R.id.eventManagementLayout);
                 eventManagementLayout.setVisibility(View.VISIBLE);
@@ -959,7 +960,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     }
 
     private void retrieveBookingAmountPerSlot(BookingAmountCallback bookingAmountCallback) {
-        EVENT_MANAGEMENT_REFERENCE.child("bookingAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+        EVENT_MANAGEMENT_REFERENCE.child(FIREBASE_CHILD_BOOKING_AMOUNT).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
