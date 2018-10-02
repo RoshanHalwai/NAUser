@@ -72,7 +72,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTH_TIME_SLOT;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SINGLE_TIME_SLOT_BOOKING_AMOUNT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
@@ -532,6 +531,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * an event in particular time slots for that date.
      */
     private void showEventPaymentDialog() {
+        showProgressDialog(this, "Booking Amount", getString(R.string.please_wait_a_moment));
+
         View eventPaymentDialog = View.inflate(this, R.layout.layout_event_bill_dialog, null);
 
         /*Getting Id's for all the views*/
@@ -564,25 +565,42 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         }
         textBookedSlotsNumberValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
 
-        totalAmount = (totalNumberOfTimeSlotsSelected * SINGLE_TIME_SLOT_BOOKING_AMOUNT);
-        String totalAmountValue = getString(R.string.rupees_symbol) + " " + totalAmount;
-        textTotalAmountValue.setText(totalAmountValue);
+        /*We get Booking amount for the Hall from Firebase, since it can change from one Society to another*/
+        getBookingAmountFromFB(bookingAmount -> {
+            hideProgressDialog();
+            totalAmount = (totalNumberOfTimeSlotsSelected * Integer.valueOf(bookingAmount));
+            String totalAmountValue = getString(R.string.rupees_symbol) + " " + totalAmount;
+            textTotalAmountValue.setText(totalAmountValue);
 
-        AlertDialog.Builder alertValidationDialog = new AlertDialog.Builder(this);
-        alertValidationDialog.setView(eventPaymentDialog);
-        AlertDialog dialog = alertValidationDialog.create();
-        dialog.setCancelable(false);
+            AlertDialog.Builder alertValidationDialog = new AlertDialog.Builder(this);
+            alertValidationDialog.setView(eventPaymentDialog);
+            AlertDialog dialog = alertValidationDialog.create();
+            dialog.setCancelable(false);
+            dialog.show();
 
-        new Dialog(this);
-        dialog.show();
+            /*Setting Listeners to the views*/
+            buttonCancel.setOnClickListener(v -> dialog.cancel());
+            buttonPayNow.setOnClickListener(v -> {
+                /*converting Rupees into paise*/
+                int totalAmountInPaise = totalAmount * 100;
+                startPayment(totalAmountInPaise);
+                dialog.cancel();
+            });
+        });
+    }
 
-        /*Setting Listeners to the views*/
-        buttonCancel.setOnClickListener(v -> dialog.cancel());
-        buttonPayNow.setOnClickListener(v -> {
-            /*converting Rupees into paise*/
-            int totalAmountInPaise = totalAmount * 100;
-            startPayment(totalAmountInPaise);
-            dialog.cancel();
+    private void getBookingAmountFromFB(BookingAmountCallback bookingAmountCallback) {
+        DatabaseReference databaseReference = EVENT_MANAGEMENT_REFERENCE.child("bookingAmount");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                bookingAmountCallback.onCallBack(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
     }
 
@@ -899,4 +917,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails).addOnCompleteListener(task ->
                 userTransactionReference.child(transactionUID).setValue(true));
     }
+
+    private interface BookingAmountCallback {
+        void onCallBack(String bookingAmount);
+    }
+
 }
