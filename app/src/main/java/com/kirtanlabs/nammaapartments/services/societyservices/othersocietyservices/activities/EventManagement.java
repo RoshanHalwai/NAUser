@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +75,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTH_TIME_SLOT;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SINGLE_TIME_SLOT_BOOKING_AMOUNT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
@@ -117,8 +117,8 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private Boolean isCategorySelected = false, isFullDayTimeSlotSelected = false;
     private LinearLayout layoutTimeSlot, layoutLegend;
     private List<String> selectedTimeSlotsList;
-    private int totalAmount, selectedButtonId;
-    private float conveniencePercentage, convenienceCharge;
+    private int selectedButtonId;
+    private float conveniencePercentage, convenienceCharge, totalAmount, bookingAmountPerSlot;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -138,6 +138,23 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*To Retrieve the booking amount per slot from server, if booking charges is 0.0 then it indicates
+         * the society do not have Event Booking facilities*/
+        showProgressDialog(this, "Event Booking", getString(R.string.please_wait_a_moment));
+        retrieveBookingAmountPerSlot(bookingAmount -> {
+            hideProgressDialog();
+            if (bookingAmount == 0.0f) {
+                showFeatureUnAvailableLayout("Event Booking facility is Unavailable in your Society");
+            } else {
+                ScrollView eventManagementLayout = findViewById(R.id.eventManagementLayout);
+                eventManagementLayout.setVisibility(View.VISIBLE);
+                bookingAmountPerSlot = bookingAmount;
+                onCreateUtil();
+            }
+        });
+    }
+
+    private void onCreateUtil() {
         /*We need Info Button in this screen*/
         showInfoButton();
 
@@ -430,7 +447,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             public void onDataChange(DataSnapshot dataSnapshot) {
                 convenienceCharge = Objects.requireNonNull(dataSnapshot.getValue(Float.class));
                 conveniencePercentage = (convenienceCharge / 100);
-
             }
 
             @Override
@@ -582,7 +598,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         textAmountPerSlot.setTypeface(setLatoRegularFont(this));
         textEstimatedAmount.setTypeface(setLatoRegularFont(this));
         textConvenienceFee.setTypeface(setLatoRegularFont(this));
-        textTotalAmount.setTypeface(setLatoRegularFont(this));
+        textTotalAmount.setTypeface(setLatoBoldFont(this));
         textBookedSlotsNumberAndMaintenanceCostValue.setTypeface(setLatoBoldFont(this));
         textAmountPerSlotValue.setTypeface(setLatoBoldFont(this));
         textEstimatedAmountValue.setTypeface(setLatoBoldFont(this));
@@ -600,18 +616,22 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         }
         textBookedSlotsNumberAndMaintenanceCostValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
 
+        /*Setting booking amount per slot retrieved from server*/
+        String bookingAmountPerSlotStr = getString(R.string.rupees_symbol) + " " + String.valueOf(bookingAmountPerSlot);
+        textAmountPerSlotValue.setText(bookingAmountPerSlotStr);
+
         /*Setting convenience fee  amount from server*/
         String convenienceFee = getString(R.string.convenience_fee);
         convenienceFee = convenienceFee.replace(getString(R.string.num_value), String.valueOf(convenienceCharge));
         textConvenienceFee.setText(convenienceFee);
 
         /*Mathematical Calculations for setting the convenience fee and adding it to the total amount.*/
-        int estimatedAmount = (totalNumberOfTimeSlotsSelected * SINGLE_TIME_SLOT_BOOKING_AMOUNT);
+        float estimatedAmount = (totalNumberOfTimeSlotsSelected * bookingAmountPerSlot);
         String estimatedAmountValue = getString(R.string.rupees_symbol) + " " + estimatedAmount;
         textEstimatedAmountValue.setText(estimatedAmountValue);
 
         /*Deriving Convenience Fee from the estimated cost value and slots selected by the user*/
-        int convenienceAmount = (int) (conveniencePercentage * estimatedAmount);
+        float convenienceAmount = (conveniencePercentage * estimatedAmount);
         String convenienceAmountValue = getString(R.string.rupees_symbol) + " " + convenienceAmount;
         textConvenienceFeeValue.setText(convenienceAmountValue);
 
@@ -634,7 +654,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonCancel.setOnClickListener(v -> dialog.cancel());
         buttonPayNow.setOnClickListener(v -> {
             /*converting Rupees into paise*/
-            int totalAmountInPaise = totalAmount * 100;
+            float totalAmountInPaise = totalAmount * 100;
             startPayment(totalAmountInPaise);
             dialog.cancel();
         });
@@ -645,7 +665,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      *
      * @param amount - that user has to pay to book an event
      */
-    private void startPayment(int amount) {
+    private void startPayment(float amount) {
         final Activity activity = this;
         final Checkout co = new Checkout();
         try {
@@ -938,6 +958,24 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         }
     }
 
+    private void retrieveBookingAmountPerSlot(BookingAmountCallback bookingAmountCallback) {
+        EVENT_MANAGEMENT_REFERENCE.child("bookingAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    bookingAmountCallback.onCallback(dataSnapshot.getValue(Float.class));
+                } else {
+                    bookingAmountCallback.onCallback(0.0f);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     /**
      * Stores the details of transaction for event in firebase
      *
@@ -953,4 +991,10 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails).addOnCompleteListener(task ->
                 userTransactionReference.child(transactionUID).setValue(true));
     }
+
+    private interface BookingAmountCallback {
+        void onCallback(Float bookingAmount);
+    }
+
+
 }

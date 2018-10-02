@@ -7,9 +7,18 @@
 
     <include layout="@layout/activity_base" />
 
-    <ScrollView
+    <include
+        android:id="@+id/layoutFeatureUnavailable"
+        layout="@layout/layout_feature_unavailable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/eventManagementLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"

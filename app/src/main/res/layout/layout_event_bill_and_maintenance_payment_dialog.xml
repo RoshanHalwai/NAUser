@@ -1,183 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textEventBillAndMaintenanceBill"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:text="@string/event_bill"
-        android:textColor="@color/nmBlack"
-        android:textSize="@dimen/button_default_size"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textEventBillAndMaintenanceBill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/booking_summary"
+            android:textColor="@color/nmBlack"
+            android:textSize="@dimen/button_default_size"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/layoutTitles"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1.4"
-            android:orientation="vertical">
+            android:layout_marginRight="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <TextView
-                android:id="@+id/textBookedSlotsNumberAndMaintenanceAmount"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/layoutTitles"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/number_of_booked_slots"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1.3"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textAmountPerSlot"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textBookedSlotsNumberAndMaintenanceAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/number_of_booked_slots"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <TextView
+                    android:id="@+id/textAmountPerSlot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/amount_per_slot"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <TextView
+                    android:id="@+id/textEstimatedAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/estimated_amount"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <TextView
+                    android:id="@+id/textConvenienceFee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <View
+                    android:id="@+id/totalAmountLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/nmLightYellow" />
+
+                <TextView
+                    android:id="@+id/textTotalAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/total_amount"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutTitleValues"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/amount_per_slot"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:layout_weight="0.7"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textEstimatedAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/estimated_amount"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                <TextView
+                    android:id="@+id/textBookedSlotsNumberAndMaintenanceCostValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
 
-            <TextView
-                android:id="@+id/textConvenienceFee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                <TextView
+                    android:id="@+id/textAmountPerSlotValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
 
-            <View
-                android:id="@+id/totalAmountLine"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/nmLightYellow" />
+                <TextView
+                    android:id="@+id/textEstimatedAmountValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
 
-            <TextView
-                android:id="@+id/textTotalAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/total_amount"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                <TextView
+                    android:id="@+id/textConvenienceFeeValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+                <View
+                    android:id="@+id/totalAmountViewValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/nmLightYellow" />
+
+                <TextView
+                    android:id="@+id/textTotalAmountValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textColor="@color/nmBlack"
+                    android:textSize="@dimen/text_view_default_size" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutTitleValues"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <TextView
-                android:id="@+id/textBookedSlotsNumberAndMaintenanceCostValue"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/button_margin"
+                android:layout_weight="0.5"
+                android:background="@color/nmBlack"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size"
+                tools:ignore="ButtonStyle" />
 
-            <TextView
-                android:id="@+id/textAmountPerSlotValue"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/buttonPayNow"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@string/amount_for_single_slot_in_event_management"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
-
-            <TextView
-                android:id="@+id/textEstimatedAmountValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
-
-            <TextView
-                android:id="@+id/textConvenienceFeeValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
-
-            <View
-                android:id="@+id/totalAmountViewValue"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/nmLightYellow" />
-
-            <TextView
-                android:id="@+id/textTotalAmountValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textColor="@color/nmBlack"
-                android:textSize="@dimen/text_view_default_size" />
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/button_margin"
+                android:layout_weight="0.5"
+                android:background="@color/nmBlack"
+                android:text="@string/pay_now"
+                android:textAllCaps="false"
+                android:textColor="@color/nmLightYellow"
+                android:textSize="@dimen/button_default_size"
+                tools:ignore="ButtonStyle" />
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <Button
-            android:id="@+id/buttonCancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/button_margin"
-            android:layout_weight="0.5"
-            android:background="@color/nmBlack"
-            android:text="@string/cancel"
-            android:textAllCaps="true"
-            android:textColor="@color/nmLightYellow"
-            android:textSize="@dimen/button_default_size"
-            tools:ignore="ButtonStyle" />
-
-        <Button
-            android:id="@+id/buttonPayNow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/button_margin"
-            android:layout_weight="0.5"
-            android:background="@color/nmBlack"
-            android:text="@string/pay_now"
-            android:textAllCaps="true"
-            android:textColor="@color/nmLightYellow"
-            android:textSize="@dimen/button_default_size"
-            tools:ignore="ButtonStyle" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.v7.widget.CardView>
