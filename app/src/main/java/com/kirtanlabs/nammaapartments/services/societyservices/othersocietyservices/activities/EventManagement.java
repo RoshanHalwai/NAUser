@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EIGHTEEN_HOURS;
@@ -49,6 +50,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ELEVEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CONVENIENCE_CHARGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
@@ -72,6 +74,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEVENTH_TIME_SLOT;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SINGLE_TIME_SLOT_BOOKING_AMOUNT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SIXTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETYSERVICENOTIFICATION_REFERENCE;
@@ -82,6 +85,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEENTH_TIME
 import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TIME_SLOT_FULL_DAY;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TOTAL_NUMBER_OF_TIME_SLOTS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.TRANSACTION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELFTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELVE_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWENTY_HOURS;
@@ -114,6 +118,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private LinearLayout layoutTimeSlot, layoutLegend;
     private List<String> selectedTimeSlotsList;
     private int totalAmount, selectedButtonId;
+    private float conveniencePercentage, convenienceCharge;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -212,6 +217,9 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         buttonBook.setTypeface(setLatoLightFont(this));
 
         selectedTimeSlotsList = new ArrayList<>();
+
+        /*To Retrieve the convenienceCharge from server*/
+        retrieveConvenienceCharge();
 
         /*We don't want the keyboard to be displayed when user clicks on the pick date and time edit field*/
         editPickDate.setInputType(InputType.TYPE_NULL);
@@ -368,7 +376,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     @Override
     public void onPaymentSuccess(String paymentID) {
         try {
-            Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.payment_success), Toast.LENGTH_SHORT).show();
             /*This method stores event details given by user to firebase*/
             storeEventManagementDetailsInFirebase();
             storeEventManagementTransactionDetails(paymentID, PAYMENT_SUCCESSFUL);
@@ -387,7 +395,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
             textChooseTimeSlot.setVisibility(View.GONE);
             textTimeSlotQuery.setVisibility(View.GONE);
         } catch (Exception e) {
-            Log.e(TAG, "Exception in onPaymentSuccess", e);
+            Log.e(TAG, getString(R.string.payment_success_exception), e);
         }
     }
 
@@ -400,18 +408,37 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     @Override
     public void onPaymentError(int code, String response) {
         try {
-            Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
             if (!(code == PAYMENT_CANCELLED_ERROR_CODE) || !(response.equals(getString(R.string.payment_cancelled)))) {
                 storeEventManagementTransactionDetails("", PAYMENT_FAILURE);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Exception in onPaymentError", e);
+            Log.e(TAG, getString(R.string.payment_failure_exception), e);
         }
     }
 
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
+
+    /**
+     * This method retrieves the conveniencePercentage value from server.
+     */
+    private void retrieveConvenienceCharge() {
+        TRANSACTION_REFERENCE.child(FIREBASE_CHILD_CONVENIENCE_CHARGES).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                convenienceCharge = Objects.requireNonNull(dataSnapshot.getValue(Float.class));
+                conveniencePercentage = (convenienceCharge / 100);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     /**
      * This method is invoked to select multiple time slots.
@@ -531,27 +558,35 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * an event in particular time slots for that date.
      */
     private void showEventPaymentDialog() {
-        showProgressDialog(this, "Booking Amount", getString(R.string.please_wait_a_moment));
-
-        View eventPaymentDialog = View.inflate(this, R.layout.layout_event_bill_dialog, null);
+        /*Inflating the layout in the dialog box*/
+        View eventPaymentDialog = View.inflate(this, R.layout.layout_event_bill_and_maintenance_payment_dialog, null);
 
         /*Getting Id's for all the views*/
-        TextView textEventBill = eventPaymentDialog.findViewById(R.id.textEventBill);
-        TextView textBookedSlotsNumber = eventPaymentDialog.findViewById(R.id.textBookedSlotsNumber);
+        TextView textEventBillAndMaintenanceBill = eventPaymentDialog.findViewById(R.id.textEventBillAndMaintenanceBill);
+        TextView textBookedSlotsNumberAndMaintenanceAmount = eventPaymentDialog.findViewById(R.id.textBookedSlotsNumberAndMaintenanceAmount);
         TextView textAmountPerSlot = eventPaymentDialog.findViewById(R.id.textAmountPerSlot);
+        TextView textEstimatedAmount = eventPaymentDialog.findViewById(R.id.textEstimatedAmount);
+        TextView textConvenienceFee = eventPaymentDialog.findViewById(R.id.textConvenienceFee);
         TextView textTotalAmount = eventPaymentDialog.findViewById(R.id.textTotalAmount);
-        TextView textBookedSlotsNumberValue = eventPaymentDialog.findViewById(R.id.textBookedSlotsNumberValue);
+        TextView textBookedSlotsNumberAndMaintenanceCostValue = eventPaymentDialog.findViewById(R.id.textBookedSlotsNumberAndMaintenanceCostValue);
         TextView textAmountPerSlotValue = eventPaymentDialog.findViewById(R.id.textAmountPerSlotValue);
+        TextView textEstimatedAmountValue = eventPaymentDialog.findViewById(R.id.textEstimatedAmountValue);
+        TextView textConvenienceFeeValue = eventPaymentDialog.findViewById(R.id.textConvenienceFeeValue);
         TextView textTotalAmountValue = eventPaymentDialog.findViewById(R.id.textTotalAmountValue);
         Button buttonCancel = eventPaymentDialog.findViewById(R.id.buttonCancel);
         Button buttonPayNow = eventPaymentDialog.findViewById(R.id.buttonPayNow);
 
-        textEventBill.setTypeface(setLatoBoldFont(this));
-        textBookedSlotsNumber.setTypeface(setLatoRegularFont(this));
+        /*Setting fonts for all the views*/
+        textEventBillAndMaintenanceBill.setTypeface(setLatoBoldFont(this));
+        textBookedSlotsNumberAndMaintenanceAmount.setTypeface(setLatoRegularFont(this));
         textAmountPerSlot.setTypeface(setLatoRegularFont(this));
+        textEstimatedAmount.setTypeface(setLatoRegularFont(this));
+        textConvenienceFee.setTypeface(setLatoRegularFont(this));
         textTotalAmount.setTypeface(setLatoRegularFont(this));
-        textBookedSlotsNumberValue.setTypeface(setLatoBoldFont(this));
+        textBookedSlotsNumberAndMaintenanceCostValue.setTypeface(setLatoBoldFont(this));
         textAmountPerSlotValue.setTypeface(setLatoBoldFont(this));
+        textEstimatedAmountValue.setTypeface(setLatoBoldFont(this));
+        textConvenienceFeeValue.setTypeface(setLatoBoldFont(this));
         textTotalAmountValue.setTypeface(setLatoBoldFont(this));
         buttonCancel.setTypeface(setLatoLightFont(this));
         buttonPayNow.setTypeface(setLatoLightFont(this));
@@ -563,44 +598,45 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         } else {
             totalNumberOfTimeSlotsSelected = selectedTimeSlotsList.size();
         }
-        textBookedSlotsNumberValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
+        textBookedSlotsNumberAndMaintenanceCostValue.setText(String.valueOf(totalNumberOfTimeSlotsSelected));
 
-        /*We get Booking amount for the Hall from Firebase, since it can change from one Society to another*/
-        getBookingAmountFromFB(bookingAmount -> {
-            hideProgressDialog();
-            totalAmount = (totalNumberOfTimeSlotsSelected * Integer.valueOf(bookingAmount));
-            String totalAmountValue = getString(R.string.rupees_symbol) + " " + totalAmount;
-            textTotalAmountValue.setText(totalAmountValue);
+        /*Setting convenience fee  amount from server*/
+        String convenienceFee = getString(R.string.convenience_fee);
+        convenienceFee = convenienceFee.replace(getString(R.string.num_value), String.valueOf(convenienceCharge));
+        textConvenienceFee.setText(convenienceFee);
 
-            AlertDialog.Builder alertValidationDialog = new AlertDialog.Builder(this);
-            alertValidationDialog.setView(eventPaymentDialog);
-            AlertDialog dialog = alertValidationDialog.create();
-            dialog.setCancelable(false);
-            dialog.show();
+        /*Mathematical Calculations for setting the convenience fee and adding it to the total amount.*/
+        int estimatedAmount = (totalNumberOfTimeSlotsSelected * SINGLE_TIME_SLOT_BOOKING_AMOUNT);
+        String estimatedAmountValue = getString(R.string.rupees_symbol) + " " + estimatedAmount;
+        textEstimatedAmountValue.setText(estimatedAmountValue);
 
-            /*Setting Listeners to the views*/
-            buttonCancel.setOnClickListener(v -> dialog.cancel());
-            buttonPayNow.setOnClickListener(v -> {
-                /*converting Rupees into paise*/
-                int totalAmountInPaise = totalAmount * 100;
-                startPayment(totalAmountInPaise);
-                dialog.cancel();
-            });
-        });
-    }
+        /*Deriving Convenience Fee from the estimated cost value and slots selected by the user*/
+        int convenienceAmount = (int) (conveniencePercentage * estimatedAmount);
+        String convenienceAmountValue = getString(R.string.rupees_symbol) + " " + convenienceAmount;
+        textConvenienceFeeValue.setText(convenienceAmountValue);
 
-    private void getBookingAmountFromFB(BookingAmountCallback bookingAmountCallback) {
-        DatabaseReference databaseReference = EVENT_MANAGEMENT_REFERENCE.child("bookingAmount");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                bookingAmountCallback.onCallBack(dataSnapshot.getValue(String.class));
-            }
+        /*Setting the total amount which includes convenience fee plus estimated amount*/
+        totalAmount = estimatedAmount + convenienceAmount;
+        String totalAmountValue = getString(R.string.rupees_symbol) + " " + String.valueOf(totalAmount);
+        textTotalAmountValue.setText(totalAmountValue);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        /*Creating the Alert Dialog and setting the view*/
+        AlertDialog.Builder alertValidationDialog = new AlertDialog.Builder(this);
+        alertValidationDialog.setView(eventPaymentDialog);
+        AlertDialog dialog = alertValidationDialog.create();
+        dialog.setCancelable(false);
 
-            }
+        /*Showing the dialog*/
+        new Dialog(this);
+        dialog.show();
+
+        /*Setting Listeners to the views*/
+        buttonCancel.setOnClickListener(v -> dialog.cancel());
+        buttonPayNow.setOnClickListener(v -> {
+            /*converting Rupees into paise*/
+            int totalAmountInPaise = totalAmount * 100;
+            startPayment(totalAmountInPaise);
+            dialog.cancel();
         });
     }
 
@@ -627,7 +663,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
             co.open(activity, options);
         } catch (Exception e) {
-            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, getString(R.string.payment_error) + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -917,9 +953,4 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
         PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails).addOnCompleteListener(task ->
                 userTransactionReference.child(transactionUID).setValue(true));
     }
-
-    private interface BookingAmountCallback {
-        void onCallBack(String bookingAmount);
-    }
-
 }
