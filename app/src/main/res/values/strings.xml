@@ -567,7 +567,7 @@
     <string name="choose_valid_time_slot">Please choose Time Slot</string>
     <string name="meetings">Meetings</string>
     <string name="seminar_workshops">Seminars/WorkShops</string>
-    <string name="book">BOOK</string>
+    <string name="book">Book</string>
     <string name="choose_time_slot">Choose Time Slot</string>
     <string name="event_date">Event Date:</string>
     <string name="time_slot_one">8AM - 9AM</string>
@@ -590,11 +590,10 @@
     <string name="event_management_dialog_message">Searching for booked slots</string>
     <string name="available_slots">Available</string>
     <string name="unavailable_slots">Unavailable</string>
-    <string name="event_bill">Event Bill</string>
+    <string name="booking_summary">Booking Summary</string>
     <string name="number_of_booked_slots">No. of Booked Slots :</string>
     <string name="amount_per_slot">Amount per Slot :</string>
     <string name="total_amount">Total Amount :</string>
-    <string name="amount_for_single_slot_in_event_management">Rs. 100</string>
     <string name="pay_now">Pay Now</string>
     <string name="rupees_symbol">Rs.</string>
     <string name="payment_success_title">Payment Success Message</string>

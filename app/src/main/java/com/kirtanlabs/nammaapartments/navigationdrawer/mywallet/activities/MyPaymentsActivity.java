@@ -51,8 +51,8 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
 public class MyPaymentsActivity extends BaseActivity implements PaymentResultListener, View.OnClickListener {
 
     private static final String TAG = MyPaymentsActivity.class.getSimpleName();
-    private int pendingAmountInPaise, pendingAmount = 0;
-    private float conveniencePercentage, convenienceCharge;
+    private int pendingAmount = 0;
+    private float conveniencePercentage, convenienceCharge, pendingAmountInPaise;
     private String serviceCategory, pendingAmountStr;
     private TextView textMaintenanceCostValue;
     private LinearLayout layoutPendingDues, layoutNoPendingDues;
@@ -216,7 +216,6 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
             public void onDataChange(DataSnapshot dataSnapshot) {
                 convenienceCharge = Objects.requireNonNull(dataSnapshot.getValue(Float.class));
                 conveniencePercentage = (convenienceCharge / 100);
-
             }
 
             @Override
@@ -232,7 +231,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
      * @param amount      contains of the amount shown to user.
      * @param description contains the description of the payment service.
      */
-    private void startPayment(int amount, String description) {
+    private void startPayment(float amount, String description) {
         final Activity activity = this;
         final Checkout co = new Checkout();
         serviceCategory = description;
@@ -335,12 +334,12 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         textBookedSlotsNumberAndMaintenanceCostValue.setText(pendingAmountStr);
 
         /*Deriving Convenience Fee multiplied with pending amount of the user*/
-        int convenienceAmount = (int) (conveniencePercentage * pendingAmount);
+        float convenienceAmount = conveniencePercentage * pendingAmount;
         String convenienceAmountValue = getString(R.string.rupees_symbol) + " " + String.valueOf(convenienceAmount);
         textConvenienceFeeValue.setText(convenienceAmountValue);
 
         /*Setting the total amount which includes convenience fee plus pending dues amount*/
-        int totalAmount = pendingAmount + convenienceAmount;
+        float totalAmount = pendingAmount + convenienceAmount;
         String totalAmountValue = getString(R.string.rupees_symbol) + " " + String.valueOf(totalAmount);
         textTotalAmountValue.setText(totalAmountValue);
 

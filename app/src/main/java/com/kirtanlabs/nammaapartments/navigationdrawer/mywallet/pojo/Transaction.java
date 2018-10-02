@@ -6,7 +6,7 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo;
  */
 public class Transaction {
 
-    private int amount;
+    private float amount;
     private String paymentId;
     private String result;
     private String serviceCategory;
@@ -17,7 +17,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(int amount, String paymentId, String result, String serviceCategory, String userUID, String uid, long timestamp) {
+    public Transaction(float amount, String paymentId, String result, String serviceCategory, String userUID, String uid, long timestamp) {
         this.amount = amount;
         this.paymentId = paymentId;
         this.result = result;
@@ -27,7 +27,7 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
