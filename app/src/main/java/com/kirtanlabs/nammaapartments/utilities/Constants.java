@@ -150,6 +150,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_PACKAGES = "packages";
     public static final String FIREBASE_CHILD_POSTAPPROVED = "postApproved";
     public static final String FIREBASE_CHILD_PREAPPROVED = "preApproved";
+    public static final String FIREBASE_CHILD_GUARD_APPROVED = "guardApproved";
     public static final String FIREBASE_CHILD_PRIVATE = "private";
     public static final String FIREBASE_CHILD_DATA = "data";
     public static final String FIREBASE_CHILD_PROFILE_PHOTO = "profilePhoto";
@@ -207,6 +208,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_SCRAP_TYPE = "scrapType";
     public static final String FIREBASE_CHILD_TIME_SLOTS = "timeSlots";
     public static final String FIREBASE_CHILD_VEHICLE_NUMBER = "vehicleNumber";
+    public static final String FIREBASE_CHILD_CONVENIENCE_CHARGES="convenienceCharges";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -263,7 +265,7 @@ public class Constants {
     public static final DatabaseReference NOTICE_BOARD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_NOTICE_BOARD);
     public static final DatabaseReference EVENT_MANAGEMENT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_EVENT_MANAGEMENT);
     public static final DatabaseReference SUPPORT_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SUPPORT);
-    private static final DatabaseReference TRANSACTION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_TRANSACTIONS);
+    public static final DatabaseReference TRANSACTION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_TRANSACTIONS);
     public static final DatabaseReference PRIVATE_TRANSACTION_REFERENCE = TRANSACTION_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     private static final DatabaseReference USER_DATA_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_USER_DATA);
     public static final DatabaseReference PRIVATE_USER_DATA_REFERENCE = USER_DATA_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
