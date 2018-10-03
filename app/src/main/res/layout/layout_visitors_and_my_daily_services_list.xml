@@ -168,9 +168,9 @@
                 android:background="@android:color/black" />
 
             <LinearLayout
+                android:id="@+id/layoutExtras"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layoutExtras"
                 android:layout_below="@+id/line"
                 android:layout_marginTop="10dp"
                 android:weightSum="4">
@@ -212,11 +212,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/rating_star_na"
+                    android:drawableTop="@drawable/rate_na"
                     android:gravity="center"
                     android:text="@string/rate_service"
                     android:textColor="@color/nmBlack"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/textCancel"
