@@ -212,7 +212,6 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         nammaApartmentDailyService.setRating(rateInt);
         notifyItemChanged(position);
         dailyServiceRatingReference.setValue(rating);
-        //TODO: Calculate, Store, and Retrieve Average Rating
     }
 
     /**
