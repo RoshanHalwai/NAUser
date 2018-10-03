@@ -45,6 +45,7 @@ public class ApartmentServices extends BaseActivity {
     private ApartmentServiceAdapter apartmentServiceAdapter;
     private int index = 0;
     private int screenTitle;
+    private RecyclerView recyclerView;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -75,15 +76,9 @@ public class ApartmentServices extends BaseActivity {
         nammaApartmentDailyServiceList = new ArrayList<>();
 
         /*Getting Id of recycler view*/
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        /*Passing Array List to the Adapter*/
-        apartmentServiceAdapter = new ApartmentServiceAdapter(this, nammaApartmentDailyServiceList);
-
-        /*Setting adapter to recycler view*/
-        recyclerView.setAdapter(apartmentServiceAdapter);
 
         /*This method is called to make sure the user permits the app to use the Location Service for the very first time*/
         enableLocationService();
@@ -146,8 +141,6 @@ public class ApartmentServices extends BaseActivity {
      * service type selected .
      */
     private void retrieveApartmentServices(String dailyServiceType) {
-
-        /*We first check if this society has any apartmentServices*/
         DAILYSERVICES_REFERENCE.keepSynced(true);
         DAILYSERVICES_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -156,7 +149,6 @@ public class ApartmentServices extends BaseActivity {
                     hideProgressIndicator();
                     changeLayoutMessages();
                 } else {
-                    hideProgressIndicator();
                     DatabaseReference publicDailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE
                             .child(dailyServiceType);
                     publicDailyServiceTypeReference.keepSynced(true);
@@ -164,34 +156,22 @@ public class ApartmentServices extends BaseActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
+                                hideProgressIndicator();
                                 changeLayoutMessages();
                             }
-                            for (DataSnapshot dailyServiceTypeUID : dataSnapshot.getChildren()) {
-                                String serviceTypeUID = dailyServiceTypeUID.getKey();
-                                DatabaseReference serviceOwnerUIDReference = publicDailyServiceTypeReference.child(serviceTypeUID);
-                                serviceOwnerUIDReference.keepSynced(true);
-                                serviceOwnerUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot serviceOwnerUIDSnapshot) {
-                                        for (DataSnapshot ownerUIDSnapshot : serviceOwnerUIDSnapshot.getChildren()) {
-                                            String ownerUID = ownerUIDSnapshot.getKey();
-                                            if (!ownerUID.equals(getString(R.string.status))) {
-                                                numberOfFlats.put(serviceTypeUID, serviceOwnerUIDSnapshot.getChildrenCount() - 1);
-                                                NammaApartmentDailyService nammaApartmentDailyService = ownerUIDSnapshot.getValue(NammaApartmentDailyService.class);
-                                                nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
-                                                apartmentServiceAdapter.notifyDataSetChanged();
-                                                break;
-                                            }
-                                        }
+                            for (DataSnapshot dailyServiceUIDSnapshot : dataSnapshot.getChildren()) {
+                                String dailyServiceUID = dailyServiceUIDSnapshot.getKey();
+                                new RetrievingApartmentServiceList(dailyServiceUID, dailyServiceType).getDailyServiceDetails(nammaApartmentDailyService -> {
+                                    hideProgressIndicator();
+                                    nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
+
+                                    if(index == dataSnapshot.getChildrenCount()) {
+                                        apartmentServiceAdapter = new ApartmentServiceAdapter(ApartmentServices.this, nammaApartmentDailyServiceList);
+                                        recyclerView.setAdapter(apartmentServiceAdapter);
                                     }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
                                 });
                             }
-
                         }
 
                         @Override
@@ -199,7 +179,6 @@ public class ApartmentServices extends BaseActivity {
 
                         }
                     });
-
                 }
             }
 
@@ -208,8 +187,8 @@ public class ApartmentServices extends BaseActivity {
 
             }
         });
-    }
 
+    }
 
     /**
      * This method invokes to inflate show a new layout for users that this feature will be implemented later.

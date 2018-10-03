@@ -47,7 +47,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
         /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.activity_apartment_services, parent, false);
-        return new ApartmentServiceAdapter.ApartmentServiceViewHolder(view);
+        return new ApartmentServiceViewHolder(view);
     }
 
     @Override
@@ -132,6 +132,7 @@ public class ApartmentServiceAdapter extends RecyclerView.Adapter<ApartmentServi
 
         ApartmentServiceViewHolder(View itemView) {
             super(itemView);
+
             /*Getting Id's for all the views*/
             textApartmentServiceName = itemView.findViewById(R.id.textApartmentServiceName);
             textApartmentServiceRating = itemView.findViewById(R.id.textApartmentServiceRating);
