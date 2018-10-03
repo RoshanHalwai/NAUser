@@ -165,7 +165,7 @@
         <activity
             android:name=".services.societyservices.digigate.notifydigitalgate.arrivals.ExpectingArrival"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".services.societyservices.digigate.notifydigitalgate.handedthings.HandedThings"
             android:screenOrientation="portrait" />
