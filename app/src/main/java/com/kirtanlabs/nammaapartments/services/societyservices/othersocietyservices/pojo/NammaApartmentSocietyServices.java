@@ -1,6 +1,5 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo;
 
-import java.util.List;
 import java.util.Map;
 
 /**

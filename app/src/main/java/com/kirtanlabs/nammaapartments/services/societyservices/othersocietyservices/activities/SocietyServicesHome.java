@@ -391,7 +391,7 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
                     switch (screenTitle) {
                         case R.string.scrap_collection:
                             textErrorSelectProblem.setVisibility(View.VISIBLE);
-                            textErrorSelectProblem.setText(R.string.enter_other_scrap_type_desc);
+                            textErrorSelectProblem.setText(R.string.please_select_scrap_type);
                             break;
                         default:
                             textErrorSelectProblem.setVisibility(View.VISIBLE);

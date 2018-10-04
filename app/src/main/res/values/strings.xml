@@ -539,7 +539,6 @@
     <string name="bike_no">Bike No:</string>
     <string name="remove_vehicle_title">Remove Message</string>
     <string name="remove_vehicle_message">Are you sure you want to remove the details of the Vehicle ?</string>
-    <string name="edit_vehicle_description">Edit My Vehicle details</string>
 
     <!--Awaiting Response Activity-->
     <string name="awaiting_response_title">Awaiting Response</string>
