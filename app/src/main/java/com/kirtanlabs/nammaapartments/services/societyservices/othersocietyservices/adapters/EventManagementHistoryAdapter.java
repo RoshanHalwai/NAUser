@@ -29,7 +29,7 @@ public class EventManagementHistoryAdapter extends RecyclerView.Adapter<EventMan
 
     private final Context mCtx;
     private final List<NammaApartmentSocietyServices> nammaApartmentSocietyServiceList;
-    private Set<String> availableSlotsSet = new LinkedHashSet<>();
+    private final Set<String> availableSlotsSet = new LinkedHashSet<>();
 
     /* ------------------------------------------------------------- *
      * Constructor

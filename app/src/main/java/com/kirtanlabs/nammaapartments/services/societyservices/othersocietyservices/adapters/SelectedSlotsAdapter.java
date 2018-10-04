@@ -24,8 +24,8 @@ public class SelectedSlotsAdapter extends RecyclerView.Adapter<SelectedSlotsAdap
      * Private Members
      * ------------------------------------------------------------- */
 
-    private List<String> selectedSlots;
-    private Context mCtx;
+    private final List<String> selectedSlots;
+    private final Context mCtx;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -64,9 +64,9 @@ public class SelectedSlotsAdapter extends RecyclerView.Adapter<SelectedSlotsAdap
      * ------------------------------------------------------------- */
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        Button selectedSlot;
+        final Button selectedSlot;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             selectedSlot = itemView.findViewById(R.id.buttonSlot);
             selectedSlot.setTypeface(setLatoRegularFont(mCtx));

@@ -12,14 +12,14 @@ import java.util.List;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 
-public class RetrievingApartmentServiceList {
+class RetrievingApartmentServiceList {
 
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
 
-    private String dailyServiceUID;
-    private String dailyServiceType;
+    private final String dailyServiceUID;
+    private final String dailyServiceType;
     private int rating = 0;
     private int count = 0;
 
