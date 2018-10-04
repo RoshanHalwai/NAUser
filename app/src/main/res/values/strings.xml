@@ -401,7 +401,7 @@
     <string name="scrap_collection_request_dialog_message">A Scrap Collection request has been raised.</string>
 
     <!--SocietyServicesHistory Activity-->
-    <string name="society_service_unavailable_message">You have not raised any Society Service requests from your flat yet.</string>
+    <string name="society_service_unavailable_message">You have not raised any Service requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
