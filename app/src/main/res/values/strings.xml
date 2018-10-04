@@ -185,8 +185,8 @@
     <string name="remove_guest_message">Are you sure you want to remove this Guest data from the list?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Currently there are no guests scheduled at your flat.</string>
-    <string name="non_inviter_remove_message">Sorry you cannot remove this visitor, since you are not the inviter of this particular visitor.</string>
+    <string name="visitors_unavailable_message">Sorry, you cannot use this feature since currently there are no Guests at your Flat.</string>
+    <string name="non_inviter_remove_message">Sorry, you cannot remove this Visitor, since you are not the inviter of this Visitor.</string>
     <string name="visitor_reschedule_message">Sorry, you cannot reschedule, as the Visitor has already entered/left the Society.</string>
     <string name="reschedule_dialog_title">Reschedule Message</string>
 
@@ -316,7 +316,7 @@
     <string name="enter_date_time">Please select date and time</string>
     <string name="upload_image">Please upload image</string>
     <string name="mobile_number_exists">Mobile number already exists</string>
-    <string name="invalid_email">Invalid email address</string>
+    <string name="invalid_email">Invalid e-mail address</string>
     <string name="email_validation">Please enter e-mail address</string>
     <string name="relation_check">Please select at least one relation</string>
     <string name="enter_time">Please select time</string>
@@ -539,7 +539,6 @@
     <string name="bike_no">Bike No:</string>
     <string name="remove_vehicle_title">Remove Message</string>
     <string name="remove_vehicle_message">Are you sure you want to remove the details of the Vehicle?</string>
-    <string name="edit_vehicle_description">Edit My Vehicle details</string>
 
     <!--Awaiting Response Activity-->
     <string name="awaiting_response_title">Awaiting Response</string>
