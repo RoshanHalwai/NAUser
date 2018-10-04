@@ -4,9 +4,9 @@
     <!--Base Activity-->
     <string name="namma_apartments">@string/app_name</string>
     <string name="history_button_description">History button to view past data</string>
-    <string name="back_button_description">Back button to navigate previous activity</string>
+    <string name="back_button_description">Back button to navigate to previous activity</string>
     <string name="information_about_the_current_screen">Information about the current screen</string>
-    <string name="check_network_connection">Please check your Network Connection</string>
+    <string name="check_network_connection">Please check your Network connection</string>
     <string name="faq_url">https://www.nammaapartments.com/faq</string>
     <string name="app_launch_screen_name">Namma \n Apartments</string>
 
@@ -14,19 +14,19 @@
     <string name="society_services">Society Services</string>
     <string name="apartment_services">Apartment Services</string>
     <string name="namma_apartments_description">One stop shop solution for all your Society needs.</string>
-    <string name="society_services_description">A smarter way to manage your daily needs from our dedicated nammaApartmentService team.</string>
-    <string name="apartment_services_description">Enjoy benefits of all Digital Apartment Services under one umbrella with ease and control.</string>
-    <string name="society_image_on_the_splash_screen">Society image on the splash screen</string>
-    <string name="apartment_image_on_the_splash_screen">Society image on the splash screen</string>
-    <string name="namma_apartments_image_on_the_splash_screen">Namma Apartments image on the splash screen</string>
+    <string name="society_services_description">A smarter way to manage your daily needs from our dedicated Namma Apartments team.</string>
+    <string name="apartment_services_description">Enjoy benefits of all digital Apartment Services under one umbrella with ease and control.</string>
+    <string name="society_image_on_the_splash_screen">Society image on the Splash screen</string>
+    <string name="apartment_image_on_the_splash_screen">Society image on the Splash screen</string>
+    <string name="namma_apartments_image_on_the_splash_screen">Namma Apartments image on the Splash screen</string>
     <string name="lets_get_started">Let\'s Get Started</string>
 
     <!--OTP Activity-->
     <string name="phone_verification_activity_title">Phone Verification</string>
     <string name="enter_verification_code">We need to verify your account. Please enter the 6 digit verification
-    code sent to your mobile number.</string>
+    code that has been sent to your mobile number.</string>
     <string name="verify_otp">Verify OTP</string>
-    <string name="auto_verification_completed">AutoVerification completed. Please wait while we check your Account in our system. . .</string>
+    <string name="auto_verification_completed">Auto-verification completed. Please wait while we check your account in our system. . .</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="waiting_for_otp">Waiting for OTP. . .</string>
     <string name="change_mobile_number">Change Mobile Number</string>
@@ -122,11 +122,11 @@
     <string name="driver">Driver</string>
     <string name="groceries">Groceries</string>
     <string name="images_of_digital_gate_services">Images of Digital Gate Services</string>
-    <string name="sms_and_whatsapp_msg">Hey there! I would like to get in contact with you, as I need your service at my Flat. Revert back so that we can discuss the necessary terms related to your service.</string>
+    <string name="sms_and_whatsapp_msg">Hey there! I would like to get in contact with you, as I need your service at my Flat. Revert back, so that we can discuss the necessary terms related to your service.</string>
     <string name="refer_message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading: </string>
     <string name="app_link">https://play.google.com/store/apps/details?id=com.kirtanlabs.nammaapartments</string>
     <string name="message_name">sms_body</string>
-    <string name="apartment_service_unavailable">Sorry you cannot use this feature since currently there is no apartment service available at your Society.</string>
+    <string name="apartment_service_unavailable">Currently there is no Apartment service available at your Society.</string>
     <string name="apartment">apartment</string>
     <string name="groceries_unavailable">We are setting up soon in your Society. We will notify you once we are there.</string>
     <string name="whatsapp">Whatsapp</string>
@@ -180,20 +180,20 @@
     <string name="remove_guest_title">Remove Guest</string>
     <string name="guest">Guest</string>
     <string name="cancel_invitation_title">Cancel Invitation</string>
-    <string name="cancel_invitation_message">Are you sure you want to cancel this Invitation?</string>
+    <string name="cancel_invitation_message">Are you sure you want to cancel this invitation?</string>
     <string name="remove_guest_message">Are you sure you want to remove this Guest data from the list?</string>
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
-    <string name="visitors_unavailable_message">Sorry you cannot use this feature since currently there are no guests at your flat.</string>
-    <string name="non_inviter_remove_message">Sorry you cannot remove this visitor since you have not invited them.</string>
+    <string name="visitors_unavailable_message">Currently there are no guests scheduled at your flat.</string>
+    <string name="non_inviter_remove_message">Sorry you cannot remove this visitor, since you are not the inviter of this particular visitor.</string>
     <string name="visitor_reschedule_message">Sorry, you cannot reschedule, as the Visitor has already entered/left the Society.</string>
     <string name="reschedule_dialog_title">Reschedule Message</string>
 
     <!--Cabs List And PackagesList Activity-->
     <string name="cabs_number">Cab No:</string>
     <string name="package_name">Vendor:</string>
-    <string name="cabs_unavailable_message">Sorry you cannot use this feature since currently there are no cab arrivals scheduled for your flat.</string>
-    <string name="deliveries_unavailable_message">Sorry you cannot use this feature since currently there are no package arrivals scheduled for your flat.</string>
+    <string name="cabs_unavailable_message">Currently there are no Cab arrivals scheduled for your flat.</string>
+    <string name="deliveries_unavailable_message">Currently there are no Package arrivals scheduled for your flat.</string>
 
     <!--Digi Gate NammaApartmentService Activity-->
     <string name="expecting_cab_arrival">Expecting Cab Arrival</string>
@@ -232,21 +232,21 @@
     <string name="guest_description_hint">Ex: Laptop</string>
     <string name="description">Description (Optional)</string>
     <string name="feature_unavailable_image_desc">Image to indicate feature is currently unavailable to the resident.</string>
-    <string name="handed_things_success_title">Handed Things Message.</string>
+    <string name="handed_things_success_title">Handed Things Message</string>
     <string name="handed_things_success_message">Handed Things Notification has been sent to your Security Guard.</string>
     <string name="daily_service_name">Name</string>
     <string name="history">History</string>
     <string name="things">Things:</string>
 
     <!--Handed Things To Daily Service Activity-->
-    <string name="daily_service_unavailable_message_handed_things">Sorry you cannot use this feature since currently there are no daily service at your flat.</string>
+    <string name="daily_service_unavailable_message_handed_things">There are no Daily Service added for your Flat yet.</string>
     <string name="daily_service_description_hint">Ex: Clothes</string>
 
     <!--Daily Services Home-->
     <string name="remove">Remove</string>
     <string name="flats">Flats:</string>
     <string name="rating">Rating:</string>
-    <string name="daily_service_cancel">Are you sure you want to remove this Daily Service?\n\nNOTE: You will stop receiving notifications related to this Daily Service.</string>
+    <string name="daily_service_cancel">Are you sure you want to remove this Daily Service?\n\nNOTE: You will stop receiving notifications related to this particular Daily Service.</string>
     <string name="add_my_daily_service">Add My Daily Service</string>
     <string name="daily_service_unavailable_message">Please add your Daily Services for their hassle free entry at your Society.</string>
     <string name="adding_your_daily_service">Adding your Daily Service</string>
@@ -284,10 +284,10 @@
     <string name="relation">Relation</string>
     <string name="family_member">Family Member</string>
     <string name="friend">Friend</string>
-    <string name="otp_message_family_member">We will send an OTP to your family member for Authentication.</string>
-    <string name="otp_message_friend">We will send an OTP to your friend for Authentication.</string>
-    <string name="access_to_notifications">Please note that this member will now have access to all notifications.</string>
-    <string name="image_notification">Image to indicate a notification to the head of the family member for giving access.</string>
+    <string name="otp_message_family_member">We will send an OTP to your family member for authentication.</string>
+    <string name="otp_message_friend">We will send an OTP to your friend for authentication.</string>
+    <string name="access_to_notifications">Please note that this member will now have an access to all notifications.</string>
+    <string name="image_notification">Image to indicate a notification to the head of the family for giving access.</string>
     <string name="access">Access:</string>
     <string name="family_member_unavailable_message">Please add your Family Members to approve visitors on your behalf.</string>
     <string name="adding_your_family_member">Adding Family Member</string>
@@ -296,8 +296,8 @@
     <string name="family_member_success_message">You have successfully added your Family Member.</string>
     <string name="friend_success_message">You have successfully added your Friend.</string>
     <string name="non_admin_add_family_members_title">Add Family Members Message</string>
-    <string name="non_admin_add_family_members_message">Sorry you cannot add family members to this flat since you are not the admin for this flat.</string>
-    <string name="non_admin_edit_message">Sorry you cannot edit this family member since you are not the admin of this flat.</string>
+    <string name="non_admin_add_family_members_message">You cannot add Flat members to this Flat, since you are not the Admin of this Flat.</string>
+    <string name="non_admin_edit_message">You cannot edit this Flat member, since you are not the Admin of this Flat.</string>
     <string name="non_admin_edit_title_message">Edit Message</string>
     <string name="non_admin_remove_title_message">Delete Message</string>
     <string name="change_access">Change Access</string>
@@ -308,30 +308,30 @@
     <string name="update">Update</string>
 
     <!--Validations-->
-    <string name="number_10digit_validation">Please Enter a valid 10 digit mobile number</string>
-    <string name="mobile_number_validation">Please Enter Mobile Number</string>
-    <string name="name_validation">Please Enter Name</string>
-    <string name="accept_alphabets">Accept Alphabets Only</string>
+    <string name="number_10digit_validation">Please enter a valid 10 digit mobile number</string>
+    <string name="mobile_number_validation">Please enter mobile number</string>
+    <string name="name_validation">Please enter name</string>
+    <string name="accept_alphabets">Accepts alphabets only</string>
     <string name="enter_date_time">Please select date and time</string>
-    <string name="upload_image">Please Upload Image</string>
-    <string name="mobile_number_exists">Mobile Number already exists</string>
-    <string name="invalid_email">Invalid Email Address</string>
-    <string name="email_validation">Please Enter E-Mail Address</string>
-    <string name="relation_check">Please select at least one Relation</string>
+    <string name="upload_image">Please upload image</string>
+    <string name="mobile_number_exists">Mobile number already exists</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="email_validation">Please enter e-mail address</string>
+    <string name="relation_check">Please select at least one relation</string>
     <string name="enter_time">Please select time</string>
     <string name="valid_button">Please select at least one button</string>
-    <string name="cab_number_validation">Please Enter Cab Number</string>
-    <string name="vehicle_number_validation">Please Enter Vehicle Number</string>
-    <string name="choose_problem_validation">Please Select Your Problem</string>
+    <string name="cab_number_validation">Please enter cab number</string>
+    <string name="vehicle_number_validation">Please enter vehicle number</string>
+    <string name="choose_problem_validation">Please select your problem</string>
     <string name="enter_date">Please select date</string>
     <string name="event_title_error">Please enter event title</string>
-    <string name="enter_other_problem_desc">Please Enter Your Problem</string>
-    <string name="enter_other_scrap_type_desc">Please Enter Scrap Type</string>
+    <string name="enter_other_problem_desc">Please enter your problem</string>
+    <string name="enter_other_scrap_type_desc">Please enter scrap type</string>
     <string name="enter_service_type">Please select service type</string>
     <string name="enter_problem_description">Please enter problem description</string>
-    <string name="please_enter_food_type">Please Enter Food Type</string>
-    <string name="please_select_scrap_type">Please Select Scrap Type</string>
-    <string name="please_select_garbage_type">Please Select Garbage Type</string>
+    <string name="please_enter_food_type">Please enter food type</string>
+    <string name="please_select_scrap_type">Please select scrap type</string>
+    <string name="please_select_garbage_type">Please select garbage type</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -367,10 +367,10 @@
     <string name="change_admin">Change Admin</string>
     <string name="updating_profile">Updating your profile</string>
     <string name="update_message">Update Message</string>
-    <string name="update_success_message">You have successfully updated your profile</string>
-    <string name="no_update_message">You have not made any changes to your profile </string>
-    <string name="admin_change_key">Are you sure you want to make person as Admin? \nNote: Your admin privileges will be transferred to person.</string>
-    <string name="no_flat_members">"Sorry there are no flat members added to your flat."</string>
+    <string name="update_success_message">You have successfully updated your profile.</string>
+    <string name="no_update_message">You have not made any changes to your profile.</string>
+    <string name="admin_change_key">Are you sure you want to change the Admin? \nNote: You will no longer have the Admin privileges.</string>
+    <string name="no_flat_members">"Currently there are no Flat members added to your Flat."</string>
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
     <string name="person">person</string>
@@ -392,15 +392,15 @@
     <string name="evening_slot">3PM - 5PM</string>
     <string name="dry_waste">Dry Waste</string>
     <string name="wet_waste">Wet Waste</string>
-    <string name="image_success">Image to indicate that the Society Service has provided their service to that particular Flat in past</string>
+    <string name="image_success">Image to indicate that the Society Service has provided its service to that particular Flat in past</string>
     <string name="description_others">Description</string>
     <string name="request_service">Request Service</string>
     <string name="cancel_dialog_title">Cancel Service Message</string>
     <string name="cancel_question">Are you sure you want to Cancel the Service?</string>
-    <string name="scrap_collection_request_dialog_message">A Scrap Collection request has been raised</string>
+    <string name="scrap_collection_request_dialog_message">A Scrap Collection request has been raised.</string>
 
     <!--SocietyServicesHistory Activity-->
-    <string name="society_service_unavailable_message">Sorry you cannot use this feature since you have not raised any Service requests from your flat yet.</string>
+    <string name="society_service_unavailable_message">You have not raised any Society Service requests from your flat yet.</string>
     <string name="history_name">Name:</string>
     <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
@@ -421,13 +421,13 @@
         <item>@string/others</item>
     </string-array>
     <string name="search">Search</string>
-    <string name="dripping_faucets">Installation of underground Drainage Pipes</string>
+    <string name="dripping_faucets">Installation of underground drainage pipes</string>
     <string name="slow_draining_sink">Bathtub repair and replacement</string>
     <string name="clogged_bath_or_shower_drain">Toilet repair and replacement</string>
     <string name="clogged_toilet">Water heater</string>
     <string name="running_toilet">Drain cleaning</string>
     <string name="faulty_water_heater">Leak repair</string>
-    <string name="low_water_pressure">Clearing/cleaning clogged pipes</string>
+    <string name="low_water_pressure">Clearing/Cleaning clogged pipes</string>
     <string name="jammed_garbage_disposal"> Water filter installation</string>
     <string name="leaky_pipes">Burst pipe repair, leaks and other faults</string>
     <string name="sewer_system_backup">Fitting of valves and couplings </string>
@@ -446,11 +446,11 @@
         <item>@string/recessed_light_goes_out_and_comes_back_on</item>
         <item>@string/others</item>
     </string-array>
-    <string name="frequent_electrical_surge">Circuit Overload</string>
+    <string name="frequent_electrical_surge">Circuit overload</string>
     <string name="sags_and_dips_in_power"> Lightening connections</string>
     <string name="light_switches_not_working_properly">Electrical short circuit</string>
     <string name="circuit_breaker_tripping_frequently">Wiring issues</string>
-    <string name="circuit_overload"> Ceiling Fan upgrade</string>
+    <string name="circuit_overload">Ceiling Fan upgrade</string>
     <string name="lights_too_bright_or_dim">Circuit breaker installation</string>
     <string name="electrical_shocks">Switches are not working</string>
     <string name="high_electrical_bill">Recessed lighting</string>
@@ -469,14 +469,14 @@
         <item>@string/window_frame</item>
         <item>@string/others</item>
     </string-array>
-    <string name="carpentry_finish_appears_uneven">Wooden Mesh</string>
+    <string name="carpentry_finish_appears_uneven">Wooden mesh</string>
     <string name="split_in_the_wood">Wood partition</string>
-    <string name="weak_joints">Bolt, Latch and Handle work</string>
+    <string name="weak_joints">Bolt, latch and handle work</string>
     <string name="dents_in_wood">Polishing and Repair</string>
     <string name="glue_stuck">Furniture installation and assembly</string>
-    <string name="wood_flooring">Build Stairs</string>
-    <string name="damage_burns">Window Frame repair</string>
-    <string name="sofa_door">Wood Flooring repair</string>
+    <string name="wood_flooring">Build stairs</string>
+    <string name="damage_burns">Window frame repair</string>
+    <string name="sofa_door">Wood flooring repair</string>
     <string name="window_frame">Unable to open doors/drawers</string>
 
     <string-array name="scrap_list">
@@ -531,27 +531,27 @@
     <string name="vehicle_type_bike">Bike</string>
     <string name="vehicles_added_success_title">Vehicle Added Message</string>
     <string name="vehicles_added_success_message">You have successfully added your Vehicle.</string>
-    <string name="add_your_vehicle_message">Please add your vehicles for Hassle Free entry into the society.</string>
+    <string name="add_your_vehicle_message">Please add your Vehicle(s) for hassle free entry into the society.</string>
     <string name="vehicle_owner">Owner:</string>
     <string name="vehicle_added_date">Added On:</string>
     <string name="car_no">Car No:</string>
     <string name="bike_no">Bike No:</string>
     <string name="remove_vehicle_title">Remove Message</string>
-    <string name="remove_vehicle_message">Are you sure you want to remove the details of the Vehicle ?</string>
+    <string name="remove_vehicle_message">Are you sure you want to remove the details of the Vehicle?</string>
     <string name="edit_vehicle_description">Edit My Vehicle details</string>
 
     <!--Awaiting Response Activity-->
     <string name="awaiting_response_title">Awaiting Response</string>
     <string name="society_service_accepted_request">Your request has been accepted.</string>
     <string name="notification_sent_to_society_service">Notification has been sent to the Society Service</string>
-    <string name="no_response_plumber">Plumber has not Responded Yet</string>
-    <string name="no_response_carpenter">Carpenter has not Responded Yet</string>
-    <string name="no_response_electrician">Electrician has not Responded Yet</string>
-    <string name="no_response_garbage">Garbage Collection  has not Responded Yet</string>
+    <string name="no_response_plumber">Plumber has not responded yet</string>
+    <string name="no_response_carpenter">Carpenter has not responded yet</string>
+    <string name="no_response_electrician">Electrician has not responded yet</string>
+    <string name="no_response_garbage">Garbage Collector has not responded yet</string>
     <string name="rate_your_recent_service_experience">Rate your recent service experience</string>
     <string name="submit_rate_service">SUBMIT</string>
     <string name="otp">OTP:</string>
-    <string name="request_initiated">Your request for the below event has been initiated</string>
+    <string name="request_initiated">Your request for the below Event has been initiated.</string>
     <string name="please_wait_while_admin_get_back_to_you">You will be notified once the \'Status\' of your request changes.</string>
     <string name="requestStatus">Request Status:</string>
     <string name="in_process">In Process</string>
@@ -563,12 +563,12 @@
     <string name="choose_category">Choose Category</string>
     <string name="parties">Parties</string>
     <string name="concerts">Concerts</string>
-    <string name="choose_valid_category">Please choose Category</string>
-    <string name="choose_valid_time_slot">Please choose Time Slot</string>
+    <string name="choose_valid_category">Please choose category</string>
+    <string name="choose_valid_time_slot">Please choose time slot</string>
     <string name="meetings">Meetings</string>
     <string name="seminar_workshops">Seminars/WorkShops</string>
     <string name="book">Book</string>
-    <string name="choose_time_slot">Choose Time Slot</string>
+    <string name="choose_time_slot">Choose time slot</string>
     <string name="event_date">Event Date:</string>
     <string name="time_slot_one">8AM - 9AM</string>
     <string name="time_slot_two">9AM - 10AM</string>
@@ -599,19 +599,19 @@
     <string name="payment_success_title">Payment Success Message</string>
     <string name="payment_success_message">Payment successfully done. Your Event has been booked.</string>
     <string name="estimated_amount">Estimated Amount:</string>
-    <string name="event_feature_unavailable">Event Booking facility is Unavailable in your Society</string>
+    <string name="event_feature_unavailable">Event Booking facility is unavailable in your Society</string>
 
     <!--Activation Required Activity-->
     <string name="activation_required_title">Account Created</string>
-    <string name="activation_pending_message">Thank you for Registering with Namma Apartments. Your flat details has been sent to Society Admin. We will notify you once your account gets Activated.</string>
-    <string name="activation_rejection_message">Sorry, Your Account activation has been rejected by the Admin.</string>
+    <string name="activation_pending_message">Thank you for registering with Namma Apartments. Your details have been sent to the Society Admin. We will notify you once your account gets activated.</string>
+    <string name="activation_rejection_message">Sorry, your Account activation request has been rejected by the Society Admin.</string>
 
     <!--Launch Screen Activity-->
     <string name="launch_screen_image_desc">Image of Launch Screen</string>
     <string name="new_version_title">New Version Available</string>
     <string name="new_version_message">A new version of Namma Apartments is available. Please update.</string>
     <string name="connection_unavailable_title">Connection Unavailable</string>
-    <string name="connection_unavailable_message">It seems you are not connected to internet.</string>
+    <string name="connection_unavailable_message">It seems you are not connected to the Internet.</string>
     <string name="retry">Retry</string>
 
     <!--Firebase Notifications  & Action Button Listener Activity-->
@@ -670,9 +670,9 @@
     <string name="enter_food_type">Enter Food Type</string>
     <string name="select_food_qty">Select Food Quantity</string>
     <string name="team_collect_food">Our team will collect food</string>
-    <string name="food_request_service_dialog_message">Thank you for raising request.Our representative will arrive at your flat to collect food.</string>
+    <string name="food_request_service_dialog_message">Thank you for raising request. Our representative will arrive at your Flat to collect food.</string>
     <string name="food_donation_history_title">Food Donations</string>
-    <string name="no_food_donations_raised">Currently, there are no food donations done by the user.</string>
+    <string name="no_food_donations_raised">There has been no Food Donation done by the user yet.</string>
 
     <!--My Guard Activity-->
     <string name="guard">Guard:</string>
