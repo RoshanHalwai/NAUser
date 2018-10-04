@@ -79,8 +79,9 @@
         <item>@string/carpenter</item>
         <item>@string/electrician</item>
         <item>@string/garbage_collection</item>
+        <item>@string/emergency</item>
         <item>@string/event_management</item>
-        <item>@string/medical_emergency</item>
+        <item>@string/scrap_collection</item>
     </string-array>
 
     <string name="digital_gate">Digi Gate</string>
