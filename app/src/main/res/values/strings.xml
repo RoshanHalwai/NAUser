@@ -370,7 +370,7 @@
     <string name="update_message">Update Message</string>
     <string name="update_success_message">You have successfully updated your profile.</string>
     <string name="no_update_message">You have not made any changes to your profile.</string>
-    <string name="admin_change_key">Are you sure you want to change the Admin? \nNote: You will no longer have the Admin privileges.</string>
+    <string name="admin_change_key">Are you sure you want to make person as Admin? \nNote: Your Admin privileges will be transferred to person.</string>
     <string name="no_flat_members">"Currently there are no Flat members added to your Flat."</string>
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
