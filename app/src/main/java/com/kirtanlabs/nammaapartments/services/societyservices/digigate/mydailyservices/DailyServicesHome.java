@@ -41,6 +41,7 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;
     private int index = 0;
+    private boolean isDailyServicePresent = false;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -186,6 +187,7 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
                             /*Iterate over each of them and add listener to each of them*/
                             for (DataSnapshot dailyServicesTypeSnapshot : dailyServiceUIDSnapshot.getChildren()) {
                                 if (Objects.requireNonNull(dailyServicesTypeSnapshot.getValue(Boolean.class)).equals(true)) {
+                                    isDailyServicePresent = true;
                                     String dailyServiceUID = dailyServicesTypeSnapshot.getKey();
                                     DatabaseReference dailyServicesTypePublicReference = PUBLIC_DAILYSERVICES_REFERENCE
                                             .child(dailyServiceUIDSnapshot.getKey())  // Daily Service Type
@@ -213,9 +215,14 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
                                         }
                                     });
                                 }
+                                /*Checking if any daily service is working in users flat or not*/
+                                if (isDailyServicePresent) {
+                                    hideFeatureUnavailableLayout();
+                                } else {
+                                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
+                                }
                             }
                         }
-
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
