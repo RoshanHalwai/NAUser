@@ -108,6 +108,10 @@ public class NammaApartmentSocietyServices {
         return scrapType;
     }
 
+    public String getTimeSlot() {
+        return timeSlot;
+    }
+
 
     /* ------------------------------------------------------------- *
      * Setters
@@ -133,4 +137,8 @@ public class NammaApartmentSocietyServices {
         this.scrapType = scrapType;
     }
 
+
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
+    }
 }
