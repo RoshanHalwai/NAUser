@@ -85,8 +85,8 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
         if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_GUARD_APPROVED)) {
             /*If Guest is GuardApproved then change inviter text to approver */
             holder.textInvitedBy.setText(R.string.approver);
-            String guard = mCtx.getString(R.string.guard);
-            holder.textInvitedByValue.setText(guard.substring(0, 5));
+            String approverType = mCtx.getString(R.string.guard);
+            holder.textInvitedByValue.setText(approverType.substring(0, 5));
         } else {
             /*If Guest is PostApproved then change inviter text to approver */
             if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
