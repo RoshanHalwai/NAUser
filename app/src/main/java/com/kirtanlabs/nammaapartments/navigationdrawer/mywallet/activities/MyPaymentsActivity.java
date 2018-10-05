@@ -310,18 +310,13 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         textConvenienceFeeValue.setTypeface(setLatoBoldFont(this));
         textTotalAmountValue.setTypeface(setLatoBoldFont(this));
         buttonPayNow.setTypeface(setLatoLightFont(this));
+        buttonCancel.setTypeface(setLatoLightFont(this));
 
         /*Hiding UnAppropriate Views*/
-        buttonCancel.setVisibility(View.GONE);
         textAmountPerSlot.setVisibility(View.GONE);
         textEstimatedAmount.setVisibility(View.GONE);
         textAmountPerSlotValue.setVisibility(View.GONE);
         textEstimatedAmountValue.setVisibility(View.GONE);
-
-        /*Programmatically setting the buttonPayNow Margin */
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(20, 20, 20, 20);
-        buttonPayNow.setLayoutParams(params);
 
         /*Setting texts of the views accordingly*/
         textEventBillAndMaintenanceBill.setText(R.string.maintenance_bill);
@@ -347,12 +342,14 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
         AlertDialog.Builder alertMaintenanceAmountDialog = new AlertDialog.Builder(this);
         alertMaintenanceAmountDialog.setView(maintenancePaymentDialog);
         AlertDialog dialog = alertMaintenanceAmountDialog.create();
+        dialog.setCancelable(false);
 
         /*Showing the Dialog*/
         new Dialog(this);
         dialog.show();
 
         /*Setting Listeners to the views*/
+        buttonCancel.setOnClickListener(v -> dialog.cancel());
         buttonPayNow.setOnClickListener(v -> {
             pendingAmountInPaise = totalAmount * 100;
             startPayment(pendingAmountInPaise, getString(R.string.society_services));
