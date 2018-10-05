@@ -109,7 +109,6 @@ class RetrievingPackagesList {
      */
     private void getPackageUIDList(PackageUIDCallBack packageUIDCallBack, String userUID) {
         DatabaseReference packageListReference = userDataReference.child(FIREBASE_CHILD_DELIVERIES).child(userUID);
-        packageListReference.keepSynced(true);
         packageListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,7 +134,6 @@ class RetrievingPackagesList {
      */
     private void getPackageDataByUID(PackageDataCallBack packageDataCallBack, String packageUID) {
         DatabaseReference packageDataReference = PRIVATE_DELIVERIES_REFERENCE.child(packageUID);
-        packageDataReference.keepSynced(true);
         packageDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -155,7 +153,6 @@ class RetrievingPackagesList {
      */
     private void isPackageReferenceExists(PackagesReferenceCallBack packagesReferenceCallBack) {
         DatabaseReference packageDataReference = userDataReference.child(FIREBASE_CHILD_DELIVERIES);
-        packageDataReference.keepSynced(true);
         packageDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

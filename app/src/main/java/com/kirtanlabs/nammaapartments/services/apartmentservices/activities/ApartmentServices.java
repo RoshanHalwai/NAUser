@@ -141,7 +141,6 @@ public class ApartmentServices extends BaseActivity {
      * service type selected .
      */
     private void retrieveApartmentServices(String dailyServiceType) {
-        DAILYSERVICES_REFERENCE.keepSynced(true);
         DAILYSERVICES_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -151,7 +150,6 @@ public class ApartmentServices extends BaseActivity {
                 } else {
                     DatabaseReference publicDailyServiceTypeReference = PUBLIC_DAILYSERVICES_REFERENCE
                             .child(dailyServiceType);
-                    publicDailyServiceTypeReference.keepSynced(true);
                     publicDailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -192,7 +190,6 @@ public class ApartmentServices extends BaseActivity {
 
     /**
      * This method invokes to inflate show a new layout for users that this feature will be implemented later.
-     *
      */
     private void showGroceriesFeatureUnavailableLayout() {
         LinearLayout featureUnavailableLayout = findViewById(R.id.layoutGroceriesUnavailable);

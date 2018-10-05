@@ -95,7 +95,6 @@ public class RetrievingVehiclesList {
      */
     private void getVehicleUIDList(VehiclesUIDListCallback vehiclesUIDListCallback) {
         DatabaseReference vehicleListReference = userDataReference.child(FIREBASE_CHILD_VEHICLES);
-        vehicleListReference.keepSynced(true);
         vehicleListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -121,7 +120,6 @@ public class RetrievingVehiclesList {
      */
     private void getVehicleDataByUID(VehicleDataCallback vehicleDataCallback, String vehicleUID) {
         DatabaseReference vehicleDataReference = PRIVATE_VEHICLES_REFERENCE.child(vehicleUID);
-        vehicleDataReference.keepSynced(true);
         vehicleDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,7 +139,6 @@ public class RetrievingVehiclesList {
      */
     private void isVehicleReferenceExists(VehiclesReferenceCallback vehiclesReferenceCallback) {
         DatabaseReference vehicleDataReference = userDataReference.child(FIREBASE_CHILD_VEHICLES);
-        vehicleDataReference.keepSynced(true);
         vehicleDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
