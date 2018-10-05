@@ -22,11 +22,13 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GUARD_APPROVED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdapter.VisitorViewHolder> implements View.OnClickListener {
+public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdapter.VisitorViewHolder> {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -79,44 +81,48 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.profileImage);
 
+        /*Ensuring Inviter Text and its value getting changed according to the approval type*/
+        if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_GUARD_APPROVED)) {
+            /*If Guest is GuardApproved then change inviter text to approver */
+            holder.textInvitedBy.setText(R.string.approver);
+            String guard = mCtx.getString(R.string.guard);
+            holder.textInvitedByValue.setText(guard.substring(0, 5));
+        } else {
+            /*If Guest is PostApproved then change inviter text to approver */
+            if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
+                holder.textInvitedBy.setText(R.string.approver);
+            }
         /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
         firebase since we now know that the inviter is current user.*/
-        if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
-            holder.textInvitedByValue.setText(
-                    ((NammaApartmentsGlobal) mCtx.getApplicationContext())
-                            .getNammaApartmentUser()
-                            .getPersonalDetails()
-                            .getFullName());
-        } else {
-            /*Visitor has been invited by some other family member; We check in firebase and get the name
-             * of that family member*/
-            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
-            userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                    holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                }
+            if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+                holder.textInvitedByValue.setText(
+                        ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                                .getNammaApartmentUser()
+                                .getPersonalDetails()
+                                .getFullName());
+            } else {
+                /*Visitor has been invited by some other family member; We check in firebase and get the name
+                 * of that family member*/
+                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
+                userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                        holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
     @Override
     public int getItemCount() {
         return nammaApartmentGuestList.size();
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
-     * ------------------------------------------------------------- */
-    @Override
-    public void onClick(View v) {
-
     }
 
     class VisitorViewHolder extends RecyclerView.ViewHolder {
@@ -144,6 +150,8 @@ public class GuestsHistoryAdapter extends RecyclerView.Adapter<GuestsHistoryAdap
 
         VisitorViewHolder(View itemView) {
             super(itemView);
+
+            /*Getting id's for all the views on cardview*/
             textVisitorName = itemView.findViewById(R.id.textVisitorName);
             textHandedThings = itemView.findViewById(R.id.textHandedThings);
             textInvitationDate = itemView.findViewById(R.id.textInvitationDate);
