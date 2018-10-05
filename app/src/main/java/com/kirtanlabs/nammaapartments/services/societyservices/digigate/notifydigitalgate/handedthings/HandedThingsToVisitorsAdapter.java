@@ -28,7 +28,9 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GUARD_APPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_HANDED_THINGS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_POSTAPPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_VISITORS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
@@ -36,7 +38,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedThingsToVisitorsAdapter.VisitorViewHolder> implements View.OnClickListener {
+public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedThingsToVisitorsAdapter.VisitorViewHolder> {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -63,7 +65,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
     @NonNull
     @Override
     public HandedThingsToVisitorsAdapter.VisitorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        /*inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_handed_things_visitor, parent, false);
         return new HandedThingsToVisitorsAdapter.VisitorViewHolder(view);
@@ -71,7 +73,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
 
     @Override
     public void onBindViewHolder(@NonNull HandedThingsToVisitorsAdapter.VisitorViewHolder holder, int position) {
-        //Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase
+        /*Creating an instance of NammaApartmentGuest class and retrieving the values from Firebase.*/
         NammaApartmentGuest nammaApartmentGuest = nammaApartmentGuestList.get(position);
 
         String dateAndTime = nammaApartmentGuest.getDateAndTimeOfVisit();
@@ -82,44 +84,48 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
                 .into(holder.profileImage);
 
+        /*Ensuring Inviter Text and its value getting changed according to the approval type*/
+        if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_GUARD_APPROVED)) {
+            /*If Guest is GuardApproved then change inviter text to approver */
+            holder.textInvitedBy.setText(R.string.approver);
+            String approverType = mCtx.getString(R.string.guard);
+            holder.textInvitedByValue.setText(approverType.substring(0, 5));
+        } else {
+            /*If Guest is PostApproved then change inviter text to approver */
+            if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_POSTAPPROVED)) {
+                holder.textInvitedBy.setText(R.string.approver);
+            }
         /*We check if the inviters UID is equal to current UID if it is then we don't have to check in
         firebase since we now know that the inviter is current user.*/
-        if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
-            holder.textInvitedByValue.setText(
-                    ((NammaApartmentsGlobal) mCtx.getApplicationContext())
-                            .getNammaApartmentUser()
-                            .getPersonalDetails()
-                            .getFullName());
-        } else {
-            /*Visitor has been invited by some other family member; We check in firebase and get the name
-             * of that family member*/
-            DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
-            userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
-                    holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
-                }
+            if (nammaApartmentGuest.getInviterUID().equals(NammaApartmentsGlobal.userUID)) {
+                holder.textInvitedByValue.setText(
+                        ((NammaApartmentsGlobal) mCtx.getApplicationContext())
+                                .getNammaApartmentUser()
+                                .getPersonalDetails()
+                                .getFullName());
+            } else {
+                /*Visitor has been invited by some other family member; We check in firebase and get the name
+                 * of that family member*/
+                DatabaseReference userPrivateReference = PRIVATE_USERS_REFERENCE.child(nammaApartmentGuest.getInviterUID());
+                userPrivateReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
+                        holder.textInvitedByValue.setText(Objects.requireNonNull(nammaApartmentUser).getPersonalDetails().getFullName());
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
     @Override
     public int getItemCount() {
         return nammaApartmentGuestList.size();
-    }
-
-    /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
-     * ------------------------------------------------------------- */
-    @Override
-    public void onClick(View v) {
-
     }
 
     class VisitorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -154,6 +160,8 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
 
         VisitorViewHolder(View itemView) {
             super(itemView);
+
+            /*Getting id's for all the views on cardview*/
             textVisitorName = itemView.findViewById(R.id.textVisitorName);
             textVisitorType = itemView.findViewById(R.id.textVisitorType);
             textInvitationDate = itemView.findViewById(R.id.textInvitationDate);
@@ -172,7 +180,7 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
             buttonNotifyGate = itemView.findViewById(R.id.buttonNotifyGate);
             profileImage = itemView.findViewById(R.id.profileImage);
 
-            //Setting Fonts for all the views on cardview
+            /*Setting Fonts for all the views on cardview*/
             textVisitorName.setTypeface(setLatoRegularFont(mCtx));
             textVisitorType.setTypeface(setLatoRegularFont(mCtx));
             textInvitationDate.setTypeface(setLatoRegularFont(mCtx));
@@ -190,13 +198,18 @@ public class HandedThingsToVisitorsAdapter extends RecyclerView.Adapter<HandedTh
             textInvitationTimeValue.setTypeface(setLatoBoldFont(mCtx));
             textInvitedByValue.setTypeface(setLatoBoldFont(mCtx));
 
+            /*Since this is Guests list we would want to set Type of Guest*/
             textVisitorTypeValue.setText(mCtx.getString(R.string.guest));
 
+            /*Setting events for items in card view*/
             buttonYes.setOnClickListener(this);
             buttonNo.setOnClickListener(this);
             buttonNotifyGate.setOnClickListener(this);
         }
 
+        /* ------------------------------------------------------------- *
+         * Overriding OnClick Listeners
+         * ------------------------------------------------------------- */
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
