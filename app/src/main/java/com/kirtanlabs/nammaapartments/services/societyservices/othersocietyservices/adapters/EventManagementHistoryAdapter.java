@@ -141,13 +141,13 @@ public class EventManagementHistoryAdapter extends RecyclerView.Adapter<EventMan
             listViewSelectedSlots.setLayoutManager(new LinearLayoutManager(mCtx, LinearLayoutManager.HORIZONTAL, false));
 
             /*Setting Fonts for all the views on cardView*/
-            textEventTitle.setTypeface(setLatoBoldFont(mCtx));
-            textEventCategory.setTypeface(setLatoBoldFont(mCtx));
-            textEventDate.setTypeface(setLatoBoldFont(mCtx));
-            textSelectedSlots.setTypeface(setLatoBoldFont(mCtx));
-            textEventTitleValue.setTypeface(setLatoRegularFont(mCtx));
-            textEventCategoryValue.setTypeface(setLatoRegularFont(mCtx));
-            textEventDateValue.setTypeface(setLatoRegularFont(mCtx));
+            textEventTitle.setTypeface(setLatoRegularFont(mCtx));
+            textEventCategory.setTypeface(setLatoRegularFont(mCtx));
+            textEventDate.setTypeface(setLatoRegularFont(mCtx));
+            textSelectedSlots.setTypeface(setLatoRegularFont(mCtx));
+            textEventTitleValue.setTypeface(setLatoBoldFont(mCtx));
+            textEventCategoryValue.setTypeface(setLatoBoldFont(mCtx));
+            textEventDateValue.setTypeface(setLatoBoldFont(mCtx));
         }
     }
 }
