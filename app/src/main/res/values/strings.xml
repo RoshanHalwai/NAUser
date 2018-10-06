@@ -127,7 +127,7 @@
     <string name="refer_message_body">Hey there! I got the reference of this Service from Namma Apartments app. You can also avail this Service by downloading: </string>
     <string name="app_link">https://play.google.com/store/apps/details?id=com.kirtanlabs.nammaapartments</string>
     <string name="message_name">sms_body</string>
-    <string name="apartment_service_unavailable">Currently there is no Apartment service available at your Society.</string>
+    <string name="apartment_service_unavailable">Currently there is no apartment service available at your Society.</string>
     <string name="apartment">apartment</string>
     <string name="groceries_unavailable">We are setting up soon in your Society. We will notify you once we are there.</string>
     <string name="whatsapp">Whatsapp</string>
@@ -600,6 +600,7 @@
     <string name="payment_success_message">Payment successfully done. Your Event has been booked.</string>
     <string name="estimated_amount">Estimated Amount:</string>
     <string name="event_feature_unavailable">Event Booking facility is unavailable in your Society</string>
+    <string name="event_booking">Event Booking</string>
 
     <!--Activation Required Activity-->
     <string name="activation_required_title">Account Created</string>

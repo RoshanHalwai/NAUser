@@ -141,7 +141,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
 
         /*To Retrieve the booking amount per slot from server, if booking charges is 0.0 then it indicates
          * the society do not have Event Booking facilities*/
-        showProgressDialog(this, "Event Booking", getString(R.string.please_wait_a_moment));
+        showProgressDialog(this, getString(R.string.event_booking), getString(R.string.please_wait_a_moment));
         retrieveBookingAmountPerSlot(bookingAmount -> {
             hideProgressDialog();
             if (bookingAmount == 0.0f) {

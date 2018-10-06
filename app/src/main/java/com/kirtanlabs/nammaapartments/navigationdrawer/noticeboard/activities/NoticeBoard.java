@@ -75,7 +75,6 @@ public class NoticeBoard extends BaseActivity {
      */
     private void retrieveNoticeDetailsFromFirebase() {
         DatabaseReference noticeBoardReference = Constants.NOTICE_BOARD_REFERENCE;
-        noticeBoardReference.keepSynced(true);
         noticeBoardReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -87,7 +86,6 @@ public class NoticeBoard extends BaseActivity {
                     for (DataSnapshot noticeBoardDataSnapshot : dataSnapshot.getChildren()) {
                         String noticeBoardUID = noticeBoardDataSnapshot.getKey();
                         DatabaseReference noticeBoardUIDReference = noticeBoardReference.child(noticeBoardUID);
-                        noticeBoardUIDReference.keepSynced(true);
                         noticeBoardUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {

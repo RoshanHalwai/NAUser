@@ -137,7 +137,6 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
                     showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
                 } else {
                     DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
-                    privateFlatReference.keepSynced(true);
                     privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -169,7 +168,6 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
     private void retrieveDailyServicesDetailsFromFirebase(String userUID) {
         DatabaseReference dailyServicesListReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
                 .child(FIREBASE_CHILD_DAILYSERVICES);
-        dailyServicesListReference.keepSynced(true);
         dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
@@ -178,7 +176,6 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
                 for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
                     String dailyServiceType = dailyServicesSnapshot.getKey();
                     DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
-                    dailyServiceTypeReference.keepSynced(true);
                     /*For each daily service type, check how many are added. Say a user can have two
                      * cooks or maids*/
                     dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -192,7 +189,6 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
                                     DatabaseReference dailyServicesTypePublicReference = PUBLIC_DAILYSERVICES_REFERENCE
                                             .child(dailyServiceUIDSnapshot.getKey())  // Daily Service Type
                                             .child(dailyServiceUID);                  // Daily Service UID
-                                    dailyServicesTypePublicReference.keepSynced(true);
                                     dailyServicesTypePublicReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
