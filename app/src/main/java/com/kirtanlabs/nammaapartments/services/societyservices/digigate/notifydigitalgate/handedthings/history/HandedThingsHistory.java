@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -84,6 +85,7 @@ public class HandedThingsHistory extends BaseActivity {
                         }
                     }
                     if (!handedThingsGuestList.isEmpty()) {
+                        Collections.reverse(handedThingsGuestList);
                         guestsHistoryAdapter = new GuestsHistoryAdapter(handedThingsGuestList, HandedThingsHistory.this);
                         recyclerView.setAdapter(guestsHistoryAdapter);
                     } else {
@@ -191,7 +193,7 @@ public class HandedThingsHistory extends BaseActivity {
                                         public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
                                             if (dailyServiceCountSnapshot.hasChild(userUID)) {
                                                 DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
-                                                //We display only those daily service details who has handed things has one of its child
+                                                /*We display only those daily service details who has handed things has one of its child*/
                                                 if (dailyServiceDataSnapshot.hasChild(FIREBASE_CHILD_HANDED_THINGS)) {
                                                     isUserHandedThingsToDailyService = true;
                                                     DatabaseReference handedThingsReference = reference.child(userUID).child(FIREBASE_CHILD_HANDED_THINGS);
