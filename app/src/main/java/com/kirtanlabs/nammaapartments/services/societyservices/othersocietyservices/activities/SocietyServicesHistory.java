@@ -12,6 +12,8 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.SocietyServiceHistoryAdapter;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.util.Collections;
+
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
@@ -61,6 +63,7 @@ public class SocietyServicesHistory extends BaseActivity {
                         if (supportList == null) {
                             showFeatureUnavailableLayout(R.string.support_unavailable);
                         } else {
+                            Collections.reverse(supportList);
                             ContactUsAdapter contactUsAdapter = new ContactUsAdapter(SocietyServicesHistory.this, supportList);
                             recyclerView.setAdapter(contactUsAdapter);
                         }

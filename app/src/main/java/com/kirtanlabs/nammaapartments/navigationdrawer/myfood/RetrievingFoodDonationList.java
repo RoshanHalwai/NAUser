@@ -78,7 +78,7 @@ public class RetrievingFoodDonationList {
                             count++;
                             DonateFood donateFood = dataSnapshot.getValue(DonateFood.class);
                             donateFoodDataList.add(donateFood);
-                            if (count == donateFoodDataList.size()) {
+                            if (foodDonationNotificationUIDList.size() == donateFoodDataList.size()) {
                                 foodDonationDataListCallBack.onCallBack(donateFoodDataList);
                             }
                         }
