@@ -138,7 +138,6 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
             editor.putBoolean(LOGGED_IN, false);
             editor.putString(USER_UID, null);
             editor.apply();
-
             FIREBASE_AUTH.signOut();
             Intent intent = new Intent(NammaApartmentSettings.this, SignIn.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -40,6 +40,7 @@ public class ActivationRequired extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        showProgressDialog(this, "Checking Activation Status", getString(R.string.please_wait_a_moment));
         hideBackButton();
 
         TextView textActivationRequiredMessage = findViewById(R.id.textActivationRequiredMessage);
@@ -57,6 +58,7 @@ public class ActivationRequired extends BaseActivity {
                 if (dataSnapshot.exists()) {
                     Integer verifiedValue = dataSnapshot.getValue(Integer.class);
                     if (verifiedValue != null) {
+                        hideProgressDialog();
                         switch (verifiedValue) {
                             case FIREBASE_CHILD_VERIFIED_APPROVED:
                                 getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(VERIFIED, true).apply();

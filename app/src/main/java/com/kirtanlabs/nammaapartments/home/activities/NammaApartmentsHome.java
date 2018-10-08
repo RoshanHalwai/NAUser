@@ -238,28 +238,29 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
     private void checkSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor;
+        String userUID;
         if (sharedPreferences.getBoolean(LOGGED_IN, false)) {
-            String userUid = sharedPreferences.getString(USER_UID, null);
-            userReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(userUid));
+            userUID = sharedPreferences.getString(USER_UID, null);
+            userReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(userUID));
         } else {
-            userReference = PRIVATE_USERS_REFERENCE
-                    .child(Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid());
+            userUID = Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid();
+            userReference = PRIVATE_USERS_REFERENCE.child(userUID);
             editor = sharedPreferences.edit();
             editor.putBoolean(LOGGED_IN, true);
-            editor.putString(USER_UID, Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid());
+            editor.putString(USER_UID, userUID);
             editor.apply();
-        }
-        /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
-        userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
 
-        /*Storing User's Mobile OS Type(Android) in firebase under (users->private->userUid->otherDetails->deviceType)*/
-        userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_TYPE).setValue(Constants.ANDROID);
+            /*Storing User's Mobile API level in firebase under (users->private->userUid->otherDetails->deviceVersion)*/
+            userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_VERSION).setValue(Build.VERSION.SDK_INT);
+
+            /*Storing User's Mobile OS Type(Android) in firebase under (users->private->userUid->otherDetails->deviceType)*/
+            userReference.child(FIREBASE_CHILD_OTHER_DETAILS).child(FIREBASE_CHILD_DEVICE_TYPE).setValue(Constants.ANDROID);
+        }
 
         /*Generating token id for Family Member/Friend on launch of Home Screen, and making sure a refreshed token is generated when
          * user logs in from a different device*/
         String token_id = FirebaseInstanceId.getInstance().getToken();
-        DatabaseReference userTokenIdReference = PRIVATE_USERS_REFERENCE.child(Objects.requireNonNull(FIREBASE_AUTH.getCurrentUser()).getUid());
-        userTokenIdReference.child(FIREBASE_CHILD_TOKENID).setValue(token_id);
+        PRIVATE_USERS_REFERENCE.child(userUID).child(FIREBASE_CHILD_TOKENID).setValue(token_id);
     }
 
     /**

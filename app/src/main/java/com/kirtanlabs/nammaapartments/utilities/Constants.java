@@ -362,15 +362,11 @@ public class Constants {
      *
      * @param ENVIRONMENT which database should be used
      */
-    public final void configureFB(final String ENVIRONMENT) {
+    public final void configureFirebase(final String ENVIRONMENT) {
         FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(ENVIRONMENT);
         FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FIREBASE_APP);
-        FIREBASE_STORAGE = (ENVIRONMENT.equals(SOCIETY_DEV_ENV) || ENVIRONMENT.equals(MASTER_DEV_ENV)) ?
-                FirebaseStorage.getInstance(FirebaseApp.getInstance(MASTER_DEV_ENV)) :
-                FirebaseStorage.getInstance(FirebaseApp.getInstance(MASTER_BETA_ENV));
-        FIREBASE_AUTH = (ENVIRONMENT.equals(SOCIETY_DEV_ENV) || ENVIRONMENT.equals(MASTER_DEV_ENV)) ?
-                FirebaseAuth.getInstance(FirebaseApp.getInstance(MASTER_DEV_ENV)) :
-                FirebaseAuth.getInstance(FirebaseApp.getInstance(MASTER_BETA_ENV));
+        FIREBASE_STORAGE = FirebaseStorage.getInstance();
+        FIREBASE_AUTH = FirebaseAuth.getInstance();
         ALL_SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION).child(FIREBASE_CHILD_ALL);
         SOCIETYSERVICENOTIFICATION_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION);
         SOCIETY_SERVICES_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_SOCIETY_SERVICES);

@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.onboarding.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,12 +25,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
+import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.AddDailyService;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.AddFamilyMember;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -38,9 +39,19 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.COUNTRY_CODE_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_DATABASE_URL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.OTP_TIMER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_DEV_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class OTP extends BaseActivity implements View.OnClickListener, View.OnKeyListener {
 
@@ -65,12 +76,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     private String phoneVerificationId, userMobileNumber;
 
     /* ------------------------------------------------------------- *
-     * Private Members for Firebase
-     * ------------------------------------------------------------- */
-
-    private DatabaseReference userPrivateInfo;
-
-    /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
      * ------------------------------------------------------------- */
 
@@ -89,7 +94,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         super.onCreate(savedInstanceState);
 
         /* Generate an OTP to user's mobile number */
-        userMobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        userMobileNumber = getIntent().getStringExtra(MOBILE_NUMBER);
         sendOTP();
 
         /* Start the Resend OTP timer, valid for 120 seconds*/
@@ -112,16 +117,16 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         editSixthOTPDigit = findViewById(R.id.editSixthOTPDigit);
 
         /*Setting font for all the views*/
-        textPhoneVerification.setTypeface(Constants.setLatoRegularFont(this));
-        textResendOTPOrVerificationMessage.setTypeface(Constants.setLatoRegularFont(this));
-        textChangeNumberOrTimer.setTypeface(Constants.setLatoRegularFont(this));
-        buttonVerifyOTP.setTypeface(Constants.setLatoLightFont(this));
-        editFirstOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editSecondOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editThirdOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editFourthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editFifthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editSixthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
+        textPhoneVerification.setTypeface(setLatoRegularFont(this));
+        textResendOTPOrVerificationMessage.setTypeface(setLatoRegularFont(this));
+        textChangeNumberOrTimer.setTypeface(setLatoRegularFont(this));
+        buttonVerifyOTP.setTypeface(setLatoLightFont(this));
+        editFirstOTPDigit.setTypeface(setLatoRegularFont(this));
+        editSecondOTPDigit.setTypeface(setLatoRegularFont(this));
+        editThirdOTPDigit.setTypeface(setLatoRegularFont(this));
+        editFourthOTPDigit.setTypeface(setLatoRegularFont(this));
+        editFifthOTPDigit.setTypeface(setLatoRegularFont(this));
+        editSixthOTPDigit.setTypeface(setLatoRegularFont(this));
 
         /*Setting events for OTP edit text*/
         setEventsForEditText();
@@ -211,6 +216,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         }
         return false;
     }
+
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
@@ -218,8 +224,8 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     private void sendOTP() {
         setUpVerificationCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE_IN + userMobileNumber,
-                Constants.OTP_TIMER,
+                COUNTRY_CODE_IN + userMobileNumber,
+                OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
                 verificationCallbacks);
@@ -274,31 +280,27 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                     hideProgressDialog();
                     if (task.isSuccessful()) {
                         if (previousScreenTitle == R.string.login) {
-                            userPrivateInfo = Constants.ALL_USERS_REFERENCE.child(userMobileNumber);
-                            userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    /* Check if User mobile number is found in database */
-                                    if (dataSnapshot.exists()) {
-                                        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(ACCOUNT_CREATED, true).apply();
-                                        if (getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
-                                            startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
-                                        } else {
-                                            startActivity(new Intent(OTP.this, ActivationRequired.class));
-                                        }
+                            mobileNumberExists(isPresent -> {
+                                if (isPresent) {
+                                    /* User record was found in firebase hence we check if user has Logged Out and Logged In or
+                                     * if they have uninstalled and reinstalled the App*/
+                                    SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+                                    sharedPreferences.edit().putBoolean(ACCOUNT_CREATED, true).apply();
+                                    if (sharedPreferences.getString(FIREBASE_DATABASE_URL, "").isEmpty()) {
+                                        /*This block indicates user has uninstalled and reinstalled the App*/
+                                        getDatabaseURL(databaseURL -> {
+                                            changeDatabaseInstance(getApplicationContext(), databaseURL);
+                                            startCorrespondingActivity();
+                                        });
+                                    } else {
+                                        startCorrespondingActivity();
                                     }
+                                } else {
                                     /* User record was not found in firebase hence we navigate them to Sign Up page*/
-                                    else {
-                                        Intent intent = new Intent(OTP.this, SignUp.class);
-                                        intent.putExtra(Constants.MOBILE_NUMBER, userMobileNumber);
-                                        startActivity(intent);
-                                    }
+                                    Intent intent = new Intent(OTP.this, SignUp.class);
+                                    intent.putExtra(MOBILE_NUMBER, userMobileNumber);
+                                    startActivity(intent);
                                     finish();
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
                         } else {
@@ -306,21 +308,74 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                             finish();
                         }
                     } else {
-                        /*Check if network is available or not*/
-                        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
-                        boolean isConnected = activeNetwork != null &&
-                                activeNetwork.isConnectedOrConnecting();
-                        if (!isConnected) {
-                            /*Show this message if user is having no network connection*/
-                            textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
-                        } else {
-                            /*Show this message if user has entered wrong OTP*/
-                            textResendOTPOrVerificationMessage.setText(R.string.wrong_otp_entered);
-                        }
+                        showError();
                     }
                 });
+    }
+
+    /**
+     * Starts Activity based on the Shared Preferences data
+     */
+    private void startCorrespondingActivity() {
+        SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        if (sharedPreferences.getBoolean(VERIFIED, false)) {
+            startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+        } else {
+            startActivity(new Intent(OTP.this, ActivationRequired.class));
+        }
+        finish();
+    }
+
+    private void showError() {
+        /*Check if network is available or not*/
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+            /*Show this message if user is having no network connection*/
+            textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
+        } else {
+            /*Show this message if user has entered wrong OTP*/
+            textResendOTPOrVerificationMessage.setText(R.string.wrong_otp_entered);
+        }
+    }
+
+    /**
+     * @param mobileNumberExists returns true if user mobile number exists in Master Database
+     *                           returns false otherwise
+     */
+    private void mobileNumberExists(MobileNumberExists mobileNumberExists) {
+        DatabaseReference userPrivateInfo = ALL_USERS_REFERENCE.child(userMobileNumber);
+        userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mobileNumberExists.onCallback(dataSnapshot.exists());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * @param databaseURL indicates the Society Database URL the user belongs to
+     */
+    private void getDatabaseURL(final DatabaseURL databaseURL) {
+        ALL_USERS_REFERENCE.child(userMobileNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                databaseURL.onCallback(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -328,8 +383,8 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
      */
     private void resendOTP() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                Constants.COUNTRY_CODE_IN + userMobileNumber,
-                Constants.OTP_TIMER,
+                COUNTRY_CODE_IN + userMobileNumber,
+                OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
                 verificationCallbacks,
@@ -377,7 +432,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     }
 
     private void getPreviousScreenTitle() {
-        previousScreenTitle = getIntent().getIntExtra(Constants.SCREEN_TITLE, 0);
+        previousScreenTitle = getIntent().getIntExtra(SCREEN_TITLE, 0);
     }
 
     /**
@@ -507,14 +562,14 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                 textPhoneVerification.setText(R.string.enter_verification_code);
                 break;
             case R.string.add_my_daily_service:
-                String service_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+                String service_type = getIntent().getStringExtra(SERVICE_TYPE);
                 String description = getResources().getString(R.string.enter_verification_code);
                 description = description.replace("account", service_type + " account");
                 description = description.replace("your mobile", "their mobile");
                 textPhoneVerification.setText(description);
                 break;
             case R.string.add_family_members_details_screen:
-                String screen_type = getIntent().getStringExtra(Constants.SERVICE_TYPE);
+                String screen_type = getIntent().getStringExtra(SERVICE_TYPE);
                 String otpDescription = getResources().getString(R.string.enter_verification_code).replace("account", screen_type + " account");
                 otpDescription = otpDescription.replace("your mobile", "their mobile");
                 textPhoneVerification.setText(otpDescription);
@@ -546,5 +601,33 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                 startActivity(familyMemberIntent);
                 break;
         }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Public Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * Changes Database instance from Default to User Specific Society Instance
+     *
+     * @param databaseURL new Database URL which Application will access
+     */
+    public void changeDatabaseInstance(final Context context, final String databaseURL) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        sharedPreferences.edit().putString(FIREBASE_DATABASE_URL, databaseURL).apply();
+        //TODO: Change ENVIRONMENT to SOCIETY_BETA_ENV before rolling out App in Play Store
+        new NammaApartmentsGlobal().initializeFirebase(context, databaseURL, SOCIETY_DEV_ENV);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Interfaces
+     * ------------------------------------------------------------- */
+
+    private interface DatabaseURL {
+        void onCallback(String databaseURL);
+    }
+
+    private interface MobileNumberExists {
+        void onCallback(Boolean isPresent);
     }
 }
