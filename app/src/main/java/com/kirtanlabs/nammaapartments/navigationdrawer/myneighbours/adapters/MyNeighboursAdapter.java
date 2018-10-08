@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.myNeighbours.adapters;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,7 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
+
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -24,13 +30,15 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
      * ------------------------------------------------------------- */
 
     private final Context mCtx;
+    private final List<NammaApartmentUser> neighbourDataList;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    public MyNeighboursAdapter(Context mCtx) {
+    public MyNeighboursAdapter(Context mCtx, List<NammaApartmentUser> neighbourDataList) {
         this.mCtx = mCtx;
+        this.neighbourDataList = neighbourDataList;
     }
 
     /* ------------------------------------------------------------- *
@@ -40,7 +48,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
     @NonNull
     @Override
     public MyNeighbourHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        /*inflating and returning our view holder*/
+        /*Inflating and returning our view holder*/
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_my_neighbours, parent, false);
         return new MyNeighbourHolder(view);
@@ -48,13 +56,18 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyNeighbourHolder holder, int position) {
-
+        /*Creating an instance of NammaApartmentsUsers class and retrieving the values from Firebase*/
+        NammaApartmentUser nammaApartmentUser = neighbourDataList.get(position);
+        holder.textNeighbourNameValue.setText(nammaApartmentUser.getPersonalDetails().getFullName());
+        holder.textApartmentNameValue.setText(nammaApartmentUser.getFlatDetails().getApartmentName());
+        holder.textFlatNumberValue.setText(nammaApartmentUser.getFlatDetails().getFlatNumber());
+        Glide.with(mCtx.getApplicationContext()).load(nammaApartmentUser.getPersonalDetails().getProfilePhoto())
+                .into(holder.neighbourProfileImage);
     }
 
     @Override
     public int getItemCount() {
-        //TODO: to change the count here
-        return 4;
+        return neighbourDataList.size();
     }
 
     /* ------------------------------------------------------------- *
@@ -73,6 +86,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
         private final TextView textNeighbourNameValue;
         private final TextView textApartmentNameValue;
         private final TextView textFlatNumberValue;
+        private final CircleImageView neighbourProfileImage;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -88,6 +102,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
             textNeighbourNameValue = itemView.findViewById(R.id.textNeighbourNameValue);
             textApartmentNameValue = itemView.findViewById(R.id.textApartmentNameValue);
             textFlatNumberValue = itemView.findViewById(R.id.textFlatNumberValue);
+            neighbourProfileImage = itemView.findViewById(R.id.neighbourProfileImage);
 
             /*Setting Fonts for all the views on card view*/
             textNeighbourName.setTypeface(setLatoRegularFont(mCtx));

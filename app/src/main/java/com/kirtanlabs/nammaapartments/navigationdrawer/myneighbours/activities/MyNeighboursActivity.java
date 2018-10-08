@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer.myNeighbours.activities;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.activities;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -6,7 +6,8 @@ import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
-import com.kirtanlabs.nammaapartments.navigationdrawer.myNeighbours.adapters.MyNeighboursAdapter;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.RetrievingNeighboursList;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.adapters.MyNeighboursAdapter;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -37,7 +38,15 @@ public class MyNeighboursActivity extends BaseActivity {
         recyclerViewMyNeighbour.setHasFixedSize(true);
         recyclerViewMyNeighbour.setLayoutManager(new LinearLayoutManager(this));
 
-        /*Setting Adapter to the view*/
-        recyclerViewMyNeighbour.setAdapter(new MyNeighboursAdapter(this));
+        showProgressIndicator();
+
+        /*Retrieving Details of all Neighbour of the society*/
+        new RetrievingNeighboursList(MyNeighboursActivity.this).getNeighbourDataList(neighboursDataList -> {
+            if (!neighboursDataList.isEmpty()) {
+                hideProgressIndicator();
+                /*Setting Adapter to the view*/
+                recyclerViewMyNeighbour.setAdapter(new MyNeighboursAdapter(MyNeighboursActivity.this, neighboursDataList));
+            }
+        });
     }
 }
