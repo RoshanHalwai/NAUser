@@ -106,6 +106,9 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
         holder.textInvitationDateValue.setText(separatedDateAndTime[0]);
         holder.textInvitationTimeOrStatusValue.setText(separatedDateAndTime[1]);
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentGuest.getProfilePhoto())
+                .asBitmap()
+                .centerCrop()
+                .skipMemoryCache(false)
                 .into(holder.visitorOrDailyServiceProfilePic);
 
         if (nammaApartmentGuest.getApprovalType().equals(FIREBASE_CHILD_GUARD_APPROVED)) {
