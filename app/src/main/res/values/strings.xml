@@ -683,4 +683,10 @@
     <string name="guard">Guard:</string>
     <string name="gate_no">Gate No:</string>
 
+    <!--My Neighbours Activity-->
+    <string name="my_neighbours">My Neighbours</string>
+    <string name="name_with_colon">Name:</string>
+    <string name="apartment_with_colon">Apartment:</string>
+    <string name="flat_with_colon">Flat:</string>
+
 </resources>

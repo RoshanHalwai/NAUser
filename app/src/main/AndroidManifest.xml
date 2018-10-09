@@ -127,6 +127,9 @@
             android:name=".navigationdrawer.myguards.activities.MyGuardsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".navigationdrawer.myneighbours.activities.MyNeighboursActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".navigationdrawer.mywallet.activities.MyPaymentsActivity"
             android:screenOrientation="portrait" />
         <activity
