@@ -113,15 +113,15 @@ public class HandedThingsHistory extends BaseActivity {
 
     /**
      * Check if the flat has any daily service. If it does not have any daily services added we show daily service unavailable message
-     * Else, we display the daily services whose status is "Entered" of the current user and their family members
+     * Else, we display the daily services whose status is "Entered" of the current user and their family members.
      */
     private void checkAndRetrieveDailyServices() {
         DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
                 .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_DAILYSERVICES);
+        DatabaseReference myDailyServicesReference = userDataReference.child(Constants.FIREBASE_CHILD_DAILYSERVICES);
 
         /*We first check if this flat has any visitors*/
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        myDailyServicesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
@@ -199,8 +199,8 @@ public class HandedThingsHistory extends BaseActivity {
                                                     DatabaseReference handedThingsReference = reference.child(userUID).child(FIREBASE_CHILD_HANDED_THINGS);
                                                     handedThingsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            for (DataSnapshot dates : dataSnapshot.getChildren()) {
+                                                        public void onDataChange(DataSnapshot handedThingsDataSnapshot) {
+                                                            for (DataSnapshot dates : handedThingsDataSnapshot.getChildren()) {
                                                                 NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
                                                                 Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
                                                                 nammaApartmentDailyService.setDailyServiceHandedThingsDescription(Objects.requireNonNull(dates.getValue()).toString());
@@ -215,11 +215,11 @@ public class HandedThingsHistory extends BaseActivity {
                                                                     String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
                                                                     nammaApartmentDailyService.setDateOfVisit(formattedDate);
                                                                     nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
-                                                                    dailyServicesHistoryAdapter.notifyDataSetChanged();
                                                                 } catch (ParseException e) {
                                                                     e.printStackTrace();
                                                                 }
                                                             }
+
                                                         }
 
                                                         @Override
@@ -229,6 +229,7 @@ public class HandedThingsHistory extends BaseActivity {
                                                     });
                                                 }
                                                 if (isUserHandedThingsToDailyService) {
+                                                    reverseHandedThingsList(nammaApartmentDailyServiceList);
                                                     hideFeatureUnavailableLayout();
                                                 } else {
                                                     showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
@@ -259,6 +260,16 @@ public class HandedThingsHistory extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * This method gets invoked to reverse the list coming from firebase.
+     *
+     * @param nammaApartmentDailyServiceList contains the list of things handed by user to that daily service..
+     */
+    private void reverseHandedThingsList(List<NammaApartmentDailyService> nammaApartmentDailyServiceList) {
+        Collections.reverse(nammaApartmentDailyServiceList);
+        dailyServicesHistoryAdapter.notifyDataSetChanged();
     }
 
 }
