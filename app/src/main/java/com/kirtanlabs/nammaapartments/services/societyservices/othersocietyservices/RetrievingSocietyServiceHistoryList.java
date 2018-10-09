@@ -158,7 +158,9 @@ public class RetrievingSocietyServiceHistoryList {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Support support = dataSnapshot.getValue(Support.class);
                             supportDataList.add(support);
-                            supportDataListCallBack.onCallBack(supportDataList);
+                            if (supportNotificationUIDList.size() == supportDataList.size()) {
+                                supportDataListCallBack.onCallBack(supportDataList);
+                            }
                         }
 
                         @Override

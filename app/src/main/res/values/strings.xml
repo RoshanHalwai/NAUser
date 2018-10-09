@@ -378,6 +378,10 @@
     <string name="admin_notification">You are the Administrator</string>
     <string name="e_intercom">E-Intercom</string>
     <string name="flat_admin">Flat Admin</string>
+    <string name="gate_pass">Gate Pass</string>
+    <string name="gate_pass_msg">Download this pass for your hassle free entry into the Society. Issued by Namma Apartments.</string>
+    <string name="download">Download</string>
+    <string name="download_gate_pass">My Gate Pass</string>
 
     <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
@@ -678,5 +682,11 @@
     <!--My Guard Activity-->
     <string name="guard">Guard:</string>
     <string name="gate_no">Gate No:</string>
+
+    <!--My Neighbours Activity-->
+    <string name="my_neighbours">My Neighbours</string>
+    <string name="name_with_colon">Name:</string>
+    <string name="apartment_with_colon">Apartment:</string>
+    <string name="flat_with_colon">Flat:</string>
 
 </resources>

@@ -112,8 +112,11 @@
 
         <!-- Navigation Drawer Screens -->
         <activity
-            android:name=".navigationdrawer.UserProfile"
+            android:name=".navigationdrawer.myprofile.activities.UserProfile"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.myprofile.activities.GatePassActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".navigationdrawer.myvehicles.activities.MyVehiclesActivity"
             android:screenOrientation="portrait" />
@@ -122,6 +125,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.myguards.activities.MyGuardsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.myneighbours.activities.MyNeighboursActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.mywallet.activities.MyPaymentsActivity"

@@ -12,10 +12,12 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.adapters.NoticeBoardAdapter;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.pojo.NammaApartmentsNotice;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTICE_BOARD_REFERENCE;
 
 public class NoticeBoard extends BaseActivity {
 
@@ -58,7 +60,8 @@ public class NoticeBoard extends BaseActivity {
 
         /*Initializing the adapter*/
         noticeBoardAdapter = new NoticeBoardAdapter(nammaApartmentsNoticeList, this);
-        /* Setting the GridView Adapter*/
+
+        /* Setting the Notice Board Adapter*/
         recyclerView.setAdapter(noticeBoardAdapter);
 
         /*Retrieving Notice Details Added By Society Service Admin*/
@@ -71,27 +74,29 @@ public class NoticeBoard extends BaseActivity {
      * ------------------------------------------------------------- */
 
     /**
-     * This method gets invoked when user tries to see notices when admin has added any notices.
+     * This method gets invoked when user tries to see the notices which was added by society admin.
      */
     private void retrieveNoticeDetailsFromFirebase() {
-        DatabaseReference noticeBoardReference = Constants.NOTICE_BOARD_REFERENCE;
-        noticeBoardReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        NOTICE_BOARD_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
+            public void onDataChange(DataSnapshot noticeBoardUIDSnapshot) {
+                if (!noticeBoardUIDSnapshot.exists()) {
                     hideProgressIndicator();
                     showFeatureUnavailableLayout(R.string.notice_unavailable);
                 } else {
-                    hideProgressIndicator();
-                    for (DataSnapshot noticeBoardDataSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot noticeBoardDataSnapshot : noticeBoardUIDSnapshot.getChildren()) {
                         String noticeBoardUID = noticeBoardDataSnapshot.getKey();
-                        DatabaseReference noticeBoardUIDReference = noticeBoardReference.child(noticeBoardUID);
+                        DatabaseReference noticeBoardUIDReference = NOTICE_BOARD_REFERENCE.child(noticeBoardUID);
                         noticeBoardUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                NammaApartmentsNotice nammaApartmentsNotice = dataSnapshot.getValue(NammaApartmentsNotice.class);
+                            public void onDataChange(DataSnapshot noticeBoardUIDDataSnapshot) {
+                                NammaApartmentsNotice nammaApartmentsNotice = noticeBoardUIDDataSnapshot.getValue(NammaApartmentsNotice.class);
                                 nammaApartmentsNoticeList.add(index++, nammaApartmentsNotice);
-                                noticeBoardAdapter.notifyDataSetChanged();
+                                if (noticeBoardUIDSnapshot.getChildrenCount() == nammaApartmentsNoticeList.size()) {
+                                    hideProgressIndicator();
+                                    reverseNoticeList(nammaApartmentsNoticeList);
+                                }
+
                             }
 
                             @Override
@@ -111,4 +116,13 @@ public class NoticeBoard extends BaseActivity {
         });
     }
 
+    /**
+     * This method gets invoked to reverse the list coming from firebase
+     *
+     * @param nammaApartmentsNoticeList contains the list of notices added by society admin.
+     */
+    private void reverseNoticeList(List<NammaApartmentsNotice> nammaApartmentsNoticeList) {
+        Collections.reverse(nammaApartmentsNoticeList);
+        noticeBoardAdapter.notifyDataSetChanged();
+    }
 }
