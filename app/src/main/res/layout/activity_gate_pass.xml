@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/activity_base" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/textSocietyValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:layout_gravity="center"
+                android:textColor="@color/nmBlack"
+                android:textSize="20sp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/currentUserProfilePic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="1dp"/>
+
+            <TextView
+                android:id="@+id/textUserNameValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:padding="3dp"
+                android:textColor="@color/nmBlack"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textApartmentValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:layout_gravity="center"
+                android:textColor="@color/nmBlack"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textFlatValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:layout_gravity="center"
+                android:textColor="@color/nmBlack"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textWelcomeMessage"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:text="@string/gate_pass_msg" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/buttonDownloadGatePass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_margin"
+        android:background="@color/nmBlack"
+        android:text="@string/download"
+        android:textColor="@color/nmLightYellow"
+        android:textSize="@dimen/button_default_size"
+        android:visibility="visible" />
+
+</LinearLayout>
