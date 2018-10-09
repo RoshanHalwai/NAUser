@@ -22,7 +22,6 @@ public class RetrievingFoodDonationList {
      * ------------------------------------------------------------- */
 
     private final Context context;
-    private int count = 0;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -75,7 +74,6 @@ public class RetrievingFoodDonationList {
                     foodDonationDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            count++;
                             DonateFood donateFood = dataSnapshot.getValue(DonateFood.class);
                             donateFoodDataList.add(donateFood);
                             if (foodDonationNotificationUIDList.size() == donateFoodDataList.size()) {

@@ -101,9 +101,11 @@ public class SocietyServicesHistory extends BaseActivity {
                             showFeatureUnAvailableLayout(updatedDescription);
                         } else {
                             if (societyServiceType.equals(EVENT_MANAGEMENT)) {
+                                Collections.reverse(societyServiceNotificationDataList);
                                 EventManagementHistoryAdapter adapter = new EventManagementHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                                 recyclerView.setAdapter(adapter);
                             } else {
+                                Collections.reverse(societyServiceNotificationDataList);
                                 SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                                 recyclerView.setAdapter(adapter);
                             }
