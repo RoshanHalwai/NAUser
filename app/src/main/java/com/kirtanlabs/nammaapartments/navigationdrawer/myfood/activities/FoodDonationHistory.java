@@ -9,6 +9,8 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.RetrievingFoodDonationList;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.adapters.MyFoodHistoryAdapter;
 
+import java.util.Collections;
+
 public class FoodDonationHistory extends BaseActivity {
 
     /* ------------------------------------------------------------- *
@@ -38,11 +40,11 @@ public class FoodDonationHistory extends BaseActivity {
 
         /*Retrieving Details of all Food Donation requests raised by the user*/
         new RetrievingFoodDonationList(FoodDonationHistory.this).getFoodDonationDataList(donateFoodList -> {
+            hideProgressIndicator();
             if (donateFoodList.isEmpty()) {
-                hideProgressIndicator();
                 showFeatureUnavailableLayout(R.string.no_food_donations_raised);
             } else {
-                hideProgressIndicator();
+                Collections.reverse(donateFoodList);
                 recyclerView.setAdapter(new MyFoodHistoryAdapter(FoodDonationHistory.this, donateFoodList));
             }
         });

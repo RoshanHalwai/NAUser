@@ -12,6 +12,8 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.adapters.SocietyServiceHistoryAdapter;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
+import java.util.Collections;
+
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMENT;
@@ -61,6 +63,7 @@ public class SocietyServicesHistory extends BaseActivity {
                         if (supportList == null) {
                             showFeatureUnavailableLayout(R.string.support_unavailable);
                         } else {
+                            Collections.reverse(supportList);
                             ContactUsAdapter contactUsAdapter = new ContactUsAdapter(SocietyServicesHistory.this, supportList);
                             recyclerView.setAdapter(contactUsAdapter);
                         }
@@ -98,9 +101,11 @@ public class SocietyServicesHistory extends BaseActivity {
                             showFeatureUnAvailableLayout(updatedDescription);
                         } else {
                             if (societyServiceType.equals(EVENT_MANAGEMENT)) {
+                                Collections.reverse(societyServiceNotificationDataList);
                                 EventManagementHistoryAdapter adapter = new EventManagementHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                                 recyclerView.setAdapter(adapter);
                             } else {
+                                Collections.reverse(societyServiceNotificationDataList);
                                 SocietyServiceHistoryAdapter adapter = new SocietyServiceHistoryAdapter(societyServiceNotificationDataList, SocietyServicesHistory.this);
                                 recyclerView.setAdapter(adapter);
                             }

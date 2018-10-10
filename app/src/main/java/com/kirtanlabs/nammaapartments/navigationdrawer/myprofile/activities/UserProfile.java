@@ -1,4 +1,4 @@
-package com.kirtanlabs.nammaapartments.navigationdrawer;
+package com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -65,15 +65,15 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
+    private final List<String> flatMembersList = new ArrayList<>();
+    private final List<String> flatMembersUIDList = new ArrayList<>();
+    private final int index = 0;
     private TextView textEIntercomNumber, textErrorUserName, textErrorEmailId, textErrorInvalidEmailId;
     private EditText editUserName, editUserEmail, editFlatAdmin;
     private AlertDialog imageSelectionDialog;
     private Dialog flatMembersDialog;
-    private final List<String> flatMembersList = new ArrayList<>();
-    private final List<String> flatMembersUIDList = new ArrayList<>();
     private CircleImageView currentUserProfilePic;
     private File profilePhotoPath;
-    private final int index = 0;
     private String userName, userEmail, adminName, itemValue, selectedFamilyMemberUID;
     private NammaApartmentUser currentNammaApartmentUser;
 
@@ -121,6 +121,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         editUserEmail = findViewById(R.id.editUserEmail);
         editFlatAdmin = findViewById(R.id.editFlatAdmin);
         Button buttonUpdate = findViewById(R.id.buttonUpdate);
+        Button buttonGatePass = findViewById(R.id.buttonGatePass);
 
         /*Setting font for all the views*/
         textEIntercom.setTypeface(setLatoBoldFont(this));
@@ -135,6 +136,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         editUserName.setTypeface(setLatoRegularFont(this));
         editFlatAdmin.setTypeface(setLatoRegularFont(this));
         buttonUpdate.setTypeface(setLatoLightFont(this));
+        buttonGatePass.setTypeface(setLatoLightFont(this));
 
         /*This method is for retrieval of currentUser details and gets pre-filled in EditTexts and
          *image gets pre-loaded in circularImageView.*/
@@ -149,6 +151,7 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
         editFlatAdmin.setOnClickListener(this);
         currentUserProfilePic.setOnClickListener(this);
         buttonUpdate.setOnClickListener(this);
+        buttonGatePass.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -203,6 +206,10 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                 /* This method gets invoked to check all the editText fields for validations
                  * and also updates the user profile details in Firebase accordingly. */
                 updateUserDetailsInFirebase();
+                break;
+            case R.id.buttonGatePass:
+                Intent gatePassIntent = new Intent(UserProfile.this, GatePassActivity.class);
+                startActivity(gatePassIntent);
                 break;
         }
     }
