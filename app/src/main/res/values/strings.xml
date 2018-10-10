@@ -685,4 +685,9 @@
     <string name="apartment_with_colon">Apartment:</string>
     <string name="flat_with_colon">Flat:</string>
 
+    <!--Send Message Activity-->
+    <string name="send_message">Send Message</string>
+    <string name="enter_your_text_here">Enter your text here</string>
+    <string name="send_message_description">Image to send message to neighbour</string>
+
 </resources>
