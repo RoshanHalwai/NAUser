@@ -45,7 +45,10 @@ public class Constants {
     public static final String VISITOR_PROFILE_PHOTO = "visitorProfilePhoto";
     public static final String MESSAGE = "message";
     public static final String COMPLETED = "Completed";
-    public static final String VISITOR_MOBILE_NUMBER="visitorMobileNumber";
+    public static final String VISITOR_MOBILE_NUMBER = "visitorMobileNumber";
+    public static final String NEIGHBOUR_UID = "neighbourUID";
+    public static final String NEIGHBOUR_APARTMENT_NAME = "neighbourApartmentName";
+    public static final String NEIGHBOUR_FLAT_NUMBER = "neighbourFlatNumber";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -210,6 +213,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_SCRAP_TYPE = "scrapType";
     public static final String FIREBASE_CHILD_TIME_SLOTS = "timeSlots";
     public static final String FIREBASE_CHILD_VEHICLE_NUMBER = "vehicleNumber";
+    public static final String FIREBASE_CHILD_CHATS = "chats";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -272,6 +276,8 @@ public class Constants {
     public static final DatabaseReference PRIVATE_USER_DATA_REFERENCE = USER_DATA_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
     public static final DatabaseReference VERSION_NAME_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VERSION_NAME);
     public static final DatabaseReference DONATE_FOOD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_FOOD_DONATIONS);
+    private static final DatabaseReference CHATS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CHATS);
+    public static final DatabaseReference PRIVATE_CHATS_REFERENCE = CHATS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
