@@ -13,9 +13,11 @@
         android:id="@+id/recyclerViewChatMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutActivityBase" />
+        android:layout_above="@id/layoutSendMessage"
+        android:layout_below="@+id/layoutActivityBase" />
 
     <LinearLayout
+        android:id="@+id/layoutSendMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

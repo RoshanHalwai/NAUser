@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.RetrievingNeighboursList;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.adapters.SendMessageAdapter;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.pojo.NammaApartmentsSendMessage;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
@@ -78,6 +80,14 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 
         recyclerViewChatMessages.setHasFixedSize(true);
         recyclerViewChatMessages.setLayoutManager(new LinearLayoutManager(this));
+
+        /*Retrieving Previous chat messages if any*/
+        new RetrievingNeighboursList(SendMessageActivity.this)
+                .getPreviousMessagesDataList(neighbourUID, previousMessagesDataList -> {
+                    if (!previousMessagesDataList.isEmpty()) {
+                        recyclerViewChatMessages.setAdapter(new SendMessageAdapter(SendMessageActivity.this, previousMessagesDataList));
+                    }
+                });
 
         /*Setting OnClick Listeners to the views*/
         imageSendMessage.setOnClickListener(this);

@@ -11,4 +11,8 @@
     <!--Settings Activity-->
     <color name="nmSettingsHeader">#e2e1e1</color>
 
+    <!--Send Message Activity-->
+    <color name="nmLightGrey">#797676</color>
+    <color name="nmSendMessageColor">#cecdcd</color>
+
 </resources>
