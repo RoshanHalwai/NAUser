@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/received_message_design"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textReceivedMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="8dp"
+        android:textColor="@color/nmBlack"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textReceivedMessageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:textColor="@color/nmLightGrey"
+        android:textSize="12sp"
+        tools:ignore="RtlSymmetry" />
+
+</LinearLayout>

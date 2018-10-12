@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.pojo.NammaApartmentsSendMessage;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CHATS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_CHATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 
 public class RetrievingNeighboursList {
@@ -26,16 +29,19 @@ public class RetrievingNeighboursList {
     private String currentUserApartmentName;
     private String currentUserFlatNumber;
     private String currentUserUID;
+    private DatabaseReference currentUserDataReference;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
     public RetrievingNeighboursList(Context mCtx) {
-        NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getNammaApartmentUser();
+        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
+        NammaApartmentUser currentNammaApartmentUser = nammaApartmentsGlobal.getNammaApartmentUser();
         currentUserApartmentName = currentNammaApartmentUser.getFlatDetails().getApartmentName();
         currentUserFlatNumber = currentNammaApartmentUser.getFlatDetails().getFlatNumber();
         currentUserUID = currentNammaApartmentUser.getUID();
+        currentUserDataReference = nammaApartmentsGlobal.getUserDataReference();
     }
 
     /* ------------------------------------------------------------- *
@@ -69,6 +75,86 @@ public class RetrievingNeighboursList {
                 } else {
                     neighboursUIDListCallback.onCallBack(new ArrayList<>());
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * This method is invoked to get chat room uid for particular neighbour
+     *
+     * @param neighbourUID        - uid of neighbour
+     * @param chatRoomUIDCallback - callback to return chat room uid
+     */
+    private void getChatRoomUID(String neighbourUID, ChatRoomUIDCallback chatRoomUIDCallback) {
+        DatabaseReference chatRoomReference = currentUserDataReference.child(FIREBASE_CHILD_CHATS)
+                .child(neighbourUID);
+        chatRoomReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    chatRoomUIDCallback.onCallBack(dataSnapshot.getValue(String.class));
+                } else {
+                    chatRoomUIDCallback.onCallBack(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * This method is invoked to retrieve a list of all message uid for a particular chat room
+     *
+     * @param chatRoomUID            - uid of chat room
+     * @param messageUIDListCallback - callback to return list of all message uid
+     */
+    private void getMessageUIDList(String chatRoomUID, MessageUIDListCallback messageUIDListCallback) {
+        PRIVATE_CHATS_REFERENCE.child(chatRoomUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    List<String> messagesList = new ArrayList<>();
+                    for (DataSnapshot messageListReference : dataSnapshot.getChildren()) {
+                        messagesList.add(messageListReference.getKey());
+                    }
+
+                    if (dataSnapshot.getChildrenCount() == messagesList.size()) {
+                        messageUIDListCallback.onCallBack(messagesList);
+                    }
+                } else {
+                    messageUIDListCallback.onCallBack(new ArrayList<>());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * This method is invoked to retrieve the details of the message
+     *
+     * @param chatRoomUID         - chat room uid
+     * @param messageUID          - message uid of which details to be retrieve
+     * @param messageDataCallback - callback to return details of a particular message
+     */
+    private void getMessageDetails(String chatRoomUID, String messageUID, MessageDataCallback messageDataCallback) {
+        PRIVATE_CHATS_REFERENCE.child(chatRoomUID)
+                .child(messageUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                NammaApartmentsSendMessage nammaApartmentsSendMessage = dataSnapshot.getValue(NammaApartmentsSendMessage.class);
+                messageDataCallback.onCallBack(nammaApartmentsSendMessage);
             }
 
             @Override
@@ -127,6 +213,39 @@ public class RetrievingNeighboursList {
         });
     }
 
+    /**
+     * This method is invoke to retrieve list all previous chat messages with that neighbour
+     *
+     * @param neighbourUID                     - uid of neighbour
+     * @param previousMessagesDataListCallBack - callback to return a list of all previous messages with that neighbour
+     */
+    public void getPreviousMessagesDataList(String neighbourUID, PreviousMessagesDataListCallBack previousMessagesDataListCallBack) {
+        getChatRoomUID(neighbourUID, chatRoomUID -> {
+            if (chatRoomUID != null) {
+                getMessageUIDList(chatRoomUID, messageUIDList -> {
+                    if (!messageUIDList.isEmpty()) {
+                        count = 0;
+                        List<NammaApartmentsSendMessage> previousMessageDataList = new ArrayList<>();
+                        for (String messageUID : messageUIDList) {
+                            count++;
+                            getMessageDetails(chatRoomUID, messageUID, nammaApartmentsSendMessage -> {
+                                previousMessageDataList.add(nammaApartmentsSendMessage);
+                                if (count == messageUIDList.size()) {
+                                    previousMessagesDataListCallBack.onCallBack(previousMessageDataList);
+                                }
+                            });
+                        }
+
+                    } else {
+                        previousMessagesDataListCallBack.onCallBack(new ArrayList<>());
+                    }
+                });
+            } else {
+                previousMessagesDataListCallBack.onCallBack(new ArrayList<>());
+            }
+        });
+    }
+
     /* ------------------------------------------------------------- *
      * Interfaces
      * ------------------------------------------------------------- */
@@ -137,5 +256,21 @@ public class RetrievingNeighboursList {
 
     public interface NeighboursDataListCallback {
         void onCallBack(List<NammaApartmentUser> neighboursDataList);
+    }
+
+    public interface ChatRoomUIDCallback {
+        void onCallBack(String chatRoomUID);
+    }
+
+    public interface PreviousMessagesDataListCallBack {
+        void onCallBack(List<NammaApartmentsSendMessage> previousMessagesDataList);
+    }
+
+    public interface MessageUIDListCallback {
+        void onCallBack(List<String> messageUIDList);
+    }
+
+    public interface MessageDataCallback {
+        void onCallBack(NammaApartmentsSendMessage nammaApartmentsSendMessage);
     }
 }
