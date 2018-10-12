@@ -86,6 +86,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                 .getPreviousMessagesDataList(neighbourUID, previousMessagesDataList -> {
                     if (!previousMessagesDataList.isEmpty()) {
                         recyclerViewChatMessages.setAdapter(new SendMessageAdapter(SendMessageActivity.this, previousMessagesDataList));
+                        recyclerViewChatMessages.scrollToPosition((previousMessagesDataList.size() - 1));
                     }
                 });
 
