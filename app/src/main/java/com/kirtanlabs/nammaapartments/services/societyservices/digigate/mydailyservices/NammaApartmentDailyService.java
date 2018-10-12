@@ -1,6 +1,8 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -14,7 +16,7 @@ public class NammaApartmentDailyService implements Serializable {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private String dailyServiceType;
+    private String type;
     private String fullName;
     private String phoneNumber;
     private String profilePhoto;
@@ -24,6 +26,7 @@ public class NammaApartmentDailyService implements Serializable {
     private String uid;
     private String dailyServiceHandedThingsDescription;
     private String status;
+    private Map<String, String> handedThingsMap = new LinkedHashMap<>();
 
     /* ------------------------------------------------------------- *
      * Constructors
@@ -32,9 +35,14 @@ public class NammaApartmentDailyService implements Serializable {
     public NammaApartmentDailyService() {
     }
 
-    NammaApartmentDailyService(String uid, String fullName, String phoneNumber, String profilePhoto, String timeOfVisit, int rating) {
+    public NammaApartmentDailyService(NammaApartmentDailyService ds) {
+        this(ds.uid, ds.fullName, ds.type, ds.phoneNumber, ds.profilePhoto, ds.timeOfVisit, ds.rating);
+    }
+
+    NammaApartmentDailyService(String uid, String fullName, String type, String phoneNumber, String profilePhoto, String timeOfVisit, int rating) {
         this.uid = uid;
         this.fullName = fullName;
+        this.type = type;
         this.phoneNumber = phoneNumber;
         this.profilePhoto = profilePhoto;
         this.timeOfVisit = timeOfVisit;
@@ -49,24 +57,12 @@ public class NammaApartmentDailyService implements Serializable {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getProfilePhoto() {
         return profilePhoto;
-    }
-
-    public void setProfilePhoto(String profilePhoto) {
-        this.profilePhoto = profilePhoto;
     }
 
     public String getTimeOfVisit() {
@@ -81,8 +77,8 @@ public class NammaApartmentDailyService implements Serializable {
         return rating;
     }
 
-    public String getDailyServiceType() {
-        return dailyServiceType;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
 
@@ -90,8 +86,12 @@ public class NammaApartmentDailyService implements Serializable {
      * Setters
      * ------------------------------------------------------------- */
 
-    public void setDailyServiceType(String dailyServiceType) {
-        this.dailyServiceType = dailyServiceType;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getUID() {
@@ -114,15 +114,19 @@ public class NammaApartmentDailyService implements Serializable {
         this.status = status;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
     public String getDateOfVisit() {
         return dateOfVisit;
     }
 
     public void setDateOfVisit(String dateOfVisit) {
         this.dateOfVisit = dateOfVisit;
+    }
+
+    public Map<String, String> getHandedThingsMap() {
+        return handedThingsMap;
+    }
+
+    public void setHandedThingsMap(Map<String, String> handedThingsMap) {
+        this.handedThingsMap = handedThingsMap;
     }
 }
