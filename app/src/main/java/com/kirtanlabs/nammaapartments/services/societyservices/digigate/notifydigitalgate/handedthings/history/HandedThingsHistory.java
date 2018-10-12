@@ -4,18 +4,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevisitors.NammaApartmentGuest;
-import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
+import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.RetrievingDailyServicesList;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.myvisitorslist.guests.RetrievingGuestList;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -26,12 +21,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Map;
+import java.util.TreeMap;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DAILYSERVICES;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_HANDED_THINGS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
 public class HandedThingsHistory extends BaseActivity {
@@ -43,8 +35,7 @@ public class HandedThingsHistory extends BaseActivity {
     private GuestsHistoryAdapter guestsHistoryAdapter;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHistoryAdapter dailyServicesHistoryAdapter;
-    private int index = 0;
-    private boolean isUserHandedThingsToDailyService = false;
+    private RecyclerView recyclerView;
 
     @Override
     protected int getLayoutResourceId() {
@@ -55,6 +46,7 @@ public class HandedThingsHistory extends BaseActivity {
     protected int getActivityTitle() {
         return R.string.history;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +59,7 @@ public class HandedThingsHistory extends BaseActivity {
         showProgressIndicator();
 
         /*Getting Id of recycler view*/
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -97,9 +89,6 @@ public class HandedThingsHistory extends BaseActivity {
 
         /*History of Handed things to Daily Services*/
         else {
-            nammaApartmentDailyServiceList = new ArrayList<>();
-            dailyServicesHistoryAdapter = new DailyServicesHistoryAdapter(nammaApartmentDailyServiceList, this);
-            recyclerView.setAdapter(dailyServicesHistoryAdapter);
             checkAndRetrieveDailyServices();
         }
 
@@ -114,149 +103,46 @@ public class HandedThingsHistory extends BaseActivity {
      * Else, we display the daily services whose status is "Entered" of the current user and their family members
      */
     private void checkAndRetrieveDailyServices() {
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myVisitorsReference = userDataReference.child(Constants.FIREBASE_CHILD_DAILYSERVICES);
-
-        /*We first check if this flat has any visitors*/
-        myVisitorsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
-                } else {
-                    DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
-                    privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
-                                retrieveDailyServicesDetailsFromFirebase(flatSnapshot.getKey());
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+        new RetrievingDailyServicesList(getApplicationContext(), NammaApartmentsGlobal.userUID).getAllDailyServices(dailyServicesList -> {
+            Map<String, NammaApartmentDailyService> handedThingsHistory = new TreeMap<>();
+            hideProgressIndicator();
+            if (dailyServicesList.isEmpty()) {
+                showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
+            } else {
+                for (NammaApartmentDailyService dailyService : dailyServicesList) {
+                    Map<String, String> handedThingsMap = dailyService.getHandedThingsMap();
+                    for (String date : handedThingsMap.keySet()) {
+                        NammaApartmentDailyService ds = new NammaApartmentDailyService(dailyService);
+                        ds.setDailyServiceHandedThingsDescription(handedThingsMap.get(date));
+                        ds.setDateOfVisit(formatDate(date));
+                        handedThingsHistory.put(date, ds);
+                    }
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            if (handedThingsHistory.isEmpty()) {
+                showFeatureUnavailableLayout(R.string.no_handed_things_history);
+            } else {
+                nammaApartmentDailyServiceList = new ArrayList<>(handedThingsHistory.values());
+                dailyServicesHistoryAdapter = new DailyServicesHistoryAdapter(nammaApartmentDailyServiceList, this);
+                recyclerView.setAdapter(dailyServicesHistoryAdapter);
             }
         });
     }
 
-    /**
-     * Retrieves all daily services of given userUID
-     *
-     * @param userUID - whose daily services needs to be retrieved
-     */
-    private void retrieveDailyServicesDetailsFromFirebase(String userUID) {
-        DatabaseReference dailyServicesListReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                .child(FIREBASE_CHILD_DAILYSERVICES);
-
-        /*Start with checking if a flat has any daily services*/
-        dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
-                hideProgressIndicator();
-                /*Flat has no daily services added*/
-                if (!myDailyServiceSnapshot.exists()) {
-                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
-                }
-                /*Flat has some daily services added*/
-                else {
-                    /*Iterate over each daily service type*/
-                    for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
-                        String dailyServiceType = dailyServicesSnapshot.getKey();
-                        DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
-
-                        /*For each daily service type, check how many are added. Say a user can have two
-                         * cooks or maids*/
-                        dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
-
-                                /*Iterate over each of them and add listener to each of them*/
-                                for (DataSnapshot childSnapshot : dailyServiceUIDSnapshot.getChildren()) {
-                                    DatabaseReference reference = PUBLIC_DAILYSERVICES_REFERENCE
-                                            .child(dailyServiceUIDSnapshot.getKey())    // Daily Service Type
-                                            .child(childSnapshot.getKey());             // Daily Service UID
-                                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
-                                            if (dailyServiceCountSnapshot.hasChild(userUID)) {
-                                                DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
-                                                //We display only those daily service details who has handed things has one of its child
-                                                if (dailyServiceDataSnapshot.hasChild(FIREBASE_CHILD_HANDED_THINGS)) {
-                                                    isUserHandedThingsToDailyService = true;
-                                                    DatabaseReference handedThingsReference = reference.child(userUID).child(FIREBASE_CHILD_HANDED_THINGS);
-                                                    handedThingsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            for (DataSnapshot dates : dataSnapshot.getChildren()) {
-                                                                NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
-                                                                nammaApartmentDailyService.setDailyServiceHandedThingsDescription(Objects.requireNonNull(dates.getValue()).toString());
-                                                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                                                                try {
-                                                                    Date date = dateFormat.parse(dates.getKey());
-                                                                    Calendar myCal = new GregorianCalendar();
-                                                                    myCal.setTime(date);
-                                                                    int dayOfMonth = myCal.get(Calendar.DAY_OF_MONTH);
-                                                                    int month = myCal.get(Calendar.MONTH);
-                                                                    int year = myCal.get(Calendar.YEAR);
-                                                                    String formattedDate = new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
-                                                                    nammaApartmentDailyService.setDateOfVisit(formattedDate);
-                                                                    nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
-                                                                    dailyServicesHistoryAdapter.notifyDataSetChanged();
-                                                                } catch (ParseException e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-
-                                                        }
-                                                    });
-                                                }
-                                                if (isUserHandedThingsToDailyService) {
-                                                    hideFeatureUnavailableLayout();
-                                                } else {
-                                                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
-                                                }
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    private String formatDate(final String unformattedDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try {
+            Date date = dateFormat.parse(unformattedDate);
+            Calendar myCal = new GregorianCalendar();
+            myCal.setTime(date);
+            int dayOfMonth = myCal.get(Calendar.DAY_OF_MONTH);
+            int month = myCal.get(Calendar.MONTH);
+            int year = myCal.get(Calendar.YEAR);
+            return new DateFormatSymbols().getMonths()[month].substring(0, 3) + " " + dayOfMonth + ", " + year;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

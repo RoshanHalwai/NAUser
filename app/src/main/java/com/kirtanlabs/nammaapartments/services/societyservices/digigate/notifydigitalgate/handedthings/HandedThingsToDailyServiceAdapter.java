@@ -72,7 +72,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
-        holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
+        holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getType());
         holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(HandedThings.numberOfFlats.get(nammaApartmentDailyService.getUID())));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
@@ -196,7 +196,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                     handedThingsHistoryIntent.putExtra(SCREEN_TITLE, R.string.my_daily_services);
                     String handedThingsDescription = editDescription.getText().toString();
                     nammaApartmentDailyService.setDailyServiceHandedThingsDescription(handedThingsDescription);
-                    String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+                    String dailyServiceType = nammaApartmentDailyService.getType();
 
                     /*We need to keep track of when users are handing things to their visitors hence
                      * we map Date with Things, since date is unique*/
