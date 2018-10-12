@@ -224,13 +224,11 @@ public class RetrievingNeighboursList {
             if (chatRoomUID != null) {
                 getMessageUIDList(chatRoomUID, messageUIDList -> {
                     if (!messageUIDList.isEmpty()) {
-                        count = 0;
                         List<NammaApartmentsSendMessage> previousMessageDataList = new ArrayList<>();
                         for (String messageUID : messageUIDList) {
-                            count++;
                             getMessageDetails(chatRoomUID, messageUID, nammaApartmentsSendMessage -> {
                                 previousMessageDataList.add(nammaApartmentsSendMessage);
-                                if (count == messageUIDList.size()) {
+                                if (previousMessageDataList.size() == messageUIDList.size()) {
                                     previousMessagesDataListCallBack.onCallBack(previousMessageDataList);
                                 }
                             });
