@@ -3,10 +3,9 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -59,9 +58,7 @@ public class AwaitingResponse extends BaseActivity {
      *-----------------------------------------------*/
 
     private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse;
-    private TextView textSocietyServiceNameValue, textMobileNumberValue;
-    private TextView textEndOTPValue, textSocietyServiceAcceptedRequest, textSocietyServiceNameAndEventTitle,
-            textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
+    private TextView textSocietyServiceNameValue, textMobileNumberValue, textEndOTPValue;
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
     private Button buttonCallService, buttonCancelService;
@@ -88,10 +85,10 @@ public class AwaitingResponse extends BaseActivity {
         layoutAwaitingResponse = findViewById(R.id.layoutAwaitingResponse);
         layoutAcceptedResponse = findViewById(R.id.layoutAcceptedResponse);
         TextView textNotificationSent = findViewById(R.id.textNotificationSent);
-        textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
-        textSocietyServiceNameAndEventTitle = findViewById(R.id.textSocietyServiceName);
-        textMobileNumberAndEventDate = findViewById(R.id.textMobileNumber);
-        textEndOTPAndTimeSlot = findViewById(R.id.textEndOTP);
+        TextView textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
+        TextView textSocietyServiceNameAndEventTitle = findViewById(R.id.textSocietyServiceName);
+        TextView textMobileNumberAndEventDate = findViewById(R.id.textMobileNumber);
+        TextView textEndOTPAndTimeSlot = findViewById(R.id.textEndOTP);
         textSocietyServiceNameValue = findViewById(R.id.textSocietyServiceNameValue);
         textMobileNumberValue = findViewById(R.id.textMobileNumberValue);
         textEndOTPValue = findViewById(R.id.textEndOTPValue);
@@ -136,14 +133,9 @@ public class AwaitingResponse extends BaseActivity {
                 textSocietyServiceResponse.setText(getString(R.string.no_response_garbage));
                 break;
         }
-        if (societyServiceType.equals(Constants.EVENT_MANAGEMENT)) {
-            /*This method is used to check status of user's latest request for Event Management*/
-            checkUserEventManagementRequest();
-        } else {
-            showProgressIndicator();
-            /*This method is used to check status of user's latest request of that particular Society Service*/
-            checkUserRequestStatus();
-        }
+        showProgressIndicator();
+        /*This method is used to check status of user's latest request of that particular Society Service*/
+        checkUserRequestStatus();
     }
 
     /*----------------------------------------------
@@ -313,7 +305,7 @@ public class AwaitingResponse extends BaseActivity {
      */
     private void rateSocietyService() {
         DatabaseReference rateReference = societyServiceNotificationReference.child(Constants.RATING);
-        rateReference.addValueEventListener(new ValueEventListener() {
+        rateReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
@@ -372,8 +364,10 @@ public class AwaitingResponse extends BaseActivity {
         AlertDialog dialog = alertRateServiceDialog.create();
         dialog.setCancelable(false);
 
-        new Dialog(this);
-        dialog.show();
+        new Dialog(AwaitingResponse.this);
+        if (!AwaitingResponse.this.isFinishing()) {
+            dialog.show();
+        }
 
         /*Setting onClickListener for view*/
         buttonSubmit.setOnClickListener(v -> {
@@ -405,66 +399,5 @@ public class AwaitingResponse extends BaseActivity {
                 }
             });
         });
-    }
-
-    /**
-     * This method is invoked to check the status of user's latest Event Management Request and Display Details of that particular event in cardView.
-     */
-    private void checkUserEventManagementRequest() {
-        /*Here we are changing some Title's text*/
-        changeViewsText();
-
-        /*Getting Details of event management notification from (societyServiceNotification->notificationUID) in firebase*/
-        societyServiceNotificationReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String eventTitle = dataSnapshot.child(Constants.FIREBASE_CHILD_CATEGORY).getValue(String.class);
-                String eventDate = dataSnapshot.child(Constants.FIREBASE_CHILD_EVENT_DATE).getValue(String.class);
-                String timeSlot = dataSnapshot.child(Constants.FIREBASE_CHILD_TIME_SLOT).getValue(String.class);
-                String status = dataSnapshot.child(Constants.FIREBASE_CHILD_STATUS).getValue(String.class);
-
-                textSocietyServiceNameValue.setText(eventTitle);
-                textMobileNumberValue.setText(eventDate);
-                textEndOTPValue.setText(timeSlot);
-
-                if (Objects.requireNonNull(status).equals(Constants.IN_PROGRESS)) {
-                    textRequestStatusValue.setText(getString(R.string.in_process));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
-
-    /**
-     * This method is used to change text of some views when Society Service type is Event Management.
-     */
-    private void changeViewsText() {
-        layoutAwaitingResponse.setVisibility(View.GONE);
-        layoutAcceptedResponse.setVisibility(View.VISIBLE);
-
-        /*Getting Id's for all the views*/
-        TextView textEventManagementNote = findViewById(R.id.textEventManagementNote);
-        TextView textRequestStatus = findViewById(R.id.textRequestStatus);
-        textRequestStatusValue = findViewById(R.id.textRequestStatusValue);
-        ImageView imageSocietyServiceStatus = findViewById(R.id.imageSocietyServiceStatus);
-
-        /*Setting font for all the views*/
-        textRequestStatus.setTypeface(Constants.setLatoRegularFont(this));
-        textRequestStatusValue.setTypeface(Constants.setLatoBoldFont(this));
-        textEventManagementNote.setTypeface(Constants.setLatoBoldFont(this));
-
-        textEventManagementNote.setVisibility(View.VISIBLE);
-        textRequestStatus.setVisibility(View.VISIBLE);
-        textRequestStatusValue.setVisibility(View.VISIBLE);
-        imageSocietyServiceStatus.setImageResource(R.drawable.event_na);
-
-        textSocietyServiceAcceptedRequest.setText(getText(R.string.request_initiated));
-        String eventTitle = getString(R.string.event_title) + ":";
-        textSocietyServiceNameAndEventTitle.setText(eventTitle);
-        textMobileNumberAndEventDate.setText(getString(R.string.date));
-        textEndOTPAndTimeSlot.setText(getString(R.string.time_slot));
     }
 }
