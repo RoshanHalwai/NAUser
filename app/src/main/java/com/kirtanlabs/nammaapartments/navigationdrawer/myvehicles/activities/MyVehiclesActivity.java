@@ -12,6 +12,8 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.RetrievingVehiclesList;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.adapters.MyVehiclesAdapter;
 
+import java.util.Collections;
+
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 
 public class MyVehiclesActivity extends BaseActivity implements View.OnClickListener {
@@ -44,6 +46,7 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
             if (vehicleList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.add_your_vehicle_message);
             } else {
+                Collections.reverse(vehicleList);
                 MyVehiclesAdapter vehiclesAdapter = new MyVehiclesAdapter(MyVehiclesActivity.this, vehicleList);
                 recyclerView.setAdapter(vehiclesAdapter);
             }

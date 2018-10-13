@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".navigationdrawer.myneighbours.activities.SendMessageActivity">
+
+    <include
+        android:id="@+id/layoutActivityBase"
+        layout="@layout/activity_base" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewChatMessages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layoutSendMessage"
+        android:layout_below="@+id/layoutActivityBase" />
+
+    <LinearLayout
+        android:id="@+id/layoutSendMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <EditText
+            android:id="@+id/editMessage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.85"
+            android:background="@drawable/valid_for_button_design"
+            android:hint="@string/enter_your_text_here"
+            android:inputType="textMultiLine|textCapSentences"
+            android:padding="10dp"
+            android:textColor="@color/nmBlack"
+            tools:ignore="LabelFor" />
+
+        <ImageView
+            android:id="@+id/imageSendMessage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"
+            android:contentDescription="@string/send_message_description"
+            android:src="@drawable/ic_send_message_black" />
+
+    </LinearLayout>
+
+</RelativeLayout>
