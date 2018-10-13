@@ -50,6 +50,7 @@ public class Constants {
     public static final String NEIGHBOUR_APARTMENT_NAME = "neighbourApartmentName";
     public static final String NEIGHBOUR_FLAT_NUMBER = "neighbourFlatNumber";
     public static final String PROFILE_OLD_CONTENT = "profileOldContent";
+    public static final String DECLINED = "Declined";
 
     /* ------------------------------------------------------------- *
      * Notification
