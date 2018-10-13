@@ -409,7 +409,8 @@ public class AwaitingResponse extends BaseActivity {
     }
 
     /**
-     * This method is invoked when the status of society service request changes to "Declined"
+     * This method is invoked when the status of particular society service notification
+     * changes to "Declined"
      *
      * @param societyServiceType - type of society service
      */
