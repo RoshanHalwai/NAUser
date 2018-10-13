@@ -137,7 +137,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         } else {
             personalDetailsReference = personalDetailsReference.child(FIREBASE_CHILD_EMAIL);
         }
-        personalDetailsReference.setValue(newContent).addOnCompleteListener(task -> {
+        personalDetailsReference.setValue(newContent).addOnSuccessListener(task -> {
             if (screenTitle == R.string.enter_your_name) {
                 currentNammaApartmentUser.getPersonalDetails().setFullName(newContent);
             } else {
@@ -170,7 +170,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
 
             /*Here,we need to update the admin UID under userdata->flatNumber->admin*/
             DatabaseReference adminUIDReference = userDataReference.child(FIREBASE_ADMIN);
-            adminUIDReference.setValue(residentUID).addOnCompleteListener(task -> {
+            adminUIDReference.setValue(residentUID).addOnSuccessListener(task -> {
                 NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
                 currentNammaApartmentUser.getPrivileges().setAdmin(false);
                 startUserProfile(currentNammaApartmentUser);
