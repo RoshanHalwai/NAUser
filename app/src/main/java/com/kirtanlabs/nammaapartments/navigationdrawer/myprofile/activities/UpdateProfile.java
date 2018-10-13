@@ -40,6 +40,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
 
 public class UpdateProfile extends BaseActivity implements View.OnClickListener {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private EditText editText;
     private String oldContent;
     private String newContent;
@@ -48,6 +52,10 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
     private String residentUID;
     private int count = 0;
     private Map<String, String> residentsMap = new TreeMap<>();
+
+    /* ------------------------------------------------------------- *
+     * Overriding base class methods
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -87,10 +95,9 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private boolean isFieldChanged() {
-        newContent = editText.getText().toString();
-        return !newContent.equals(oldContent);
-    }
+    /* ------------------------------------------------------------- *
+     * Overriding onClick from View Interface
+     * ------------------------------------------------------------- */
 
     @Override
     public void onClick(View v) {
@@ -108,6 +115,18 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /* ------------------------------------------------------------- *
+     * Private Methods
+     * ------------------------------------------------------------- */
+
+    private boolean isFieldChanged() {
+        newContent = editText.getText().toString();
+        return !newContent.equals(oldContent);
+    }
+
+    /**
+     * Updates the user name or email address of the user in firebase and local App {@link NammaApartmentsGlobal}
+     */
     private void updateUserNameOrEmail() {
         /*Here we are getting the instance of current user when screen loads for the first time*/
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
@@ -128,6 +147,9 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         });
     }
 
+    /**
+     * Updates the Admin details in firebase and local App {@link NammaApartmentsGlobal}
+     */
     private void updateAdmin() {
         /*Runnable Interface which gets invoked once user presses Yes button in Confirmation
          Dialog */
@@ -159,6 +181,10 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         showConfirmDialog(confirmDialogTitle, confirmDialogMessage, updateAdminDetailsInFirebase);
     }
 
+    /**
+     * Sets up the List view with all the resident names who have been added by the user {@link NammaApartmentUser#friends} and
+     * {@link NammaApartmentUser#familyMembers}
+     */
     private void setResidentsList() {
         List<String> residentsList = new ArrayList<>();
         NammaApartmentUser nammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
@@ -195,6 +221,10 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         }));
     }
 
+    /**
+     * Gets all resident names and their UID who have been added by the user {@link NammaApartmentUser#friends} and
+     * {@link NammaApartmentUser#familyMembers}
+     */
     private void getAllResidentsList(final Map<String, Boolean> residentsList, final FirebaseCallback callback) {
         if (!residentsList.isEmpty()) {
             for (String residentUID : residentsList.keySet()) {
@@ -215,7 +245,6 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
-
                 });
             }
         } else {
@@ -229,6 +258,10 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         userProfileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(userProfileIntent);
     }
+
+    /* ------------------------------------------------------------- *
+     * Interface
+     * ------------------------------------------------------------- */
 
     interface FirebaseCallback {
         void onCallback();
