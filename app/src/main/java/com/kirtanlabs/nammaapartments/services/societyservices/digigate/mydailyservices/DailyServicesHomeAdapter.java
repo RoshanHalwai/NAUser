@@ -89,7 +89,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         //Creating an instance of NammaApartmentDailyService class and retrieving the values from Firebase
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textServiceNameValue.setText(nammaApartmentDailyService.getFullName());
-        holder.textServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
+        holder.textServiceTypeValue.setText(nammaApartmentDailyService.getType());
         holder.textInvitationDateOrServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
         holder.textInvitationTimeOrStatusValue.setText(nammaApartmentDailyService.getStatus());
         holder.textInvitedByOrNumberOfFlatsValue.setText(String.valueOf(DailyServicesHome.numberOfFlats.get(nammaApartmentDailyService.getUID())));
@@ -187,7 +187,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
      */
     private void updateDailyServiceDetails(int position) {
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
-        String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+        String dailyServiceType = nammaApartmentDailyService.getType();
         String updatedTime = editPickTime.getText().toString();
         nammaApartmentDailyService.setTimeOfVisit(updatedTime);
         notifyItemChanged(position);
@@ -248,7 +248,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
         /*Setting onClickListener for view*/
         buttonSubmit.setOnClickListener(v -> {
             String dailyServiceUID = nammaApartmentDailyService.getUID();
-            String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+            String dailyServiceType = nammaApartmentDailyService.getType();
             /*Setting the rating given by the user in Daily Services data in firebase*/
             DatabaseReference dailyServiceRatingReference = PUBLIC_DAILYSERVICES_REFERENCE
                     .child(DailyServiceType.getKeyByValue(dailyServiceType)).child(dailyServiceUID).child(NammaApartmentsGlobal.userUID)
@@ -269,7 +269,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             nammaApartmentDailyServiceList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, nammaApartmentDailyServiceList.size());
-            String dailyServiceType = nammaApartmentDailyService.getDailyServiceType();
+            String dailyServiceType = nammaApartmentDailyService.getType();
             DatabaseReference userDailyServiceReference = ((NammaApartmentsGlobal) mCtx.getApplicationContext()).getUserDataReference()
                     .child(FIREBASE_CHILD_DAILYSERVICES);
             userDailyServiceReference.child(DailyServiceType.getKeyByValue(dailyServiceType))

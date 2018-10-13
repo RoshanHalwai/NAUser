@@ -15,6 +15,7 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.adapters.Transac
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
@@ -58,6 +59,7 @@ public class TransactionHistory extends BaseActivity {
                                 transactionList.add(dataSnapshot.getValue(Transaction.class));
                                 if (transactionList.size() == transactionUIDs.getChildrenCount()) {
                                     hideProgressIndicator();
+                                    Collections.reverse(transactionList);
                                     TransactionHistoryAdapter transactionHistoryAdapter = new TransactionHistoryAdapter(TransactionHistory.this, transactionList);
                                     recyclerView.setAdapter(transactionHistoryAdapter);
                                 }

@@ -108,13 +108,27 @@
                     android:textColor="@color/nmBlack"
                     android:textSize="@dimen/text_view_default_size" />
 
-                <TextView
-                    android:id="@+id/textFlatNumberValue"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="3dp"
-                    android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textFlatNumberValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:textColor="@color/nmBlack"
+                        android:textSize="@dimen/text_view_default_size" />
+
+                    <ImageView
+                        android:id="@+id/imageChatNeighbour"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/chat_na" />
+                </RelativeLayout>
 
             </LinearLayout>
 

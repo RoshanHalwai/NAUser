@@ -54,7 +54,7 @@ public class DailyServicesHistoryAdapter extends RecyclerView.Adapter<DailyServi
         NammaApartmentDailyService nammaApartmentDailyService = nammaApartmentDailyServiceList.get(position);
         holder.textInvitationTimeValue.setText(nammaApartmentDailyService.getTimeOfVisit());
         holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
-        holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getDailyServiceType());
+        holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getType());
         /*Ensuring if the Handed Things value is entered as empty by the User (since the Description field is optional),
         then the blank value is not shown beside 'Things' title */
         String handedThingsValue = nammaApartmentDailyService.getDailyServiceHandedThingsDescription();

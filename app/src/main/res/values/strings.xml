@@ -241,6 +241,8 @@
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">There are no Daily Service added for your Flat yet.</string>
+    <string name="daily_service_not_entered">Currently there are no Daily Service at your Flat.</string>
+    <string name="no_handed_things_history">You haven\'t handed any things to your Daily Services.</string>
     <string name="daily_service_description_hint">Ex: Clothes</string>
 
     <!--Daily Services Home-->
@@ -690,5 +692,10 @@
     <string name="name_with_colon">Name:</string>
     <string name="apartment_with_colon">Apartment:</string>
     <string name="flat_with_colon">Flat:</string>
+
+    <!--Send Message Activity-->
+    <string name="send_message">Send Message</string>
+    <string name="enter_your_text_here">Enter your text here</string>
+    <string name="send_message_description">Image to send message to neighbour</string>
 
 </resources>
