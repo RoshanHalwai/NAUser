@@ -49,6 +49,7 @@ public class Constants {
     public static final String NEIGHBOUR_UID = "neighbourUID";
     public static final String NEIGHBOUR_APARTMENT_NAME = "neighbourApartmentName";
     public static final String NEIGHBOUR_FLAT_NUMBER = "neighbourFlatNumber";
+    public static final String PROFILE_OLD_CONTENT = "profileOldContent";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -232,7 +233,7 @@ public class Constants {
      * ------------------------------------------------------------- */
 
     @SuppressLint("StaticFieldLeak")
-    private static final FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(DEV_ENV);
+    private static final FirebaseApp FIREBASE_APP = FirebaseApp.getInstance(BETA_ENV);
     private static final FirebaseDatabase FIREBASE_DATABASE = FirebaseDatabase.getInstance(FIREBASE_APP);
     public static final FirebaseStorage FIREBASE_STORAGE = FirebaseStorage.getInstance(FIREBASE_APP);
     public static final FirebaseAuth FIREBASE_AUTH = FirebaseAuth.getInstance(FIREBASE_APP);

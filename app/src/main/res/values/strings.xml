@@ -372,7 +372,7 @@
     <string name="update_message">Update Message</string>
     <string name="update_success_message">You have successfully updated your profile.</string>
     <string name="no_update_message">You have not made any changes to your profile.</string>
-    <string name="admin_change_key">Are you sure you want to make person as Admin? \nNote: Your Admin privileges will be transferred to person.</string>
+    <string name="admin_change_key">Are you sure you want to make user as Admin? \nNote: Your Admin privileges will be transferred to user.</string>
     <string name="no_flat_members">"Currently there are no Flat members added to your Flat."</string>
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
@@ -386,6 +386,7 @@
     <string name="download_gate_pass">My Gate Pass</string>
     <string name="download_title">Download Message</string>
     <string name="download_text">Your Gate Pass has been downloaded to the device Gallery.</string>
+    <string name="loading_profile">Loading Profile</string>
 
     <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
@@ -407,6 +408,11 @@
     <string name="cancel_dialog_title">Cancel Service Message</string>
     <string name="cancel_question">Are you sure you want to Cancel the Service?</string>
     <string name="scrap_collection_request_dialog_message">A Scrap Collection request has been raised.</string>
+
+    <!--UserProfile Activity-->
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="select_new_admin">Select new admin</string>
 
     <!--SocietyServicesHistory Activity-->
     <string name="society_service_unavailable_message">You have not raised any Service requests from your flat yet.</string>

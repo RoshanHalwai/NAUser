@@ -53,4 +53,7 @@ public class UserPrivileges implements Serializable {
         this.grantedAccess = grantedAccess;
     }
 
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }
