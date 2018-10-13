@@ -241,6 +241,8 @@
 
     <!--Handed Things To Daily Service Activity-->
     <string name="daily_service_unavailable_message_handed_things">There are no Daily Service added for your Flat yet.</string>
+    <string name="daily_service_not_entered">Currently there are no Daily Service at your Flat.</string>
+    <string name="no_handed_things_history">You haven\'t handed any things to your Daily Services.</string>
     <string name="daily_service_description_hint">Ex: Clothes</string>
 
     <!--Daily Services Home-->

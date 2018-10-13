@@ -8,24 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DAILYSERVICES;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_STATUS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -38,10 +27,8 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
 
     public static final Map<String, Long> numberOfFlats = new HashMap<>();
     private AlertDialog dailyServicesListDialog;
-    private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;
-    private int index = 0;
-    private boolean isDailyServicePresent = false;
+    private RecyclerView recyclerView;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -69,20 +56,13 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
 
         /*Getting Id's for all the views*/
         Button buttonAddDailyServices = findViewById(R.id.buttonAddDailyServices);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
 
         /*Setting font for button*/
         buttonAddDailyServices.setTypeface(setLatoLightFont(this));
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        /*Creating recycler view adapter*/
-        nammaApartmentDailyServiceList = new ArrayList<>();
-        dailyServicesHomeAdapter = new DailyServicesHomeAdapter(nammaApartmentDailyServiceList, this);
-
-        /*Setting adapter to recycler view*/
-        recyclerView.setAdapter(dailyServicesHomeAdapter);
 
         createDailyServicesListDialog();
 
@@ -124,113 +104,13 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
      * Else, we display the cardView of all daily services of the current user.
      */
     private void checkAndRetrieveDailyServices() {
-        DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext())
-                .getUserDataReference();
-        DatabaseReference myDailyServicesReference = userDataReference.child(FIREBASE_CHILD_DAILYSERVICES);
-
-        /*We first check if this flat has any dailyServices*/
-        myDailyServicesReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    hideProgressIndicator();
-                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
-                } else {
-                    DatabaseReference privateFlatReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
-                    privateFlatReference.child(FIREBASE_CHILD_FLAT_MEMBERS).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot flatSnapshot : dataSnapshot.getChildren()) {
-                                retrieveDailyServicesDetailsFromFirebase(flatSnapshot.getKey());
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    /**
-     * Retrieves all daily services of given userUID
-     *
-     * @param userUID - whose daily services needs to be retrieved
-     */
-    private void retrieveDailyServicesDetailsFromFirebase(String userUID) {
-        DatabaseReference dailyServicesListReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                .child(FIREBASE_CHILD_DAILYSERVICES);
-        dailyServicesListReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot myDailyServiceSnapshot) {
-                hideProgressIndicator();
-                /*Iterate over each daily service type*/
-                for (DataSnapshot dailyServicesSnapshot : myDailyServiceSnapshot.getChildren()) {
-                    String dailyServiceType = dailyServicesSnapshot.getKey();
-                    DatabaseReference dailyServiceTypeReference = dailyServicesListReference.child(dailyServiceType);
-                    /*For each daily service type, check how many are added. Say a user can have two
-                     * cooks or maids*/
-                    dailyServiceTypeReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dailyServiceUIDSnapshot) {
-                            /*Iterate over each of them and add listener to each of them*/
-                            for (DataSnapshot dailyServicesTypeSnapshot : dailyServiceUIDSnapshot.getChildren()) {
-                                if (Objects.requireNonNull(dailyServicesTypeSnapshot.getValue(Boolean.class)).equals(true)) {
-                                    isDailyServicePresent = true;
-                                    String dailyServiceUID = dailyServicesTypeSnapshot.getKey();
-                                    DatabaseReference dailyServicesTypePublicReference = PUBLIC_DAILYSERVICES_REFERENCE
-                                            .child(dailyServiceUIDSnapshot.getKey())  // Daily Service Type
-                                            .child(dailyServiceUID);                  // Daily Service UID
-                                    dailyServicesTypePublicReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dailyServiceCountSnapshot) {
-                                            String dailyServiceStatus = Objects.requireNonNull(dailyServiceCountSnapshot.child(FIREBASE_CHILD_STATUS).getValue()).toString();
-                                            if (dailyServiceCountSnapshot.hasChild(userUID)) {
-                                                numberOfFlats.put(dailyServiceUID, dailyServiceCountSnapshot.getChildrenCount() - 1);
-                                                DataSnapshot dailyServiceDataSnapshot = dailyServiceCountSnapshot.child(userUID);
-                                                NammaApartmentDailyService nammaApartmentDailyService = dailyServiceDataSnapshot.getValue(NammaApartmentDailyService.class);
-                                                Objects.requireNonNull(nammaApartmentDailyService).setDailyServiceType(DailyServiceType.get(dailyServiceType));
-                                                nammaApartmentDailyService.setStatus(dailyServiceStatus);
-                                                nammaApartmentDailyServiceList.add(index++, nammaApartmentDailyService);
-                                                dailyServicesHomeAdapter.notifyDataSetChanged();
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-                                /*Checking if any daily service is working in users flat or not*/
-                                if (isDailyServicePresent) {
-                                    hideFeatureUnavailableLayout();
-                                } else {
-                                    showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+        new RetrievingDailyServicesList(getApplicationContext(), NammaApartmentsGlobal.userUID).getAllDailyServices(dailyServicesList -> {
+            hideProgressIndicator();
+            if (dailyServicesList.isEmpty()) {
+                showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
+            } else {
+                dailyServicesHomeAdapter = new DailyServicesHomeAdapter(dailyServicesList, this);
+                recyclerView.setAdapter(dailyServicesHomeAdapter);
             }
         });
     }
