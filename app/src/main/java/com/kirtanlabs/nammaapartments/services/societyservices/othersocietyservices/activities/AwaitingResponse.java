@@ -34,7 +34,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPT
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CANCELLED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATA;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FUTURE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_HISTORY;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
@@ -44,6 +43,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -176,37 +176,6 @@ public class AwaitingResponse extends BaseActivity {
                 }
             });
         }
-    }
-
-    /**
-     * This method is invoked when the status of society service request changes to "Declined"
-     *
-     * @param societyServiceType - type of society service
-     */
-    private void showNoSocietyServiceAvailableLayout(String societyServiceType) {
-        /*Getting Id's for all the views*/
-        TextView textNoSocietyServiceAvailable = findViewById(R.id.textNoSocietyServiceAvailable);
-        Button buttonRequestAgain = findViewById(R.id.buttonRequestAgain);
-
-        /*Setting font for all the views*/
-        textNoSocietyServiceAvailable.setTypeface(setLatoBoldFont(this));
-        buttonRequestAgain.setTypeface(setLatoLightFont(this));
-
-        /*Setting text to the view*/
-        String serviceType;
-        if (societyServiceType.equals(FIREBASE_CHILD_GARBAGE_COLLECTION)) {
-            serviceType = getString(R.string.garbage_collection);
-        } else {
-            serviceType = societyServiceType.substring(0, 1).toUpperCase() + societyServiceType.substring(1);
-        }
-        String noSocietyServiceAvailable = getString(R.string.no_society_service_available).replace(getString(R.string.service), serviceType);
-        textNoSocietyServiceAvailable.setText(noSocietyServiceAvailable);
-
-        /*Setting on Click listeners to the view*/
-
-        layoutAwaitingResponse.setVisibility(View.GONE);
-        layoutAcceptedResponse.setVisibility(View.GONE);
-        layoutRequestDeclined.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -437,5 +406,63 @@ public class AwaitingResponse extends BaseActivity {
                 }
             });
         });
+    }
+
+    /**
+     * This method is invoked when the status of society service request changes to "Declined"
+     *
+     * @param societyServiceType - type of society service
+     */
+    private void showNoSocietyServiceAvailableLayout(String societyServiceType) {
+        /*Getting Id's for all the views*/
+        TextView textNoSocietyServiceAvailable = findViewById(R.id.textNoSocietyServiceAvailable);
+        Button buttonRequestAgain = findViewById(R.id.buttonRequestAgain);
+
+        /*Setting font for all the views*/
+        textNoSocietyServiceAvailable.setTypeface(setLatoBoldFont(this));
+        buttonRequestAgain.setTypeface(setLatoLightFont(this));
+
+        /*Setting text to the view*/
+        String serviceType;
+        if (societyServiceType.equals(GARBAGE_COLLECTION)) {
+            serviceType = getString(R.string.garbage_collection);
+        } else {
+            serviceType = societyServiceType.substring(0, 1).toUpperCase() + societyServiceType.substring(1);
+        }
+        String noSocietyServiceAvailable = getString(R.string.no_society_service_available).replace(getString(R.string.service), serviceType);
+        textNoSocietyServiceAvailable.setText(noSocietyServiceAvailable);
+
+        layoutAwaitingResponse.setVisibility(View.GONE);
+        layoutAcceptedResponse.setVisibility(View.GONE);
+        layoutRequestDeclined.setVisibility(View.VISIBLE);
+
+        /*Setting on Click listeners to the view*/
+        buttonRequestAgain.setOnClickListener(v -> openSocietyServiceHomeScreen());
+    }
+
+    /**
+     * This method is invoked to open Society Service Home Screen
+     */
+    private void openSocietyServiceHomeScreen() {
+        int screenTitle = 0;
+        /*Based On The Society Service Type we navigate user to particular society service screen*/
+        switch (societyServiceType) {
+            case PLUMBER:
+                screenTitle = R.string.plumber;
+                break;
+            case CARPENTER:
+                screenTitle = R.string.carpenter;
+                break;
+            case ELECTRICIAN:
+                screenTitle = R.string.electrician;
+                break;
+            case GARBAGE_COLLECTION:
+                screenTitle = R.string.garbage_collection;
+                break;
+        }
+        Intent intent = new Intent(AwaitingResponse.this, SocietyServicesHome.class);
+        intent.putExtra(SCREEN_TITLE, screenTitle);
+        startActivity(intent);
+        finish();
     }
 }
