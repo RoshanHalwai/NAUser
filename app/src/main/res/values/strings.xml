@@ -382,6 +382,8 @@
     <string name="gate_pass_msg">Download this pass for your hassle free entry into the Society. Issued by Namma Apartments.</string>
     <string name="download">Download</string>
     <string name="download_gate_pass">My Gate Pass</string>
+    <string name="download_title">Download Message</string>
+    <string name="download_text">Your Gate Pass has been downloaded to the device Gallery.</string>
 
     <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
