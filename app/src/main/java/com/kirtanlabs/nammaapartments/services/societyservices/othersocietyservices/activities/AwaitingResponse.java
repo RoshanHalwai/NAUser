@@ -413,7 +413,7 @@ public class AwaitingResponse extends BaseActivity {
      *
      * @param societyServiceType - type of society service
      */
-    private void showNoSocietyServiceAvailableLayout(String societyServiceType) {
+    private void showNoSocietyServiceAvailableLayout(final String societyServiceType) {
         /*Getting Id's for all the views*/
         TextView textNoSocietyServiceAvailable = findViewById(R.id.textNoSocietyServiceAvailable);
         Button buttonRequestAgain = findViewById(R.id.buttonRequestAgain);
