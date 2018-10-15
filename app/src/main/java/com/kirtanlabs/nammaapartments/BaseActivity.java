@@ -9,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -38,6 +40,9 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -56,6 +61,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERM
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.STORAGE_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 
 /**
@@ -194,6 +200,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
                     getLocation();
                 }
                 break;
+            case STORAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    captureGatePass();
+                }
+                break;
         }
     }
 
@@ -251,6 +262,19 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
             EasyImage.openGallery(this, 0);
         else
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_PERMISSION_REQUEST_CODE);
+    }
+
+    /**
+     * We check if permissions are granted to store Image in External Storage if already granted then or if API Level is lower than 15 we directly
+     * store Image in External Storage, else we show Request permission dialog to allow users to give access.
+     */
+    protected void storeGatePassInExternalStorage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            /*Capturing screenshot of Gate Pass of the User on click of 'Download Gate Pass' button*/
+            captureGatePass();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+        }
     }
 
     /**
@@ -543,6 +567,35 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
 
         new Dialog(this);
         alertNotifyGateDialog.show();
+    }
+
+    /**
+     * This method is invoked when the User presses on 'Download' button in the Gate Pass screen.
+     * Gate Pass is captured and stored in the User's device.
+     */
+    private void captureGatePass() {
+        /*At the same time, notifying the user that the Gate Pass has been downloaded*/
+        showNotificationDialog(getString(R.string.download_title), getString(R.string.download_text), null);
+
+        /*Trimming the view so that the captured part only contains the Card View*/
+        View v1 = getWindow().getDecorView().getRootView().findViewById(R.id.viewDownloadGatePass);
+        v1.setDrawingCacheEnabled(true);
+        /*Setting bitmap*/
+        Bitmap b = v1.getDrawingCache();
+        /*Image naming and path*/
+        String storagePath = Environment.getExternalStorageDirectory().toString();
+        File myPath = new File(storagePath, "Namma Apartments" + ".jpg");
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(myPath);
+            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
