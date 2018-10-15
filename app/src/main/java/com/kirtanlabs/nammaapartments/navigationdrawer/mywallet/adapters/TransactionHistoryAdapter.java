@@ -1,7 +1,9 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.TransactionSummaryActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction;
 
 import java.text.SimpleDateFormat;
@@ -87,6 +90,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         private final TextView textServiceCategory;
         private final TextView textDateAndTime;
         private final ImageView imageTransactionResult;
+        private final CardView transactionHistoryView;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -100,11 +104,17 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             textServiceCategory = itemView.findViewById(R.id.textServiceCategory);
             textDateAndTime = itemView.findViewById(R.id.textDateAndTime);
             imageTransactionResult = itemView.findViewById(R.id.imageTransactionResult);
+            transactionHistoryView = itemView.findViewById(R.id.transaction_history_view);
 
             /*Setting Fonts for all the views on cardView*/
             textAmount.setTypeface(setLatoBoldFont(mCtx));
             textServiceCategory.setTypeface(setLatoRegularFont(mCtx));
             textDateAndTime.setTypeface(setLatoRegularFont(mCtx));
+
+            transactionHistoryView.setOnClickListener(v -> {
+                Intent transactionSummaryIntent = new Intent(mCtx, TransactionSummaryActivity.class);
+                mCtx.startActivity(transactionSummaryIntent);
+            });
         }
     }
 }

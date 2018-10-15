@@ -675,6 +675,14 @@
     <string name="maintenance_amount">Maintenance Amount:</string>
     <string name="convenience_fee">Convenience Fee (num%): </string>
     <string name="num_value">num</string>
+    <string name="transaction_summary">Transaction Summary</string>
+    <string name="successful_payment">Your payment was successful !!</string>
+    <string name="transaction_id">Transaction ID</string>
+    <string name="copy">Copy</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="transaction_period">Transaction Period:</string>
+    <string name="transaction_date">Transaction Date:</string>
+    <string name="transaction_amount">Transaction Amount:</string>
 
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>
