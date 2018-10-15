@@ -128,6 +128,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
      * Updates the user name or email address of the user in firebase and local App {@link NammaApartmentsGlobal}
      */
     private void updateUserNameOrEmail() {
+        showProgressDialog(UpdateProfile.this, "Updating Profile", getString(R.string.please_wait_a_moment));
         /*Here we are getting the instance of current user when screen loads for the first time*/
         NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
         DatabaseReference personalDetailsReference = PRIVATE_USERS_REFERENCE.child(currentNammaApartmentUser.getUID())
@@ -143,6 +144,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
             } else {
                 currentNammaApartmentUser.getPersonalDetails().setEmail(newContent);
             }
+            hideProgressDialog();
             startUserProfile(currentNammaApartmentUser);
         });
     }
@@ -155,6 +157,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
          Dialog */
         Runnable updateAdminDetailsInFirebase = () ->
         {
+            showProgressDialog(UpdateProfile.this, "Updating Admin", getString(R.string.please_wait_a_moment));
             DatabaseReference userDataReference = ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference();
             /*Current user will loose Admin Privileges so change admin to false*/
             DatabaseReference currentUserPrivateReference = PRIVATE_USERS_REFERENCE.child(NammaApartmentsGlobal.userUID)
@@ -173,6 +176,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
             adminUIDReference.setValue(residentUID).addOnSuccessListener(task -> {
                 NammaApartmentUser currentNammaApartmentUser = ((NammaApartmentsGlobal) getApplicationContext()).getNammaApartmentUser();
                 currentNammaApartmentUser.getPrivileges().setAdmin(false);
+                hideProgressDialog();
                 startUserProfile(currentNammaApartmentUser);
             });
         };
