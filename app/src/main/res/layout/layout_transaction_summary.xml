@@ -13,6 +13,7 @@
         android:layout_height="100dp"
         android:layout_margin="20dp"
         android:layout_gravity="center"
+        android:src="@drawable/request_accepted_na"
         android:contentDescription="@string/image_success"/>
 
     <TextView
@@ -45,16 +46,16 @@
                 android:textSize="16sp"
                 android:padding="5dp"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/transactionIDValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:textColor="@color/nmBlack"
                     android:padding="5dp"
                     android:textSize="16sp"/>
 
@@ -64,12 +65,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:padding="5dp"
                     android:text="@string/copy"
                     android:textColor="@color/nmLightYellow"
                     android:textSize="12sp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -79,8 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:visibility="visible"
-        android:padding="5dp">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,15 +118,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/transaction_period"
                     android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:layout_marginBottom="10dp"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textTransactionDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/transaction_date"
                     android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textTransactionAmount"
@@ -132,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/transaction_amount"
                     android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -150,23 +154,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:layout_marginBottom="10dp"
                     android:maxLines="1"
                     android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/transactionDateValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/transactionAmountValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/nmBlack"
-                    android:textSize="@dimen/text_view_default_size" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -184,17 +190,26 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/contactUs"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:contentDescription="@string/image_success"
+                android:src="@drawable/ic_help_black"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="5dp"/>
+
             <TextView
                 android:id="@+id/contactUsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/contact_us"
                 android:textColor="@color/nmBlack"
-                android:drawableStart="@drawable/ic_help_black"
-                android:drawableLeft="@drawable/ic_help_black"
-                android:padding="5dp"
                 android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:layout_gravity="center_vertical"
+                android:textSize="16sp"
+                android:padding="5dp"/>
 
         </LinearLayout>
 
