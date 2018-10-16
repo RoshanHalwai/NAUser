@@ -123,6 +123,10 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
          * Private Methods
          * ------------------------------------------------------------- */
 
+        /**
+         * This method sends the required transaction data from 'My Transactions' screen to 'Transaction
+         * summary' screen through Inents.
+         */
         private void sendTransactionData() {
             int position = getLayoutPosition();
             Transaction transaction = transactionList.get(position);
