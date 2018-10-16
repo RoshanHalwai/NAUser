@@ -13,6 +13,7 @@ public class Transaction {
     private String userUID;
     private String uid;
     private long timestamp;
+    private String period;
 
     public Transaction() {
     }
@@ -55,4 +56,11 @@ public class Transaction {
         return timestamp;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
 }
