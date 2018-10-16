@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/transaction_history_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -25,11 +26,12 @@
                 android:layout_weight="0.4">
 
                 <ImageView
+                    android:id="@+id/imageTransactionResult"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:contentDescription="@string/image_success"
-                    android:src="@drawable/transaction_na" />
+                    android:src="@drawable/request_accepted_na" />
 
             </LinearLayout>
 
@@ -70,12 +72,14 @@
                 android:layout_weight="0.4">
 
                 <ImageView
-                    android:id="@+id/imageTransactionResult"
+                    android:id="@+id/imageViewSummary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
+                    android:scaleX="0.3"
+                    android:scaleY="0.3"
                     android:contentDescription="@string/image_success"
-                    android:src="@drawable/request_accepted_na" />
+                    android:src="@drawable/arrow_right_na" />
 
             </LinearLayout>
 

@@ -3,10 +3,9 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COMPLETED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DECLINED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPTED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CANCELLED;
@@ -43,8 +43,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 /**
@@ -58,10 +60,8 @@ public class AwaitingResponse extends BaseActivity {
      *Private Members
      *-----------------------------------------------*/
 
-    private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse;
-    private TextView textSocietyServiceNameValue, textMobileNumberValue;
-    private TextView textEndOTPValue, textSocietyServiceAcceptedRequest, textSocietyServiceNameAndEventTitle,
-            textMobileNumberAndEventDate, textEndOTPAndTimeSlot, textRequestStatusValue;
+    private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse, layoutRequestDeclined;
+    private TextView textSocietyServiceNameValue, textMobileNumberValue, textEndOTPValue;
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
     private Button buttonCallService, buttonCancelService;
@@ -87,11 +87,12 @@ public class AwaitingResponse extends BaseActivity {
         /*Getting Id's for all the views*/
         layoutAwaitingResponse = findViewById(R.id.layoutAwaitingResponse);
         layoutAcceptedResponse = findViewById(R.id.layoutAcceptedResponse);
+        layoutRequestDeclined = findViewById(R.id.layoutRequestDeclined);
         TextView textNotificationSent = findViewById(R.id.textNotificationSent);
-        textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
-        textSocietyServiceNameAndEventTitle = findViewById(R.id.textSocietyServiceName);
-        textMobileNumberAndEventDate = findViewById(R.id.textMobileNumber);
-        textEndOTPAndTimeSlot = findViewById(R.id.textEndOTP);
+        TextView textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
+        TextView textSocietyServiceNameAndEventTitle = findViewById(R.id.textSocietyServiceName);
+        TextView textMobileNumberAndEventDate = findViewById(R.id.textMobileNumber);
+        TextView textEndOTPAndTimeSlot = findViewById(R.id.textEndOTP);
         textSocietyServiceNameValue = findViewById(R.id.textSocietyServiceNameValue);
         textMobileNumberValue = findViewById(R.id.textMobileNumberValue);
         textEndOTPValue = findViewById(R.id.textEndOTPValue);
@@ -136,14 +137,9 @@ public class AwaitingResponse extends BaseActivity {
                 textSocietyServiceResponse.setText(getString(R.string.no_response_garbage));
                 break;
         }
-        if (societyServiceType.equals(Constants.EVENT_MANAGEMENT)) {
-            /*This method is used to check status of user's latest request for Event Management*/
-            checkUserEventManagementRequest();
-        } else {
-            showProgressIndicator();
-            /*This method is used to check status of user's latest request of that particular Society Service*/
-            checkUserRequestStatus();
-        }
+        showProgressIndicator();
+        /*This method is used to check status of user's latest request of that particular Society Service*/
+        checkUserRequestStatus();
     }
 
     /*----------------------------------------------
@@ -167,6 +163,9 @@ public class AwaitingResponse extends BaseActivity {
                             break;
                         case COMPLETED:
                             rateSocietyService();
+                            break;
+                        case DECLINED:
+                            showNoSocietyServiceAvailableLayout(societyServiceType);
                             break;
                     }
                 }
@@ -313,7 +312,7 @@ public class AwaitingResponse extends BaseActivity {
      */
     private void rateSocietyService() {
         DatabaseReference rateReference = societyServiceNotificationReference.child(Constants.RATING);
-        rateReference.addValueEventListener(new ValueEventListener() {
+        rateReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
@@ -372,8 +371,10 @@ public class AwaitingResponse extends BaseActivity {
         AlertDialog dialog = alertRateServiceDialog.create();
         dialog.setCancelable(false);
 
-        new Dialog(this);
-        dialog.show();
+        new Dialog(AwaitingResponse.this);
+        if (!AwaitingResponse.this.isFinishing()) {
+            dialog.show();
+        }
 
         /*Setting onClickListener for view*/
         buttonSubmit.setOnClickListener(v -> {
@@ -408,63 +409,61 @@ public class AwaitingResponse extends BaseActivity {
     }
 
     /**
-     * This method is invoked to check the status of user's latest Event Management Request and Display Details of that particular event in cardView.
+     * This method is invoked when the status of particular society service notification
+     * changes to "Declined"
+     *
+     * @param societyServiceType - type of society service
      */
-    private void checkUserEventManagementRequest() {
-        /*Here we are changing some Title's text*/
-        changeViewsText();
+    private void showNoSocietyServiceAvailableLayout(final String societyServiceType) {
+        /*Getting Id's for all the views*/
+        TextView textNoSocietyServiceAvailable = findViewById(R.id.textNoSocietyServiceAvailable);
+        Button buttonRequestAgain = findViewById(R.id.buttonRequestAgain);
 
-        /*Getting Details of event management notification from (societyServiceNotification->notificationUID) in firebase*/
-        societyServiceNotificationReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String eventTitle = dataSnapshot.child(Constants.FIREBASE_CHILD_CATEGORY).getValue(String.class);
-                String eventDate = dataSnapshot.child(Constants.FIREBASE_CHILD_EVENT_DATE).getValue(String.class);
-                String timeSlot = dataSnapshot.child(Constants.FIREBASE_CHILD_TIME_SLOT).getValue(String.class);
-                String status = dataSnapshot.child(Constants.FIREBASE_CHILD_STATUS).getValue(String.class);
+        /*Setting font for all the views*/
+        textNoSocietyServiceAvailable.setTypeface(setLatoBoldFont(this));
+        buttonRequestAgain.setTypeface(setLatoLightFont(this));
 
-                textSocietyServiceNameValue.setText(eventTitle);
-                textMobileNumberValue.setText(eventDate);
-                textEndOTPValue.setText(timeSlot);
+        /*Setting text to the view*/
+        String serviceType;
+        if (societyServiceType.equals(GARBAGE_COLLECTION)) {
+            serviceType = getString(R.string.garbage_collection);
+        } else {
+            serviceType = societyServiceType.substring(0, 1).toUpperCase() + societyServiceType.substring(1);
+        }
+        String noSocietyServiceAvailable = getString(R.string.no_society_service_available).replace(getString(R.string.service), serviceType);
+        textNoSocietyServiceAvailable.setText(noSocietyServiceAvailable);
 
-                if (Objects.requireNonNull(status).equals(Constants.IN_PROGRESS)) {
-                    textRequestStatusValue.setText(getString(R.string.in_process));
-                }
-            }
+        layoutAwaitingResponse.setVisibility(View.GONE);
+        layoutAcceptedResponse.setVisibility(View.GONE);
+        layoutRequestDeclined.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        /*Setting on Click listeners to the view*/
+        buttonRequestAgain.setOnClickListener(v -> openSocietyServiceHomeScreen());
     }
 
     /**
-     * This method is used to change text of some views when Society Service type is Event Management.
+     * This method is invoked to open Society Service Home Screen
      */
-    private void changeViewsText() {
-        layoutAwaitingResponse.setVisibility(View.GONE);
-        layoutAcceptedResponse.setVisibility(View.VISIBLE);
-
-        /*Getting Id's for all the views*/
-        TextView textEventManagementNote = findViewById(R.id.textEventManagementNote);
-        TextView textRequestStatus = findViewById(R.id.textRequestStatus);
-        textRequestStatusValue = findViewById(R.id.textRequestStatusValue);
-        ImageView imageSocietyServiceStatus = findViewById(R.id.imageSocietyServiceStatus);
-
-        /*Setting font for all the views*/
-        textRequestStatus.setTypeface(Constants.setLatoRegularFont(this));
-        textRequestStatusValue.setTypeface(Constants.setLatoBoldFont(this));
-        textEventManagementNote.setTypeface(Constants.setLatoBoldFont(this));
-
-        textEventManagementNote.setVisibility(View.VISIBLE);
-        textRequestStatus.setVisibility(View.VISIBLE);
-        textRequestStatusValue.setVisibility(View.VISIBLE);
-        imageSocietyServiceStatus.setImageResource(R.drawable.event_na);
-
-        textSocietyServiceAcceptedRequest.setText(getText(R.string.request_initiated));
-        String eventTitle = getString(R.string.event_title) + ":";
-        textSocietyServiceNameAndEventTitle.setText(eventTitle);
-        textMobileNumberAndEventDate.setText(getString(R.string.date));
-        textEndOTPAndTimeSlot.setText(getString(R.string.time_slot));
+    private void openSocietyServiceHomeScreen() {
+        int screenTitle = 0;
+        /*Based On The Society Service Type we navigate user to particular society service screen*/
+        switch (societyServiceType) {
+            case PLUMBER:
+                screenTitle = R.string.plumber;
+                break;
+            case CARPENTER:
+                screenTitle = R.string.carpenter;
+                break;
+            case ELECTRICIAN:
+                screenTitle = R.string.electrician;
+                break;
+            case GARBAGE_COLLECTION:
+                screenTitle = R.string.garbage_collection;
+                break;
+        }
+        Intent intent = new Intent(AwaitingResponse.this, SocietyServicesHome.class);
+        intent.putExtra(SCREEN_TITLE, screenTitle);
+        startActivity(intent);
+        finish();
     }
 }

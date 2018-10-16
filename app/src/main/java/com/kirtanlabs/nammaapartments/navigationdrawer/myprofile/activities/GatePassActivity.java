@@ -1,6 +1,14 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -10,15 +18,18 @@ import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.STORAGE_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 
-public class GatePassActivity extends BaseActivity {
-
-    //TODO: Download Gate Pass functionality to be implemented
+public class GatePassActivity extends BaseActivity implements View.OnClickListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -61,13 +72,39 @@ public class GatePassActivity extends BaseActivity {
         /*Setting font for all the views*/
         textSocietyValue.setTypeface(setLatoBoldFont(this));
         textUserNameValue.setTypeface(setLatoBoldFont(this));
-        textApartmentValue.setTypeface(setLatoBoldFont(this));
-        textFlatValue.setTypeface(setLatoBoldFont(this));
-        textWelcomeMessage.setTypeface(setLatoItalicFont(this));
         buttonDownloadGatePass.setTypeface(setLatoLightFont(this));
+        textWelcomeMessage.setTypeface(setLatoItalicFont(this));
 
         /*Called when user presses on 'Download Gate Pass' button in 'My Profile' screen*/
         retrieveUserDetails();
+
+        /*Setting onClick Listener*/
+        buttonDownloadGatePass.setOnClickListener(this);
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding OnClickListener Methods
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onClick(View v) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            /*Capturing screenshot of Gate Pass of the User on click of 'Download Gate Pass' button*/
+            captureGatePass();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding onRequestPermissionsResult Method
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE && grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED))
+            captureGatePass();
     }
 
     /* ------------------------------------------------------------- *
@@ -93,4 +130,32 @@ public class GatePassActivity extends BaseActivity {
         currentUserProfilePic.setTag(R.id.currentUserProfilePic, "Actual Image");
     }
 
+    /**
+     * This method is invoked when the User presses on 'Download' button in the Gate Pass screen.
+     * Gate Pass is captured and stored in the User's device.
+     */
+    private void captureGatePass() {
+        /*At the same time, notifying the user that the Gate Pass has been downloaded*/
+        showNotificationDialog(getString(R.string.download_title), getString(R.string.download_text), null);
+
+        /*Trimming the view so that the captured part only contains the Card View*/
+        View v1 = getWindow().getDecorView().getRootView().findViewById(R.id.viewDownloadGatePass);
+        v1.setDrawingCacheEnabled(true);
+        /*Setting bitmap*/
+        Bitmap b = v1.getDrawingCache();
+        /*Image naming and path*/
+        String storagePath = Environment.getExternalStorageDirectory().toString();
+        File myPath = new File(storagePath, "Namma Apartments" + ".jpg");
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(myPath);
+            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

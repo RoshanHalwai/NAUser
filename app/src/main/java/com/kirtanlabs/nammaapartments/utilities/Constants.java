@@ -49,6 +49,8 @@ public class Constants {
     public static final String NEIGHBOUR_UID = "neighbourUID";
     public static final String NEIGHBOUR_APARTMENT_NAME = "neighbourApartmentName";
     public static final String NEIGHBOUR_FLAT_NUMBER = "neighbourFlatNumber";
+    public static final String PROFILE_OLD_CONTENT = "profileOldContent";
+    public static final String DECLINED = "Declined";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -324,6 +326,7 @@ public class Constants {
     public static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
     public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
     public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
+    public static final int STORAGE_PERMISSION_REQUEST_CODE = 12;
     public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
     public static final int NEW_NOTICE_CODE = 11;
 
