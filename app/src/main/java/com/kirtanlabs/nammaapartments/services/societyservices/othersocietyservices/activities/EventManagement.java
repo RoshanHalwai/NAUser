@@ -926,7 +926,6 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
     private void disableTimeSlots(int buttonTimeSlotId) {
         switch (buttonTimeSlotId) {
             case R.id.buttonFullDay:
-                buttonFullDay.setEnabled(false);
             case R.id.buttonFourteenthTimeSlot:
                 buttonFourteenthTimeSlot.setEnabled(false);
             case R.id.buttonThirteenthTimeSlot:
@@ -955,10 +954,17 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 buttonSecondTimeSlot.setEnabled(false);
             case R.id.buttonFirstTimeSlot:
                 buttonFirstTimeSlot.setEnabled(false);
+                buttonFullDay.setEnabled(false);
                 break;
         }
     }
 
+    /**
+     * This method gets invoked to check if the booking amount key is present or not,if present retrieves
+     * the value from firebase.
+     *
+     * @param bookingAmountCallback receiving result of the booking amount value.
+     */
     private void retrieveBookingAmountPerSlot(BookingAmountCallback bookingAmountCallback) {
         EVENT_MANAGEMENT_REFERENCE.child(FIREBASE_CHILD_BOOKING_AMOUNT).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -993,9 +999,12 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
                 userTransactionReference.child(transactionUID).setValue(true));
     }
 
+    /* ------------------------------------------------------------- *
+     * Interface
+     * ------------------------------------------------------------- */
+
     private interface BookingAmountCallback {
         void onCallback(Float bookingAmount);
     }
-
 
 }

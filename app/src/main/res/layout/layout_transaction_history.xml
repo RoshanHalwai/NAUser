@@ -72,7 +72,6 @@
                 android:layout_weight="0.4">
 
                 <ImageView
-                    android:id="@+id/imageViewSummary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"

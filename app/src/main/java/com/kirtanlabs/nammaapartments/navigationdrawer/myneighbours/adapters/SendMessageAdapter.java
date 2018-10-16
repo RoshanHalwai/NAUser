@@ -62,6 +62,7 @@ public class SendMessageAdapter extends RecyclerView.Adapter {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

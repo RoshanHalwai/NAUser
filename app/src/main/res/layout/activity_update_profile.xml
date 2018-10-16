@@ -18,7 +18,8 @@
         android:layout_margin="10dp"
         android:inputType="textCapWords"
         android:selectAllOnFocus="true"
-        android:textColor="@color/nmBlack" />
+        android:textColor="@color/nmBlack"
+        tools:ignore="LabelFor" />
 
     <ListView
         android:id="@+id/listViewResidents"
@@ -49,22 +50,24 @@
             android:layout_weight="0.5"
             android:background="@drawable/button_guest_selected"
             android:gravity="center"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/nmLightYellow"
-            android:textSize="@dimen/edit_text_default_size" />
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="ButtonStyle" />
 
         <Button
-            android:id="@+id/buttonOk"
+            android:id="@+id/buttonDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@drawable/button_guest_selected"
             android:gravity="center"
-            android:text="Done"
+            android:text="@string/done"
             android:textAllCaps="false"
             android:textColor="@color/nmLightYellow"
-            android:textSize="@dimen/edit_text_default_size" />
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
