@@ -30,8 +30,8 @@ public class RetrievingDailyServicesList {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private String userUID;
-    private DatabaseReference userDataReference;
+    private final String userUID;
+    private final DatabaseReference userDataReference;
     private int count = 0;
 
     /* ------------------------------------------------------------- *

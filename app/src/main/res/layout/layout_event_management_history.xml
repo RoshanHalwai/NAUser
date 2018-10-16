@@ -29,7 +29,6 @@
                     android:layout_weight="1.2">
 
                     <ImageView
-                        android:id="@+id/eventManagementIcon"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_margin="5dp"
@@ -115,7 +114,6 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/layoutSelectedSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layoutEventHistory"
