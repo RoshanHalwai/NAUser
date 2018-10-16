@@ -44,14 +44,10 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
      * Private Members
      * ------------------------------------------------------------- */
 
+    private final Map<String, String> residentsMap = new TreeMap<>();
     private EditText editText;
-    private String oldContent;
-    private String newContent;
-    private int screenTitle;
-    private String residentName;
-    private String residentUID;
-    private int count = 0;
-    private Map<String, String> residentsMap = new TreeMap<>();
+    private String oldContent, newContent, residentName, residentUID;
+    private int screenTitle, count = 0;
 
     /* ------------------------------------------------------------- *
      * Overriding base class methods
@@ -83,14 +79,14 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
             oldContent = getIntent().getStringExtra(PROFILE_OLD_CONTENT);
             editText.setText(oldContent);
 
-            Button buttonOk = findViewById(R.id.buttonOk);
+            Button buttonDone = findViewById(R.id.buttonDone);
             Button buttonCancel = findViewById(R.id.buttonCancel);
 
             editText.setTypeface(setLatoRegularFont(this));
-            buttonOk.setTypeface(setLatoRegularFont(this));
+            buttonDone.setTypeface(setLatoRegularFont(this));
             buttonCancel.setTypeface(setLatoRegularFont(this));
 
-            buttonOk.setOnClickListener(this);
+            buttonDone.setOnClickListener(this);
             buttonCancel.setOnClickListener(this);
         }
     }
@@ -102,7 +98,7 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonOk:
+            case R.id.buttonDone:
                 if (isFieldChanged()) {
                     updateUserNameOrEmail();
                 } else {

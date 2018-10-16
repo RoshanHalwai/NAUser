@@ -1,15 +1,34 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+
+import static android.view.View.GONE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class TransactionSummaryActivity extends BaseActivity {
+public class TransactionSummaryActivity extends BaseActivity implements View.OnClickListener {
+
+    private TextView transactionIDValue, transactionAmountValue, transactionDateValue, transactionStatusText, transactionPeriodValue;
+    private ImageView serviceStatus;
+    private CardView transactionView;
 
     @Override
     protected int getLayoutResourceId() {
@@ -26,17 +45,21 @@ public class TransactionSummaryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         /*Getting Id's for all the views*/
-        TextView transactionStatusText = findViewById(R.id.transactionStatusText);
+
         TextView transactionIDText = findViewById(R.id.transactionIDText);
-        TextView transactionIDValue = findViewById(R.id.transactionIDValue);
         TextView textTransactionPeriod = findViewById(R.id.textTransactionPeriod);
         TextView textTransactionDate = findViewById(R.id.textTransactionDate);
         TextView textTransactionAmount = findViewById(R.id.textTransactionAmount);
-        TextView transactionPeriodValue = findViewById(R.id.transactionPeriodValue);
-        TextView transactionDateValue = findViewById(R.id.transactionDateValue);
-        TextView transactionAmountValue = findViewById(R.id.transactionAmountValue);
+        transactionPeriodValue = findViewById(R.id.transactionPeriodValue);
         TextView textPaymentDetails = findViewById(R.id.textPaymentDetails);
         TextView contactUsText = findViewById(R.id.contactUsText);
+        TextView copyText = findViewById(R.id.copyText);
+        transactionIDValue = findViewById(R.id.transactionIDValue);
+        transactionStatusText = findViewById(R.id.transactionStatusText);
+        transactionDateValue = findViewById(R.id.transactionDateValue);
+        transactionAmountValue = findViewById(R.id.transactionAmountValue);
+        serviceStatus = findViewById(R.id.serviceStatus);
+        transactionView = findViewById(R.id.transactionView);
 
         /*Setting font for all the views*/
         transactionStatusText.setTypeface(setLatoBoldFont(this));
@@ -51,9 +74,72 @@ public class TransactionSummaryActivity extends BaseActivity {
         textPaymentDetails.setTypeface(setLatoBoldFont(this));
         contactUsText.setTypeface(setLatoBoldFont(this));
 
+        /*This method is invoked when User clicks on a transaction in My Transaction screen. It
+        displays the summary of the same transaction*/
+        retrieveTransactionData();
+        /*Clicking on 'Copy' enables user to copy the Transaction ID and paste it wherever required*/
+        copyText.setOnClickListener(this);
     }
 
-    //TODO: Batch Drawable for right faced arrow image
-    //TODO: Retrieve values of all fields and image from Firebase
-    //TODO: Implement 'Copy' functionality for Transaction ID
+    /*Setting click listener*/
+    @Override
+    public void onClick(View v) {
+        /*Copying transaction ID on click of 'Copy'*/
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        String copiedText = transactionIDValue.getText().toString();
+        ClipData clip = ClipData.newPlainText("Transaction ID copied", copiedText);
+        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+    }
+
+    /*This method retrieves all the necessary transaction data in the Transaction Summary screen*/
+    private void retrieveTransactionData() {
+        /*Getting the values from the previous Activity*/
+        String transactionId = getIntent().getStringExtra("paymentId");
+        String transactionPeriod = getIntent().getStringExtra("period");
+        String transactionAmount = getIntent().getStringExtra("amount");
+        String dateAndTime = getIntent().getStringExtra("dateAndTime");
+        String transactionStatus = getIntent().getStringExtra("status");
+        /*Setting the image and text depending on the transaction status*/
+        if (transactionStatus.equals(getResources().getString(R.string.successful))) {
+            serviceStatus.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.request_accepted_na));
+            transactionStatusText.setText(R.string.successful_payment);
+        } else {
+            serviceStatus.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.remove_new));
+            transactionStatusText.setText(R.string.failed_payment);
+            transactionStatusText.setTextColor(Color.RED);
+            transactionView.setVisibility(GONE);
+        }
+        /*Setting the values in Transaction Summary screen*/
+        transactionIDValue.setText(transactionId);
+        transactionAmountValue.setText(transactionAmount);
+        transactionDateValue.setText(dateAndTime);
+        /*Getting Transaction period value*/
+        /*Formatting the date to get the value of month and year from timestamp*/
+        String[] separateTimePeriod = TextUtils.split(transactionPeriod, "-");
+        String firstTransactionPeriod = separateTimePeriod[0];
+        DateFormat originalDateFormat = new SimpleDateFormat("MMyyyy", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+        String finalTransactionPeriod = "";
+        try {
+            Date date = originalDateFormat.parse(firstTransactionPeriod);
+            /*Getting the transaction period for pending dues with one child*/
+            finalTransactionPeriod = targetFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (separateTimePeriod.length > 1) {
+            String lastTimePeriod = separateTimePeriod[1];
+            Date date;
+            try {
+                date = originalDateFormat.parse(lastTimePeriod);
+                String formattedSecondDate = targetFormat.format(date);
+                /*Getting the transaction period for pending dues with multiple child*/
+                finalTransactionPeriod = finalTransactionPeriod + " - " + formattedSecondDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        /*Setting Transaction period value*/
+        transactionPeriodValue.setText(finalTransactionPeriod);
+    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -11,22 +12,23 @@
         android:id="@+id/serviceStatus"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_margin="20dp"
         android:layout_gravity="center"
-        android:src="@drawable/request_accepted_na"
-        android:contentDescription="@string/image_success"/>
+        android:layout_margin="20dp"
+        android:contentDescription="@string/image_success"
+        android:src="@drawable/request_accepted_na" />
 
     <TextView
         android:id="@+id/transactionStatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/successful_payment"
         android:layout_marginBottom="10dp"
-        android:textSize="18sp"
-        android:textColor="#32A504" />
+        android:text="@string/successful_payment"
+        android:textColor="#32A504"
+        android:textSize="18sp" />
 
     <android.support.v7.widget.CardView
+        android:id="@+id/transactionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -40,11 +42,11 @@
                 android:id="@+id/transactionIDText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:text="@string/transaction_id"
                 android:textColor="@color/nmBlack"
-                android:textStyle="bold"
                 android:textSize="16sp"
-                android:padding="5dp"/>
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -55,22 +57,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:textColor="@color/nmBlack"
                     android:padding="5dp"
-                    android:textSize="16sp"/>
+                    android:textColor="@color/nmBlack"
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/copy"
-                    android:textStyle="bold"
+                    android:id="@+id/copyText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="5dp"
                     android:padding="5dp"
                     android:text="@string/copy"
                     android:textColor="@color/nmLightYellow"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
 
             </RelativeLayout>
 
@@ -85,22 +88,22 @@
         android:visibility="visible">
 
         <TextView
+            android:id="@+id/textPaymentDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textPaymentDetails"
-            android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="@color/nmBlack"
             android:text="@string/payment_details"
-            android:textSize="16sp"/>
+            android:textColor="@color/nmBlack"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/row1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:baselineAligned="false"
             android:padding="2dp"
-            android:layout_marginTop="10dp"
             android:weightSum="3">
 
             <LinearLayout
@@ -108,18 +111,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:padding="3dp"
                 android:layout_weight="1.5"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="3dp">
 
                 <TextView
                     android:id="@+id/textTransactionPeriod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/transaction_period"
                     android:textColor="@color/nmBlack"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textTransactionDate"
@@ -128,7 +131,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/transaction_date"
                     android:textColor="@color/nmBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textTransactionAmount"
@@ -136,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/transaction_amount"
                     android:textColor="@color/nmBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -146,18 +149,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_weight="0.5"
-                android:padding="3dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="3dp">
 
                 <TextView
                     android:id="@+id/transactionPeriodValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
                     android:layout_marginBottom="10dp"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/nmBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/transactionDateValue"
@@ -165,14 +168,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:textColor="@color/nmBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/transactionAmountValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/nmBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -183,33 +186,32 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        >
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/contactUs"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:contentDescription="@string/image_success"
-                android:src="@drawable/ic_help_black"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"/>
+                android:contentDescription="@string/image_success"
+                android:src="@drawable/ic_help_black" />
 
             <TextView
                 android:id="@+id/contactUsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="@string/contact_us"
                 android:textColor="@color/nmBlack"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
