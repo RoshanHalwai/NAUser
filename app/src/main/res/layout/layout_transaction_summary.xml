@@ -13,7 +13,6 @@
         android:layout_height="100dp"
         android:layout_margin="20dp"
         android:layout_gravity="center"
-        android:src="@drawable/request_accepted_na"
         android:contentDescription="@string/image_success"/>
 
     <TextView
@@ -21,7 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/successful_payment"
         android:layout_marginBottom="10dp"
         android:textSize="18sp"
         android:textColor="#32A504" />
@@ -29,7 +27,8 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:id="@+id/transactionView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,7 +59,7 @@
                     android:textSize="16sp"/>
 
                 <TextView
-                    android:id="@+id/copy"
+                    android:id="@+id/copyText"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

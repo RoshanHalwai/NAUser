@@ -677,12 +677,14 @@
     <string name="num_value">num</string>
     <string name="transaction_summary">Transaction Summary</string>
     <string name="successful_payment">Your payment was successful !!</string>
+    <string name="failed_payment">Your payment failed !!</string>
     <string name="transaction_id">Transaction ID</string>
     <string name="copy">Copy</string>
     <string name="payment_details">Payment Details</string>
     <string name="transaction_period">Transaction Period:</string>
     <string name="transaction_date">Transaction Date:</string>
     <string name="transaction_amount">Transaction Amount:</string>
+    <string name="successful">Successful</string>
 
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>
