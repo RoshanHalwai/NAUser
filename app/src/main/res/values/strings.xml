@@ -23,8 +23,10 @@
 
     <!--OTP Activity-->
     <string name="phone_verification_activity_title">Phone Verification</string>
-    <string name="enter_verification_code">We need to verify your account. Please enter the 6 digit verification
-    code that has been sent to your mobile number.</string>
+    <string name="enter_verification_code">We need to verify your account. Please enter the 6-digit verification
+    code sent to your mobile number.</string>
+    <string name="your_mobile_number">your mobile number</string>
+    <string name="account">account</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="auto_verification_completed">Auto-verification completed. Please wait while we check your account in our system. . .</string>
     <string name="resend_otp">Resend OTP</string>
