@@ -150,7 +150,6 @@
                         android:textSize="@dimen/text_view_default_size" />
 
                     <LinearLayout
-                        android:id="@+id/layoutFoodQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
