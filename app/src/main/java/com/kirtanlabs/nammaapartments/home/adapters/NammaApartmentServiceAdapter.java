@@ -26,7 +26,13 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER_SERVICE_NOTIFICATION_UID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPTED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER_SERVICE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -81,31 +87,28 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
      * ------------------------------------------------------------- */
 
     /**
-     * This method is used to check if their is any previous society service request is active or not.
+     * This method is used to check if there is any previous society service request raised by user
+     * is still active or not.
      */
     private void checkPreviousRequestStatus(int screenTitle) {
         /*Retrieving user's previous society service request UID from shared preference*/
-        SharedPreferences sharedPreferences = Objects.requireNonNull(context.getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE));
+        SharedPreferences sharedPreferences = Objects.requireNonNull(context.getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE));
         switch (screenTitle) {
             case R.string.plumber:
-                notificationUID = sharedPreferences.getString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
+                notificationUID = sharedPreferences.getString(PLUMBER_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = context.getString(R.string.plumber).toLowerCase();
                 break;
             case R.string.carpenter:
-                notificationUID = sharedPreferences.getString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
+                notificationUID = sharedPreferences.getString(CARPENTER_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = context.getString(R.string.carpenter).toLowerCase();
                 break;
             case R.string.electrician:
-                notificationUID = sharedPreferences.getString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
+                notificationUID = sharedPreferences.getString(ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = context.getString(R.string.electrician).toLowerCase();
                 break;
             case R.string.garbage_collection:
-                notificationUID = sharedPreferences.getString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
+                notificationUID = sharedPreferences.getString(GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                 societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
-                break;
-            case R.string.event_management:
-                notificationUID = sharedPreferences.getString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
-                societyServiceType = Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
                 break;
         }
 
@@ -113,7 +116,7 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
             /*Checking status of previous Request*/
             new RetrievingSocietyServiceHistoryList(context)
                     .getSocietyServiceRequestStatus(notificationUID, status -> {
-                        if (status != null && status.equals(IN_PROGRESS)) {
+                        if (status != null && (status.equals(IN_PROGRESS) || status.equals(FIREBASE_ACCEPTED))) {
                             Intent awaitingResponseIntent = new Intent(context, AwaitingResponse.class);
                             awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
                             awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
@@ -123,16 +126,16 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             switch (screenTitle) {
                                 case R.string.plumber:
-                                    editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, null);
+                                    editor.putString(PLUMBER_SERVICE_NOTIFICATION_UID, null);
                                     break;
                                 case R.string.carpenter:
-                                    editor.putString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, null);
+                                    editor.putString(CARPENTER_SERVICE_NOTIFICATION_UID, null);
                                     break;
                                 case R.string.electrician:
-                                    editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
+                                    editor.putString(ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
                                     break;
                                 case R.string.garbage_collection:
-                                    editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
+                                    editor.putString(GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
                                     break;
                                 case R.string.event_management:
                                     editor.putString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
