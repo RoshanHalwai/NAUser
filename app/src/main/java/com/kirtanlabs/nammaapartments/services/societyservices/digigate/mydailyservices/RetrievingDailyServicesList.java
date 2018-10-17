@@ -169,7 +169,11 @@ public class RetrievingDailyServicesList {
             for (String dailyServiceCategory : dailyServiceCategoriesList) {
                 getDailyServiceUIDs(dailyServiceCategory, dailyServiceUIDList -> {
                     count++;
-                    dailyServiceUIDMap.put(dailyServiceCategory, new LinkedList<>(dailyServiceUIDList));
+                    /*Checking if the Daily Service UIDList is not equal to zero */
+                    if (dailyServiceUIDList.size() != 0) {
+                        dailyServiceUIDMap.put(dailyServiceCategory, new LinkedList<>(dailyServiceUIDList));
+                    }
+
                     if (count == dailyServiceCategoriesList.size()) {
                         count = 0;
                         dailyServiceCategoryUIDMap.onCallback(dailyServiceUIDMap);
@@ -192,7 +196,10 @@ public class RetrievingDailyServicesList {
                 List<String> dailyServiceUIDList = new LinkedList<>();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot dailyServiceType : dataSnapshot.getChildren()) {
-                        dailyServiceUIDList.add(dailyServiceType.getKey());
+                        /*Adding only true Mapped Daily Services.*/
+                        if (Objects.requireNonNull(dailyServiceType.getValue(Boolean.class)).equals(true)) {
+                            dailyServiceUIDList.add(dailyServiceType.getKey());
+                        }
                     }
                 }
                 dailyServiceUIDs.onCallback(dailyServiceUIDList);
