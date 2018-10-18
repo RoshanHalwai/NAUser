@@ -51,6 +51,7 @@ public class Constants {
     public static final String NEIGHBOUR_FLAT_NUMBER = "neighbourFlatNumber";
     public static final String PROFILE_OLD_CONTENT = "profileOldContent";
     public static final String DECLINED = "Declined";
+    public static final String SENDER_UID = "senderUID";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -228,6 +229,8 @@ public class Constants {
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
     public static final String REMOTE_VISITOR_MOBILE_NUMBER = "mobile_number";
+    public static final String REMOTE_SENDER_UID = "sender_uid";
+    public static final String REMOTE_CHAT_ROOM_UID = "chat_room_uid";
 
     /* ------------------------------------------------------------- *
      * Firebase Database References
@@ -280,6 +283,7 @@ public class Constants {
     public static final DatabaseReference DONATE_FOOD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_FOOD_DONATIONS);
     private static final DatabaseReference CHATS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CHATS);
     public static final DatabaseReference PRIVATE_CHATS_REFERENCE = CHATS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+    public static final DatabaseReference ALL_CHATS_REFERENCE = CHATS_REFERENCE.child(FIREBASE_CHILD_ALL);
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
@@ -329,6 +333,7 @@ public class Constants {
     public static final int STORAGE_PERMISSION_REQUEST_CODE = 12;
     public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
     public static final int NEW_NOTICE_CODE = 11;
+    public static final int CHAT_MESSAGE_REQUEST_CODE = 13;
 
     /* ------------------------------------------------------------- *
      * Payment Specific

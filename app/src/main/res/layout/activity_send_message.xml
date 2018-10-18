@@ -28,11 +28,12 @@
         <EditText
             android:id="@+id/editMessage"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.85"
             android:background="@drawable/valid_for_button_design"
-            android:hint="@string/enter_your_text_here"
-            android:inputType="textMultiLine|textCapSentences"
+            android:hint="@string/enter_your_message_here"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
             android:padding="10dp"
             android:textColor="@color/nmBlack"
             tools:ignore="LabelFor" />
@@ -40,7 +41,9 @@
         <ImageView
             android:id="@+id/imageSendMessage"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="2dp"
             android:layout_weight="0.15"
             android:contentDescription="@string/send_message_description"
             android:src="@drawable/ic_send_message_black" />

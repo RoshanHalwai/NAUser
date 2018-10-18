@@ -132,14 +132,15 @@
         <activity
             android:name=".navigationdrawer.myneighbours.activities.SendMessageActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".navigationdrawer.mywallet.activities.MyPaymentsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.mywallet.activities.TransactionHistory"
             android:screenOrientation="portrait" />
-        <activity android:name=".navigationdrawer.mywallet.activities.TransactionSummaryActivity"
+        <activity
+            android:name=".navigationdrawer.mywallet.activities.TransactionSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.myfood.activities.MyFoodActivity"
