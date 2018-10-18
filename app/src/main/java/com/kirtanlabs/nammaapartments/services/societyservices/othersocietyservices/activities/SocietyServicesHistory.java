@@ -74,7 +74,7 @@ public class SocietyServicesHistory extends BaseActivity {
                     .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
                         hideProgressIndicator();
                         if (societyServiceNotificationDataList == null) {
-                            //Show Feature Unavailable layout based on the Society Service Feature
+                            /*Show Feature Unavailable layout based on the Society Service Feature */
                             String messageDescription = getString(R.string.society_service_unavailable_message);
                             String textReplacement = getString(R.string.service);
                             String updatedDescription = "";

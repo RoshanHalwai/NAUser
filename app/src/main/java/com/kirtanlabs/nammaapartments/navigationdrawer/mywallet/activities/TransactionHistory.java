@@ -17,7 +17,9 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo.Transaction
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERIOD;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSACTION_REFERENCE;
 
@@ -56,7 +58,9 @@ public class TransactionHistory extends BaseActivity {
                         transactionReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                transactionList.add(dataSnapshot.getValue(Transaction.class));
+                                Transaction transaction = dataSnapshot.getValue(Transaction.class);
+                                Objects.requireNonNull(transaction).setPeriod(dataSnapshot.child(FIREBASE_CHILD_PERIOD).getValue(String.class));
+                                transactionList.add(transaction);
                                 if (transactionList.size() == transactionUIDs.getChildrenCount()) {
                                     hideProgressIndicator();
                                     Collections.reverse(transactionList);

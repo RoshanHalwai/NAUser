@@ -80,7 +80,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         return transactionList.size();
     }
 
-    class TransactionHistoryViewHolder extends RecyclerView.ViewHolder {
+    class TransactionHistoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         /* ------------------------------------------------------------- *
          * Private Members
@@ -111,10 +111,37 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             textServiceCategory.setTypeface(setLatoRegularFont(mCtx));
             textDateAndTime.setTypeface(setLatoRegularFont(mCtx));
 
-            transactionHistoryView.setOnClickListener(v -> {
-                Intent transactionSummaryIntent = new Intent(mCtx, TransactionSummaryActivity.class);
-                mCtx.startActivity(transactionSummaryIntent);
-            });
+            transactionHistoryView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            sendTransactionData();
+        }
+
+        /* ------------------------------------------------------------- *
+         * Private Methods
+         * ------------------------------------------------------------- */
+
+        /**
+         * This method sends the required transaction data from 'My Transactions' screen to 'Transaction
+         * summary' screen through Intents.
+         */
+        private void sendTransactionData() {
+            int position = getLayoutPosition();
+            Transaction transaction = transactionList.get(position);
+            SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
+            String formattedDateAndTime = sfd.format(new Date(transaction.getTimestamp()));
+            String amount = "Rs. " + String.valueOf(transaction.getAmount());
+            String status = transaction.getResult();
+            String period = transaction.getPeriod();
+            Intent transactionSummaryIntent = new Intent(mCtx, TransactionSummaryActivity.class);
+            transactionSummaryIntent.putExtra("paymentId", transaction.getPaymentId());
+            transactionSummaryIntent.putExtra("amount", amount);
+            transactionSummaryIntent.putExtra("dateAndTime", formattedDateAndTime);
+            transactionSummaryIntent.putExtra("status", status);
+            transactionSummaryIntent.putExtra("period", period);
+            mCtx.startActivity(transactionSummaryIntent);
         }
     }
 }

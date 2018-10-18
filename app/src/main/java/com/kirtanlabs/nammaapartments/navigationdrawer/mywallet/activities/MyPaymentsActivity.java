@@ -27,6 +27,9 @@ import com.razorpay.PaymentResultListener;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CONVENIENCE_CHARGES;
@@ -264,17 +267,49 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
     private void storeTransactionDetails(final String paymentId, final String result) {
         DatabaseReference userTransactionReference = ((NammaApartmentsGlobal) getApplicationContext()).
                 getUserDataReference().child(FIREBASE_CHILD_TRANSACTIONS);
-        final String transactionUID = userTransactionReference.push().getKey();
-        final Transaction transactionDetails = new Transaction((pendingAmountInPaise / 100), paymentId, result,
-                serviceCategory, NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
-        PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails)
-                .addOnCompleteListener(task -> userTransactionReference.child(transactionUID).setValue(true)
-                        .addOnCompleteListener(task1 -> {
-                            Checkout.clearUserData(this);
-                            /*Remove Pending dues*/
-                            ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                                    .child(FIREBASE_CHILD_PENDING_DUES).removeValue();
-                        }));
+        /*Getting reference till 'pendingDues' to get the value of first and last value of Pending Dues*/
+        DatabaseReference periodReference = ((NammaApartmentsGlobal) getApplicationContext()).
+                getUserDataReference().child(FIREBASE_CHILD_PENDING_DUES);
+        periodReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String period;
+                int lastIndex = (int) dataSnapshot.getChildrenCount() - 1;
+                List<String> duesList = new ArrayList<>();
+                /*Looping through all the children of 'pendingDues'*/
+                for (DataSnapshot dues : dataSnapshot.getChildren()) {
+                    duesList.add(dues.getKey());
+                }
+                /*Sorting the list*/
+                Collections.sort(duesList);
+                /*Getting the time period, for the dues that has been pending, if there is one child of 'pendingDues'*/
+                period = duesList.get(0);
+                /*For more than one child of 'pendingDues'*/
+                if (dataSnapshot.getChildrenCount() > 1) {
+                    String pendingDuesLast = duesList.get(lastIndex);
+                    /*Getting the time period, for the dues that has been pending if there is more than one child of 'pendingDues'*/
+                    period = period + "-" + pendingDuesLast;
+                }
+                final String transactionUID = userTransactionReference.push().getKey();
+                final Transaction transactionDetails = new Transaction((pendingAmountInPaise / 100), paymentId, result,
+                        serviceCategory, NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
+                transactionDetails.setPeriod(period);
+                PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails)
+                        .addOnCompleteListener(task -> userTransactionReference.child(transactionUID).setValue(true)
+                                .addOnCompleteListener(task1 -> {
+                                    Checkout.clearUserData(MyPaymentsActivity.this);
+                                    /*Remove Pending dues*/
+                                    ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                                            .child(FIREBASE_CHILD_PENDING_DUES).removeValue();
+                                }));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

@@ -27,10 +27,10 @@ public class RetrievingNeighboursList {
      * ------------------------------------------------------------- */
 
     private int count = 0;
-    private String currentUserApartmentName;
-    private String currentUserFlatNumber;
-    private String currentUserUID;
-    private DatabaseReference currentUserDataReference;
+    private final String currentUserApartmentName;
+    private final String currentUserFlatNumber;
+    private final String currentUserUID;
+    private final DatabaseReference currentUserDataReference;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -256,7 +256,7 @@ public class RetrievingNeighboursList {
      * Interfaces
      * ------------------------------------------------------------- */
 
-    public interface NeighboursUIDListCallback {
+    interface NeighboursUIDListCallback {
         void onCallBack(List<String> neighboursUIDList);
     }
 
@@ -264,7 +264,7 @@ public class RetrievingNeighboursList {
         void onCallBack(List<NammaApartmentUser> neighboursDataList);
     }
 
-    public interface ChatRoomUIDCallback {
+    interface ChatRoomUIDCallback {
         void onCallBack(String chatRoomUID);
     }
 
@@ -272,11 +272,11 @@ public class RetrievingNeighboursList {
         void onCallBack(List<NammaApartmentsSendMessage> previousMessagesDataList);
     }
 
-    public interface MessageUIDListCallback {
+    interface MessageUIDListCallback {
         void onCallBack(List<String> messageUIDList);
     }
 
-    public interface MessageDataCallback {
+    interface MessageDataCallback {
         void onCallBack(NammaApartmentsSendMessage nammaApartmentsSendMessage);
     }
 }

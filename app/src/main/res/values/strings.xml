@@ -23,8 +23,10 @@
 
     <!--OTP Activity-->
     <string name="phone_verification_activity_title">Phone Verification</string>
-    <string name="enter_verification_code">We need to verify your account. Please enter the 6 digit verification
-    code that has been sent to your mobile number.</string>
+    <string name="enter_verification_code">We need to verify your account. Please enter the 6-digit verification
+    code sent to your mobile number.</string>
+    <string name="your_mobile_number">your mobile number</string>
+    <string name="account">account</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="auto_verification_completed">Auto-verification completed. Please wait while we check your account in our system. . .</string>
     <string name="resend_otp">Resend OTP</string>
@@ -368,15 +370,10 @@
 
     <!--UserProfile Activity-->
     <string name="change_admin">Change Admin</string>
-    <string name="updating_profile">Updating your profile</string>
-    <string name="update_message">Update Message</string>
-    <string name="update_success_message">You have successfully updated your profile.</string>
-    <string name="no_update_message">You have not made any changes to your profile.</string>
     <string name="admin_change_key">Are you sure you want to make user as Admin? \nNote: Your Admin privileges will be transferred to user.</string>
     <string name="no_flat_members">"Currently there are no Flat members added to your Flat."</string>
     <string name="text_list_family_members">Flat Members</string>
     <string name="non_admin_change_admin_title">Change Admin Message</string>
-    <string name="person">person</string>
     <string name="admin_notification">You are the Administrator</string>
     <string name="e_intercom">E-Intercom</string>
     <string name="flat_admin">Flat Admin</string>
@@ -387,6 +384,7 @@
     <string name="download_title">Download Message</string>
     <string name="download_text">Your Gate Pass has been downloaded to the device Gallery.</string>
     <string name="loading_profile">Loading Profile</string>
+    <string name="done">Done</string>
 
     <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
@@ -417,7 +415,6 @@
     <!--SocietyServicesHistory Activity-->
     <string name="society_service_unavailable_message">You have not raised any Service requests from your flat yet.</string>
     <string name="history_name">Name:</string>
-    <string name="time_slot">Time Slot:</string>
     <string name="cancelled_status">Cancelled</string>
     <string name="service">Service</string>
     <string name="selected_slots">Selected Slots:</string>
@@ -565,9 +562,7 @@
     <string name="rate_your_recent_service_experience">Rate your recent service experience</string>
     <string name="submit_rate_service">SUBMIT</string>
     <string name="otp">OTP:</string>
-    <string name="request_initiated">Your request for the below Event has been initiated.</string>
     <string name="requestStatus">Request Status:</string>
-    <string name="in_process">In Process</string>
     <string name="request_accepted_desc">Request Accepted</string>
     <string name="no_society_service_available">Sorry, no Service is available at the moment</string>
     <string name="no_service_available_image_desc">Image to indicate that no society service is available.</string>
@@ -677,12 +672,14 @@
     <string name="num_value">num</string>
     <string name="transaction_summary">Transaction Summary</string>
     <string name="successful_payment">Your payment was successful !!</string>
+    <string name="failed_payment">Your payment failed !!</string>
     <string name="transaction_id">Transaction ID</string>
     <string name="copy">Copy</string>
     <string name="payment_details">Payment Details</string>
     <string name="transaction_period">Transaction Period:</string>
     <string name="transaction_date">Transaction Date:</string>
     <string name="transaction_amount">Transaction Amount:</string>
+    <string name="successful">Successful</string>
 
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>
@@ -709,6 +706,7 @@
     <string name="apartment_with_colon">Apartment:</string>
     <string name="flat_with_colon">Flat:</string>
     <string name="neighbour_chat">neighbour_chat</string>
+    <string name="chat_image_description">Image which shows users can chat with their neighbours.</string>
 
     <!--Send Message Activity-->
     <string name="send_message">Send Message</string>

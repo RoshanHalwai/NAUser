@@ -37,6 +37,10 @@ public class HandedThingsHistory extends BaseActivity {
     private DailyServicesHistoryAdapter dailyServicesHistoryAdapter;
     private RecyclerView recyclerView;
 
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Methods
+     * ------------------------------------------------------------- */
+
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_handed_things;
@@ -46,7 +50,6 @@ public class HandedThingsHistory extends BaseActivity {
     protected int getActivityTitle() {
         return R.string.history;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
