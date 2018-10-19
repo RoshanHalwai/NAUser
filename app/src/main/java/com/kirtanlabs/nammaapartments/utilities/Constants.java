@@ -345,6 +345,7 @@ public class Constants {
     public static DatabaseReference VERSION_NAME_REFERENCE;
     public static DatabaseReference DONATE_FOOD_REFERENCE;
     public static DatabaseReference PRIVATE_CHATS_REFERENCE;
+    public static DatabaseReference ALL_CHATS_REFERENCE;
 
     /* ------------------------------------------------------------- *
      * Font Types
@@ -420,6 +421,7 @@ public class Constants {
         DONATE_FOOD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_FOOD_DONATIONS);
         DatabaseReference CHATS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CHATS);
         PRIVATE_CHATS_REFERENCE = CHATS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
+        ALL_CHATS_REFERENCE = CHATS_REFERENCE.child(FIREBASE_CHILD_ALL);
     }
 
 }
