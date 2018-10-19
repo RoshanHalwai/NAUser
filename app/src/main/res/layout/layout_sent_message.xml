@@ -25,8 +25,8 @@
             android:paddingEnd="8dp"
             android:paddingRight="8dp"
             android:paddingTop="8dp"
-            android:textColor="@color/nmBlack"
-            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -34,8 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textColor="@color/nmBlack"
-            android:textSize="12sp" />
+            android:textColor="@android:color/white"
+            android:textSize="8sp"
+            tools:ignore="SmallSp" />
 
     </LinearLayout>
 

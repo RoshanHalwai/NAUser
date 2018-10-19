@@ -21,6 +21,7 @@ import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_CHATS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CHATS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NEIGHBOUR_APARTMENT_NAME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NEIGHBOUR_FLAT_NUMBER;
@@ -44,10 +45,10 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
     private String neighbourUID;
     private String neighbourApartmentName;
     private String neighbourFlatNumber;
-    private String chatRoomUID;
     private String currentUserUID;
     private String chatMembersCity;
     private String chatMembersSociety;
+    public static String chatRoomUID;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Objects
@@ -87,6 +88,13 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                     if (!previousMessagesDataList.isEmpty()) {
                         recyclerViewChatMessages.setAdapter(new SendMessageAdapter(SendMessageActivity.this, previousMessagesDataList));
                         recyclerViewChatMessages.scrollToPosition((previousMessagesDataList.size() - 1));
+                        /*Ensuring focus is always on the last message of the chat*/
+                        recyclerViewChatMessages.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                            if (bottom < oldBottom) {
+                                recyclerViewChatMessages.postDelayed(() ->
+                                        recyclerViewChatMessages.scrollToPosition(recyclerViewChatMessages.getAdapter().getItemCount() - 1), 100);
+                            }
+                        });
                     }
                 });
 
@@ -106,6 +114,17 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
             storeMessageInFirebase(message);
             editMessage.getText().clear();
         }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding on Back Pressed method
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        /*Clearing chat room uid once user presses on back button*/
+        chatRoomUID = "";
     }
 
     /* ------------------------------------------------------------- *
@@ -130,13 +149,18 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     chatRoomUID = currentUserChatReference.push().getKey();
                     /*Setting chat room uid in firebase under (userData -> user's flat number -> chats -> neighbour's uid)*/
-                    currentUserChatReference.setValue(chatRoomUID);
+                    currentUserChatReference.setValue(chatRoomUID).addOnSuccessListener(aVoid -> {
+                        /*Mapping usersUID with chat room uid in firebase under neighbour's (flat number-> chats) */
+                        DatabaseReference neighbourChatRoomReference = PRIVATE_USER_DATA_REFERENCE
+                                .child(chatMembersCity).child(chatMembersSociety).child(neighbourApartmentName)
+                                .child(neighbourFlatNumber).child(FIREBASE_CHILD_CHATS).child(currentUserUID);
+                        neighbourChatRoomReference.setValue(chatRoomUID);
 
-                    /*Mapping usersUID with chat room uid in firebase under neighbour's (flat number-> chats) */
-                    DatabaseReference neighbourChatRoomReference = PRIVATE_USER_DATA_REFERENCE
-                            .child(chatMembersCity).child(chatMembersSociety).child(neighbourApartmentName)
-                            .child(neighbourFlatNumber).child(FIREBASE_CHILD_CHATS).child(currentUserUID);
-                    neighbourChatRoomReference.setValue(chatRoomUID);
+                        /*Adding chat room member's UID under (chats->all->chatRoomUID) in firebase*/
+                        DatabaseReference chatRoomMemberReference = ALL_CHATS_REFERENCE.child(chatRoomUID);
+                        chatRoomMemberReference.child(currentUserUID).setValue(true);
+                        chatRoomMemberReference.child(neighbourUID).setValue(true);
+                    });
                 }
 
                 /*Storing message details in firebase under (chats->private->chatRoomUID)*/

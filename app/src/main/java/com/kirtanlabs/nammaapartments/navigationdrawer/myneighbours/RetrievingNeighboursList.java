@@ -11,6 +11,7 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.pojo.NammaAp
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,8 +53,9 @@ public class RetrievingNeighboursList {
      * This method is invoked to retrieve all user's UID from firebase under (users -> all -> usersUID) expect the current user UID
      *
      * @param neighboursUIDListCallback - callback to return list of neighbours UID
+     * @param recentMessageSenderUID    - UID of neighbour who has recently messaged to user
      */
-    private void getNeighboursUIDList(NeighboursUIDListCallback neighboursUIDListCallback) {
+    private void getNeighboursUIDList(String recentMessageSenderUID, NeighboursUIDListCallback neighboursUIDListCallback) {
         ALL_USERS_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -66,6 +68,11 @@ public class RetrievingNeighboursList {
                             count++;
                             neighbourUidList.add(neighbourUID);
                         }
+                    }
+                    /*Displaying most recent messaged user on the top of the list*/
+                    if (recentMessageSenderUID != null) {
+                        int indexOfRecentMessagedUser = neighbourUidList.indexOf(recentMessageSenderUID);
+                        Collections.swap(neighbourUidList, indexOfRecentMessagedUser, 0);
                     }
 
                     if (count == neighbourUidList.size()) {
@@ -172,20 +179,21 @@ public class RetrievingNeighboursList {
      * This method is invoked to retrieve the user's data from firebase under (users->private->userUID).
      *
      * @param neighboursDataListCallback - callback to return list of users data
+     * @param recentMessageSenderUID     - UID of neighbour who has recently messaged to user
      */
-    public void getNeighbourDataList(NeighboursDataListCallback neighboursDataListCallback) {
-        getNeighboursUIDList(neighboursUIDList -> {
+    public void getNeighbourDataList(String recentMessageSenderUID, NeighboursDataListCallback neighboursDataListCallback) {
+        getNeighboursUIDList(recentMessageSenderUID, neighboursUIDList -> {
             if (!neighboursUIDList.isEmpty()) {
                 count = 0;
                 List<NammaApartmentUser> neighboursDataList = new ArrayList<>();
 
                 for (String neighbourUID : neighboursUIDList) {
-                    count++;
                     /*retrieving data from (users->private->userUID) in firebase*/
                     DatabaseReference neighbourDataReference = PRIVATE_USERS_REFERENCE.child(neighbourUID);
                     neighbourDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            count++;
                             NammaApartmentUser nammaApartmentUser = dataSnapshot.getValue(NammaApartmentUser.class);
                             /*Getting user apartment name and flat number value*/
                             String userApartmentName = Objects.requireNonNull(nammaApartmentUser).getFlatDetails().getApartmentName();

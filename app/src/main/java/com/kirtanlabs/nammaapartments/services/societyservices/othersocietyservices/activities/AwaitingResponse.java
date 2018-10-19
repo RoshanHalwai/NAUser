@@ -1,9 +1,9 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -159,6 +159,7 @@ public class AwaitingResponse extends BaseActivity {
                     String status = dataSnapshot.getValue(String.class);
                     switch (Objects.requireNonNull(status)) {
                         case IN_PROGRESS:
+                        case FIREBASE_ACCEPTED:
                             checkSocietyServiceResponse();
                             break;
                         case COMPLETED:

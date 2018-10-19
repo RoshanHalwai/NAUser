@@ -125,7 +125,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
 
         /**
          * This method sends the required transaction data from 'My Transactions' screen to 'Transaction
-         * summary' screen through Inents.
+         * summary' screen through Intents.
          */
         private void sendTransactionData() {
             int position = getLayoutPosition();
