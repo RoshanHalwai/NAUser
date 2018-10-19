@@ -37,14 +37,16 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
 
     private final Context mCtx;
     private final List<NammaApartmentUser> neighbourDataList;
+    private String recentMessageSenderUID;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    public MyNeighboursAdapter(Context mCtx, List<NammaApartmentUser> neighbourDataList) {
+    public MyNeighboursAdapter(Context mCtx, List<NammaApartmentUser> neighbourDataList, String recentMessageSenderUID) {
         this.mCtx = mCtx;
         this.neighbourDataList = neighbourDataList;
+        this.recentMessageSenderUID = recentMessageSenderUID;
     }
 
     /* ------------------------------------------------------------- *
@@ -69,6 +71,11 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
         holder.textFlatNumberValue.setText(nammaApartmentUser.getFlatDetails().getFlatNumber());
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentUser.getPersonalDetails().getProfilePhoto())
                 .into(holder.neighbourProfileImage);
+
+        if (recentMessageSenderUID != null && recentMessageSenderUID.equals(nammaApartmentUser.getUID())) {
+            /*Displaying badge icon notification in the layout */
+            holder.badge_notification_icon.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -92,6 +99,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
         private final TextView textNeighbourNameValue;
         private final TextView textApartmentNameValue;
         private final TextView textFlatNumberValue;
+        private final TextView badge_notification_icon;
         private final CircleImageView neighbourProfileImage;
         private final ImageView imageChatNeighbour;
 
@@ -109,6 +117,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
             textNeighbourNameValue = itemView.findViewById(R.id.textNeighbourNameValue);
             textApartmentNameValue = itemView.findViewById(R.id.textApartmentNameValue);
             textFlatNumberValue = itemView.findViewById(R.id.textFlatNumberValue);
+            badge_notification_icon = itemView.findViewById(R.id.badge_notification_icon);
             neighbourProfileImage = itemView.findViewById(R.id.neighbourProfileImage);
             imageChatNeighbour = itemView.findViewById(R.id.imageChatNeighbour);
 
@@ -134,6 +143,12 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
                 intentChatNeighbour.putExtra(NEIGHBOUR_APARTMENT_NAME, nammaApartmentUser.getFlatDetails().getApartmentName());
                 intentChatNeighbour.putExtra(NEIGHBOUR_FLAT_NUMBER, nammaApartmentUser.getFlatDetails().getFlatNumber());
                 mCtx.startActivity(intentChatNeighbour);
+
+                if (recentMessageSenderUID != null) {
+                    /*Removing Badge icon once user click on the recent message sender card view*/
+                    badge_notification_icon.setVisibility(View.GONE);
+                    recentMessageSenderUID = "";
+                }
             }
         }
     }

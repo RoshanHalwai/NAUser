@@ -22,7 +22,7 @@
         android:paddingRight="8dp"
         android:paddingTop="8dp"
         android:textColor="@color/nmBlack"
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:ignore="RtlSymmetry" />
 
     <TextView
@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/nmLightGrey"
-        android:textSize="12sp" />
+        android:textColor="@color/nmBlack"
+        android:textSize="8sp"
+        tools:ignore="SmallSp" />
 
 </LinearLayout>
