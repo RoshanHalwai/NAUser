@@ -1,9 +1,11 @@
 package com.kirtanlabs.nammaapartments.notifications;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -31,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.activities.MyNeighboursActivity;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.activities.SendMessageActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.activities.NoticeBoard;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
@@ -40,11 +44,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_DEFAULT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCEPT_BUTTON_CLICKED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.CHAT_MESSAGE_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CABS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GATE_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_IGNORED;
@@ -58,13 +64,16 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_UI
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REJECT_BUTTON_CLICKED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_CHAT_ROOM_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_MESSAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_PROFILE_PHOTO;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_SENDER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_VISITOR_MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.REMOTE_VISITOR_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SENDER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VISITOR_PROFILE_PHOTO;
@@ -269,8 +278,37 @@ public class FirebaseNotifications extends FirebaseMessagingService {
             Intent noticeBoardIntent = new Intent(this, NoticeBoard.class);
             generalNotification.contentIntent = PendingIntent.getActivity(this, Constants.NEW_NOTICE_CODE,
                     noticeBoardIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        } else if (remoteMessageType.equals(getString(R.string.neighbour_chat))) {
+            String chatRoomUID = remoteMessageData.get(REMOTE_CHAT_ROOM_UID);
+            /*Checking if app is in foreground and user is in the same chat room*/
+            if (isForeground(getApplicationContext()) && (SendMessageActivity.chatRoomUID != null && SendMessageActivity.chatRoomUID.equals(chatRoomUID))) {
+                return;
+            }
+            String senderUID = remoteMessageData.get(REMOTE_SENDER_UID);
+            Intent chatMessageIntent = new Intent(this, MyNeighboursActivity.class);
+            chatMessageIntent.putExtra(SENDER_UID, senderUID);
+            generalNotification.contentIntent = PendingIntent.getActivity(this, CHAT_MESSAGE_REQUEST_CODE,
+                    chatMessageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
         Objects.requireNonNull(notificationManager).notify(mNotificationID, generalNotification);
+    }
+
+    /**
+     * This method is used to check if the app is in foreground or not.
+     *
+     * @param context - of the calling activity.
+     * @return boolean value that tells the state of the app.
+     */
+    private static boolean isForeground(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> tasks = Objects.requireNonNull(manager).getRunningAppProcesses();
+        final String packageName = context.getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : tasks) {
+            if (ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND == appProcess.importance && packageName.equals(appProcess.processName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Bitmap getBitmapFromURL(String strURL) {

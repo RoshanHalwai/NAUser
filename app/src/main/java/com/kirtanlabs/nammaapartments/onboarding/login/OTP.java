@@ -43,6 +43,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFER
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COUNTRY_CODE_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_DATABASE_URL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.OTP_TIMER;
@@ -557,21 +558,24 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
      * We update the Phone Verification text based on the activity calling this class.
      */
     private void updatePhoneVerificationText() {
+        String otpDescription = getString(R.string.enter_verification_code);
         switch (previousScreenTitle) {
             case R.string.login:
-                textPhoneVerification.setText(R.string.enter_verification_code);
+                otpDescription = otpDescription.replace(getString(R.string.your_mobile_number), COUNTRY_CODE_IN + HYPHEN + userMobileNumber);
+                textPhoneVerification.setText(otpDescription);
                 break;
             case R.string.add_my_daily_service:
                 String service_type = getIntent().getStringExtra(SERVICE_TYPE);
-                String description = getResources().getString(R.string.enter_verification_code);
-                description = description.replace("account", service_type + " account");
-                description = description.replace("your mobile", "their mobile");
-                textPhoneVerification.setText(description);
+                String dailyServiceMobileNumber = getIntent().getStringExtra(MOBILE_NUMBER);
+                otpDescription = otpDescription.replace(getString(R.string.account), service_type + " " + getString(R.string.account));
+                otpDescription = otpDescription.replace(getString(R.string.your_mobile_number), COUNTRY_CODE_IN + HYPHEN + dailyServiceMobileNumber);
+                textPhoneVerification.setText(otpDescription);
                 break;
             case R.string.add_family_members_details_screen:
                 String screen_type = getIntent().getStringExtra(SERVICE_TYPE);
-                String otpDescription = getResources().getString(R.string.enter_verification_code).replace("account", screen_type + " account");
-                otpDescription = otpDescription.replace("your mobile", "their mobile");
+                String flatMemberMobileNumber = getIntent().getStringExtra(MOBILE_NUMBER);
+                otpDescription = otpDescription.replace(getString(R.string.account), screen_type + " " + getString(R.string.account));
+                otpDescription = otpDescription.replace(getString(R.string.your_mobile_number), COUNTRY_CODE_IN + HYPHEN + flatMemberMobileNumber);
                 textPhoneVerification.setText(otpDescription);
         }
     }

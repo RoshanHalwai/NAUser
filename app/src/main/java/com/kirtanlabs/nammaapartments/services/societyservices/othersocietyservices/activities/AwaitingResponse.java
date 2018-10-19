@@ -1,9 +1,9 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,6 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COMPLETED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DECLINED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPTED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CANCELLED;
@@ -42,8 +43,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 /**
@@ -57,7 +60,7 @@ public class AwaitingResponse extends BaseActivity {
      *Private Members
      *-----------------------------------------------*/
 
-    private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse;
+    private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse, layoutRequestDeclined;
     private TextView textSocietyServiceNameValue, textMobileNumberValue, textEndOTPValue;
     private DatabaseReference societyServiceNotificationReference;
     private String notificationUID, societyServiceType, societyServiceUID;
@@ -84,6 +87,7 @@ public class AwaitingResponse extends BaseActivity {
         /*Getting Id's for all the views*/
         layoutAwaitingResponse = findViewById(R.id.layoutAwaitingResponse);
         layoutAcceptedResponse = findViewById(R.id.layoutAcceptedResponse);
+        layoutRequestDeclined = findViewById(R.id.layoutRequestDeclined);
         TextView textNotificationSent = findViewById(R.id.textNotificationSent);
         TextView textSocietyServiceAcceptedRequest = findViewById(R.id.textSocietyServiceAcceptedRequest);
         TextView textSocietyServiceNameAndEventTitle = findViewById(R.id.textSocietyServiceName);
@@ -155,10 +159,14 @@ public class AwaitingResponse extends BaseActivity {
                     String status = dataSnapshot.getValue(String.class);
                     switch (Objects.requireNonNull(status)) {
                         case IN_PROGRESS:
+                        case FIREBASE_ACCEPTED:
                             checkSocietyServiceResponse();
                             break;
                         case COMPLETED:
                             rateSocietyService();
+                            break;
+                        case DECLINED:
+                            showNoSocietyServiceAvailableLayout(societyServiceType);
                             break;
                     }
                 }
@@ -399,5 +407,64 @@ public class AwaitingResponse extends BaseActivity {
                 }
             });
         });
+    }
+
+    /**
+     * This method is invoked when the status of particular society service notification
+     * changes to "Declined"
+     *
+     * @param societyServiceType - type of society service
+     */
+    private void showNoSocietyServiceAvailableLayout(final String societyServiceType) {
+        /*Getting Id's for all the views*/
+        TextView textNoSocietyServiceAvailable = findViewById(R.id.textNoSocietyServiceAvailable);
+        Button buttonRequestAgain = findViewById(R.id.buttonRequestAgain);
+
+        /*Setting font for all the views*/
+        textNoSocietyServiceAvailable.setTypeface(setLatoBoldFont(this));
+        buttonRequestAgain.setTypeface(setLatoLightFont(this));
+
+        /*Setting text to the view*/
+        String serviceType;
+        if (societyServiceType.equals(GARBAGE_COLLECTION)) {
+            serviceType = getString(R.string.garbage_collection);
+        } else {
+            serviceType = societyServiceType.substring(0, 1).toUpperCase() + societyServiceType.substring(1);
+        }
+        String noSocietyServiceAvailable = getString(R.string.no_society_service_available).replace(getString(R.string.service), serviceType);
+        textNoSocietyServiceAvailable.setText(noSocietyServiceAvailable);
+
+        layoutAwaitingResponse.setVisibility(View.GONE);
+        layoutAcceptedResponse.setVisibility(View.GONE);
+        layoutRequestDeclined.setVisibility(View.VISIBLE);
+
+        /*Setting on Click listeners to the view*/
+        buttonRequestAgain.setOnClickListener(v -> openSocietyServiceHomeScreen());
+    }
+
+    /**
+     * This method is invoked to open Society Service Home Screen
+     */
+    private void openSocietyServiceHomeScreen() {
+        int screenTitle = 0;
+        /*Based On The Society Service Type we navigate user to particular society service screen*/
+        switch (societyServiceType) {
+            case PLUMBER:
+                screenTitle = R.string.plumber;
+                break;
+            case CARPENTER:
+                screenTitle = R.string.carpenter;
+                break;
+            case ELECTRICIAN:
+                screenTitle = R.string.electrician;
+                break;
+            case GARBAGE_COLLECTION:
+                screenTitle = R.string.garbage_collection;
+                break;
+        }
+        Intent intent = new Intent(AwaitingResponse.this, SocietyServicesHome.class);
+        intent.putExtra(SCREEN_TITLE, screenTitle);
+        startActivity(intent);
+        finish();
     }
 }

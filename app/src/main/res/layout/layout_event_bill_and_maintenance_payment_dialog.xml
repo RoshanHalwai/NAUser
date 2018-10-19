@@ -32,7 +32,6 @@
             android:weightSum="2">
 
             <LinearLayout
-                android:id="@+id/layoutTitles"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -76,7 +75,6 @@
                     android:textSize="@dimen/text_view_default_size" />
 
                 <View
-                    android:id="@+id/totalAmountLine"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/nmLightYellow" />
@@ -132,7 +130,6 @@
                     android:textSize="@dimen/text_view_default_size" />
 
                 <View
-                    android:id="@+id/totalAmountViewValue"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/nmLightYellow" />

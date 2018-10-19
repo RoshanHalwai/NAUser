@@ -1,8 +1,13 @@
 package com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ import java.io.FileOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.STORAGE_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -76,12 +82,29 @@ public class GatePassActivity extends BaseActivity implements View.OnClickListen
         buttonDownloadGatePass.setOnClickListener(this);
     }
 
+    /* ------------------------------------------------------------- *
+     * Overriding OnClickListener Methods
+     * ------------------------------------------------------------- */
+
     @Override
     public void onClick(View v) {
-        /*Capturing screenshot of Gate Pass of the User on click of 'Download Gate Pass' button*/
-        captureGatePass();
-        /*At the same time, notifying the user that the Gate Pass has been downloaded*/
-        showNotificationDialog(getString(R.string.download_title), getString(R.string.download_text), null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            /*Capturing screenshot of Gate Pass of the User on click of 'Download Gate Pass' button*/
+            captureGatePass();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    /* ------------------------------------------------------------- *
+     * Overriding onRequestPermissionsResult Method
+     * ------------------------------------------------------------- */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE && grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED))
+            captureGatePass();
     }
 
     /* ------------------------------------------------------------- *
@@ -112,6 +135,9 @@ public class GatePassActivity extends BaseActivity implements View.OnClickListen
      * Gate Pass is captured and stored in the User's device.
      */
     private void captureGatePass() {
+        /*At the same time, notifying the user that the Gate Pass has been downloaded*/
+        showNotificationDialog(getString(R.string.download_title), getString(R.string.download_text), null);
+
         /*Trimming the view so that the captured part only contains the Card View*/
         View v1 = getWindow().getDecorView().getRootView().findViewById(R.id.viewDownloadGatePass);
         v1.setDrawingCacheEnabled(true);
@@ -132,5 +158,4 @@ public class GatePassActivity extends BaseActivity implements View.OnClickListen
             e.printStackTrace();
         }
     }
-
 }

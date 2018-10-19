@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities.UpdateProfile">
+
+    <include
+        android:id="@+id/baseLayout"
+        layout="@layout/activity_base" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/baseLayout"
+        android:layout_margin="10dp"
+        android:inputType="textCapWords"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/nmBlack"
+        tools:ignore="LabelFor" />
+
+    <ListView
+        android:id="@+id/listViewResidents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText"
+        android:layout_margin="10dp"
+        android:divider="@color/nmSettingsHeader"
+        android:dividerHeight="1dp"
+        android:footerDividersEnabled="true">
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/layoutActionButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_guest_selected"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/nmLightYellow"
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/buttonDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_guest_selected"
+            android:gravity="center"
+            android:text="@string/done"
+            android:textAllCaps="false"
+            android:textColor="@color/nmLightYellow"
+            android:textSize="@dimen/edit_text_default_size"
+            tools:ignore="ButtonStyle" />
+
+    </LinearLayout>
+
+</RelativeLayout>

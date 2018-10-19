@@ -1,6 +1,5 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +18,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 
-public class DailyServicesHome extends BaseActivity implements DialogInterface.OnCancelListener {
+public class DailyServicesHome extends BaseActivity {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -61,21 +60,18 @@ public class DailyServicesHome extends BaseActivity implements DialogInterface.O
         /*Setting font for button*/
         buttonAddDailyServices.setTypeface(setLatoLightFont(this));
 
+        /*Setting attributes for recycler view*/
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        /*Creating Daily Services List Dialog*/
         createDailyServicesListDialog();
 
         /*Setting event for views */
         buttonAddDailyServices.setOnClickListener(v -> dailyServicesListDialog.show());
-        dailyServicesListDialog.setOnCancelListener(this);
 
         /*To retrieve DailyServicesList from firebase.*/
         checkAndRetrieveDailyServices();
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
     }
 
     /* ------------------------------------------------------------- *

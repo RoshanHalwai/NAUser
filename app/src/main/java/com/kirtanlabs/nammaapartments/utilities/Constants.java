@@ -52,6 +52,9 @@ public class Constants {
     public static final String NEIGHBOUR_UID = "neighbourUID";
     public static final String NEIGHBOUR_APARTMENT_NAME = "neighbourApartmentName";
     public static final String NEIGHBOUR_FLAT_NUMBER = "neighbourFlatNumber";
+    public static final String PROFILE_OLD_CONTENT = "profileOldContent";
+    public static final String DECLINED = "Declined";
+    public static final String SENDER_UID = "senderUID";
 
     /* ------------------------------------------------------------- *
      * Notification
@@ -197,6 +200,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_SUPPORT = "support";
     public static final String FIREBASE_CHILD_TRANSACTIONS = "transactions";
     public static final String FIREBASE_CHILD_PENDING_DUES = "pendingDues";
+    public static final String FIREBASE_CHILD_PERIOD = "period";
     public static final String FIREBASE_CHILD_DEVICE_TYPE = "deviceType";
     public static final String FIREBASE_CHILD_SCRAP_COLLECTION = "scrapCollection";
     public static final String FIREBASE_CHILD_FOOD_DONATIONS = "foodDonations";
@@ -226,6 +230,8 @@ public class Constants {
     public static final String REMOTE_TYPE = "type";
     public static final String REMOTE_PROFILE_PHOTO = "profile_photo";
     public static final String REMOTE_VISITOR_MOBILE_NUMBER = "mobile_number";
+    public static final String REMOTE_SENDER_UID = "sender_uid";
+    public static final String REMOTE_CHAT_ROOM_UID = "chat_room_uid";
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
@@ -233,21 +239,6 @@ public class Constants {
 
     public static final String ACCEPT_BUTTON_CLICKED = "accept_button_clicked";
     public static final String REJECT_BUTTON_CLICKED = "reject_button_clicked";
-
-    /* ------------------------------------------------------------- *
-     * Request Code
-     * ------------------------------------------------------------- */
-
-    public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
-    public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
-    public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
-    public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
-    public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
-    public static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
-    public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
-    public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
-    public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
-    public static final int NEW_NOTICE_CODE = 11;
 
     /* ------------------------------------------------------------- *
      * Receiver Action Keys
@@ -282,6 +273,23 @@ public class Constants {
     public static final int TEN_HOURS = 10;
     public static final int ELEVEN_HOURS = 11;
     public static final String INDIAN_RUPEE_CURRENCY_CODE = "INR";
+
+    /* ------------------------------------------------------------- *
+     * Request Code
+     * ------------------------------------------------------------- */
+
+    public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 3;
+    public static final int CAMERA_PERMISSION_REQUEST_CODE = 4;
+    public static final int GALLERY_PERMISSION_REQUEST_CODE = 5;
+    public static final int DS_OTP_STATUS_REQUEST_CODE = 6;
+    public static final int AFM_OTP_STATUS_REQUEST_CODE = 7;
+    public static final int PLACE_CALL_PERMISSION_REQUEST_CODE = 1;
+    public static final int SELECT_SOCIETY_SERVICE_REQUEST_CODE = 8;
+    public static final int SEND_SMS_PERMISSION_REQUEST_CODE = 2;
+    public static final int STORAGE_PERMISSION_REQUEST_CODE = 12;
+    public static final int ENABLE_LOCATION_PERMISSION_CODE = 9;
+    public static final int NEW_NOTICE_CODE = 11;
+    public static final int CHAT_MESSAGE_REQUEST_CODE = 13;
 
     /* ------------------------------------------------------------- *
      * Payment Specific

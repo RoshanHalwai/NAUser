@@ -132,12 +132,15 @@
         <activity
             android:name=".navigationdrawer.myneighbours.activities.SendMessageActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".navigationdrawer.mywallet.activities.MyPaymentsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.mywallet.activities.TransactionHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigationdrawer.mywallet.activities.TransactionSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".navigationdrawer.myfood.activities.MyFoodActivity"
@@ -229,6 +232,12 @@
         <activity
             android:name=".services.apartmentservices.activities.ApartmentServices"
             android:screenOrientation="portrait" />
+
+        <!-- Update Profile Screen -->
+        <activity
+            android:name=".navigationdrawer.myprofile.activities.UpdateProfile"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
     </application>
 

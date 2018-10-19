@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/activity_base" />
@@ -60,7 +60,6 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageSocietyServiceStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -124,7 +123,6 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/textRequestStatus"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="2dp"
@@ -174,7 +172,6 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/textRequestStatusValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -191,8 +188,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <Button
                         android:id="@+id/buttonCallService"
@@ -222,17 +219,61 @@
 
                 </LinearLayout>
 
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutRequestDeclined"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:contentDescription="@string/no_service_available_image_desc"
+                    android:src="@drawable/remove_new" />
+
                 <TextView
-                    android:id="@+id/textEventManagementNote"
+                    android:id="@+id/textNoSocietyServiceAvailable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:padding="2dp"
-                    android:text="@string/please_wait_while_admin_get_back_to_you"
+                    android:padding="5dp"
+                    android:text="@string/no_society_service_available"
                     android:textColor="@color/nmBlack"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/buttonRequestAgain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/nmBlack"
+                    android:text="@string/request_again"
+                    android:textColor="@color/nmLightYellow"
+                    android:textSize="@dimen/button_default_size" />
 
             </LinearLayout>
 
