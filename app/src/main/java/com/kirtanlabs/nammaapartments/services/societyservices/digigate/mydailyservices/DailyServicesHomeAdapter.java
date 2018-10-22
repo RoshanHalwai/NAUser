@@ -37,7 +37,8 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PUBLIC_DAILYSER
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
-public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder> implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServicesHomeAdapter.DailyServicesHolder>
+        implements View.OnClickListener, View.OnFocusChangeListener, TimePickerDialog.OnTimeSetListener {
 
     /* ------------------------------------------------------------- *
      * Private Members
@@ -109,7 +110,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding OnClick Listeners
+     * Overriding OnClick and OnFocusChange Listeners
      * ------------------------------------------------------------- */
     @Override
     public void onClick(View v) {
@@ -120,6 +121,13 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             case R.id.buttonCancel:
                 dialog.cancel();
                 break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            onClick(v);
         }
     }
 
@@ -177,6 +185,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             updateDailyServiceDetails(position);
             dialog.cancel();
         });
+        editPickTime.setOnFocusChangeListener(this);
 
     }
 
