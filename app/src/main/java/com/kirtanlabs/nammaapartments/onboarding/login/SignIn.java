@@ -1,5 +1,6 @@
 package com.kirtanlabs.nammaapartments.onboarding.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,11 +20,23 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
     /* ------------------------------------------------------------- *
      * Private Members
      * ------------------------------------------------------------- */
+
+    @SuppressLint("StaticFieldLeak")
+    private static SignIn signIn;
     private EditText editMobileNumber;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
      * ------------------------------------------------------------- */
+
+    /**
+     * This method returns the Instance of this class
+     *
+     * @return static variable of this class instance.
+     */
+    public static SignIn getInstance() {
+        return signIn;
+    }
 
     @Override
     protected int getLayoutResourceId() {
@@ -43,16 +56,17 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
         hence hiding the back button from the Title Bar*/
         hideBackButton();
 
+        /*Initialising the static variable with the current context.*/
+        signIn = this;
+
         /*Getting Id's for all the views*/
         TextView textMobileNumber = findViewById(R.id.textMobileNumber);
-        TextView textCreateAnAccount = findViewById(R.id.textCreateAnAccount);
         TextView textCountryCode = findViewById(R.id.textCountryCode);
         editMobileNumber = findViewById(R.id.editMobileNumber);
         Button buttonLogin = findViewById(R.id.buttonLogin);
 
         /*Setting font for all the views*/
         textMobileNumber.setTypeface(Constants.setLatoBoldFont(this));
-        textCreateAnAccount.setTypeface(Constants.setLatoRegularFont(this));
         textCountryCode.setTypeface(Constants.setLatoBoldFont(this));
         editMobileNumber.setTypeface(Constants.setLatoRegularFont(this));
         buttonLogin.setTypeface(Constants.setLatoLightFont(this));
@@ -80,7 +94,6 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
                 intentOTP.putExtra(Constants.SCREEN_TITLE, R.string.login);
                 intentOTP.putExtra(Constants.MOBILE_NUMBER, mobileNumber);
                 startActivity(intentOTP);
-                finish();
             }
         }
     }

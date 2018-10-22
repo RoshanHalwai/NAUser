@@ -86,6 +86,7 @@
         <!-- Login Screens -->
         <activity
             android:name=".onboarding.login.SignIn"
+            android:alwaysRetainTaskState="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -187,9 +188,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".services.societyservices.digigate.mydailyservices.AddDailyService"
+            android:alwaysRetainTaskState="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".services.societyservices.digigate.mysweethome.AddFamilyMember"
+            android:alwaysRetainTaskState="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".services.societyservices.digigate.emergency.RaiseAlarm"
