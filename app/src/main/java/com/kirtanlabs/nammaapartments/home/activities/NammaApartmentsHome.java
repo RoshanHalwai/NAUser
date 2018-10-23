@@ -32,9 +32,9 @@ import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.fragments.ApartmentServicesHome;
 import com.kirtanlabs.nammaapartments.home.fragments.SocietyServicesHome;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.activities.NammaApartmentsHelp;
-import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.activities.MyNeighboursActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myfood.activities.MyFoodActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myguards.activities.MyGuardsActivity;
+import com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.activities.MyNeighboursActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities.UserProfile;
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
@@ -240,7 +240,7 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
 
     /**
      * Creates shared preferences and loads USER-UID if User has logged in for the first time. Else
-     * if the user has already logged
+     * if the user has already logged in checks the UserUID in the shared preferences.
      */
     private void checkSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);

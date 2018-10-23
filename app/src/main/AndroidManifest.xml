@@ -144,6 +144,9 @@
             android:name=".navigationdrawer.mywallet.activities.TransactionSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".navigationdrawer.mywallet.activities.TransactionContactUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".navigationdrawer.myfood.activities.MyFoodActivity"
             android:screenOrientation="portrait" />
         <activity
