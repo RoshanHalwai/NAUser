@@ -385,6 +385,7 @@
     <string name="download_text">Your Gate Pass has been downloaded to the device Gallery.</string>
     <string name="loading_profile">Loading Profile</string>
     <string name="done">Done</string>
+    <string name="update_profile_photo">Updating Photo</string>
 
     <!--SocietyServicesHome Activity-->
     <string name="request_plumber">Request Plumber</string>
