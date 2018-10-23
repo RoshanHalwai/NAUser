@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -289,6 +290,11 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
      * Updates profile pic in firebase
      */
     private void updateProfilePicInFirebase() {
+        /*displaying progress dialog while image is uploading*/
+        showProgressDialog(this,
+                getResources().getString(R.string.update_profile_photo),
+                getResources().getString(R.string.please_wait_a_moment));
+
         String userUID = NammaApartmentsGlobal.userUID;
         StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_USERS)
                 .child(Constants.FIREBASE_CHILD_PRIVATE)
@@ -302,6 +308,13 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
                     .child(FIREBASE_CHILD_PERSONALDETAILS)
                     .child(FIREBASE_CHILD_PROFILE_PHOTO);
             updatedUserPhotoReference.setValue(profilePhotoPath);
+
+            /*dismissing the progress dialog*/
+            hideProgressDialog();
+
+        }).addOnFailureListener(exception -> {
+            hideProgressDialog();
+            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
         });
     }
 
