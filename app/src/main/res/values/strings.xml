@@ -682,6 +682,11 @@
     <string name="transaction_amount">Transaction Amount:</string>
     <string name="successful">Successful</string>
 
+    <!--Transaction Contact us Activity-->
+    <string name="contact_namma_apartments">Contact Namma Apartments</string>
+    <string name="contact_us_message">Our executive will help you to solve your problem</string>
+    <string name="call_customer_executive_image_desc">Image which show user can call Namma Apartment Customer Executive</string>
+
     <!--MyFood Activity-->
     <string name="my_food">Donate Food</string>
     <string name="food_type">Food Type</string>

@@ -2,12 +2,14 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
@@ -45,7 +47,6 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
 
         /*Getting Id's for all the views*/
-
         TextView transactionIDText = findViewById(R.id.transactionIDText);
         TextView textTransactionPeriod = findViewById(R.id.textTransactionPeriod);
         TextView textTransactionDate = findViewById(R.id.textTransactionDate);
@@ -60,6 +61,7 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         transactionAmountValue = findViewById(R.id.transactionAmountValue);
         serviceStatus = findViewById(R.id.serviceStatus);
         transactionView = findViewById(R.id.transactionView);
+        LinearLayout layoutContactUs = findViewById(R.id.layoutContactUs);
 
         /*Setting font for all the views*/
         transactionStatusText.setTypeface(setLatoBoldFont(this));
@@ -79,16 +81,24 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         retrieveTransactionData();
         /*Clicking on 'Copy' enables user to copy the Transaction ID and paste it wherever required*/
         copyText.setOnClickListener(this);
+        layoutContactUs.setOnClickListener(this);
     }
 
     /*Setting click listener*/
     @Override
     public void onClick(View v) {
-        /*Copying transaction ID on click of 'Copy'*/
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        String copiedText = transactionIDValue.getText().toString();
-        ClipData clip = ClipData.newPlainText("Transaction ID copied", copiedText);
-        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+        switch (v.getId()) {
+            case R.id.copyText:
+                /*Copying transaction ID on click of 'Copy'*/
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                String copiedText = transactionIDValue.getText().toString();
+                ClipData clip = ClipData.newPlainText("Transaction ID copied", copiedText);
+                Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+                break;
+            case R.id.layoutContactUs:
+                startActivity(new Intent(TransactionSummaryActivity.this, TransactionContactUsActivity.class));
+                break;
+        }
     }
 
     /*This method retrieves all the necessary transaction data in the Transaction Summary screen*/
