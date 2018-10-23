@@ -8,7 +8,8 @@ import android.widget.TextView;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.CUSTOMER_EXECUTIVE_CONTACT_NUMBER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIRST_CUSTOMER_EXECUTIVE_CONTACT_NUMBER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SECOND_CUSTOMER_EXECUTIVE_CONTACT_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -35,20 +36,25 @@ public class TransactionContactUsActivity extends BaseActivity implements View.O
         /*Getting Id's for all the views*/
         TextView textContactHelp = findViewById(R.id.textContactHelp);
         TextView textContactHelpMessage = findViewById(R.id.textContactHelpMessage);
-        TextView textCustomerExecutiveContactNumber = findViewById(R.id.textCustomerExecutiveContactNumber);
+        TextView textFirstCustomerExecutiveContactNumber = findViewById(R.id.textFirstCustomerExecutiveContactNumber);
+        TextView textSecondCustomerExecutiveContactNumber = findViewById(R.id.textSecondCustomerExecutiveContactNumber);
 
         /*Setting Fonts for all the views*/
         textContactHelp.setTypeface(setLatoBoldFont(this));
         textContactHelpMessage.setTypeface(setLatoRegularFont(this));
-        textCustomerExecutiveContactNumber.setTypeface(setLatoBoldFont(this));
+        textFirstCustomerExecutiveContactNumber.setTypeface(setLatoBoldFont(this));
+        textSecondCustomerExecutiveContactNumber.setTypeface(setLatoBoldFont(this));
 
-        /*Setting Customer Executive Number in the view*/
-        textCustomerExecutiveContactNumber.setPaintFlags(textCustomerExecutiveContactNumber.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        //TODO: To change Customer executive mobile number.
-        textCustomerExecutiveContactNumber.setText(CUSTOMER_EXECUTIVE_CONTACT_NUMBER);
+        /*Setting Customer Executive Numbers in the views*/
+        textFirstCustomerExecutiveContactNumber.setPaintFlags(textFirstCustomerExecutiveContactNumber.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        textSecondCustomerExecutiveContactNumber.setPaintFlags(textSecondCustomerExecutiveContactNumber.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        //TODO: To change Customer executive mobile numbers from here.
+        textFirstCustomerExecutiveContactNumber.setText(FIRST_CUSTOMER_EXECUTIVE_CONTACT_NUMBER);
+        textSecondCustomerExecutiveContactNumber.setText(SECOND_CUSTOMER_EXECUTIVE_CONTACT_NUMBER);
 
         /*Setting Click Listeners for views*/
-        textCustomerExecutiveContactNumber.setOnClickListener(this);
+        textFirstCustomerExecutiveContactNumber.setOnClickListener(this);
+        textSecondCustomerExecutiveContactNumber.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -57,6 +63,13 @@ public class TransactionContactUsActivity extends BaseActivity implements View.O
 
     @Override
     public void onClick(View v) {
-        makePhoneCall(CUSTOMER_EXECUTIVE_CONTACT_NUMBER);
+        switch (v.getId()) {
+            case R.id.textFirstCustomerExecutiveContactNumber:
+                makePhoneCall(FIRST_CUSTOMER_EXECUTIVE_CONTACT_NUMBER);
+                break;
+            case R.id.textSecondCustomerExecutiveContactNumber:
+                makePhoneCall(SECOND_CUSTOMER_EXECUTIVE_CONTACT_NUMBER);
+                break;
+        }
     }
 }

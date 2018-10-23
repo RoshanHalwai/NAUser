@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="@string/contact_help"
+                android:text="@string/contact_namma_apartments"
                 android:textColor="@color/nmBlack"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -48,13 +48,39 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/textCustomerExecutiveContactNumber"
-                    android:layout_toStartOf="@id/textCustomerExecutiveContactNumber"
+                    android:layout_toLeftOf="@id/textFirstCustomerExecutiveContactNumber"
+                    android:layout_toStartOf="@id/textFirstCustomerExecutiveContactNumber"
                     android:contentDescription="@string/call_customer_executive_image_desc"
                     android:src="@drawable/call_new" />
 
                 <TextView
-                    android:id="@+id/textCustomerExecutiveContactNumber"
+                    android:id="@+id/textFirstCustomerExecutiveContactNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:paddingLeft="15dp"
+                    android:paddingStart="15dp"
+                    android:textColor="@color/nmSendMessageColor"
+                    android:textSize="18sp"
+                    tools:ignore="RelativeOverlap,RtlSymmetry" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/textSecondCustomerExecutiveContactNumber"
+                    android:layout_toStartOf="@id/textSecondCustomerExecutiveContactNumber"
+                    android:contentDescription="@string/call_customer_executive_image_desc"
+                    android:src="@drawable/call_new" />
+
+                <TextView
+                    android:id="@+id/textSecondCustomerExecutiveContactNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

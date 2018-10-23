@@ -683,8 +683,8 @@
     <string name="successful">Successful</string>
 
     <!--Transaction Contact us Activity-->
-    <string name="contact_help">Contact 24x7 Help</string>
-    <string name="contact_help_message">Our executive will help to solve your problem</string>
+    <string name="contact_namma_apartments">Contact Namma Apartments</string>
+    <string name="contact_help_message">Our executives will help to solve your problem</string>
     <string name="call_customer_executive_image_desc">Image which show user can call Namma Apartment Customer Executive</string>
 
     <!--MyFood Activity-->
