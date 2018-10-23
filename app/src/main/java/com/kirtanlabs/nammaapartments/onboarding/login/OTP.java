@@ -29,7 +29,6 @@ import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.AddDailyService;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.AddFamilyMember;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -38,14 +37,18 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COUNTRY_CODE_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.OTP_TIMER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class OTP extends BaseActivity implements View.OnClickListener, View.OnKeyListener {
 
@@ -94,7 +97,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         super.onCreate(savedInstanceState);
 
         /* Generate an OTP to user's mobile number */
-        userMobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        userMobileNumber = getIntent().getStringExtra(MOBILE_NUMBER);
         sendOTP();
 
         /* Start the Resend OTP timer, valid for 120 seconds*/
@@ -117,16 +120,16 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         editSixthOTPDigit = findViewById(R.id.editSixthOTPDigit);
 
         /*Setting font for all the views*/
-        textPhoneVerification.setTypeface(Constants.setLatoRegularFont(this));
-        textResendOTPOrVerificationMessage.setTypeface(Constants.setLatoRegularFont(this));
-        textChangeNumberOrTimer.setTypeface(Constants.setLatoRegularFont(this));
-        buttonVerifyOTP.setTypeface(Constants.setLatoLightFont(this));
-        editFirstOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editSecondOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editThirdOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editFourthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editFifthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
-        editSixthOTPDigit.setTypeface(Constants.setLatoRegularFont(this));
+        textPhoneVerification.setTypeface(setLatoRegularFont(this));
+        textResendOTPOrVerificationMessage.setTypeface(setLatoRegularFont(this));
+        textChangeNumberOrTimer.setTypeface(setLatoRegularFont(this));
+        buttonVerifyOTP.setTypeface(setLatoLightFont(this));
+        editFirstOTPDigit.setTypeface(setLatoRegularFont(this));
+        editSecondOTPDigit.setTypeface(setLatoRegularFont(this));
+        editThirdOTPDigit.setTypeface(setLatoRegularFont(this));
+        editFourthOTPDigit.setTypeface(setLatoRegularFont(this));
+        editFifthOTPDigit.setTypeface(setLatoRegularFont(this));
+        editSixthOTPDigit.setTypeface(setLatoRegularFont(this));
 
         /*Setting events for OTP edit text*/
         setEventsForEditText();
@@ -224,7 +227,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         setUpVerificationCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 COUNTRY_CODE_IN + userMobileNumber,
-                Constants.OTP_TIMER,
+                OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
                 verificationCallbacks);
@@ -279,28 +282,26 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                     hideProgressDialog();
                     if (task.isSuccessful()) {
                         if (previousScreenTitle == R.string.login) {
-                            userPrivateInfo = Constants.ALL_USERS_REFERENCE.child(userMobileNumber);
+                            userPrivateInfo = ALL_USERS_REFERENCE.child(userMobileNumber);
                             userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     /* Check if User mobile number is found in database */
                                     if (dataSnapshot.exists()) {
                                         getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(ACCOUNT_CREATED, true).apply();
-                                        if (getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
+                                        if (getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
                                             startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
-                                            SignIn.getInstance().finish();
                                         } else {
                                             startActivity(new Intent(OTP.this, ActivationRequired.class));
-                                            SignIn.getInstance().finish();
                                         }
                                     }
                                     /* User record was not found in firebase hence we navigate them to Sign Up page*/
                                     else {
                                         Intent intent = new Intent(OTP.this, SignUp.class);
-                                        intent.putExtra(Constants.MOBILE_NUMBER, userMobileNumber);
+                                        intent.putExtra(MOBILE_NUMBER, userMobileNumber);
                                         startActivity(intent);
-                                        SignIn.getInstance().finish();
                                     }
+                                    SignIn.getInstance().finish();
                                     finish();
                                 }
 
@@ -316,7 +317,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                     } else {
                         /*Check if network is available or not*/
                         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
                         NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
                         boolean isConnected = activeNetwork != null &&
                                 activeNetwork.isConnectedOrConnecting();
@@ -337,7 +337,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     private void resendOTP() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 COUNTRY_CODE_IN + userMobileNumber,
-                Constants.OTP_TIMER,
+                OTP_TIMER,
                 TimeUnit.SECONDS,
                 this,
                 verificationCallbacks,
@@ -385,7 +385,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     }
 
     private void getPreviousScreenTitle() {
-        previousScreenTitle = getIntent().getIntExtra(Constants.SCREEN_TITLE, 0);
+        previousScreenTitle = getIntent().getIntExtra(SCREEN_TITLE, 0);
     }
 
     /**
