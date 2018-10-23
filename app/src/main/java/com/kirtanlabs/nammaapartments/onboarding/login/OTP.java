@@ -301,6 +301,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                     Intent intent = new Intent(OTP.this, SignUp.class);
                                     intent.putExtra(MOBILE_NUMBER, userMobileNumber);
                                     startActivity(intent);
+                                    SignIn.getInstance().finish();
                                     finish();
                                 }
                             });
@@ -324,6 +325,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         } else {
             startActivity(new Intent(OTP.this, ActivationRequired.class));
         }
+        SignIn.getInstance().finish();
         finish();
     }
 
