@@ -43,6 +43,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
 
@@ -536,22 +537,40 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         switch (previousScreenTitle) {
             case R.string.login:
                 Intent loginIntent = new Intent(OTP.this, SignIn.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(loginIntent);
+                finish();
                 break;
             case R.string.add_my_daily_service:
                 Intent dailyServicesIntent = new Intent(OTP.this, AddDailyService.class);
-                dailyServicesIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                dailyServicesIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                dailyServicesIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(dailyServicesIntent);
+                finish();
                 break;
             case R.string.add_family_members_details_screen:
                 Intent familyMemberIntent = new Intent(OTP.this, AddFamilyMember.class);
-                familyMemberIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                familyMemberIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                familyMemberIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(familyMemberIntent);
+                finish();
                 break;
         }
     }
+
+    /* ------------------------------------------------------------- *
+     * Overriding Back button
+     * ------------------------------------------------------------- */
+
+    /*We override this method since after Login Screen, we navigate users
+     * to this activity and when back button is pressed we don't want users to
+     * go back to Login screen but instead come out of the application*/
+    @Override
+    public void onBackPressed() {
+        if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.login) {
+            SignIn.getInstance().finish();
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }

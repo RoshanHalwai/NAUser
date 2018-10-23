@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,6 +37,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PROFILE_OLD_CONTENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class UpdateProfile extends BaseActivity implements View.OnClickListener {
@@ -60,35 +62,41 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected int getActivityTitle() {
-        return getIntent().getIntExtra(SCREEN_TITLE, 0);
+        screenTitle = getIntent().getIntExtra(SCREEN_TITLE, 0);
+        return screenTitle;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        screenTitle = getIntent().getIntExtra(SCREEN_TITLE, 0);
 
+        /*Getting id's for all the views*/
         editText = findViewById(R.id.editText);
         LinearLayout layoutActionButtons = findViewById(R.id.layoutActionButtons);
+        Button buttonDone = findViewById(R.id.buttonDone);
+        Button buttonCancel = findViewById(R.id.buttonCancel);
+
+        /*Setting fonts for all the views*/
+        editText.setTypeface(setLatoRegularFont(this));
+        buttonDone.setTypeface(setLatoLightFont(this));
+        buttonCancel.setTypeface(setLatoLightFont(this));
+
+        /*Differentiating UI according to the screen title*/
         if (screenTitle == R.string.select_new_admin) {
             setResidentsList();
             editText.setVisibility(View.GONE);
             layoutActionButtons.setVisibility(View.GONE);
         } else {
-            editText = findViewById(R.id.editText);
             oldContent = getIntent().getStringExtra(PROFILE_OLD_CONTENT);
+            if (screenTitle == R.string.enter_your_email) {
+                editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            }
             editText.setText(oldContent);
-
-            Button buttonDone = findViewById(R.id.buttonDone);
-            Button buttonCancel = findViewById(R.id.buttonCancel);
-
-            editText.setTypeface(setLatoRegularFont(this));
-            buttonDone.setTypeface(setLatoRegularFont(this));
-            buttonCancel.setTypeface(setLatoRegularFont(this));
-
-            buttonDone.setOnClickListener(this);
-            buttonCancel.setOnClickListener(this);
         }
+
+        /*Setting on click listeners to the views*/
+        buttonDone.setOnClickListener(this);
+        buttonCancel.setOnClickListener(this);
     }
 
     /* ------------------------------------------------------------- *
@@ -100,7 +108,26 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.buttonDone:
                 if (isFieldChanged()) {
-                    updateUserNameOrEmail();
+                    switch (screenTitle) {
+                        case R.string.enter_your_name:
+                            if (newContent.isEmpty()) {
+                                editText.setError(getString(R.string.name_validation));
+                            } else {
+                                updateUserNameOrEmail();
+                            }
+                            break;
+                        case R.string.enter_your_email:
+                            if (newContent.isEmpty()) {
+                                editText.setError(getString(R.string.email_validation));
+                            } else {
+                                if (isValidEmail(newContent)) {
+                                    editText.setError(getString(R.string.invalid_email));
+                                } else {
+                                    updateUserNameOrEmail();
+                                }
+                            }
+                            break;
+                    }
                 } else {
                     super.onBackPressed();
                 }
@@ -115,6 +142,11 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * This method compares both old content and new content of the profile data of user.
+     *
+     * @return value which user updates accordingly.
+     */
     private boolean isFieldChanged() {
         newContent = editText.getText().toString();
         return !newContent.equals(oldContent);
@@ -252,6 +284,12 @@ public class UpdateProfile extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * This method updates locally and immediately shows the updated values in My Profile when user
+     * navigates from Update Profile to My Profile Screen.
+     *
+     * @param updatedUserInstance contains the updated instance of user's profile to set locally.
+     */
     private void startUserProfile(NammaApartmentUser updatedUserInstance) {
         ((NammaApartmentsGlobal) getApplicationContext()).setNammaApartmentUser(updatedUserInstance);
         Intent userProfileIntent = new Intent(UpdateProfile.this, UserProfile.class);

@@ -64,18 +64,4 @@
         android:textColor="@color/nmLightYellow"
         android:textSize="@dimen/button_default_size" />
 
-    <TextView
-        android:id="@+id/textCreateAnAccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/buttonLogin"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center_horizontal"
-        android:text="@string/create_an_account"
-        android:textColor="@color/nmBlack"
-        android:textSize="22sp"
-        android:visibility="gone" />
-
 </RelativeLayout>
