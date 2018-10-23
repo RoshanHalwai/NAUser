@@ -588,21 +588,21 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         switch (previousScreenTitle) {
             case R.string.login:
                 Intent loginIntent = new Intent(OTP.this, SignIn.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(loginIntent);
+                finish();
                 break;
             case R.string.add_my_daily_service:
                 Intent dailyServicesIntent = new Intent(OTP.this, AddDailyService.class);
-                dailyServicesIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                dailyServicesIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                dailyServicesIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(dailyServicesIntent);
+                finish();
                 break;
             case R.string.add_family_members_details_screen:
                 Intent familyMemberIntent = new Intent(OTP.this, AddFamilyMember.class);
-                familyMemberIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                familyMemberIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                familyMemberIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(familyMemberIntent);
+                finish();
                 break;
         }
     }
@@ -627,6 +627,19 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
      * Interfaces
      * ------------------------------------------------------------- */
 
+    /*We override this method since after Login Screen, we navigate users
+     * to this activity and when back button is pressed we don't want users to
+     * go back to Login screen but instead come out of the application*/
+    @Override
+    public void onBackPressed() {
+        if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.login) {
+            SignIn.getInstance().finish();
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private interface DatabaseURL {
         void onCallback(String databaseURL);
     }
@@ -634,4 +647,5 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     private interface MobileNumberExists {
         void onCallback(Boolean isPresent);
     }
+
 }
