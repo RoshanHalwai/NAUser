@@ -288,8 +288,10 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                         getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(ACCOUNT_CREATED, true).apply();
                                         if (getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
                                             startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+                                            SignIn.getInstance().finish();
                                         } else {
                                             startActivity(new Intent(OTP.this, ActivationRequired.class));
+                                            SignIn.getInstance().finish();
                                         }
                                     }
                                     /* User record was not found in firebase hence we navigate them to Sign Up page*/
@@ -297,6 +299,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                         Intent intent = new Intent(OTP.this, SignUp.class);
                                         intent.putExtra(Constants.MOBILE_NUMBER, userMobileNumber);
                                         startActivity(intent);
+                                        SignIn.getInstance().finish();
                                     }
                                     finish();
                                 }
