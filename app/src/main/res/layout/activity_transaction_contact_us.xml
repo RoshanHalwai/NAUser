@@ -29,14 +29,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textContactHelpMessage"
+                android:id="@+id/textContactUsMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="5sp"
                 android:paddingRight="5sp"
                 android:paddingTop="5dp"
-                android:text="@string/contact_help_message"
+                android:text="@string/contact_us_message"
                 android:textColor="@color/nmBlack"
                 android:textSize="16sp" />
 
@@ -48,13 +48,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/textFirstCustomerExecutiveContactNumber"
-                    android:layout_toStartOf="@id/textFirstCustomerExecutiveContactNumber"
+                    android:layout_toLeftOf="@id/textCustomerExecutiveContactNumber"
+                    android:layout_toStartOf="@id/textCustomerExecutiveContactNumber"
                     android:contentDescription="@string/call_customer_executive_image_desc"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
                     android:src="@drawable/call_new" />
 
                 <TextView
-                    android:id="@+id/textFirstCustomerExecutiveContactNumber"
+                    android:id="@+id/textCustomerExecutiveContactNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -74,13 +76,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/textSecondCustomerExecutiveContactNumber"
-                    android:layout_toStartOf="@id/textSecondCustomerExecutiveContactNumber"
+                    android:layout_toLeftOf="@id/textMailCustomerExecutive"
+                    android:layout_toStartOf="@id/textMailCustomerExecutive"
                     android:contentDescription="@string/call_customer_executive_image_desc"
-                    android:src="@drawable/call_new" />
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    android:src="@drawable/email_na" />
 
                 <TextView
-                    android:id="@+id/textSecondCustomerExecutiveContactNumber"
+                    android:id="@+id/textMailCustomerExecutive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
