@@ -60,7 +60,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERM
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_DEV_ENV;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 
 /**
@@ -573,11 +573,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
      * @param databaseURL new Database URL which Application will access
      */
     public void changeDatabaseInstance(final Context context, final String databaseURL) {
-        //TODO: Change ENVIRONMENT to SOCIETY_BETA_ENV before rolling out App in Play Store
         SharedPreferences sharedPreferences = context.getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        sharedPreferences.edit().putString(FIREBASE_ENVIRONMENT, SOCIETY_DEV_ENV).apply();
+        sharedPreferences.edit().putString(FIREBASE_ENVIRONMENT, SOCIETY_ENV).apply();
         sharedPreferences.edit().putString(FIREBASE_DATABASE_URL, databaseURL).apply();
-        new NammaApartmentsGlobal().initializeFirebase(context, databaseURL, SOCIETY_DEV_ENV);
+        new NammaApartmentsGlobal().initializeFirebase(context, databaseURL, SOCIETY_ENV);
     }
 
     public interface DatabaseURL {

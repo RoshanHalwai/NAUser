@@ -66,7 +66,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_DEV_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getByteArrayFromFile;
 
