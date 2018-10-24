@@ -3,12 +3,14 @@ package com.kirtanlabs.nammaapartments.onboarding.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -36,10 +38,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import static com.kirtanlabs.nammaapartments.onboarding.login.SignIn.finishSignInInstance;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COUNTRY_CODE_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_DATABASE_URL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
@@ -71,12 +75,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
     private String phoneVerificationId, userMobileNumber;
-
-    /* ------------------------------------------------------------- *
-     * Private Members for Firebase
-     * ------------------------------------------------------------- */
-
-    private DatabaseReference userPrivateInfo;
 
     /* ------------------------------------------------------------- *
      * Overriding BaseActivity Methods
@@ -177,7 +175,12 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                 String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
                         editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
                         editSixthOTPDigit.getText().toString();
-                signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
+                try {
+                    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(phoneVerificationId, code);
+                    signInWithPhoneAuthCredential(phoneAuthCredential);
+                } catch (IllegalArgumentException e) {
+                    Log.d("Namma Apartments", e.getLocalizedMessage());
+                }
             }
         }
     }
@@ -219,6 +222,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         }
         return false;
     }
+
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
@@ -282,32 +286,28 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                     hideProgressDialog();
                     if (task.isSuccessful()) {
                         if (previousScreenTitle == R.string.login) {
-                            userPrivateInfo = ALL_USERS_REFERENCE.child(userMobileNumber);
-                            userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    /* Check if User mobile number is found in database */
-                                    if (dataSnapshot.exists()) {
-                                        getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(ACCOUNT_CREATED, true).apply();
-                                        if (getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).getBoolean(VERIFIED, false)) {
-                                            startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
-                                        } else {
-                                            startActivity(new Intent(OTP.this, ActivationRequired.class));
-                                        }
+                            mobileNumberExists(isPresent -> {
+                                if (isPresent) {
+                                    /* User record was found in firebase hence we check if user has Logged Out and Logged In or
+                                     * if they have uninstalled and reinstalled the App*/
+                                    SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+                                    sharedPreferences.edit().putBoolean(ACCOUNT_CREATED, true).apply();
+                                    if (sharedPreferences.getString(FIREBASE_DATABASE_URL, "").isEmpty()) {
+                                        /*This block indicates user has uninstalled and reinstalled the App*/
+                                        getDatabaseURL(userMobileNumber, databaseURL -> {
+                                            changeDatabaseInstance(getApplicationContext(), databaseURL);
+                                            startCorrespondingActivity();
+                                        });
+                                    } else {
+                                        startCorrespondingActivity();
                                     }
+                                } else {
                                     /* User record was not found in firebase hence we navigate them to Sign Up page*/
-                                    else {
-                                        Intent intent = new Intent(OTP.this, SignUp.class);
-                                        intent.putExtra(MOBILE_NUMBER, userMobileNumber);
-                                        startActivity(intent);
-                                    }
-                                    SignIn.getInstance().finish();
+                                    Intent intent = new Intent(OTP.this, SignUp.class);
+                                    intent.putExtra(MOBILE_NUMBER, userMobileNumber);
+                                    startActivity(intent);
+                                    finishSignInInstance();
                                     finish();
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
                         } else {
@@ -315,20 +315,59 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                             finish();
                         }
                     } else {
-                        /*Check if network is available or not*/
-                        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
-                        boolean isConnected = activeNetwork != null &&
-                                activeNetwork.isConnectedOrConnecting();
-                        if (!isConnected) {
-                            /*Show this message if user is having no network connection*/
-                            textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
-                        } else {
-                            /*Show this message if user has entered wrong OTP*/
-                            textResendOTPOrVerificationMessage.setText(R.string.wrong_otp_entered);
-                        }
+                        showError();
                     }
                 });
+    }
+
+    /**
+     * Starts Activity based on the Shared Preferences data
+     */
+    private void startCorrespondingActivity() {
+        SharedPreferences sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        if (sharedPreferences.getBoolean(VERIFIED, false)) {
+            startActivity(new Intent(OTP.this, NammaApartmentsHome.class));
+        } else {
+            startActivity(new Intent(OTP.this, ActivationRequired.class));
+        }
+
+        finishSignInInstance();
+        finish();
+    }
+
+    private void showError() {
+        /*Check if network is available or not*/
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = Objects.requireNonNull(cm).getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+            /*Show this message if user is having no network connection*/
+            textResendOTPOrVerificationMessage.setText(R.string.check_network_connection);
+        } else {
+            /*Show this message if user has entered wrong OTP*/
+            textResendOTPOrVerificationMessage.setText(R.string.wrong_otp_entered);
+        }
+    }
+
+    /**
+     * @param mobileNumberExists returns true if user mobile number exists in Master Database
+     *                           returns false otherwise
+     */
+    private void mobileNumberExists(MobileNumberExists mobileNumberExists) {
+        DatabaseReference userPrivateInfo = ALL_USERS_REFERENCE.child(userMobileNumber);
+        userPrivateInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mobileNumberExists.onCallback(dataSnapshot.exists());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -560,7 +599,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     }
 
     /* ------------------------------------------------------------- *
-     * Overriding Back button
+     * Interfaces
      * ------------------------------------------------------------- */
 
     /*We override this method since after Login Screen, we navigate users
@@ -569,11 +608,15 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     @Override
     public void onBackPressed() {
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.login) {
-            SignIn.getInstance().finish();
+            finishSignInInstance();
             finish();
         } else {
             super.onBackPressed();
         }
+    }
+
+    private interface MobileNumberExists {
+        void onCallback(Boolean isPresent);
     }
 
 }

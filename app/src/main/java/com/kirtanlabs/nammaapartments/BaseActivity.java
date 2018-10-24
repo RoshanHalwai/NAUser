@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -50,12 +51,16 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ENABLE_LOCATION
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_LATITUDE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_LONGITUDE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_DATABASE_URL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ENVIRONMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GALLERY_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PHONE_NUMBER_MAX_LENGTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLACE_CALL_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SEND_SMS_PERMISSION_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 
 /**
@@ -545,4 +550,36 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
         alertNotifyGateDialog.show();
     }
 
+    /**
+     * @param databaseURL indicates the Society Database URL the user belongs to
+     */
+    public void getDatabaseURL(final String userMobileNumber, final DatabaseURL databaseURL) {
+        ALL_USERS_REFERENCE.child(userMobileNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                databaseURL.onCallback(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * Changes Database instance from Default to User Specific Society Instance
+     *
+     * @param databaseURL new Database URL which Application will access
+     */
+    public void changeDatabaseInstance(final Context context, final String databaseURL) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+        sharedPreferences.edit().putString(FIREBASE_ENVIRONMENT, SOCIETY_ENV).apply();
+        sharedPreferences.edit().putString(FIREBASE_DATABASE_URL, databaseURL).apply();
+        new NammaApartmentsGlobal().initializeFirebase(context, databaseURL, SOCIETY_ENV);
+    }
+
+    public interface DatabaseURL {
+        void onCallback(String databaseURL);
+    }
 }

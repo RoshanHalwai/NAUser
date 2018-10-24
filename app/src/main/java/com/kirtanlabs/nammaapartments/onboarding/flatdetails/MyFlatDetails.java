@@ -45,8 +45,11 @@ import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.CITIES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_APARTMENTS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATABASE_URL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
@@ -54,10 +57,12 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETIES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_PENDING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
@@ -76,6 +81,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * ------------------------------------------------------------- */
 
     private final List<String> itemsInList = new ArrayList<>();
+    DatabaseReference societiesReference, apartmentsReference, flatsReference;
     private Dialog dialog;
     private ListView listView;
     private ArrayAdapter<String> adapter;
@@ -183,7 +189,29 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 showViews(R.id.radioResidentType);
                 break;
             case R.id.buttonCreateAccount:
-                storeUserDetailsInFirebase();
+                //Displaying progress dialog while image is uploading
+                showProgressDialog(this,
+                        getResources().getString(R.string.creating_your_account),
+                        getResources().getString(R.string.please_wait_a_moment));
+                societiesReference.child(editSociety.getText().toString()).child(FIREBASE_CHILD_DATABASE_URL)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String societyDatabaseURL = dataSnapshot.getValue(String.class);
+                                /*Map User's Mobile Number with Society Database URL and change database instance
+                                 * since user data should be stored in respective society instance db*/
+                                ALL_USERS_REFERENCE.child(getIntent().getStringExtra(MOBILE_NUMBER)).setValue(societyDatabaseURL)
+                                        .addOnCompleteListener(task -> {
+                                            changeDatabaseInstance(getApplicationContext(), societyDatabaseURL);
+                                            storeUserDetailsInFirebase();
+                                        });
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
         }
     }
 
@@ -243,25 +271,27 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
         switch (viewId) {
             case R.id.editCity:
                 hideViews(R.id.editCity);
-                updateItemsInList(Constants.CITIES_REFERENCE);
+                updateItemsInList(CITIES_REFERENCE);
                 break;
 
             case R.id.editSociety:
                 hideViews(R.id.editSociety);
-                updateItemsInList(Constants.SOCIETIES_REFERENCE
-                        .child(editCity.getText().toString()));
+                societiesReference = CITIES_REFERENCE.child(editCity.getText().toString())
+                        .child(FIREBASE_CHILD_SOCIETIES);
+                updateItemsInList(societiesReference);
                 break;
 
             case R.id.editApartment:
                 hideViews(R.id.editApartment);
-                updateItemsInList(Constants.APARTMENTS_REFERENCE
-                        .child(editSociety.getText().toString()));
+                apartmentsReference = societiesReference.child(editSociety.getText().toString())
+                        .child(FIREBASE_CHILD_APARTMENTS);
+                updateItemsInList(apartmentsReference);
                 break;
 
             case R.id.editFlat:
                 hideViews(R.id.editFlat);
-                updateItemsInList(Constants.FLATS_REFERENCE
-                        .child(editApartment.getText().toString()));
+                flatsReference = apartmentsReference.child(editApartment.getText().toString());
+                updateItemsInList(flatsReference);
                 break;
         }
     }
@@ -374,18 +404,13 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * The details entered by User during Sign Up process is stored in Firebase
      */
     private void storeUserDetailsInFirebase() {
-        //Displaying progress dialog while image is uploading
-        showProgressDialog(this,
-                getResources().getString(R.string.creating_your_account),
-                getResources().getString(R.string.please_wait_a_moment));
-
         /*Get selected Flat Details*/
         String city = editCity.getText().toString();
         String apartmentName = editApartment.getText().toString();
         String flatNumber = editFlat.getText().toString();
         String emailId = getIntent().getStringExtra(Constants.EMAIL_ID);
         String fullName = getIntent().getStringExtra(Constants.FULL_NAME);
-        String mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
+        String mobileNumber = getIntent().getStringExtra(MOBILE_NUMBER);
         String societyName = editSociety.getText().toString();
         String tenantType = radioButtonTenant.isChecked()
                 ? radioButtonTenant.getText().toString()
@@ -432,7 +457,7 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                         NammaApartmentUser nammaApartmentUser = new NammaApartmentUser(userUID, userPersonalDetails, userFlatDetails, userPrivileges);
 
                         /*Mapping Mobile Number to UID in firebase under users->all*/
-                        ALL_USERS_REFERENCE.child(getIntent().getStringExtra(Constants.MOBILE_NUMBER))
+                        ALL_USERS_REFERENCE.child(getIntent().getStringExtra(MOBILE_NUMBER))
                                 .setValue(userUID);
 
                         /*Storing user details in firebase under users->private->uid*/

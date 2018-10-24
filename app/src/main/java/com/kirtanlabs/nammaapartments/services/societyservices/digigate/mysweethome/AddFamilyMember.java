@@ -14,9 +14,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,6 +44,7 @@ import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.AFM_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
@@ -50,6 +53,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TIMESTAMP;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
@@ -58,6 +62,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_R
 import static com.kirtanlabs.nammaapartments.utilities.Constants.READ_CONTACTS_PERMISSION_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -342,6 +347,12 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                     getString(R.string.please_wait_a_moment));
         }
 
+        /*Map family member's mobile number with Society Database URL in Default Database Environment so the user
+         * can sign in from their own device*/
+        String databaseURL = FirebaseApp.getInstance(SOCIETY_ENV).getOptions().getDatabaseUrl();
+        FirebaseDatabase.getInstance().getReference()
+                .child(FIREBASE_CHILD_USERS).child(FIREBASE_CHILD_ALL).child(mobileNumber).setValue(databaseURL);
+
         /*Map family member's mobile number with uid in users->all*/
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);
         familyMemberMobileNumberReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -351,7 +362,7 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
                 familyMemberMobileNumberReference.setValue(familyMemberUID);
 
                 /*getting the storage reference*/
-                StorageReference storageReference = FIREBASE_STORAGE.getReference(Constants.FIREBASE_CHILD_USERS)
+                StorageReference storageReference = FIREBASE_STORAGE.getReference(FIREBASE_CHILD_USERS)
                         .child(Constants.FIREBASE_CHILD_PRIVATE)
                         .child(familyMemberUID);
 

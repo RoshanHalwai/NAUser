@@ -30,12 +30,12 @@ public class SignIn extends BaseActivity implements View.OnClickListener {
      * ------------------------------------------------------------- */
 
     /**
-     * This method returns the Instance of this class
-     *
-     * @return static variable of this class instance.
+     * This method finishes the Instance of this class
      */
-    public static SignIn getInstance() {
-        return signIn;
+    public static void finishSignInInstance() {
+        if (signIn != null) {
+            signIn.finish();
+        }
     }
 
     @Override
