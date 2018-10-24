@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CONVENIENCE_CHARGES;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DEFAULT_CONVENIENCE_CHARGES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PENDING_DUES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
@@ -44,7 +44,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_CANCELL
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_FAILURE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_SUCCESSFUL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSACTION_REFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.TRANSACTION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -222,7 +221,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
      * This method retrieves the conveniencePercentage value from server.
      */
     private void retrieveConvenienceCharge() {
-        TRANSACTION_REFERENCE.child(FIREBASE_CHILD_CONVENIENCE_CHARGES).addListenerForSingleValueEvent(new ValueEventListener() {
+        DEFAULT_CONVENIENCE_CHARGES_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 convenienceCharge = Objects.requireNonNull(dataSnapshot.getValue(Float.class));

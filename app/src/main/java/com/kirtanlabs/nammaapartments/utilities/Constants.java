@@ -187,7 +187,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_ACCEPTED = "Accepted";
     public static final String FIREBASE_CHILD_REJECTED = "Rejected";
     public static final String FIREBASE_CHILD_IGNORED = "Ignored";
-    public static final String FIREBASE_CHILD_CONVENIENCE_CHARGES = "convenienceCharges";
+    private static final String FIREBASE_CHILD_CONVENIENCE_CHARGES = "convenienceCharges";
     public static final String FIREBASE_CHILD_VEHICLES = "vehicles";
     public static final String RATING = "rating";
     public static final String FIREBASE_CHILD_OTHER_DETAILS = "otherDetails";
@@ -346,10 +346,14 @@ public class Constants {
     public static DatabaseReference TRANSACTION_REFERENCE;
     public static DatabaseReference PRIVATE_TRANSACTION_REFERENCE;
     public static DatabaseReference PRIVATE_USER_DATA_REFERENCE;
-    public static DatabaseReference VERSION_NAME_REFERENCE;
     public static DatabaseReference DONATE_FOOD_REFERENCE;
     public static DatabaseReference PRIVATE_CHATS_REFERENCE;
     public static DatabaseReference ALL_CHATS_REFERENCE;
+
+
+    public static final DatabaseReference DEFAULT_ALL_USERS_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_USERS).child(FIREBASE_CHILD_ALL);
+    public static final DatabaseReference DEFAULT_VERSION_NAME_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_VERSION_NAME);
+    public static final DatabaseReference DEFAULT_CONVENIENCE_CHARGES_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_TRANSACTIONS).child(FIREBASE_CHILD_CONVENIENCE_CHARGES);
 
     /* ------------------------------------------------------------- *
      * Font Types
@@ -421,7 +425,6 @@ public class Constants {
         PRIVATE_TRANSACTION_REFERENCE = TRANSACTION_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
         DatabaseReference USER_DATA_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_USER_DATA);
         PRIVATE_USER_DATA_REFERENCE = USER_DATA_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
-        VERSION_NAME_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_VERSION_NAME);
         DONATE_FOOD_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_FOOD_DONATIONS);
         DatabaseReference CHATS_REFERENCE = FIREBASE_DATABASE.getReference(FIREBASE_CHILD_CHATS);
         PRIVATE_CHATS_REFERENCE = CHATS_REFERENCE.child(FIREBASE_CHILD_PRIVATE);
