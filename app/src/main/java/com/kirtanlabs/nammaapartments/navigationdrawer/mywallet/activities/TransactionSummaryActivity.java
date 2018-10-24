@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
@@ -23,14 +24,23 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static android.view.View.GONE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class TransactionSummaryActivity extends BaseActivity implements View.OnClickListener {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private TextView transactionIDValue, transactionAmountValue, transactionDateValue, transactionStatusText, transactionPeriodValue;
     private ImageView serviceStatus;
     private CardView transactionView;
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
@@ -84,7 +94,10 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         layoutContactUs.setOnClickListener(this);
     }
 
-    /*Setting click listener*/
+    /* ------------------------------------------------------------- *
+     * Overriding OnClick Listener Objects
+     * ------------------------------------------------------------- */
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -92,7 +105,8 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
                 /*Copying transaction ID on click of 'Copy'*/
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                 String copiedText = transactionIDValue.getText().toString();
-                ClipData clip = ClipData.newPlainText("Transaction ID copied", copiedText);
+                ClipData clip = ClipData.newPlainText(getString(R.string.transaction_id_copy), copiedText);
+                Toast.makeText(this, getString(R.string.transaction_id_copy), Toast.LENGTH_SHORT).show();
                 Objects.requireNonNull(clipboard).setPrimaryClip(clip);
                 break;
             case R.id.layoutContactUs:
@@ -101,14 +115,16 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         }
     }
 
-    /*This method retrieves all the necessary transaction data in the Transaction Summary screen*/
+    /**
+     * This method retrieves all the necessary transaction data in the Transaction Summary screen.
+     */
     private void retrieveTransactionData() {
         /*Getting the values from the previous Activity*/
-        String transactionId = getIntent().getStringExtra("paymentId");
-        String transactionPeriod = getIntent().getStringExtra("period");
-        String transactionAmount = getIntent().getStringExtra("amount");
-        String dateAndTime = getIntent().getStringExtra("dateAndTime");
-        String transactionStatus = getIntent().getStringExtra("status");
+        String transactionId = getIntent().getStringExtra(getString(R.string.paymentId));
+        String transactionPeriod = getIntent().getStringExtra(getString(R.string.period));
+        String transactionAmount = getIntent().getStringExtra(getString(R.string.amount));
+        String dateAndTime = getIntent().getStringExtra(getString(R.string.dateAndTime));
+        String transactionStatus = getIntent().getStringExtra(getString(R.string.payment_status));
         /*Setting the image and text depending on the transaction status*/
         if (transactionStatus.equals(getResources().getString(R.string.successful))) {
             serviceStatus.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.request_accepted_na));
@@ -125,7 +141,7 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         transactionDateValue.setText(dateAndTime);
         /*Getting Transaction period value*/
         /*Formatting the date to get the value of month and year from timestamp*/
-        String[] separateTimePeriod = TextUtils.split(transactionPeriod, "-");
+        String[] separateTimePeriod = TextUtils.split(transactionPeriod, HYPHEN);
         String firstTransactionPeriod = separateTimePeriod[0];
         DateFormat originalDateFormat = new SimpleDateFormat("MMyyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
@@ -144,7 +160,7 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
                 date = originalDateFormat.parse(lastTimePeriod);
                 String formattedSecondDate = targetFormat.format(date);
                 /*Getting the transaction period for pending dues with multiple child*/
-                finalTransactionPeriod = finalTransactionPeriod + " - " + formattedSecondDate;
+                finalTransactionPeriod = finalTransactionPeriod + " " + HYPHEN + " " + formattedSecondDate;
             } catch (ParseException e) {
                 e.printStackTrace();
             }
