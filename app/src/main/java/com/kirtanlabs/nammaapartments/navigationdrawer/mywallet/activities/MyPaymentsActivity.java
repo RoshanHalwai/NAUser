@@ -27,14 +27,18 @@ import com.razorpay.PaymentResultListener;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CONVENIENCE_CHARGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PENDING_DUES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TRANSACTIONS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.INDIAN_RUPEE_CURRENCY_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_CANCELLED_ERROR_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_FAILURE;
@@ -52,6 +56,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularF
  */
 
 public class MyPaymentsActivity extends BaseActivity implements PaymentResultListener, View.OnClickListener {
+
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
 
     private static final String TAG = MyPaymentsActivity.class.getSimpleName();
     private int pendingAmount = 0;
@@ -289,19 +297,39 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
                 if (dataSnapshot.getChildrenCount() > 1) {
                     String pendingDuesLast = duesList.get(lastIndex);
                     /*Getting the time period, for the dues that has been pending if there is more than one child of 'pendingDues'*/
-                    period = period + "-" + pendingDuesLast;
+                    period = period + HYPHEN + pendingDuesLast;
                 }
                 final String transactionUID = userTransactionReference.push().getKey();
                 final Transaction transactionDetails = new Transaction((pendingAmountInPaise / 100), paymentId, result,
                         serviceCategory, NammaApartmentsGlobal.userUID, transactionUID, System.currentTimeMillis());
                 transactionDetails.setPeriod(period);
+                /*Decoding TimeStamp to Human Date*/
+                SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
+                String formattedDateAndTime = sfd.format(new Date(transactionDetails.getTimestamp()));
+                /*Getting the amount paid by the user*/
+                String amount = getString(R.string.rupees_symbol) + " " + String.valueOf(transactionDetails.getAmount());
+                /*Making period as final variable to pass to Transaction Summary Screen*/
+                String finalPeriod = period;
                 PRIVATE_TRANSACTION_REFERENCE.child(transactionUID).setValue(transactionDetails)
                         .addOnCompleteListener(task -> userTransactionReference.child(transactionUID).setValue(true)
                                 .addOnCompleteListener(task1 -> {
                                     Checkout.clearUserData(MyPaymentsActivity.this);
-                                    /*Remove Pending dues*/
-                                    ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
-                                            .child(FIREBASE_CHILD_PENDING_DUES).removeValue();
+                                    /*Removing Pending Dues Key From Firebase only when user successfully makes payment*/
+                                    if (result.equals(PAYMENT_SUCCESSFUL)) {
+                                        /*Remove Pending dues*/
+                                        ((NammaApartmentsGlobal) getApplicationContext()).getUserDataReference()
+                                                .child(FIREBASE_CHILD_PENDING_DUES).removeValue();
+                                    }
+
+                                    /*Navigating Users to Transaction Summary Screen when users makes the payment */
+                                    Intent transactionSummaryIntent = new Intent(MyPaymentsActivity.this, TransactionSummaryActivity.class);
+                                    transactionSummaryIntent.putExtra(getString(R.string.payment_status), result);
+                                    transactionSummaryIntent.putExtra(getString(R.string.paymentId), paymentId);
+                                    transactionSummaryIntent.putExtra(getString(R.string.period), finalPeriod);
+                                    transactionSummaryIntent.putExtra(getString(R.string.dateAndTime), formattedDateAndTime);
+                                    transactionSummaryIntent.putExtra(getString(R.string.amount), amount);
+                                    startActivity(transactionSummaryIntent);
+                                    finish();
                                 }));
             }
 

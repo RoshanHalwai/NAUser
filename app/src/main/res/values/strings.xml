@@ -637,6 +637,7 @@
     <string name="select_service_category">Select Service Category</string>
     <string name="society_service">Society\n Services</string>
     <string name="apartment_service">Apartment\n Services</string>
+    <string name="miscellaneous">Miscellaneous</string>
     <string name="service_type">Select Service Type</string>
     <string name="choose_one_hint">Choose One…</string>
     <string name="describe_your_problem">Describe Your Problem</string>
@@ -648,6 +649,15 @@
     <string name="support_unavailable">Currently there are no support requests raised by the user.</string>
     <string name="problem">Problem:</string>
     <string name="category">Category:</string>
+
+    <string-array name="miscellaneous_list">
+        <item>@string/my_profile</item>
+        <item>@string/my_vehicles</item>
+        <item>@string/my_guards</item>
+        <item>@string/my_neighbours</item>
+        <item>@string/my_food</item>
+        <item>@string/notice_board</item>
+    </string-array>
 
     <!--Payments Activity-->
     <string name="payment_cancelled">Payment Cancelled</string>
@@ -671,6 +681,12 @@
     <string name="maintenance_amount">Maintenance Amount:</string>
     <string name="convenience_fee">Convenience Fee (num%): </string>
     <string name="num_value">num</string>
+    <string name="payment_status">status</string>
+    <string name="paymentId">paymentId</string>
+    <string name="period">period</string>
+    <string name="dateAndTime">dateAndTime</string>
+
+    <!--Transaction Summary Activity-->
     <string name="transaction_summary">Transaction Summary</string>
     <string name="successful_payment">Your payment was successful !!</string>
     <string name="failed_payment">Your payment failed !!</string>
@@ -681,6 +697,7 @@
     <string name="transaction_date">Transaction Date:</string>
     <string name="transaction_amount">Transaction Amount:</string>
     <string name="successful">Successful</string>
+    <string name="transaction_id_copy">Transaction ID copied</string>
 
     <!--Transaction Contact us Activity-->
     <string name="contact_namma_apartments">Contact Namma Apartments</string>

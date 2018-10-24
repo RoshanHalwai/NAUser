@@ -21,6 +21,9 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SUPPORT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SELECT_SOCIETY_SERVICE_REQUEST_CODE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
 public class ContactUs extends BaseActivity implements View.OnClickListener {
 
@@ -30,6 +33,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
 
     private Button buttonSocietyServices;
     private Button buttonApartmentService;
+    private Button buttonMiscellaneous;
     private EditText editServiceType;
     private EditText editProblemDesc;
     private TextView textErrorProblemDesc;
@@ -62,18 +66,20 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         editProblemDesc = findViewById(R.id.editProblemDesc);
         buttonSocietyServices = findViewById(R.id.buttonSocietyServices);
         buttonApartmentService = findViewById(R.id.buttonApartmentService);
+        buttonMiscellaneous = findViewById(R.id.buttonMiscellaneous);
         Button buttonSubmit = findViewById(R.id.buttonSubmit);
 
         /*Setting Fonts for all the views*/
-        textServiceCategory.setTypeface(Constants.setLatoBoldFont(this));
-        textServiceType.setTypeface(Constants.setLatoBoldFont(this));
-        textProblemDesc.setTypeface(Constants.setLatoBoldFont(this));
-        textErrorProblemDesc.setTypeface(Constants.setLatoBoldFont(this));
-        editServiceType.setTypeface(Constants.setLatoRegularFont(this));
-        editProblemDesc.setTypeface(Constants.setLatoRegularFont(this));
-        buttonSocietyServices.setTypeface(Constants.setLatoRegularFont(this));
-        buttonApartmentService.setTypeface(Constants.setLatoRegularFont(this));
-        buttonSubmit.setTypeface(Constants.setLatoLightFont(this));
+        textServiceCategory.setTypeface(setLatoBoldFont(this));
+        textServiceType.setTypeface(setLatoBoldFont(this));
+        textProblemDesc.setTypeface(setLatoBoldFont(this));
+        textErrorProblemDesc.setTypeface(setLatoBoldFont(this));
+        editServiceType.setTypeface(setLatoRegularFont(this));
+        editProblemDesc.setTypeface(setLatoRegularFont(this));
+        buttonSocietyServices.setTypeface(setLatoRegularFont(this));
+        buttonApartmentService.setTypeface(setLatoRegularFont(this));
+        buttonMiscellaneous.setTypeface(setLatoRegularFont(this));
+        buttonSubmit.setTypeface(setLatoLightFont(this));
 
         /*We don't want the keyboard to be displayed when user clicks on the choose one edit text*/
         editServiceType.setInputType(InputType.TYPE_NULL);
@@ -88,6 +94,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
         editProblemDesc.setOnClickListener(this);
         buttonSocietyServices.setOnClickListener(this);
         buttonApartmentService.setOnClickListener(this);
+        buttonMiscellaneous.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
         historyButton.setOnClickListener(this);
 
@@ -118,6 +125,7 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                     editProblemDesc.getText().clear();
                     buttonApartmentService.setBackgroundResource(R.drawable.valid_for_button_design);
                     buttonSocietyServices.setBackgroundResource(R.drawable.selected_button_design);
+                    buttonMiscellaneous.setBackgroundResource(R.drawable.valid_for_button_design);
                 }
                 break;
             case R.id.buttonApartmentService:
@@ -127,6 +135,17 @@ public class ContactUs extends BaseActivity implements View.OnClickListener {
                     editProblemDesc.getText().clear();
                     buttonSocietyServices.setBackgroundResource(R.drawable.valid_for_button_design);
                     buttonApartmentService.setBackgroundResource(R.drawable.selected_button_design);
+                    buttonMiscellaneous.setBackgroundResource(R.drawable.valid_for_button_design);
+                }
+                break;
+            case R.id.buttonMiscellaneous:
+                if (serviceCategory != R.string.miscellaneous) {
+                    serviceCategory = R.string.miscellaneous;
+                    editServiceType.getText().clear();
+                    editProblemDesc.getText().clear();
+                    buttonMiscellaneous.setBackgroundResource(R.drawable.selected_button_design);
+                    buttonSocietyServices.setBackgroundResource(R.drawable.valid_for_button_design);
+                    buttonApartmentService.setBackgroundResource(R.drawable.valid_for_button_design);
                 }
                 break;
             case R.id.buttonSubmit:
