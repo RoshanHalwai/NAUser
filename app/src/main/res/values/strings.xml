@@ -637,6 +637,7 @@
     <string name="select_service_category">Select Service Category</string>
     <string name="society_service">Society\n Services</string>
     <string name="apartment_service">Apartment\n Services</string>
+    <string name="miscellaneous">Miscellaneous</string>
     <string name="service_type">Select Service Type</string>
     <string name="choose_one_hint">Choose One…</string>
     <string name="describe_your_problem">Describe Your Problem</string>
@@ -648,6 +649,15 @@
     <string name="support_unavailable">Currently there are no support requests raised by the user.</string>
     <string name="problem">Problem:</string>
     <string name="category">Category:</string>
+
+    <string-array name="miscellaneous_list">
+        <item>@string/my_profile</item>
+        <item>@string/my_vehicles</item>
+        <item>@string/my_guards</item>
+        <item>@string/my_neighbours</item>
+        <item>@string/my_food</item>
+        <item>@string/notice_board</item>
+    </string-array>
 
     <!--Payments Activity-->
     <string name="payment_cancelled">Payment Cancelled</string>
