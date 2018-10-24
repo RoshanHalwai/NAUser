@@ -16,6 +16,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
+import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.Objects;
 
@@ -26,6 +27,8 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_GUEST;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_PACKAGE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_OTHER_DETAILS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_DATABASE_URL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ENVIRONMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
@@ -137,8 +140,14 @@ public class NammaApartmentSettings extends BaseActivity implements View.OnClick
             editor = sharedPreferences.edit();
             editor.putBoolean(LOGGED_IN, false);
             editor.putString(USER_UID, null);
+            editor.putString(FIREBASE_ENVIRONMENT, null);
+            editor.putString(FIREBASE_DATABASE_URL, null);
             editor.apply();
             FIREBASE_AUTH.signOut();
+
+            /*Change the instance back to Master_DEV or MASTER_BETA*/
+            new Constants().configureFirebase(new NammaApartmentsGlobal().getCurrentEnvironment(getApplicationContext()));
+
             Intent intent = new Intent(NammaApartmentSettings.this, SignIn.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

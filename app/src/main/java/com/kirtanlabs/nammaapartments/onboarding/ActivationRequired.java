@@ -12,10 +12,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
-import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.onboarding.login.SignIn.finishSignInInstance;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_VERIFIED_APPROVED;
@@ -64,7 +64,7 @@ public class ActivationRequired extends BaseActivity {
                             case FIREBASE_CHILD_VERIFIED_APPROVED:
                                 getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE).edit().putBoolean(VERIFIED, true).apply();
                                 startActivity(new Intent(ActivationRequired.this, NammaApartmentsHome.class));
-                                SignIn.getInstance().finish();
+                                finishSignInInstance();
                                 finish();
                                 break;
                             case FIREBASE_CHILD_VERIFIED_PENDING:

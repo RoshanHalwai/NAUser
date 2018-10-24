@@ -30,7 +30,6 @@ import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
-import com.kirtanlabs.nammaapartments.onboarding.login.OTP;
 import com.kirtanlabs.nammaapartments.onboarding.login.SignUp;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
@@ -50,6 +49,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.CITIES_REFERENC
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_APARTMENTS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATABASE_URL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
@@ -66,6 +66,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USER_DATA_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_DEV_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.ImagePicker.getByteArrayFromFile;
 
@@ -189,23 +190,29 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
                 showViews(R.id.radioResidentType);
                 break;
             case R.id.buttonCreateAccount:
-                societiesReference.child(editSociety.getText().toString()).child("databaseURL").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String societyDatabaseURL = dataSnapshot.getValue(String.class);
-                        //Map User's Mobile Number with Society Database URL for future use
-                        ALL_USERS_REFERENCE.child(getIntent().getStringExtra(MOBILE_NUMBER)).setValue(societyDatabaseURL)
-                                .addOnCompleteListener(task -> {
-                                    new OTP().changeDatabaseInstance(getApplicationContext(), societyDatabaseURL);
-                                    storeUserDetailsInFirebase();
-                                });
-                    }
+                //Displaying progress dialog while image is uploading
+                showProgressDialog(this,
+                        getResources().getString(R.string.creating_your_account),
+                        getResources().getString(R.string.please_wait_a_moment));
+                societiesReference.child(editSociety.getText().toString()).child(FIREBASE_CHILD_DATABASE_URL)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String societyDatabaseURL = dataSnapshot.getValue(String.class);
+                                /*Map User's Mobile Number with Society Database URL and change database instance
+                                 * since user data should be stored in respective society instance db*/
+                                ALL_USERS_REFERENCE.child(getIntent().getStringExtra(MOBILE_NUMBER)).setValue(societyDatabaseURL)
+                                        .addOnCompleteListener(task -> {
+                                            changeDatabaseInstance(getApplicationContext(), societyDatabaseURL);
+                                            storeUserDetailsInFirebase();
+                                        });
+                            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                            }
+                        });
         }
     }
 
@@ -398,11 +405,6 @@ public class MyFlatDetails extends BaseActivity implements View.OnClickListener,
      * The details entered by User during Sign Up process is stored in Firebase
      */
     private void storeUserDetailsInFirebase() {
-        //Displaying progress dialog while image is uploading
-        showProgressDialog(this,
-                getResources().getString(R.string.creating_your_account),
-                getResources().getString(R.string.please_wait_a_moment));
-
         /*Get selected Flat Details*/
         String city = editCity.getText().toString();
         String apartmentName = editApartment.getText().toString();

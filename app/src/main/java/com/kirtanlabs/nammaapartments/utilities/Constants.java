@@ -121,6 +121,7 @@ public class Constants {
     public static final String GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID = "garbageManagementNotificationUid";
     public static final String EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID = "eventManagementNotificationUid";
     public static final String FIREBASE_DATABASE_URL = "firebaseDatabaseURL";
+    public static final String FIREBASE_ENVIRONMENT = "firebaseEnvironment";
 
     /* ------------------------------------------------------------- *
      * Firebase Values
@@ -135,6 +136,7 @@ public class Constants {
     public static final String FIREBASE_CHILD_CHILDDAYCARES = "childDayCares";
     public static final String FIREBASE_CHILD_COOKS = "cooks";
     public static final String FIREBASE_CHILD_CABS = "cabs";
+    public static final String FIREBASE_CHILD_DATABASE_URL = "databaseURL";
     public static final String FIREBASE_CHILD_DELIVERIES = "deliveries";
     public static final String FIREBASE_CHILD_DAILYNEWSPAPERS = "dailyNewspapers";
     public static final String FIREBASE_CHILD_DAILYSERVICES = "dailyServices";

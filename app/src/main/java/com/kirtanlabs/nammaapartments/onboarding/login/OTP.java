@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.onboarding.ActivationRequired;
@@ -38,6 +38,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import static com.kirtanlabs.nammaapartments.onboarding.login.SignIn.finishSignInInstance;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ACCOUNT_CREATED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COUNTRY_CODE_IN;
@@ -49,7 +50,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENT
 import static com.kirtanlabs.nammaapartments.utilities.Constants.OTP_TIMER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_DEV_ENV;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -175,7 +175,12 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                 String code = editFirstOTPDigit.getText().toString() + editSecondOTPDigit.getText().toString() +
                         editThirdOTPDigit.getText().toString() + editFourthOTPDigit.getText().toString() + editFifthOTPDigit.getText().toString() +
                         editSixthOTPDigit.getText().toString();
-                signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(phoneVerificationId, code));
+                try {
+                    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(phoneVerificationId, code);
+                    signInWithPhoneAuthCredential(phoneAuthCredential);
+                } catch (IllegalArgumentException e) {
+                    Log.d("Namma Apartments", e.getLocalizedMessage());
+                }
             }
         }
     }
@@ -289,7 +294,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                     sharedPreferences.edit().putBoolean(ACCOUNT_CREATED, true).apply();
                                     if (sharedPreferences.getString(FIREBASE_DATABASE_URL, "").isEmpty()) {
                                         /*This block indicates user has uninstalled and reinstalled the App*/
-                                        getDatabaseURL(databaseURL -> {
+                                        getDatabaseURL(userMobileNumber, databaseURL -> {
                                             changeDatabaseInstance(getApplicationContext(), databaseURL);
                                             startCorrespondingActivity();
                                         });
@@ -301,7 +306,7 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
                                     Intent intent = new Intent(OTP.this, SignUp.class);
                                     intent.putExtra(MOBILE_NUMBER, userMobileNumber);
                                     startActivity(intent);
-                                    SignIn.getInstance().finish();
+                                    finishSignInInstance();
                                     finish();
                                 }
                             });
@@ -325,7 +330,8 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
         } else {
             startActivity(new Intent(OTP.this, ActivationRequired.class));
         }
-        SignIn.getInstance().finish();
+
+        finishSignInInstance();
         finish();
     }
 
@@ -355,23 +361,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mobileNumberExists.onCallback(dataSnapshot.exists());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    /**
-     * @param databaseURL indicates the Society Database URL the user belongs to
-     */
-    private void getDatabaseURL(final DatabaseURL databaseURL) {
-        ALL_USERS_REFERENCE.child(userMobileNumber).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                databaseURL.onCallback(dataSnapshot.getValue(String.class));
             }
 
             @Override
@@ -610,22 +599,6 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     }
 
     /* ------------------------------------------------------------- *
-     * Public Methods
-     * ------------------------------------------------------------- */
-
-    /**
-     * Changes Database instance from Default to User Specific Society Instance
-     *
-     * @param databaseURL new Database URL which Application will access
-     */
-    public void changeDatabaseInstance(final Context context, final String databaseURL) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-        sharedPreferences.edit().putString(FIREBASE_DATABASE_URL, databaseURL).apply();
-        //TODO: Change ENVIRONMENT to SOCIETY_BETA_ENV before rolling out App in Play Store
-        new NammaApartmentsGlobal().initializeFirebase(context, databaseURL, SOCIETY_DEV_ENV);
-    }
-
-    /* ------------------------------------------------------------- *
      * Interfaces
      * ------------------------------------------------------------- */
 
@@ -635,15 +608,11 @@ public class OTP extends BaseActivity implements View.OnClickListener, View.OnKe
     @Override
     public void onBackPressed() {
         if (getIntent().getIntExtra(SCREEN_TITLE, 0) == R.string.login) {
-            SignIn.getInstance().finish();
+            finishSignInInstance();
             finish();
         } else {
             super.onBackPressed();
         }
-    }
-
-    private interface DatabaseURL {
-        void onCallback(String databaseURL);
     }
 
     private interface MobileNumberExists {
