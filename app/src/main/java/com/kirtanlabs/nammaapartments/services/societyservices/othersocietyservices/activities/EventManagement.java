@@ -44,6 +44,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DEFAULT_CONVENIENCE_CHARGES_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EIGHTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.EIGHTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ELEVENTH_TIME_SLOT;
@@ -52,7 +53,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.EVENT_MANAGEMEN
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIFTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_BOOKING_AMOUNT;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_CONVENIENCE_CHARGES;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EVENT_MANAGEMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
@@ -86,7 +86,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEENTH_TIME
 import static com.kirtanlabs.nammaapartments.utilities.Constants.THIRTEEN_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TIME_SLOT_FULL_DAY;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TOTAL_NUMBER_OF_TIME_SLOTS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.TRANSACTION_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELFTH_TIME_SLOT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWELVE_HOURS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.TWENTY_HOURS;
@@ -443,7 +442,7 @@ public class EventManagement extends BaseActivity implements View.OnClickListene
      * This method retrieves the conveniencePercentage value from server.
      */
     private void retrieveConvenienceCharge() {
-        TRANSACTION_REFERENCE.child(FIREBASE_CHILD_CONVENIENCE_CHARGES).addListenerForSingleValueEvent(new ValueEventListener() {
+        DEFAULT_CONVENIENCE_CHARGES_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 convenienceCharge = Objects.requireNonNull(dataSnapshot.getValue(Float.class));

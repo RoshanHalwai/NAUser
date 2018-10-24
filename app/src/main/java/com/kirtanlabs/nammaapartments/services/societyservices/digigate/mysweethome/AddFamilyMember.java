@@ -18,7 +18,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,8 +42,8 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import static com.kirtanlabs.nammaapartments.NammaApartmentsGlobal.userUID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.AFM_OTP_STATUS_REQUEST_CODE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ALL_USERS_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DEFAULT_ALL_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_ALL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FLAT_MEMBERS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATION_SOUND_CAB;
@@ -349,9 +348,8 @@ public class AddFamilyMember extends BaseActivity implements View.OnClickListene
 
         /*Map family member's mobile number with Society Database URL in Default Database Environment so the user
          * can sign in from their own device*/
-        String databaseURL = FirebaseApp.getInstance(SOCIETY_ENV).getOptions().getDatabaseUrl();
-        FirebaseDatabase.getInstance().getReference()
-                .child(FIREBASE_CHILD_USERS).child(FIREBASE_CHILD_ALL).child(mobileNumber).setValue(databaseURL);
+        final String databaseURL = FirebaseApp.getInstance(SOCIETY_ENV).getOptions().getDatabaseUrl();
+        DEFAULT_ALL_USERS_REFERENCE.child(mobileNumber).setValue(databaseURL);
 
         /*Map family member's mobile number with uid in users->all*/
         DatabaseReference familyMemberMobileNumberReference = ALL_USERS_REFERENCE.child(mobileNumber);

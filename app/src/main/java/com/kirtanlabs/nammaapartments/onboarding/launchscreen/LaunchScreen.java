@@ -33,7 +33,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PACKAGE_NAME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.VERIFIED;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.VERSION_NAME_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DEFAULT_VERSION_NAME_REFERENCE;
 
 public class LaunchScreen extends AppCompatActivity {
 
@@ -100,7 +100,7 @@ public class LaunchScreen extends AppCompatActivity {
      */
     private void isNewVersionAvailable() {
         if (isNetworkAvailable()) {
-            VERSION_NAME_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
+            DEFAULT_VERSION_NAME_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String newVersionName = dataSnapshot.getValue(String.class);
