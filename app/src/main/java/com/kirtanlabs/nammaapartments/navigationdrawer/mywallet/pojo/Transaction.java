@@ -6,6 +6,10 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.pojo;
  */
 public class Transaction {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private float amount;
     private String paymentId;
     private String result;
@@ -14,6 +18,10 @@ public class Transaction {
     private String uid;
     private long timestamp;
     private String period;
+
+    /* ------------------------------------------------------------- *
+     * Constructors
+     * ------------------------------------------------------------- */
 
     public Transaction() {
     }
@@ -27,6 +35,10 @@ public class Transaction {
         this.uid = uid;
         this.timestamp = timestamp;
     }
+
+    /* ------------------------------------------------------------- *
+     * Getters
+     * ------------------------------------------------------------- */
 
     public float getAmount() {
         return amount;
@@ -59,6 +71,10 @@ public class Transaction {
     public String getPeriod() {
         return period;
     }
+
+    /* ------------------------------------------------------------- *
+     * Setters
+     * ------------------------------------------------------------- */
 
     public void setPeriod(String period) {
         this.period = period;

@@ -62,10 +62,10 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
     public void onBindViewHolder(@NonNull TransactionHistoryViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
         String serviceCategory = transaction.getServiceCategory();
-        String amount = "Rs. " + String.valueOf(transaction.getAmount());
+        String amount = mCtx.getString(R.string.rupees_symbol) + " " + String.valueOf(transaction.getAmount());
         SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
         String formattedDateAndTime = sfd.format(new Date(transaction.getTimestamp()));
-        if (transaction.getResult().equals("Successful")) {
+        if (transaction.getResult().equals(mCtx.getString(R.string.successful))) {
             holder.imageTransactionResult.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.request_accepted_na));
         } else {
             holder.imageTransactionResult.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.remove_new));
@@ -114,13 +114,17 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             transactionHistoryView.setOnClickListener(this);
         }
 
+        /* ------------------------------------------------------------- *
+         * Overriding OnClick Listener Objects
+         * ------------------------------------------------------------- */
+
         @Override
         public void onClick(View v) {
             sendTransactionData();
         }
 
         /* ------------------------------------------------------------- *
-         * Private Methods
+         * Private Method
          * ------------------------------------------------------------- */
 
         /**
@@ -132,15 +136,15 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             Transaction transaction = transactionList.get(position);
             SimpleDateFormat sfd = new SimpleDateFormat("EEE, MMM dd, HH:mm", Locale.US);
             String formattedDateAndTime = sfd.format(new Date(transaction.getTimestamp()));
-            String amount = "Rs. " + String.valueOf(transaction.getAmount());
+            String amount = mCtx.getString(R.string.rupees_symbol) + " " + String.valueOf(transaction.getAmount());
             String status = transaction.getResult();
             String period = transaction.getPeriod();
             Intent transactionSummaryIntent = new Intent(mCtx, TransactionSummaryActivity.class);
-            transactionSummaryIntent.putExtra("paymentId", transaction.getPaymentId());
-            transactionSummaryIntent.putExtra("amount", amount);
-            transactionSummaryIntent.putExtra("dateAndTime", formattedDateAndTime);
-            transactionSummaryIntent.putExtra("status", status);
-            transactionSummaryIntent.putExtra("period", period);
+            transactionSummaryIntent.putExtra(mCtx.getString(R.string.paymentId), transaction.getPaymentId());
+            transactionSummaryIntent.putExtra(mCtx.getString(R.string.amount), amount);
+            transactionSummaryIntent.putExtra(mCtx.getString(R.string.dateAndTime), formattedDateAndTime);
+            transactionSummaryIntent.putExtra(mCtx.getString(R.string.payment_status), status);
+            transactionSummaryIntent.putExtra(mCtx.getString(R.string.period), period);
             mCtx.startActivity(transactionSummaryIntent);
         }
     }
