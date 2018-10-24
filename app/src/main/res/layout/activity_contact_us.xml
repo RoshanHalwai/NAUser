@@ -66,6 +66,19 @@
 
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/buttonMiscellaneous"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/valid_for_button_design"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/miscellaneous"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    tools:ignore="ButtonStyle" />
+
                 <TextView
                     android:id="@+id/textServiceType"
                     android:layout_width="match_parent"
