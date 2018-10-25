@@ -283,6 +283,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
                     .child(FIREBASE_CHILD_DAILYSERVICES);
             userDailyServiceReference.child(DailyServiceType.getKeyByValue(dailyServiceType))
                     .child(nammaApartmentDailyService.getUID())
+                    .child(nammaApartmentDailyService.getUserUID())
                     .setValue(false);
 
             /*This is to ensure when user deletes the last item in the list a blank screen is not shown

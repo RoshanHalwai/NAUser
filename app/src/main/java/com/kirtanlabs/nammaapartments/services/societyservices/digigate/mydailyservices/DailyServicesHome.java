@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 
 import java.util.HashMap;
@@ -100,7 +99,7 @@ public class DailyServicesHome extends BaseActivity {
      * Else, we display the cardView of all daily services of the current user.
      */
     private void checkAndRetrieveDailyServices() {
-        new RetrievingDailyServicesList(getApplicationContext(), NammaApartmentsGlobal.userUID).getAllDailyServices(dailyServicesList -> {
+        new RetrievingDailyServicesList(getApplicationContext()).getAllDailyServices(dailyServicesList -> {
             hideProgressIndicator();
             if (dailyServicesList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);

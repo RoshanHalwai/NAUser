@@ -26,6 +26,7 @@ public class NammaApartmentDailyService implements Serializable {
     private String uid;
     private String dailyServiceHandedThingsDescription;
     private String status;
+    private String userUID;
     private Map<String, String> handedThingsMap = new LinkedHashMap<>();
 
     /* ------------------------------------------------------------- *
@@ -81,6 +82,9 @@ public class NammaApartmentDailyService implements Serializable {
         this.rating = rating;
     }
 
+    public String getUserUID() {
+        return userUID;
+    }
 
     /* ------------------------------------------------------------- *
      * Setters
@@ -128,5 +132,9 @@ public class NammaApartmentDailyService implements Serializable {
 
     public void setHandedThingsMap(Map<String, String> handedThingsMap) {
         this.handedThingsMap = handedThingsMap;
+    }
+
+    public void setUserUID(String userUID) {
+        this.userUID = userUID;
     }
 }

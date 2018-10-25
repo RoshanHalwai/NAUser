@@ -9,6 +9,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.notifydigitalgate.handedthings.HandedThings;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +31,6 @@ public class RetrievingDailyServicesList {
      * Private Members
      * ------------------------------------------------------------- */
 
-    private final String userUID;
     private final DatabaseReference userDataReference;
     private int count = 0;
 
@@ -38,8 +38,7 @@ public class RetrievingDailyServicesList {
      * Constructor
      * ------------------------------------------------------------- */
 
-    public RetrievingDailyServicesList(final Context context, final String userUID) {
-        this.userUID = userUID;
+    public RetrievingDailyServicesList(final Context context) {
         userDataReference = ((NammaApartmentsGlobal) context).getUserDataReference();
     }
 
@@ -77,13 +76,15 @@ public class RetrievingDailyServicesList {
      * which is in turn an instance of {@link NammaApartmentDailyService}
      *
      * @param dsCategory              category of the daily service
-     * @param dsUIDList               list of all daily service UIDs which belong to dsCategory
+     * @param dsUIDList               list of Map containing all daily service UIDs mapped with userUID which belong to dsCategory
      * @param dailyServiceMapCallback callback to return map which contain data of daily service which belong to dsCategory
      */
-    private void getDailyServiceCategoryData(String dsCategory, List<String> dsUIDList, DailyServiceMapCallback dailyServiceMapCallback) {
+    private void getDailyServiceCategoryData(String dsCategory, List<Map<String, String>> dsUIDList, DailyServiceMapCallback dailyServiceMapCallback) {
         Map<String, List<NammaApartmentDailyService>> dailyServiceMap = new LinkedHashMap<>();
         List<NammaApartmentDailyService> dailyServiceList = new LinkedList<>();
-        for (String dsUID : dsUIDList) {
+        for (Map<String, String> dsUIDMap : dsUIDList) {
+            String dsUID = dsUIDMap.entrySet().iterator().next().getKey();
+            String userUID = dsUIDMap.entrySet().iterator().next().getValue();
             PUBLIC_DAILYSERVICES_REFERENCE.child(dsCategory).child(dsUID).child(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dsDataSnapshot) {
@@ -103,6 +104,7 @@ public class RetrievingDailyServicesList {
                                     DailyServicesHome.numberOfFlats.put(nammaApartmentDailyService.getUID(), flats);
                                     HandedThings.numberOfFlats.put(nammaApartmentDailyService.getUID(), flats);
                                     nammaApartmentDailyService.setStatus(statusSnapshot.getValue(String.class));
+                                    nammaApartmentDailyService.setUserUID(userUID);
 
                                     /*To get handed things history of daily service*/
                                     dsDataSnapshot.child(FIREBASE_CHILD_HANDED_THINGS).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,7 +161,7 @@ public class RetrievingDailyServicesList {
      *                                   UIDs associated to each of the category
      */
     private void getAllDailyServiceUIDs(DailyServiceCategoryUIDMap dailyServiceCategoryUIDMap) {
-        Map<String, List<String>> dailyServiceUIDMap = new LinkedHashMap<>();
+        Map<String, List<Map<String, String>>> dailyServiceUIDMap = new LinkedHashMap<>();
         getDailyServiceCategories(dailyServiceCategoriesList -> {
             /*User has not added any daily services yet, hence return an empty map*/
             if (dailyServiceCategoriesList.isEmpty()) {
@@ -187,22 +189,37 @@ public class RetrievingDailyServicesList {
      * Get daily service UIDs of one category of Daily Service, say 3 UIDs of Type Cook
      *
      * @param dailyServiceCategory category of the daily service
-     * @param dailyServiceUIDs     returns a callback which contains a list of all UID which belong to daily service category
+     * @param dailyServiceUIDs     returns a callback which contains a list of Map which contains all UID which belong to daily service category
+     *                             and mapped with userUID who has added that daily service.
      */
     private void getDailyServiceUIDs(String dailyServiceCategory, DailyServiceUIDs dailyServiceUIDs) {
-        userDataReference.child(FIREBASE_CHILD_DAILYSERVICES).child(dailyServiceCategory).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference dailyServiceUIDReference = userDataReference.child(FIREBASE_CHILD_DAILYSERVICES).child(dailyServiceCategory);
+        dailyServiceUIDReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> dailyServiceUIDList = new LinkedList<>();
+                List<Map<String, String>> dailyServiceUIDList = new LinkedList<>();
+                Map<String, String> dailyServiceUIDMap = new HashMap<>();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot dailyServiceType : dataSnapshot.getChildren()) {
-                        /*Adding only true Mapped Daily Services.*/
-                        if (Objects.requireNonNull(dailyServiceType.getValue(Boolean.class)).equals(true)) {
-                            dailyServiceUIDList.add(dailyServiceType.getKey());
-                        }
+                        dailyServiceUIDReference.child(dailyServiceType.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot userUIDSnapshot) {
+                                Map<String, Boolean> userUIDMap = (Map<String, Boolean>) userUIDSnapshot.getValue();
+                                /*Adding only true Mapped Daily Services.*/
+                                if (Objects.requireNonNull(userUIDMap).entrySet().iterator().next().getValue()) {
+                                    dailyServiceUIDMap.put(dailyServiceType.getKey(), userUIDMap.entrySet().iterator().next().getKey());
+                                    dailyServiceUIDList.add(dailyServiceUIDMap);
+                                }
+                                dailyServiceUIDs.onCallback(dailyServiceUIDList);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 }
-                dailyServiceUIDs.onCallback(dailyServiceUIDList);
             }
 
             @Override
@@ -246,7 +263,7 @@ public class RetrievingDailyServicesList {
     }
 
     private interface DailyServiceCategoryUIDMap {
-        void onCallback(Map<String, List<String>> dailyServiceUIDMap);
+        void onCallback(Map<String, List<Map<String, String>>> dailyServiceUIDMap);
     }
 
     private interface DailyServiceCategories {
@@ -254,7 +271,7 @@ public class RetrievingDailyServicesList {
     }
 
     private interface DailyServiceUIDs {
-        void onCallback(List<String> dailyServiceUIDList);
+        void onCallback(List<Map<String, String>> dailyServiceUIDList);
     }
 
     public interface DailyServices {

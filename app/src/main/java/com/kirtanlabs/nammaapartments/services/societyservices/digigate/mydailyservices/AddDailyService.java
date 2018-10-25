@@ -405,7 +405,7 @@ public class AddDailyService extends BaseActivity implements View.OnClickListene
                         .getUserDataReference()
                         .child(FIREBASE_CHILD_DAILYSERVICES)
                         .child(dailyServiceType);
-                userDataDailyServiceReference.child(dailyServiceUID).setValue(true);
+                userDataDailyServiceReference.child(dailyServiceUID).child(userUID).setValue(true);
 
                   /* We add status directly under dailyService UID since Guard may change the status of the daily service
                         and we would want all the users to know about it*/
