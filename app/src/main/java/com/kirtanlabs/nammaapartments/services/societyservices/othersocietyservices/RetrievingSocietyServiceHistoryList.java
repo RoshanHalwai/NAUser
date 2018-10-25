@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DECLINED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_TYPE;
 
@@ -30,6 +31,7 @@ public class RetrievingSocietyServiceHistoryList {
      * ------------------------------------------------------------- */
 
     private final Context mCtx;
+    private int count = 0;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -43,6 +45,14 @@ public class RetrievingSocietyServiceHistoryList {
      * Private Methods
      * ------------------------------------------------------------- */
 
+    /**
+     * This method gets all the society service notification UID's of that particular society service type
+     * raised by user by going into their particular user data.
+     *
+     * @param societyServiceType      consists of which society service notification
+     * @param notificationUIDCallback callback to return list which contains all society service notification UID's
+     *                                of that particular society service type.
+     */
     private void getSocietyServiceNotificationUIDList(String societyServiceType, NotificationUIDCallback notificationUIDCallback) {
         NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
         DatabaseReference userDataReference = nammaApartmentsGlobal.getUserDataReference().child(Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION)
@@ -59,7 +69,7 @@ public class RetrievingSocietyServiceHistoryList {
                         notificationUIDCallback.onCallBack(notificationUIDList);
                     }
                 } else {
-                    notificationUIDCallback.onCallBack(null);
+                    notificationUIDCallback.onCallBack(new ArrayList<>());
                 }
             }
 
@@ -70,9 +80,50 @@ public class RetrievingSocietyServiceHistoryList {
         });
     }
 
+    /**
+     * This method gets all the support UID's raised by user by going into their particular user data.
+     *
+     * @param notificationUIDCallback callback to return list which contains all support UID's of that
+     *                                particular user.
+     */
+    private void getSupportUIDList(NotificationUIDCallback notificationUIDCallback) {
+        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
+        DatabaseReference userDataReference = nammaApartmentsGlobal.getUserDataReference().child(Constants.FIREBASE_CHILD_SUPPORT);
+        userDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    ArrayList<String> notificationUIDList = new ArrayList<>();
+                    for (DataSnapshot notificationUIDDataSnapshot : dataSnapshot.getChildren()) {
+                        notificationUIDList.add(notificationUIDDataSnapshot.getKey());
+                    }
+                    notificationUIDCallback.onCallBack(notificationUIDList);
+                } else {
+                    notificationUIDCallback.onCallBack(new ArrayList<>());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------- *
+     * Public Methods
+     * ------------------------------------------------------------- */
+
+    /**
+     * This method gets all the society service notifications data related to that particular notification.
+     *
+     * @param societyServiceType           consists of which society service notification.
+     * @param notificationDataListCallback callback to return list which contain data of all society service notification UID's
+     *                                     of that particular society service type.
+     */
     public void getNotificationDataList(String societyServiceType, NotificationDataListCallback notificationDataListCallback) {
         getSocietyServiceNotificationUIDList(societyServiceType, societyServiceNotificationUIDList -> {
-            if (societyServiceNotificationUIDList != null) {
+            if (!societyServiceNotificationUIDList.isEmpty()) {
                 List<NammaApartmentSocietyServices> notificationDataList = new ArrayList<>();
 
                 for (String notificationUID : societyServiceNotificationUIDList) {
@@ -81,14 +132,20 @@ public class RetrievingSocietyServiceHistoryList {
                     notificationData.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            count++;
                             NammaApartmentSocietyServices nammaApartmentSocietyServices = dataSnapshot.getValue(NammaApartmentSocietyServices.class);
+                            String status = Objects.requireNonNull(nammaApartmentSocietyServices).getStatus();
                             if (Objects.requireNonNull(societyServiceType).equals(FIREBASE_CHILD_SCRAP_COLLECTION)) {
                                 String scrapType = dataSnapshot.child(FIREBASE_CHILD_SCRAP_TYPE).getValue(String.class);
                                 Objects.requireNonNull(nammaApartmentSocietyServices).setScrapType(scrapType);
                             }
-                            notificationDataList.add(nammaApartmentSocietyServices);
+                            /*Adding those items in the list whose status is not declined*/
+                            if (!status.equals(DECLINED)) {
+                                notificationDataList.add(nammaApartmentSocietyServices);
+                            }
 
-                            if (societyServiceNotificationUIDList.size() == notificationDataList.size()) {
+                            if (count == societyServiceNotificationUIDList.size()) {
+                                count = 0;
                                 notificationDataListCallback.onCallBack(notificationDataList);
                             }
                         }
@@ -100,11 +157,17 @@ public class RetrievingSocietyServiceHistoryList {
                     });
                 }
             } else {
-                notificationDataListCallback.onCallBack(null);
+                notificationDataListCallback.onCallBack(new ArrayList<>());
             }
         });
     }
 
+    /**
+     * This method returns the society service request status of that particular society service notification.
+     *
+     * @param notificationUid             contains society service notification UID of that particular user.
+     * @param societyServiceRequestStatus consists status of that particular notification UID.
+     */
     public void getSocietyServiceRequestStatus(String notificationUid, SocietyServiceRequestStatus societyServiceRequestStatus) {
         DatabaseReference statusReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE
                 .child(notificationUid).child(Constants.FIREBASE_CHILD_STATUS);
@@ -122,33 +185,16 @@ public class RetrievingSocietyServiceHistoryList {
         });
     }
 
-    private void getSupportUIDList(NotificationUIDCallback notificationUIDCallback) {
-        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
-        DatabaseReference userDataReference = nammaApartmentsGlobal.getUserDataReference().child(Constants.FIREBASE_CHILD_SUPPORT);
-        userDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    ArrayList<String> notificationUIDList = new ArrayList<>();
-                    for (DataSnapshot notificationUIDDataSnapshot : dataSnapshot.getChildren()) {
-                        notificationUIDList.add(notificationUIDDataSnapshot.getKey());
-                    }
-                    notificationUIDCallback.onCallBack(notificationUIDList);
-                } else {
-                    notificationUIDCallback.onCallBack(null);
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
+    /**
+     * This method gets all the data related to that particular support notification.
+     *
+     * @param supportDataListCallBack callback to return list which contain data of all support UID's
+     *                                of that particular user.
+     */
     public void getSupportDataList(SupportDataListCallBack supportDataListCallBack) {
         getSupportUIDList(supportNotificationUIDList -> {
-            if (supportNotificationUIDList != null) {
+            if (!supportNotificationUIDList.isEmpty()) {
                 List<Support> supportDataList = new ArrayList<>();
                 for (String notificationUID : supportNotificationUIDList) {
                     DatabaseReference supportData = Constants.SUPPORT_REFERENCE
@@ -170,7 +216,7 @@ public class RetrievingSocietyServiceHistoryList {
                     });
                 }
             } else {
-                supportDataListCallBack.onCallBack(null);
+                supportDataListCallBack.onCallBack(new ArrayList<>());
             }
         });
     }
