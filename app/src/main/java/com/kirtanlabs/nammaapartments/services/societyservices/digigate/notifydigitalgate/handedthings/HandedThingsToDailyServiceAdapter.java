@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.DailyServiceType;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
@@ -206,7 +205,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
                     DatabaseReference DailyServicesReference = PUBLIC_DAILYSERVICES_REFERENCE
                             .child(DailyServiceType.getKeyByValue(dailyServiceType))
                             .child(nammaApartmentDailyService.getUID())
-                            .child(NammaApartmentsGlobal.userUID);
+                            .child(nammaApartmentDailyService.getUserUID());
                     DailyServicesReference.child(FIREBASE_CHILD_HANDED_THINGS)
                             .child(todayDateString)
                             .setValue(handedThingsDescription);

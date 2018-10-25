@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
@@ -128,7 +127,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
      * Else, we display the daily services whose status is "Entered" of the current user and their family members
      */
     private void checkAndRetrieveCurrentDailyServices() {
-        new RetrievingDailyServicesList(getApplicationContext(), NammaApartmentsGlobal.userUID).getAllDailyServices(dailyServicesList -> {
+        new RetrievingDailyServicesList(getApplicationContext()).getAllDailyServices(dailyServicesList -> {
             hideProgressIndicator();
             if (dailyServicesList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);

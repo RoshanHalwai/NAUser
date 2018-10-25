@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.kirtanlabs.nammaapartments.BaseActivity;
-import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.invitevisitors.NammaApartmentGuest;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mydailyservices.NammaApartmentDailyService;
@@ -106,7 +105,7 @@ public class HandedThingsHistory extends BaseActivity {
      * Else, we display the daily services whose status is "Entered" of the current user and their family members
      */
     private void checkAndRetrieveDailyServices() {
-        new RetrievingDailyServicesList(getApplicationContext(), NammaApartmentsGlobal.userUID).getAllDailyServices(dailyServicesList -> {
+        new RetrievingDailyServicesList(getApplicationContext()).getAllDailyServices(dailyServicesList -> {
             Map<String, NammaApartmentDailyService> handedThingsHistory = new TreeMap<>();
             hideProgressIndicator();
             if (dailyServicesList.isEmpty()) {
