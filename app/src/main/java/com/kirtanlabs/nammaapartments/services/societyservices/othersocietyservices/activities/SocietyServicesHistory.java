@@ -60,7 +60,7 @@ public class SocietyServicesHistory extends BaseActivity {
             new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
                     .getSupportDataList(supportList -> {
                         hideProgressIndicator();
-                        if (supportList == null) {
+                        if (supportList.isEmpty()) {
                             showFeatureUnavailableLayout(R.string.support_unavailable);
                         } else {
                             Collections.reverse(supportList);
@@ -73,7 +73,7 @@ public class SocietyServicesHistory extends BaseActivity {
             new RetrievingSocietyServiceHistoryList(SocietyServicesHistory.this)
                     .getNotificationDataList(societyServiceType, societyServiceNotificationDataList -> {
                         hideProgressIndicator();
-                        if (societyServiceNotificationDataList == null) {
+                        if (societyServiceNotificationDataList.isEmpty()) {
                             /*Show Feature Unavailable layout based on the Society Service Feature */
                             String messageDescription = getString(R.string.society_service_unavailable_message);
                             String textReplacement = getString(R.string.service);
