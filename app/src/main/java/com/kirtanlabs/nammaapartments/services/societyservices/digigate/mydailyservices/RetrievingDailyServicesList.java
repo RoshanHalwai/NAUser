@@ -32,13 +32,15 @@ public class RetrievingDailyServicesList {
      * ------------------------------------------------------------- */
 
     private final DatabaseReference userDataReference;
+    private final boolean isPastDailyServiceListRequired;
     private int count = 0;
 
     /* ------------------------------------------------------------- *
      * Constructor
      * ------------------------------------------------------------- */
 
-    public RetrievingDailyServicesList(final Context context) {
+    public RetrievingDailyServicesList(final Context context, final boolean isPastDailyServiceListRequired) {
+        this.isPastDailyServiceListRequired = isPastDailyServiceListRequired;
         userDataReference = ((NammaApartmentsGlobal) context).getUserDataReference();
     }
 
@@ -206,7 +208,7 @@ public class RetrievingDailyServicesList {
                             public void onDataChange(DataSnapshot userUIDSnapshot) {
                                 Map<String, Boolean> userUIDMap = (Map<String, Boolean>) userUIDSnapshot.getValue();
                                 /*Adding only true Mapped Daily Services.*/
-                                if (Objects.requireNonNull(userUIDMap).entrySet().iterator().next().getValue()) {
+                                if (Objects.requireNonNull(userUIDMap).entrySet().iterator().next().getValue() || isPastDailyServiceListRequired) {
                                     dailyServiceUIDMap.put(dailyServiceType.getKey(), userUIDMap.entrySet().iterator().next().getKey());
                                     dailyServiceUIDList.add(dailyServiceUIDMap);
                                 }

@@ -105,7 +105,7 @@ public class HandedThingsHistory extends BaseActivity {
      * Else, we display the daily services whose status is "Entered" of the current user and their family members
      */
     private void checkAndRetrieveDailyServices() {
-        new RetrievingDailyServicesList(getApplicationContext()).getAllDailyServices(dailyServicesList -> {
+        new RetrievingDailyServicesList(getApplicationContext(), true).getAllDailyServices(dailyServicesList -> {
             Map<String, NammaApartmentDailyService> handedThingsHistory = new TreeMap<>();
             hideProgressIndicator();
             if (dailyServicesList.isEmpty()) {

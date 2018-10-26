@@ -127,7 +127,7 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
      * Else, we display the daily services whose status is "Entered" of the current user and their family members
      */
     private void checkAndRetrieveCurrentDailyServices() {
-        new RetrievingDailyServicesList(getApplicationContext()).getAllDailyServices(dailyServicesList -> {
+        new RetrievingDailyServicesList(getApplicationContext(), false).getAllDailyServices(dailyServicesList -> {
             hideProgressIndicator();
             if (dailyServicesList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.daily_service_unavailable_message_handed_things);
