@@ -222,6 +222,8 @@ public class Constants {
     private static final String FIREBASE_CHILD_VERSION_NAME = "versionName";
     public static final String FIREBASE_CHILD_APARTMENTS = "apartments";
     public static final String FIREBASE_CHILD_SOCIETIES = "societies";
+    private static final String FIREBASE_CHILD_CONTACT_US = "contactUs";
+    public static final String FIREBASE_CHILD_NUMBER = "number";
 
     /* ------------------------------------------------------------- *
      * Remote Message Keys
@@ -354,6 +356,7 @@ public class Constants {
     public static final DatabaseReference DEFAULT_ALL_USERS_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_USERS).child(FIREBASE_CHILD_ALL);
     public static final DatabaseReference DEFAULT_VERSION_NAME_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_VERSION_NAME);
     public static final DatabaseReference DEFAULT_CONVENIENCE_CHARGES_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_TRANSACTIONS).child(FIREBASE_CHILD_CONVENIENCE_CHARGES);
+    public static final DatabaseReference DEFAULT_CONTACT_US_REFERENCE = FirebaseDatabase.getInstance().getReference(FIREBASE_CHILD_CONTACT_US);
 
     /* ------------------------------------------------------------- *
      * Font Types

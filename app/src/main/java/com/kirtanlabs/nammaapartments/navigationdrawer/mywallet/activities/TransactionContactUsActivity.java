@@ -7,10 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.COUNTRY_CODE_IN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.DEFAULT_CONTACT_US_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_EMAIL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -21,6 +27,7 @@ public class TransactionContactUsActivity extends BaseActivity implements View.O
      * Private Members
      * ------------------------------------------------------------- */
 
+    private TextView textCustomerExecutiveContactNumber, textMailCustomerExecutive;
     private String contactNumber, mailId;
 
     /* ------------------------------------------------------------- *
@@ -44,8 +51,8 @@ public class TransactionContactUsActivity extends BaseActivity implements View.O
         /*Getting Id's for all the views*/
         TextView textContactHelp = findViewById(R.id.textContactHelp);
         TextView textContactUsMessage = findViewById(R.id.textContactUsMessage);
-        TextView textCustomerExecutiveContactNumber = findViewById(R.id.textCustomerExecutiveContactNumber);
-        TextView textMailCustomerExecutive = findViewById(R.id.textMailCustomerExecutive);
+        textCustomerExecutiveContactNumber = findViewById(R.id.textCustomerExecutiveContactNumber);
+        textMailCustomerExecutive = findViewById(R.id.textMailCustomerExecutive);
 
         /*Setting Fonts for all the views*/
         textContactHelp.setTypeface(setLatoBoldFont(this));
@@ -56,14 +63,10 @@ public class TransactionContactUsActivity extends BaseActivity implements View.O
         /*Setting Customer Executive Numbers in the views*/
         textCustomerExecutiveContactNumber.setPaintFlags(textCustomerExecutiveContactNumber.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         textMailCustomerExecutive.setPaintFlags(textMailCustomerExecutive.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        //TODO: To change Customer executive mobile numbers from here and retrieve this mobile number from firebase.
-        contactNumber = "8041179007";
-        //TODO: To change E-mail Id from here and retrieve this email from firebase.
-        mailId = "skychaitanya@kirtanlabs.com";
 
-        String customerExecutiveContactNumber = COUNTRY_CODE_IN + HYPHEN + contactNumber;
-        textCustomerExecutiveContactNumber.setText(customerExecutiveContactNumber);
-        textMailCustomerExecutive.setText(mailId);
+        showProgressDialog(this, getString(R.string.retrieving_details), getString(R.string.please_wait_a_moment));
+        /*Retrieving contact details from firebase*/
+        retrieveContactUsDetailsFromFirebase();
 
         /*Setting Click Listeners for views*/
         textCustomerExecutiveContactNumber.setOnClickListener(this);
@@ -89,6 +92,29 @@ public class TransactionContactUsActivity extends BaseActivity implements View.O
     /* ------------------------------------------------------------- *
      * Private Methods
      * ------------------------------------------------------------- */
+
+    /**
+     * This method is invoked to retrieve Namma Apartments Customer Executive Details from firebase.
+     */
+    private void retrieveContactUsDetailsFromFirebase() {
+        DEFAULT_CONTACT_US_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                contactNumber = dataSnapshot.child(FIREBASE_CHILD_NUMBER).getValue(String.class);
+                mailId = dataSnapshot.child(FIREBASE_CHILD_EMAIL).getValue(String.class);
+
+                String customerExecutiveContactNumber = COUNTRY_CODE_IN + HYPHEN + contactNumber;
+                textCustomerExecutiveContactNumber.setText(customerExecutiveContactNumber);
+                textMailCustomerExecutive.setText(mailId);
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     /**
      * This method is used to send Email to the Namma Apartment Executive.
