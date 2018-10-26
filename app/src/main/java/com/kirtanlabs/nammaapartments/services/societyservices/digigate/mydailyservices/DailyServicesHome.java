@@ -99,7 +99,7 @@ public class DailyServicesHome extends BaseActivity {
      * Else, we display the cardView of all daily services of the current user.
      */
     private void checkAndRetrieveDailyServices() {
-        new RetrievingDailyServicesList(getApplicationContext()).getAllDailyServices(dailyServicesList -> {
+        new RetrievingDailyServicesList(getApplicationContext(), false).getAllDailyServices(dailyServicesList -> {
             hideProgressIndicator();
             if (dailyServicesList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.daily_service_unavailable_message);
