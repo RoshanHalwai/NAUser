@@ -44,6 +44,7 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_CANCELL
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_FAILURE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PAYMENT_SUCCESSFUL;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSACTION_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -327,6 +328,7 @@ public class MyPaymentsActivity extends BaseActivity implements PaymentResultLis
                                     transactionSummaryIntent.putExtra(getString(R.string.period), finalPeriod);
                                     transactionSummaryIntent.putExtra(getString(R.string.dateAndTime), formattedDateAndTime);
                                     transactionSummaryIntent.putExtra(getString(R.string.amount), amount);
+                                    transactionSummaryIntent.putExtra(SERVICE_TYPE, getString(R.string.society_services));
                                     startActivity(transactionSummaryIntent);
                                     finish();
                                 }));

@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import static android.view.View.GONE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HYPHEN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -34,7 +35,8 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
      * Private Members
      * ------------------------------------------------------------- */
 
-    private TextView transactionIDValue, transactionAmountValue, transactionDateValue, transactionStatusText, transactionPeriodValue;
+    private TextView transactionIDValue, transactionAmountValue, transactionDateValue,
+            transactionStatusText, transactionPeriodValue, textTransactionPeriod;
     private ImageView serviceStatus;
     private CardView transactionView;
 
@@ -58,7 +60,7 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
 
         /*Getting Id's for all the views*/
         TextView transactionIDText = findViewById(R.id.transactionIDText);
-        TextView textTransactionPeriod = findViewById(R.id.textTransactionPeriod);
+        textTransactionPeriod = findViewById(R.id.textTransactionPeriod);
         TextView textTransactionDate = findViewById(R.id.textTransactionDate);
         TextView textTransactionAmount = findViewById(R.id.textTransactionAmount);
         transactionPeriodValue = findViewById(R.id.transactionPeriodValue);
@@ -121,10 +123,10 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
     private void retrieveTransactionData() {
         /*Getting the values from the previous Activity*/
         String transactionId = getIntent().getStringExtra(getString(R.string.paymentId));
-        String transactionPeriod = getIntent().getStringExtra(getString(R.string.period));
         String transactionAmount = getIntent().getStringExtra(getString(R.string.amount));
         String dateAndTime = getIntent().getStringExtra(getString(R.string.dateAndTime));
         String transactionStatus = getIntent().getStringExtra(getString(R.string.payment_status));
+        String serviceCategory = getIntent().getStringExtra(SERVICE_TYPE);
         /*Setting the image and text depending on the transaction status*/
         if (transactionStatus.equals(getResources().getString(R.string.successful))) {
             serviceStatus.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.request_accepted_na));
@@ -141,31 +143,37 @@ public class TransactionSummaryActivity extends BaseActivity implements View.OnC
         transactionDateValue.setText(dateAndTime);
         /*Getting Transaction period value*/
         /*Formatting the date to get the value of month and year from timestamp*/
-        String[] separateTimePeriod = TextUtils.split(transactionPeriod, HYPHEN);
-        String firstTransactionPeriod = separateTimePeriod[0];
-        DateFormat originalDateFormat = new SimpleDateFormat("MMyyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
-        String finalTransactionPeriod = "";
-        try {
-            Date date = originalDateFormat.parse(firstTransactionPeriod);
-            /*Getting the transaction period for pending dues with one child*/
-            finalTransactionPeriod = targetFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (separateTimePeriod.length > 1) {
-            String lastTimePeriod = separateTimePeriod[1];
-            Date date;
+        if (serviceCategory.equals(getString(R.string.event_management))) {
+            textTransactionPeriod.setVisibility(GONE);
+            transactionPeriodValue.setVisibility(GONE);
+        } else {
+            String transactionPeriod = getIntent().getStringExtra(getString(R.string.period));
+            String[] separateTimePeriod = TextUtils.split(transactionPeriod, HYPHEN);
+            String firstTransactionPeriod = separateTimePeriod[0];
+            DateFormat originalDateFormat = new SimpleDateFormat("MMyyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+            String finalTransactionPeriod = "";
             try {
-                date = originalDateFormat.parse(lastTimePeriod);
-                String formattedSecondDate = targetFormat.format(date);
-                /*Getting the transaction period for pending dues with multiple child*/
-                finalTransactionPeriod = finalTransactionPeriod + " " + HYPHEN + " " + formattedSecondDate;
+                Date date = originalDateFormat.parse(firstTransactionPeriod);
+                /*Getting the transaction period for pending dues with one child*/
+                finalTransactionPeriod = targetFormat.format(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            if (separateTimePeriod.length > 1) {
+                String lastTimePeriod = separateTimePeriod[1];
+                Date date;
+                try {
+                    date = originalDateFormat.parse(lastTimePeriod);
+                    String formattedSecondDate = targetFormat.format(date);
+                    /*Getting the transaction period for pending dues with multiple child*/
+                    finalTransactionPeriod = finalTransactionPeriod + " " + HYPHEN + " " + formattedSecondDate;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            /*Setting Transaction period value*/
+            transactionPeriodValue.setText(finalTransactionPeriod);
         }
-        /*Setting Transaction period value*/
-        transactionPeriodValue.setText(finalTransactionPeriod);
     }
 }
