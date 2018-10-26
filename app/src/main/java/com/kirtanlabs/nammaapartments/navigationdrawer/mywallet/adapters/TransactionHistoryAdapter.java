@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -111,6 +112,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             textServiceCategory.setTypeface(setLatoRegularFont(mCtx));
             textDateAndTime.setTypeface(setLatoRegularFont(mCtx));
 
+            /*Setting On Click listeners to the view*/
             transactionHistoryView.setOnClickListener(this);
         }
 
@@ -144,7 +146,10 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             transactionSummaryIntent.putExtra(mCtx.getString(R.string.amount), amount);
             transactionSummaryIntent.putExtra(mCtx.getString(R.string.dateAndTime), formattedDateAndTime);
             transactionSummaryIntent.putExtra(mCtx.getString(R.string.payment_status), status);
-            transactionSummaryIntent.putExtra(mCtx.getString(R.string.period), period);
+            transactionSummaryIntent.putExtra(SERVICE_TYPE, transaction.getServiceCategory());
+            if (!transaction.getServiceCategory().equals(mCtx.getString(R.string.event_management))) {
+                transactionSummaryIntent.putExtra(mCtx.getString(R.string.period), period);
+            }
             mCtx.startActivity(transactionSummaryIntent);
         }
     }

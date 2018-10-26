@@ -25,7 +25,15 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_TRANSAC
 
 public class TransactionHistory extends BaseActivity {
 
+    /* ------------------------------------------------------------- *
+     * Private Members
+     * ------------------------------------------------------------- */
+
     private final List<Transaction> transactionList = new ArrayList<>();
+
+    /* ------------------------------------------------------------- *
+     * Overriding BaseActivity Objects
+     * ------------------------------------------------------------- */
 
     @Override
     protected int getLayoutResourceId() {
