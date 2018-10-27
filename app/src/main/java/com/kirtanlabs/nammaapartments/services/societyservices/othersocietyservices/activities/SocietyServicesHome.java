@@ -1,7 +1,6 @@
 package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -344,24 +343,6 @@ public class SocietyServicesHome extends BaseActivity implements View.OnClickLis
 
             /*Storing time stamp to keep track of notifications*/
             societyServiceNotificationReference.child(notificationUID).child(FIREBASE_CHILD_TIMESTAMP).setValue(System.currentTimeMillis());
-
-            SharedPreferences sharedPreferences = getSharedPreferences(Constants.NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            switch (screenTitle) {
-                case R.string.plumber:
-                    editor.putString(Constants.PLUMBER_SERVICE_NOTIFICATION_UID, notificationUID);
-                    break;
-                case R.string.carpenter:
-                    editor.putString(Constants.CARPENTER_SERVICE_NOTIFICATION_UID, notificationUID);
-                    break;
-                case R.string.electrician:
-                    editor.putString(Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID, notificationUID);
-                    break;
-                case R.string.garbage_collection:
-                    editor.putString(Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, notificationUID);
-                    break;
-            }
-            editor.apply();
 
             /*Call AwaitingResponse activity, by this time Society Service should have received the Notification
              * Since, cloud functions would have been triggered*/
