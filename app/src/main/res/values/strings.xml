@@ -568,7 +568,7 @@
     <string name="no_society_service_available">Sorry, no Service is available at the moment</string>
     <string name="no_service_available_image_desc">Image to indicate that no society service is available.</string>
     <string name="request_again">Request Again</string>
-    <string name="call_association">Call Association</string>
+    <string name="call_namma_apartments">Call Namma Apartments</string>
 
     <!--Event Management Activity-->
     <string name="event_title">Event Title</string>

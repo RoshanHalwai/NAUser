@@ -297,7 +297,7 @@
                         android:layout_centerInParent="true"
                         android:paddingLeft="15dp"
                         android:paddingStart="15dp"
-                        android:text="@string/call_association"
+                        android:text="@string/call_namma_apartments"
                         android:textColor="@color/nmSendMessageColor"
                         android:textSize="22sp"
                         tools:ignore="RelativeOverlap,RtlSymmetry" />
