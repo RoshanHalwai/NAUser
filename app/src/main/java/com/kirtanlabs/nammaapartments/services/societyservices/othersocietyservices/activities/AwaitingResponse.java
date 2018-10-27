@@ -70,7 +70,7 @@ public class AwaitingResponse extends BaseActivity {
     private LinearLayout layoutAwaitingResponse, layoutAcceptedResponse, layoutRequestDeclined;
     private TextView textSocietyServiceNameValue, textMobileNumberValue, textEndOTPValue;
     private DatabaseReference societyServiceNotificationReference;
-    private String notificationUID, societyServiceType, societyServiceUID;
+    private String notificationUID, societyServiceType, societyServiceUID, societyAdminContactNumber;
     private Button buttonCallService, buttonCancelService;
 
     /*----------------------------------------------------
@@ -435,6 +435,9 @@ public class AwaitingResponse extends BaseActivity {
         buttonRequestAgain.setTypeface(setLatoLightFont(this));
         textCallAssociation.setTypeface(setLatoBoldFont(this));
 
+        /*Retrieving Society admin mobile number*/
+        retrieveSocietyAdminContactNumber();
+
         /*Setting text to the view*/
         String serviceType;
         if (societyServiceType.equals(GARBAGE_COLLECTION)) {
@@ -451,22 +454,17 @@ public class AwaitingResponse extends BaseActivity {
 
         /*Setting on Click listeners to the view*/
         buttonRequestAgain.setOnClickListener(v -> openSocietyServiceHomeScreen());
-        textCallAssociation.setOnClickListener(v -> {
-            AwaitingResponse.this.showProgressDialog(AwaitingResponse.this, getString(R.string.retrieving_details), getString(R.string.please_wait_a_moment));
-            retrieveSocietyAdminContactNumber();
-        });
+        textCallAssociation.setOnClickListener(v -> makePhoneCall(societyAdminContactNumber));
     }
 
     /**
-     * This method is invoked to retrieve the contact number of Society admin and place to a call.
+     * This method is invoked to retrieve the contact number of Society admin.
      */
     private void retrieveSocietyAdminContactNumber() {
         SOCIETY_ADMIN_DETAILS_REFERENCE.child(FIREBASE_CHILD_MOBILE_NUMBER).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String societyAdminContactNumber = dataSnapshot.getValue(String.class);
-                hideProgressDialog();
-                makePhoneCall(societyAdminContactNumber);
+                societyAdminContactNumber = dataSnapshot.getValue(String.class);
             }
 
             @Override
