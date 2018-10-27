@@ -24,10 +24,9 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.List;
 
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FAMILY_MEMBER;
+import static android.view.View.GONE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GRANTEDACCESS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVILEGES;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.FRIEND;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -72,26 +71,15 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
     @Override
     public void onBindViewHolder(@NonNull MySweetHomeHolder holder, int position) {
         String stringMemberName = mCtx.getResources().getString(R.string.history_name);
-        String stringMemberRelation = mCtx.getResources().getString(R.string.relation) + ":";
-        String stringMemberRelationValue = FAMILY_MEMBER;
 
         holder.textMemberName.setText(stringMemberName);
-        holder.textMemberRelation.setText(stringMemberRelation);
         holder.textGrantedAccess.setText(R.string.access);
 
         /*Creating an instance of NammaApartmentUser class and retrieving the values from Firebase.*/
         NammaApartmentUser nammaApartmentUser = nammaApartmentUserList.get(position);
         holder.textMemberNameValue.setText(nammaApartmentUser.getPersonalDetails().getFullName());
 
-        /*Checking how two UIDs/people are related with each other (Family Member/Friend)*/
-        if (nammaApartmentUser.getFriends() != null) {
-            if (nammaApartmentUser.getFriends().containsKey(NammaApartmentsGlobal.userUID)) {
-                stringMemberRelationValue = FRIEND;
-            }
-        }
-
         /*Setting the value of Relation to display in the My Sweet Home screen*/
-        holder.textMemberRelationValue.setText(stringMemberRelationValue);
         grantedAccess = nammaApartmentUser.getPrivileges().isGrantedAccess();
         String accessValue;
         if (grantedAccess) {
@@ -109,10 +97,10 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
         holder.textCancel.setText(R.string.remove);
 
         /* Making these views Visibility GONE , as they are not required here*/
-        holder.textInvitationDateOrServiceRating.setVisibility(View.GONE);
-        holder.textInvitedByOrNumberOfFlats.setVisibility(View.GONE);
-        holder.textInvitationDateOrServiceRatingValue.setVisibility(View.GONE);
-        holder.textInvitedByOrNumberOfFlatsValue.setVisibility(View.GONE);
+        holder.textInvitationDateOrServiceRating.setVisibility(GONE);
+        holder.textInvitedByOrNumberOfFlats.setVisibility(GONE);
+        holder.textInvitationDateOrServiceRatingValue.setVisibility(GONE);
+        holder.textInvitedByOrNumberOfFlatsValue.setVisibility(GONE);
 
         /*Here we are changing edit icon*/
         holder.textEdit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.edit_new, 0, 0);
@@ -288,15 +276,17 @@ public class MySweetHomeAdapter extends RecyclerView.Adapter<MySweetHomeAdapter.
             textEdit = itemView.findViewById(R.id.textRescheduleOrEdit);
             textCancel = itemView.findViewById(R.id.textCancel);
 
+            /*TODO: Add a fix in the Next Version*/
+            textMemberRelation.setVisibility(GONE);
+            textMemberRelationValue.setVisibility(GONE);
+
             /*Setting font for all the views*/
             textMemberName.setTypeface(Constants.setLatoRegularFont(mCtx));
-            textMemberRelation.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInvitationDateOrServiceRating.setTypeface(Constants.setLatoRegularFont(mCtx));
             textGrantedAccess.setTypeface(Constants.setLatoRegularFont(mCtx));
             textInvitedByOrNumberOfFlats.setTypeface(Constants.setLatoRegularFont(mCtx));
 
             textMemberNameValue.setTypeface(Constants.setLatoBoldFont(mCtx));
-            textMemberRelationValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitationDateOrServiceRatingValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textGrantedAccessValue.setTypeface(Constants.setLatoBoldFont(mCtx));
             textInvitedByOrNumberOfFlatsValue.setTypeface(Constants.setLatoBoldFont(mCtx));
