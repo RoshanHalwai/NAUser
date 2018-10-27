@@ -117,11 +117,6 @@ public class Constants {
     public static final String ACCOUNT_CREATED = "accountCreated";
     public static final String LOGGED_IN = "loggedIn";
     public static final String VERIFIED = "verified";
-    public static final String PLUMBER_SERVICE_NOTIFICATION_UID = "plumberServiceNotificationUid";
-    public static final String CARPENTER_SERVICE_NOTIFICATION_UID = "carpenterServiceNotificationUid";
-    public static final String ELECTRICIAN_SERVICE_NOTIFICATION_UID = "electricianServiceNotificationUid";
-    public static final String GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID = "garbageManagementNotificationUid";
-    public static final String EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID = "eventManagementNotificationUid";
     public static final String FIREBASE_DATABASE_URL = "firebaseDatabaseURL";
     public static final String FIREBASE_ENVIRONMENT = "firebaseEnvironment";
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.navigationdrawer.help.pojo.Support;
@@ -13,11 +14,13 @@ import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.DECLINED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SCRAP_TYPE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION;
 
 /**
  * KirtanLabs Pvt. Ltd.
@@ -31,6 +34,7 @@ public class RetrievingSocietyServiceHistoryList {
      * ------------------------------------------------------------- */
 
     private final Context mCtx;
+    private final DatabaseReference userFlatDataReference;
     private int count = 0;
 
     /* ------------------------------------------------------------- *
@@ -39,6 +43,8 @@ public class RetrievingSocietyServiceHistoryList {
 
     public RetrievingSocietyServiceHistoryList(Context mCtx) {
         this.mCtx = mCtx;
+        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
+        userFlatDataReference = nammaApartmentsGlobal.getUserDataReference();
     }
 
     /* ------------------------------------------------------------- *
@@ -54,8 +60,7 @@ public class RetrievingSocietyServiceHistoryList {
      *                                of that particular society service type.
      */
     private void getSocietyServiceNotificationUIDList(String societyServiceType, NotificationUIDCallback notificationUIDCallback) {
-        NammaApartmentsGlobal nammaApartmentsGlobal = ((NammaApartmentsGlobal) mCtx.getApplicationContext());
-        DatabaseReference userDataReference = nammaApartmentsGlobal.getUserDataReference().child(Constants.FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION)
+        DatabaseReference userDataReference = userFlatDataReference.child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION)
                 .child(societyServiceType);
         userDataReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -221,6 +226,35 @@ public class RetrievingSocietyServiceHistoryList {
         });
     }
 
+    /**
+     * This method is invoked to return latest notificationUID of that particular society service.
+     *
+     * @param societyServiceType                          - type of society service
+     * @param societyServiceLatestNotificationUIDCallBack - callback to return latest generated notification
+     *                                                    UID for a particular society service
+     */
+    public void getSocietyServiceLatestNotificationUID(String societyServiceType, SocietyServiceLatestNotificationUIDCallBack societyServiceLatestNotificationUIDCallBack) {
+        DatabaseReference societyServiceReference = userFlatDataReference
+                .child(FIREBASE_CHILD_SOCIETYSERVICENOTIFICATION)
+                .child(societyServiceType);
+        Query lastNotificationUIDQuery = societyServiceReference.orderByKey().limitToLast(1);
+        lastNotificationUIDQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Map<String, Boolean> notificationUIDMap = (Map<String, Boolean>) dataSnapshot.getValue();
+                    societyServiceLatestNotificationUIDCallBack.onCallBack(Objects.requireNonNull(notificationUIDMap).entrySet().iterator().next().getKey());
+                } else {
+                    societyServiceLatestNotificationUIDCallBack.onCallBack(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
     /* ------------------------------------------------------------- *
      * Interfaces
      * ------------------------------------------------------------- */
@@ -239,5 +273,9 @@ public class RetrievingSocietyServiceHistoryList {
 
     public interface SupportDataListCallBack {
         void onCallBack(List<Support> supportList);
+    }
+
+    public interface SocietyServiceLatestNotificationUIDCallBack {
+        void onCallBack(String notificationUID);
     }
 }

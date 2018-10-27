@@ -2,7 +2,6 @@ package com.kirtanlabs.nammaapartments.home.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,16 +22,9 @@ import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservi
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
 import java.util.List;
-import java.util.Objects;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.CARPENTER_SERVICE_NOTIFICATION_UID;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN_SERVICE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPTED;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
-import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER_SERVICE_NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
 
@@ -45,7 +37,7 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
     private final Context context;
     private final List<NammaApartmentService> apartmentServicesList;
     private final int serviceType;
-    private String notificationUID, societyServiceType;
+    private String societyServiceType;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -91,65 +83,34 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
      * is still active or not.
      */
     private void checkPreviousRequestStatus(int screenTitle) {
-        /*Retrieving user's previous society service request UID from shared preference*/
-        SharedPreferences sharedPreferences = Objects.requireNonNull(context.getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE));
-        switch (screenTitle) {
-            case R.string.plumber:
-                notificationUID = sharedPreferences.getString(PLUMBER_SERVICE_NOTIFICATION_UID, null);
-                societyServiceType = context.getString(R.string.plumber).toLowerCase();
-                break;
-            case R.string.carpenter:
-                notificationUID = sharedPreferences.getString(CARPENTER_SERVICE_NOTIFICATION_UID, null);
-                societyServiceType = context.getString(R.string.carpenter).toLowerCase();
-                break;
-            case R.string.electrician:
-                notificationUID = sharedPreferences.getString(ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
-                societyServiceType = context.getString(R.string.electrician).toLowerCase();
-                break;
-            case R.string.garbage_collection:
-                notificationUID = sharedPreferences.getString(GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
-                societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
-                break;
+        if (screenTitle == R.string.garbage_collection) {
+            societyServiceType = Constants.FIREBASE_CHILD_GARBAGE_COLLECTION;
+        } else {
+            societyServiceType = context.getString(screenTitle).toLowerCase();
         }
 
-        if (notificationUID != null) {
-            /*Checking status of previous Request*/
-            new RetrievingSocietyServiceHistoryList(context)
-                    .getSocietyServiceRequestStatus(notificationUID, status -> {
-                        if (status != null && (status.equals(IN_PROGRESS) || status.equals(FIREBASE_ACCEPTED))) {
-                            Intent awaitingResponseIntent = new Intent(context, AwaitingResponse.class);
-                            awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
-                            awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
-                            context.startActivity(awaitingResponseIntent);
-                        } else {
-                            /*Updating previous user's society service request Uid to null*/
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            switch (screenTitle) {
-                                case R.string.plumber:
-                                    editor.putString(PLUMBER_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                                case R.string.carpenter:
-                                    editor.putString(CARPENTER_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                                case R.string.electrician:
-                                    editor.putString(ELECTRICIAN_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                                case R.string.garbage_collection:
-                                    editor.putString(GARBAGE_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
-                                    break;
-                                case R.string.event_management:
-                                    editor.putString(Constants.EVENT_MANAGEMENT_SERVICE_NOTIFICATION_UID, null);
-                                    break;
+        RetrievingSocietyServiceHistoryList retrievingSocietyServiceHistoryList = new RetrievingSocietyServiceHistoryList(context);
+        retrievingSocietyServiceHistoryList
+                .getSocietyServiceLatestNotificationUID(societyServiceType, notificationUID -> {
+            if (notificationUID != null) {
+                /*Checking status of previous Request*/
+                retrievingSocietyServiceHistoryList
+                        .getSocietyServiceRequestStatus(notificationUID, status -> {
+                            if (status != null && (status.equals(IN_PROGRESS) || status.equals(FIREBASE_ACCEPTED))) {
+                                Intent awaitingResponseIntent = new Intent(context, AwaitingResponse.class);
+                                awaitingResponseIntent.putExtra(Constants.NOTIFICATION_UID, notificationUID);
+                                awaitingResponseIntent.putExtra(Constants.SOCIETY_SERVICE_TYPE, societyServiceType);
+                                context.startActivity(awaitingResponseIntent);
+                            } else {
+                                /*Navigating user to Society Service Home Screen where user can request for society services*/
+                                makeSocietyServiceRequest(screenTitle);
                             }
-                            editor.apply();
-                            /*Navigating user to Society Service Home Screen where user can request for society services*/
-                            makeSocietyServiceRequest(screenTitle);
-                        }
-                    });
-        } else {
-            /*Navigating user to Society Service Home Screen where user can request for society services*/
-            makeSocietyServiceRequest(screenTitle);
-        }
+                        });
+            } else {
+                /*Navigating user to Society Service Home Screen where user can request for society services*/
+                makeSocietyServiceRequest(screenTitle);
+            }
+        });
     }
 
     /**
@@ -158,13 +119,9 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
      * @param screenTitle - type of society service user needs.
      */
     private void makeSocietyServiceRequest(int screenTitle) {
-        if (screenTitle == R.string.event_management) {
-            context.startActivity(new Intent(context, EventManagement.class));
-        } else {
-            Intent intent = new Intent(context, SocietyServicesHome.class);
-            intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
-            context.startActivity(intent);
-        }
+        Intent intent = new Intent(context, SocietyServicesHome.class);
+        intent.putExtra(Constants.SCREEN_TITLE, screenTitle);
+        context.startActivity(intent);
     }
 
     /* ------------------------------------------------------------- *
@@ -219,8 +176,7 @@ public class NammaApartmentServiceAdapter extends RecyclerView.Adapter<NammaApar
                         context.startActivity(notifyGateAndEmergencyIntent);
                         break;
                     case 6:
-                        /*To Check if User's previous request for that particular society service is completed or not.*/
-                        checkPreviousRequestStatus(R.string.event_management);
+                        context.startActivity(new Intent(context, EventManagement.class));
                         break;
                     case 7:
                         Intent intent = new Intent(context, SocietyServicesHome.class);
