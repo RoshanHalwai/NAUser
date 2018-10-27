@@ -3,6 +3,7 @@ package com.kirtanlabs.nammaapartments.services.societyservices.othersocietyserv
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,7 @@ import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 import com.kirtanlabs.nammaapartments.home.activities.NammaApartmentsHome;
 import com.kirtanlabs.nammaapartments.services.societyservices.othersocietyservices.pojo.NammaApartmentSocietyServices;
-import com.kirtanlabs.nammaapartments.utilities.Constants;
+
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,8 +34,10 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.ELECTRICIAN;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ACCEPTED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CANCELLED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATA;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FUTURE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_HISTORY;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_MOBILE_NUMBER;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_NOTIFICATIONS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PRIVATE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_SERVING;
@@ -42,9 +45,13 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_TAKENBY;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.GARBAGE_COLLECTION;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.IN_PROGRESS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NOTIFICATION_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PLUMBER;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.RATING;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_ADMIN_DETAILS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICES_REFERENCE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.SOCIETY_SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoRegularFont;
@@ -101,26 +108,26 @@ public class AwaitingResponse extends BaseActivity {
         buttonCancelService = findViewById(R.id.buttonCancelService);
 
         /*Setting font for all the views*/
-        textNotificationSent.setTypeface(Constants.setLatoBoldFont(this));
-        textSocietyServiceNameAndEventTitle.setTypeface(Constants.setLatoRegularFont(this));
-        textMobileNumberAndEventDate.setTypeface(Constants.setLatoRegularFont(this));
-        textEndOTPAndTimeSlot.setTypeface(Constants.setLatoRegularFont(this));
-        textSocietyServiceNameValue.setTypeface(Constants.setLatoBoldFont(this));
-        textMobileNumberValue.setTypeface(Constants.setLatoBoldFont(this));
-        textEndOTPValue.setTypeface(Constants.setLatoBoldFont(this));
-        textSocietyServiceAcceptedRequest.setTypeface(Constants.setLatoBoldFont(this));
-        textSocietyServiceResponse.setTypeface(Constants.setLatoBoldFont(this));
-        buttonCallService.setTypeface(Constants.setLatoLightFont(this));
-        buttonCancelService.setTypeface(Constants.setLatoLightFont(this));
+        textNotificationSent.setTypeface(setLatoBoldFont(this));
+        textSocietyServiceNameAndEventTitle.setTypeface(setLatoRegularFont(this));
+        textMobileNumberAndEventDate.setTypeface(setLatoRegularFont(this));
+        textEndOTPAndTimeSlot.setTypeface(setLatoRegularFont(this));
+        textSocietyServiceNameValue.setTypeface(setLatoBoldFont(this));
+        textMobileNumberValue.setTypeface(setLatoBoldFont(this));
+        textEndOTPValue.setTypeface(setLatoBoldFont(this));
+        textSocietyServiceAcceptedRequest.setTypeface(setLatoBoldFont(this));
+        textSocietyServiceResponse.setTypeface(setLatoBoldFont(this));
+        buttonCallService.setTypeface(setLatoLightFont(this));
+        buttonCancelService.setTypeface(setLatoLightFont(this));
 
         String societyServiceNameTitle = getString(R.string.name) + ":";
         textSocietyServiceNameAndEventTitle.setText(societyServiceNameTitle);
         String societyServiceMobileTitle = getString(R.string.mobile) + ":";
         textMobileNumberAndEventDate.setText(societyServiceMobileTitle);
 
-        notificationUID = getIntent().getStringExtra(Constants.NOTIFICATION_UID);
-        societyServiceType = getIntent().getStringExtra(Constants.SOCIETY_SERVICE_TYPE);
-        societyServiceNotificationReference = Constants.ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID);
+        notificationUID = getIntent().getStringExtra(NOTIFICATION_UID);
+        societyServiceType = getIntent().getStringExtra(SOCIETY_SERVICE_TYPE);
+        societyServiceNotificationReference = ALL_SOCIETYSERVICENOTIFICATION_REFERENCE.child(notificationUID);
 
         /*Based On The Society Service Type we are differentiating appropriate string*/
         switch (societyServiceType) {
@@ -283,8 +290,8 @@ public class AwaitingResponse extends BaseActivity {
                             layoutAwaitingResponse.setVisibility(View.GONE);
                             layoutAcceptedResponse.setVisibility(View.VISIBLE);
 
-                            String societyServiceName = dataSnapshot.child(Constants.FIREBASE_CHILD_FULLNAME).getValue(String.class);
-                            String societyServiceMobileNumber = dataSnapshot.child(Constants.FIREBASE_CHILD_MOBILE_NUMBER).getValue(String.class);
+                            String societyServiceName = dataSnapshot.child(FIREBASE_CHILD_FULLNAME).getValue(String.class);
+                            String societyServiceMobileNumber = dataSnapshot.child(FIREBASE_CHILD_MOBILE_NUMBER).getValue(String.class);
                             textSocietyServiceNameValue.setText(societyServiceName);
                             textMobileNumberValue.setText(societyServiceMobileNumber);
                             textEndOTPValue.setText(endOTP);
@@ -312,7 +319,7 @@ public class AwaitingResponse extends BaseActivity {
      * This method is invoked to rate Society service just after user's request for is completed.
      */
     private void rateSocietyService() {
-        DatabaseReference rateReference = societyServiceNotificationReference.child(Constants.RATING);
+        DatabaseReference rateReference = societyServiceNotificationReference.child(RATING);
         rateReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -381,7 +388,7 @@ public class AwaitingResponse extends BaseActivity {
         buttonSubmit.setOnClickListener(v -> {
             float rating = ratingBarSocietyService.getRating();
             /*Setting the rating given by the user in (societyServiceNotification->NotificationUID) in firebase*/
-            societyServiceNotificationReference.child(Constants.RATING).setValue(rating);
+            societyServiceNotificationReference.child(RATING).setValue(rating);
 
             /*Setting the rating given by the user in (societyService->societyServiceType->societyServiceUID) in firebase*/
             DatabaseReference averageRatingReference = SOCIETY_SERVICES_REFERENCE.child(societyServiceType)
@@ -392,11 +399,11 @@ public class AwaitingResponse extends BaseActivity {
             averageRatingReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    int number = (int) dataSnapshot.child(Constants.FIREBASE_CHILD_NOTIFICATIONS).child(Constants.FIREBASE_CHILD_HISTORY).getChildrenCount();
-                    float previousAverageRating = Objects.requireNonNull(dataSnapshot.child(Constants.RATING).getValue(Float.class));
+                    int number = (int) dataSnapshot.child(FIREBASE_CHILD_NOTIFICATIONS).child(FIREBASE_CHILD_HISTORY).getChildrenCount();
+                    float previousAverageRating = Objects.requireNonNull(dataSnapshot.child(RATING).getValue(Float.class));
                     float previousRatingValue = (previousAverageRating * (number - 1));
                     float newAverageRating = (rating + previousRatingValue) / number;
-                    averageRatingReference.child(Constants.RATING).setValue(newAverageRating);
+                    averageRatingReference.child(RATING).setValue(newAverageRating);
                     dialog.cancel();
                     finish();
                 }
@@ -419,10 +426,14 @@ public class AwaitingResponse extends BaseActivity {
         /*Getting Id's for all the views*/
         TextView textNoSocietyServiceAvailable = findViewById(R.id.textNoSocietyServiceAvailable);
         Button buttonRequestAgain = findViewById(R.id.buttonRequestAgain);
+        TextView textCallAssociation = findViewById(R.id.textCallAssociation);
+
+        textCallAssociation.setPaintFlags(textCallAssociation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         /*Setting font for all the views*/
         textNoSocietyServiceAvailable.setTypeface(setLatoBoldFont(this));
         buttonRequestAgain.setTypeface(setLatoLightFont(this));
+        textCallAssociation.setTypeface(setLatoBoldFont(this));
 
         /*Setting text to the view*/
         String serviceType;
@@ -440,6 +451,29 @@ public class AwaitingResponse extends BaseActivity {
 
         /*Setting on Click listeners to the view*/
         buttonRequestAgain.setOnClickListener(v -> openSocietyServiceHomeScreen());
+        textCallAssociation.setOnClickListener(v -> {
+            AwaitingResponse.this.showProgressDialog(AwaitingResponse.this, getString(R.string.retrieving_details), getString(R.string.please_wait_a_moment));
+            retrieveSocietyAdminContactNumber();
+        });
+    }
+
+    /**
+     * This method is invoked to retrieve the contact number of Society admin and place to a call.
+     */
+    private void retrieveSocietyAdminContactNumber() {
+        SOCIETY_ADMIN_DETAILS_REFERENCE.child(FIREBASE_CHILD_MOBILE_NUMBER).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String societyAdminContactNumber = dataSnapshot.getValue(String.class);
+                hideProgressDialog();
+                makePhoneCall(societyAdminContactNumber);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
