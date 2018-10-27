@@ -275,6 +275,35 @@
                     android:textColor="@color/nmLightYellow"
                     android:textSize="@dimen/button_default_size" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/textCallAssociation"
+                        android:layout_toStartOf="@id/textCallAssociation"
+                        android:contentDescription="@string/call_customer_executive_image_desc"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:src="@drawable/call_new" />
+
+                    <TextView
+                        android:id="@+id/textCallAssociation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:paddingLeft="15dp"
+                        android:paddingStart="15dp"
+                        android:text="@string/call_namma_apartments"
+                        android:textColor="@color/nmSendMessageColor"
+                        android:textSize="22sp"
+                        tools:ignore="RelativeOverlap,RtlSymmetry" />
+
+                </RelativeLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
