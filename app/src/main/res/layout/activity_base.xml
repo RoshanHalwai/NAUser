@@ -51,6 +51,18 @@
         android:layout_marginRight="10dp"
         android:layout_weight="0.05"
         android:contentDescription="@string/information_about_the_current_screen"
-        android:src="@drawable/info_icon_na" />
+        android:src="@drawable/info_icon_na"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/logoutButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.05"
+        android:contentDescription="@string/information_about_the_current_screen"
+        android:src="@drawable/logout_na"
+        android:visibility="gone" />
 
 </LinearLayout>

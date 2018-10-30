@@ -156,10 +156,6 @@
             android:name=".navigationdrawer.noticeboard.activities.NoticeBoard"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigationdrawer.settings.NammaApartmentSettings"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
             android:name=".navigationdrawer.help.activities.NammaApartmentsHelp"
             android:screenOrientation="portrait" />
         <activity
