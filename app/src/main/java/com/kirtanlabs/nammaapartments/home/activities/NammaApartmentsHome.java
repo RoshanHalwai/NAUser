@@ -39,7 +39,6 @@ import com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities.User
 import com.kirtanlabs.nammaapartments.navigationdrawer.myvehicles.activities.MyVehiclesActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.mywallet.activities.MyPaymentsActivity;
 import com.kirtanlabs.nammaapartments.navigationdrawer.noticeboard.activities.NoticeBoard;
-import com.kirtanlabs.nammaapartments.navigationdrawer.settings.NammaApartmentSettings;
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.mysweethome.MySweetHome;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.userpojo.UserFlatDetails;
@@ -169,15 +168,6 @@ public class NammaApartmentsHome extends BaseActivity implements NavigationView.
                 toggle.runWhenIdle(() -> {
                     Intent noticeBoardIntent = new Intent(NammaApartmentsHome.this, NoticeBoard.class);
                     startActivity(noticeBoardIntent);
-                });
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            }
-
-            case R.id.nav_appSettings: {
-                toggle.runWhenIdle(() -> {
-                    Intent settingsIntent = new Intent(NammaApartmentsHome.this, NammaApartmentSettings.class);
-                    startActivity(settingsIntent);
                 });
                 drawer.closeDrawer(GravityCompat.START);
                 break;

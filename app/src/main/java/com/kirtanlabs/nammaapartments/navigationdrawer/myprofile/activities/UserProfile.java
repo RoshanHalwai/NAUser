@@ -2,11 +2,13 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.myprofile.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.google.firebase.storage.UploadTask;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
 import com.kirtanlabs.nammaapartments.R;
+import com.kirtanlabs.nammaapartments.onboarding.login.SignIn;
 import com.kirtanlabs.nammaapartments.userpojo.NammaApartmentUser;
 import com.kirtanlabs.nammaapartments.utilities.Constants;
 
@@ -31,14 +34,20 @@ import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ADMIN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_AUTH;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_FULLNAME;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PERSONALDETAILS;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_PROFILE_PHOTO;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_USERS;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_DATABASE_URL;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_ENVIRONMENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_STORAGE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.LOGGED_IN;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.NAMMA_APARTMENTS_PREFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PRIVATE_USERS_REFERENCE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.PROFILE_OLD_CONTENT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
+import static com.kirtanlabs.nammaapartments.utilities.Constants.USER_UID;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoBoldFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoItalicFont;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -79,6 +88,8 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        showLogoutButton();
 
         showProgressDialog(this, getString(R.string.loading_profile), getString(R.string.please_wait_a_moment));
 
@@ -190,6 +201,9 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
             case R.id.buttonGatePass:
                 Intent gatePassIntent = new Intent(UserProfile.this, GatePassActivity.class);
                 startActivity(gatePassIntent);
+                break;
+            case R.id.logoutButton:
+                showLogOutDialog();
                 break;
         }
     }
@@ -316,6 +330,42 @@ public class UserProfile extends BaseActivity implements View.OnClickListener {
             hideProgressDialog();
             Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
         });
+    }
+
+    private void showLogoutButton() {
+        ImageView logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setVisibility(View.VISIBLE);
+        logoutButton.setOnClickListener(this);
+    }
+
+    /**
+     * This dialog gets invoked when user clicks on Logout button.
+     */
+    private void showLogOutDialog() {
+        Runnable logoutUser = () ->
+        {
+            SharedPreferences sharedPreferences;
+            SharedPreferences.Editor editor;
+            sharedPreferences = getSharedPreferences(NAMMA_APARTMENTS_PREFERENCE, MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putBoolean(LOGGED_IN, false);
+            editor.putString(USER_UID, null);
+            editor.putString(FIREBASE_ENVIRONMENT, null);
+            editor.putString(FIREBASE_DATABASE_URL, null);
+            editor.apply();
+            FIREBASE_AUTH.signOut();
+
+            /*Change the instance back to Master_DEV or MASTER_BETA*/
+            new Constants().configureFirebase(new NammaApartmentsGlobal().getCurrentEnvironment(getApplicationContext()));
+
+            Intent intent = new Intent(UserProfile.this, SignIn.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        };
+        String confirmDialogTitle = getString(R.string.logout_dialog_title);
+        String confirmDialogMessage = getString(R.string.logout_question);
+        showConfirmDialog(confirmDialogTitle, confirmDialogMessage, logoutUser);
     }
 
 }
