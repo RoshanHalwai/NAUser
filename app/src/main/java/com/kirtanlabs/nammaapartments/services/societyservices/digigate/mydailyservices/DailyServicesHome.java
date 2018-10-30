@@ -10,9 +10,6 @@ import android.widget.Button;
 import com.kirtanlabs.nammaapartments.BaseActivity;
 import com.kirtanlabs.nammaapartments.R;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.SERVICE_TYPE;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.setLatoLightFont;
@@ -23,7 +20,6 @@ public class DailyServicesHome extends BaseActivity {
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static final Map<String, Long> numberOfFlats = new HashMap<>();
     private AlertDialog dailyServicesListDialog;
     private DailyServicesHomeAdapter dailyServicesHomeAdapter;
     private RecyclerView recyclerView;

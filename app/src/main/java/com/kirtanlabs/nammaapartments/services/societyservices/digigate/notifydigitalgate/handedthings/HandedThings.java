@@ -16,9 +16,7 @@ import com.kirtanlabs.nammaapartments.services.societyservices.digigate.myvisito
 import com.kirtanlabs.nammaapartments.services.societyservices.digigate.notifydigitalgate.handedthings.history.HandedThingsHistory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.kirtanlabs.nammaapartments.utilities.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.HANDED_THINGS_TO;
@@ -30,7 +28,6 @@ public class HandedThings extends BaseActivity implements View.OnClickListener {
      * Private Members
      * ------------------------------------------------------------- */
 
-    public static final Map<String, Long> numberOfFlats = new HashMap<>();
     private HandedThingsToVisitorsAdapter adapterVisitors;
     private List<NammaApartmentDailyService> nammaApartmentDailyServiceList;
     private HandedThingsToDailyServiceAdapter adapterDailyService;

@@ -73,7 +73,7 @@ public class HandedThingsToDailyServiceAdapter extends RecyclerView.Adapter<Hand
         holder.textDailyServiceNameValue.setText(nammaApartmentDailyService.getFullName());
         holder.textDailyServiceTypeValue.setText(nammaApartmentDailyService.getType());
         holder.textDailyServiceRatingValue.setText(String.valueOf(nammaApartmentDailyService.getRating()));
-        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(HandedThings.numberOfFlats.get(nammaApartmentDailyService.getUID())));
+        holder.textDailyServiceNoOfFlatsValue.setText(String.valueOf(nammaApartmentDailyService.getNumberOfFlats()));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentDailyService.getProfilePhoto())
                 .into(holder.profileImage);
     }

@@ -7,7 +7,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.kirtanlabs.nammaapartments.NammaApartmentsGlobal;
-import com.kirtanlabs.nammaapartments.services.societyservices.digigate.notifydigitalgate.handedthings.HandedThings;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -103,8 +102,7 @@ public class RetrievingDailyServicesList {
                                     /*To get status of daily service*/
                                     NammaApartmentDailyService nammaApartmentDailyService = dsDataSnapshot.getValue(NammaApartmentDailyService.class);
                                     nammaApartmentDailyService.setType(DailyServiceType.get(Objects.requireNonNull(nammaApartmentDailyService).getType()));
-                                    DailyServicesHome.numberOfFlats.put(nammaApartmentDailyService.getUID(), flats);
-                                    HandedThings.numberOfFlats.put(nammaApartmentDailyService.getUID(), flats);
+                                    nammaApartmentDailyService.setNumberOfFlats(flats);
                                     nammaApartmentDailyService.setStatus(statusSnapshot.getValue(String.class));
                                     nammaApartmentDailyService.setUserUID(userUID);
 
@@ -172,14 +170,13 @@ public class RetrievingDailyServicesList {
 
             for (String dailyServiceCategory : dailyServiceCategoriesList) {
                 getDailyServiceUIDs(dailyServiceCategory, dailyServiceUIDList -> {
-                    count++;
+
                     /*Checking if the Daily Service UIDList is not equal to zero */
                     if (dailyServiceUIDList.size() != 0) {
                         dailyServiceUIDMap.put(dailyServiceCategory, new LinkedList<>(dailyServiceUIDList));
                     }
 
-                    if (count == dailyServiceCategoriesList.size()) {
-                        count = 0;
+                    if (dailyServiceUIDMap.size() == dailyServiceCategoriesList.size()) {
                         dailyServiceCategoryUIDMap.onCallback(dailyServiceUIDMap);
                     }
                 });
@@ -200,19 +197,24 @@ public class RetrievingDailyServicesList {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Map<String, String>> dailyServiceUIDList = new LinkedList<>();
-                Map<String, String> dailyServiceUIDMap = new HashMap<>();
+
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot dailyServiceType : dataSnapshot.getChildren()) {
                         dailyServiceUIDReference.child(dailyServiceType.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot userUIDSnapshot) {
+                                count++;
                                 Map<String, Boolean> userUIDMap = (Map<String, Boolean>) userUIDSnapshot.getValue();
                                 /*Adding only true Mapped Daily Services.*/
                                 if (Objects.requireNonNull(userUIDMap).entrySet().iterator().next().getValue() || isPastDailyServiceListRequired) {
+                                    Map<String, String> dailyServiceUIDMap = new HashMap<>();
                                     dailyServiceUIDMap.put(dailyServiceType.getKey(), userUIDMap.entrySet().iterator().next().getKey());
                                     dailyServiceUIDList.add(dailyServiceUIDMap);
                                 }
-                                dailyServiceUIDs.onCallback(dailyServiceUIDList);
+                                if (dataSnapshot.getChildrenCount() == count) {
+                                    count = 0;
+                                    dailyServiceUIDs.onCallback(dailyServiceUIDList);
+                                }
                             }
 
                             @Override
