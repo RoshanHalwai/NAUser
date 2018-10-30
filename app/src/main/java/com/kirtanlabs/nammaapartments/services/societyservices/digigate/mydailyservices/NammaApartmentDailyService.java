@@ -23,6 +23,7 @@ public class NammaApartmentDailyService implements Serializable {
     private String dateOfVisit;
     private String timeOfVisit;
     private int rating;
+    private Long numberOfFlats;
     private String uid;
     private String dailyServiceHandedThingsDescription;
     private String status;
@@ -86,6 +87,10 @@ public class NammaApartmentDailyService implements Serializable {
         return userUID;
     }
 
+    public Long getNumberOfFlats() {
+        return numberOfFlats;
+    }
+
     /* ------------------------------------------------------------- *
      * Setters
      * ------------------------------------------------------------- */
@@ -136,5 +141,9 @@ public class NammaApartmentDailyService implements Serializable {
 
     public void setUserUID(String userUID) {
         this.userUID = userUID;
+    }
+
+    public void setNumberOfFlats(Long numberOfFlats) {
+        this.numberOfFlats = numberOfFlats;
     }
 }
