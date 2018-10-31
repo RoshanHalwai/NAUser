@@ -24,8 +24,7 @@ public class Constants {
     public static final String MASTER_DEV_ENV = "master_dev_env";
     public static final String SOCIETY_DEV_ENV = "society_dev_env";
     public static final String SOCIETY_BETA_ENV = "society_beta_env";
-    //TODO: Change this to SOCIETY_BETA_ENV before rolling App to Play Store
-    public static final String SOCIETY_ENV = SOCIETY_DEV_ENV;
+    public static final String SOCIETY_ENV = SOCIETY_BETA_ENV;
 
     /* ------------------------------------------------------------- *
      * Intent Keys
