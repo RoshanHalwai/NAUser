@@ -10,6 +10,14 @@
         android:id="@+id/layoutActivityBase"
         layout="@layout/activity_base" />
 
+    <include
+        android:id="@+id/layoutFeatureUnavailable"
+        layout="@layout/layout_feature_unavailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutActivityBase"
+        android:visibility="gone" />
+
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/animationWaitingForCustomers"
         android:layout_width="wrap_content"

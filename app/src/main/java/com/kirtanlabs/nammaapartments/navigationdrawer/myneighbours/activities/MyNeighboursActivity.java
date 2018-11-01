@@ -82,8 +82,10 @@ public class MyNeighboursActivity extends BaseActivity {
     private void retrievePreviousChatMessages() {
         /*Retrieving Details of all Neighbour of the society*/
         new RetrievingNeighboursList(MyNeighboursActivity.this).getNeighbourDataList(recentMessageSenderUID, neighboursDataList -> {
-            if (!neighboursDataList.isEmpty()) {
-                hideProgressIndicator();
+            hideProgressIndicator();
+            if (neighboursDataList.isEmpty()) {
+                showFeatureUnavailableLayout(R.string.neighbours_unavailable_message);
+            } else {
                 /*Setting Adapter to the view*/
                 recyclerViewMyNeighbour.setAdapter(new MyNeighboursAdapter(MyNeighboursActivity.this, neighboursDataList, recentMessageSenderUID));
             }

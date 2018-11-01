@@ -16,8 +16,6 @@ import static com.kirtanlabs.nammaapartments.utilities.Constants.SCREEN_TITLE;
 
 public class GuestsList extends BaseActivity {
 
-    private GuestsListAdapter guestsListAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +43,7 @@ public class GuestsList extends BaseActivity {
             if (nammaApartmentGuestList.isEmpty()) {
                 showFeatureUnavailableLayout(R.string.visitors_unavailable_message);
             } else {
-                guestsListAdapter = new GuestsListAdapter(nammaApartmentGuestList, GuestsList.this);
-                recyclerView.setAdapter(guestsListAdapter);
+                recyclerView.setAdapter(new GuestsListAdapter(nammaApartmentGuestList, GuestsList.this));
             }
         });
 
