@@ -714,6 +714,7 @@
     <!--My Guard Activity-->
     <string name="guard">Guard:</string>
     <string name="gate_no">Gate No:</string>
+    <string name="guards_unavailable_message">Sorry, you cannot use this feature since currently there are no Guards at your Flat.</string>
 
     <!--My Neighbours Activity-->
     <string name="my_neighbours">My Neighbours</string>
@@ -722,6 +723,7 @@
     <string name="flat_with_colon">Flat:</string>
     <string name="neighbour_chat">neighbour_chat</string>
     <string name="chat_image_description">Image which shows users can chat with their neighbours.</string>
+    <string name="neighbours_unavailable_message">Sorry, you cannot use this feature since your Neighbour\'s have not installed the App yet.</string>
 
     <!--Send Message Activity-->
     <string name="send_message">Send Message</string>

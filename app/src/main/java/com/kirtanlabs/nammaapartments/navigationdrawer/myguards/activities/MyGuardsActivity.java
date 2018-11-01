@@ -39,9 +39,11 @@ public class MyGuardsActivity extends BaseActivity {
 
         /*Retrieving Details of all Guards of the society*/
         new RetrievingGuardsList().getGuardDataList(guardDataList -> {
+            hideProgressIndicator();
             if (guardDataList != null) {
-                hideProgressIndicator();
                 recyclerView.setAdapter(new MyGuardsAdapter(MyGuardsActivity.this, guardDataList));
+            } else {
+                showFeatureUnavailableLayout(R.string.guards_unavailable_message);
             }
         });
     }
