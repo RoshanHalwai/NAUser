@@ -188,6 +188,7 @@
     <string name="pick_date">Pick Date</string>
     <string name="time_pick">Pick Time</string>
     <string name="visitors_unavailable_message">Sorry, you cannot use this feature since currently there are no Guests at your Flat.</string>
+    <string name="entered_guest_remove_message">Sorry, you cannot remove this Visitor, since their status has not been updated.</string>
     <string name="non_inviter_remove_message">Sorry, you cannot remove this Visitor, since you are not the inviter of this Visitor.</string>
     <string name="visitor_reschedule_message">Sorry, you cannot reschedule, as the Visitor has already entered/left the Society.</string>
     <string name="reschedule_dialog_title">Reschedule Message</string>

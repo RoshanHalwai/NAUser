@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.kirtanlabs.nammaapartments.utilities.Constants.ENTERED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_DATEANDTIMEOFVISIT;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_GUARD_APPROVED;
 import static com.kirtanlabs.nammaapartments.utilities.Constants.FIREBASE_CHILD_POSTAPPROVED;
@@ -299,8 +300,11 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
      * @param nammaApartmentGuest whose data needs to be removed
      */
     private void removeVisitor(int position, NammaApartmentGuest nammaApartmentGuest) {
-        String inviterUID = nammaApartmentGuest.getInviterUID();
-        if (inviterUID.equals(NammaApartmentsGlobal.userUID)) {
+        final String inviterUID = nammaApartmentGuest.getInviterUID();
+        final String guestStatus = nammaApartmentGuest.getStatus();
+        /*User should not be allowed to remove a guest if they have entered into the flat,
+         * since Handed things to guest module will get affected*/
+        if (inviterUID.equals(NammaApartmentsGlobal.userUID) && !guestStatus.equals(ENTERED)) {
 
             /*Runnable Interface which gets invoked once user presses OK button in Confirmation Dialog*/
             Runnable removeVisitor = () -> {
@@ -323,11 +327,14 @@ public class GuestsListAdapter extends RecyclerView.Adapter<GuestsListAdapter.Gu
 
             /*If Guest has not yet arrived, indicates User wants to cancel the invitation,
              * setting title and message appropriately*/
-            if (nammaApartmentGuest.getStatus().equals(NOT_ENTERED)) {
+            if (guestStatus.equals(NOT_ENTERED)) {
                 confirmDialogTitle = mCtx.getString(R.string.cancel_invitation_title);
                 confirmDialogMessage = mCtx.getString(R.string.cancel_invitation_message);
             }
             baseActivity.showConfirmDialog(confirmDialogTitle, confirmDialogMessage, removeVisitor);
+        } else if (guestStatus.equals(ENTERED)) {
+            baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
+                    mCtx.getResources().getString(R.string.entered_guest_remove_message), null);
         } else {
             baseActivity.showNotificationDialog(mCtx.getResources().getString(R.string.non_admin_remove_title_message),
                     mCtx.getResources().getString(R.string.non_inviter_remove_message), null);
