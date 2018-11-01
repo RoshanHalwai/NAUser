@@ -58,7 +58,8 @@ public class MyGuardsAdapter extends RecyclerView.Adapter<MyGuardsAdapter.GuardV
         NammaApartmentsGuard nammaApartmentsGuard = guardDataList.get(position);
         holder.textGuardNameValue.setText(nammaApartmentsGuard.getFullName());
         holder.textGateNumberValue.setText(String.valueOf(nammaApartmentsGuard.getGateNumber()));
-        holder.textGuardStatusValue.setText(nammaApartmentsGuard.getStatus().toUpperCase());
+        String status = nammaApartmentsGuard.getStatus();
+        holder.textGuardStatusValue.setText((status.substring(0, 1).toUpperCase() + status.substring(1)));
         Glide.with(mCtx.getApplicationContext()).load(nammaApartmentsGuard.getProfilePhoto()).into(holder.profileImage);
     }
 
