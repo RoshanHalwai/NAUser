@@ -32,7 +32,7 @@ public class RetrievingDailyServicesList {
 
     private final DatabaseReference userDataReference;
     private final boolean isPastDailyServiceListRequired;
-    private int count = 0;
+    private int count = 0, noOfDailyServiceType = 0;
 
     /* ------------------------------------------------------------- *
      * Constructor
@@ -170,13 +170,14 @@ public class RetrievingDailyServicesList {
 
             for (String dailyServiceCategory : dailyServiceCategoriesList) {
                 getDailyServiceUIDs(dailyServiceCategory, dailyServiceUIDList -> {
-
+                    noOfDailyServiceType++;
                     /*Checking if the Daily Service UIDList is not equal to zero */
                     if (dailyServiceUIDList.size() != 0) {
                         dailyServiceUIDMap.put(dailyServiceCategory, new LinkedList<>(dailyServiceUIDList));
                     }
 
-                    if (dailyServiceUIDMap.size() == dailyServiceCategoriesList.size()) {
+                    if (noOfDailyServiceType == dailyServiceCategoriesList.size()) {
+                        noOfDailyServiceType = 0;
                         dailyServiceCategoryUIDMap.onCallback(dailyServiceUIDMap);
                     }
                 });
