@@ -260,7 +260,7 @@ public class DailyServicesHomeAdapter extends RecyclerView.Adapter<DailyServices
             String dailyServiceType = nammaApartmentDailyService.getType();
             /*Setting the rating given by the user in Daily Services data in firebase*/
             DatabaseReference dailyServiceRatingReference = PUBLIC_DAILYSERVICES_REFERENCE
-                    .child(DailyServiceType.getKeyByValue(dailyServiceType)).child(dailyServiceUID).child(NammaApartmentsGlobal.userUID)
+                    .child(DailyServiceType.getKeyByValue(dailyServiceType)).child(dailyServiceUID).child(nammaApartmentDailyService.getUserUID())
                     .child(Constants.RATING);
             submitRating(position, nammaApartmentDailyService, dailyServiceRatingReference);
             dialog.cancel();
