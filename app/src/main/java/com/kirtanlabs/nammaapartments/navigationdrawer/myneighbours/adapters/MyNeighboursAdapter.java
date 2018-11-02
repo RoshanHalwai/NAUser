@@ -3,11 +3,11 @@ package com.kirtanlabs.nammaapartments.navigationdrawer.myneighbours.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -101,7 +101,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
         private final TextView textFlatNumberValue;
         private final TextView badge_notification_icon;
         private final CircleImageView neighbourProfileImage;
-        private final ImageView imageChatNeighbour;
+        private final CardView cardNeighbourDetails;
 
         /* ------------------------------------------------------------- *
          * Constructor
@@ -119,7 +119,7 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
             textFlatNumberValue = itemView.findViewById(R.id.textFlatNumberValue);
             badge_notification_icon = itemView.findViewById(R.id.badge_notification_icon);
             neighbourProfileImage = itemView.findViewById(R.id.neighbourProfileImage);
-            imageChatNeighbour = itemView.findViewById(R.id.imageChatNeighbour);
+            cardNeighbourDetails = itemView.findViewById(R.id.cardNeighbourDetails);
 
             /*Setting Fonts for all the views on card view*/
             textNeighbourName.setTypeface(setLatoRegularFont(mCtx));
@@ -130,14 +130,14 @@ public class MyNeighboursAdapter extends RecyclerView.Adapter<MyNeighboursAdapte
             textApartmentNameValue.setTypeface(setLatoBoldFont(mCtx));
 
             /*Setting click listeners on the view */
-            imageChatNeighbour.setOnClickListener(this);
+            cardNeighbourDetails.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
             NammaApartmentUser nammaApartmentUser = neighbourDataList.get(position);
-            if (v.getId() == R.id.imageChatNeighbour) {
+            if (v.getId() == R.id.cardNeighbourDetails) {
                 Intent intentChatNeighbour = new Intent(mCtx, SendMessageActivity.class);
                 intentChatNeighbour.putExtra(NEIGHBOUR_UID, nammaApartmentUser.getUID());
                 intentChatNeighbour.putExtra(NEIGHBOUR_APARTMENT_NAME, nammaApartmentUser.getFlatDetails().getApartmentName());
