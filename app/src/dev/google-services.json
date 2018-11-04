@@ -8,41 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:703896080530:android:de9b59a0ffc6f395",
-        "android_client_info": {
-          "package_name": "com.kirtanlabs.guardapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:703896080530:android:67ab068074f57ad3",
         "android_client_info": {
           "package_name": "com.kirtanlabs.nammaapartments"
@@ -50,7 +15,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "703896080530-vuebuiood3mri4qd1mvtc33hgsjhvqm4.apps.googleusercontent.com",
+          "client_id": "703896080530-oqvcpstnfk53ncm7s8d68ocdihi5lgcn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartments",
+            "certificate_hash": "40751bf31e297f8ba904bbd334b7a5751141809c"
+          }
+        },
+        {
+          "client_id": "703896080530-t1ome158ukvq8ugakr85jmlepbpo3469.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartments",
+            "certificate_hash": "fa8bb840de116afaf4e36246ecb0b5e33fcbe010"
+          }
+        },
+        {
+          "client_id": "703896080530-oullkuv5bptnl3lgbrb6cgevv815qac3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kirtanlabs.nammaapartments",
@@ -58,7 +39,7 @@
           }
         },
         {
-          "client_id": "703896080530-fed01aj634dj036rsq511781dog3lfoa.apps.googleusercontent.com",
+          "client_id": "703896080530-vgjn8vmic69uimt0efps9r70oe26jt02.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kirtanlabs.nammaapartments",
@@ -66,8 +47,20 @@
           }
         },
         {
-          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "703896080530-10l2cu5siqovucm8fndrhuiq1d9lnl1e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartments",
+            "certificate_hash": "56597f80aac545994e9fb466cd0b434b968f5473"
+          }
+        },
+        {
+          "client_id": "703896080530-sqtjprhf4omtbpm2ek8sdu629qv4nsif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartments",
+            "certificate_hash": "98d08f4c15952f73ae8a367ecb75337c19c5f0b2"
+          }
         },
         {
           "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
@@ -87,17 +80,190 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "703896080530-rvec26kakspvjha14e0al4j515ig46tg.apps.googleusercontent.com",
+              "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "703896080530-d8lmkpdohf5e1ogutir7iu1gabi5trtn.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.vikasnayak.nammaapartments"
+                "bundle_id": "com.kirtanlab.nammaapartments"
               }
-            },
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703896080530:android:f72af9720fa0521d",
+        "android_client_info": {
+          "package_name": "com.kirtanlabs.nammaapartmentssecurity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703896080530-ju5okbv86metpb68ku282i5dmu6ddgmp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssecurity",
+            "certificate_hash": "fa8bb840de116afaf4e36246ecb0b5e33fcbe010"
+          }
+        },
+        {
+          "client_id": "703896080530-b1b00qtknhjrgb8i12abakrltgebcdc5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssecurity",
+            "certificate_hash": "35352bfd108cf6b8a973b1a29179ac3335c7c067"
+          }
+        },
+        {
+          "client_id": "703896080530-v45ohluetiff2h969u8kk2opt8oamebc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssecurity",
+            "certificate_hash": "105ae319c77151d25227b6f8dd439d32480e2bc0"
+          }
+        },
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
             {
               "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "703896080530-d8lmkpdohf5e1ogutir7iu1gabi5trtn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kirtanlab.nammaapartments"
+              }
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703896080530:android:18abbf7ab331cccd",
+        "android_client_info": {
+          "package_name": "com.kirtanlabs.nammaapartmentssocietyservices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703896080530-e89dm1ucctmir0c362hp1rq4d70nlvc4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssocietyservices",
+            "certificate_hash": "105ae319c77151d25227b6f8dd439d32480e2bc0"
+          }
+        },
+        {
+          "client_id": "703896080530-0mj01be0hub0ppd16drjpufn9s95ms7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssocietyservices",
+            "certificate_hash": "fa8bb840de116afaf4e36246ecb0b5e33fcbe010"
+          }
+        },
+        {
+          "client_id": "703896080530-1s6q5fnuuj2c522q01saembhquc33ch1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssocietyservices",
+            "certificate_hash": "98d08f4c15952f73ae8a367ecb75337c19c5f0b2"
+          }
+        },
+        {
+          "client_id": "703896080530-qs5efnhi7adogqckbpoditbseev26pjp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kirtanlabs.nammaapartmentssocietyservices",
+            "certificate_hash": "35352bfd108cf6b8a973b1a29179ac3335c7c067"
+          }
+        },
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "703896080530-d8lmkpdohf5e1ogutir7iu1gabi5trtn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kirtanlab.nammaapartments"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703896080530:android:e6387a08f5c46e50",
+        "android_client_info": {
+          "package_name": "com.nammaapartments.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703896080530-ku56ija7sbna9gg9v5tkne770oas16sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-F_DSWIb-HRx1bAE5f5aW1TT4npAME60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

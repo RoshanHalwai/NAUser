@@ -121,7 +121,7 @@ public class NammaApartmentsGlobal extends Application {
      * ------------------------------------------------------------- */
 
     public String getCurrentEnvironment(final Context context) {
-        return context.getPackageName().equals(PACKAGE_NAME) ? MASTER_DEV_ENV : MASTER_BETA_ENV;
+        return context.getPackageName().equals(PACKAGE_NAME) ? MASTER_BETA_ENV : MASTER_DEV_ENV;
     }
 
     public String getDefaultDatabaseURL(final String Environment) {

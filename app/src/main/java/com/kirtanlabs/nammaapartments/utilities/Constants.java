@@ -245,7 +245,7 @@ public class Constants {
      * Application Specific
      * ------------------------------------------------------------- */
 
-    public static final String PACKAGE_NAME = "com.kirtanlabs.nammaapartments";
+    public static final String PACKAGE_NAME = "com.nammaapartments";
     public static final String ENTERED = "Entered";
     public static final String NOT_ENTERED = "Not Entered";
     public static final String FAMILY_MEMBER = "Family Member";
